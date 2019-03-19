@@ -13,7 +13,7 @@ public class Main {
         test.setFirstName("Rasmus");
         test.setSurName("Larsen");
         //TODO: Mailen skal ændres hver gang programmet køres, fordi mailen er primaryKey og derfor unik!
-        test.setEmail("test3@test.dk");
+        test.setEmail("test5@test.dk");
         test.setBirthday(LocalDate.parse("1992-01-06"));
 
         DBController dbController = new DBController();
