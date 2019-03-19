@@ -7,8 +7,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-
         final String workerTableName = "workers";
 
         WorkerDTO test = new WorkerDTO();
