@@ -14,6 +14,7 @@ public class Main {
         WorkerDTO test = new WorkerDTO();
         test.setFirstName("Rasmus");
         test.setSurName("Larsen");
+        //TODO: Mailen skal ændres hver gang programmet køres, fordi mailen er primaryKey og derfor unik!
         test.setEmail("test3@test.dk");
         test.setBirthday(LocalDate.parse("1992-01-06"));
 
