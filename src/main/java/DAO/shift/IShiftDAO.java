@@ -19,7 +19,15 @@ public interface IShiftDAO {
     ShiftDTO getShift (int userID, LocalDateTime dateAndTime);
 
     // Returns a List of ShiftDTO object.
-    List<ShiftDTO> getShiftList (WorkerDTO worker);
+    List<ShiftDTO> getShiftList ();
+
+    // Returns a List of ShiftDTO object.
+    List<ShiftDTO> getShiftList (int jobID);
+
+    // Returns a List of ShiftDTO object.
+    List<ShiftDTO> getShiftList (int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime);
+
+    //TODO: LIST som får alle en brugers vagter.
 
     // Inserts the data from a ShiftDTO into DB.
     void createShift (ShiftDTO shift);
