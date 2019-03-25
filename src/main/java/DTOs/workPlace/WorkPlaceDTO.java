@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
-public class WorkPlaceDTO {
+public class WorkPlaceDTO implements IWorkPlaceDTO {
 
     /*
     -------------------------- Fields --------------------------
