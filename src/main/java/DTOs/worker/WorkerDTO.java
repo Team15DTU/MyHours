@@ -106,7 +106,7 @@ public class WorkerDTO {
         toStringBuilder.append("First Name:\t\t" + firstName + "\n");
         toStringBuilder.append("Surname:\t\t" + surName + "\n");
         toStringBuilder.append("E-mail:\t\t\t" + email + "\n");
-        toStringBuilder.append("Birthday:\t\t" + birthday);
+        toStringBuilder.append("Birthday:\t\t" + birthday + "\n");
 
         return toStringBuilder.toString();
     }
