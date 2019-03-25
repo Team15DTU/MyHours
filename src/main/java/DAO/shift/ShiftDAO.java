@@ -42,7 +42,17 @@ public class ShiftDAO implements IShiftDAO {
     }
 
     @Override
-    public List<ShiftDTO> getShiftList(WorkerDTO worker) {
+    public List<ShiftDTO> getShiftList() {
+        return null;
+    }
+
+    @Override
+    public List<ShiftDTO> getShiftList(int jobID) {
+        return null;
+    }
+
+    @Override
+    public List<ShiftDTO> getShiftList(int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime) {
         return null;
     }
 
@@ -60,7 +70,7 @@ public class ShiftDAO implements IShiftDAO {
     public void deleteShift(int userID, LocalDateTime dateAndTime) {
 
     }
-    
+
     /*
     ---------------------- Support Methods ----------------------
      */

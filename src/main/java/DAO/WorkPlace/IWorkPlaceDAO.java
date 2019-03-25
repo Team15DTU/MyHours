@@ -1,11 +1,8 @@
 package DAO.WorkPlace;
 
-import DTOs.shift.ShiftDTO;
 import DTOs.workPlace.WorkPlaceDTO;
 import DTOs.worker.WorkerDTO;
-import com.sun.tools.javac.api.JavacTaskPool;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**

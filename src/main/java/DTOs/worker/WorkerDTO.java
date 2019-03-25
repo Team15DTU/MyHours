@@ -3,7 +3,6 @@ package DTOs.worker;
 import DTOs.workPlace.WorkPlaceDTO;
 import address.Address;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class WorkerDTO {
     -------------------------- Fields --------------------------
      */
 
-    private int userID;
+    private int workerID;
     private String firstName;
     private String surName;
     private String email;
@@ -36,12 +35,12 @@ public class WorkerDTO {
 
     // region "Properties"
 
-    public int getUserID() {
-        return userID;
+    public int getWorkerID() {
+        return workerID;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setWorkerID(int workerID) {
+        this.workerID = workerID;
     }
 
     public String getFirstName() {
@@ -99,7 +98,18 @@ public class WorkerDTO {
     ---------------------- Public Methods -----------------------
      */
     
-    
+    public String toString () {
+
+        StringBuilder toStringBuilder = new StringBuilder();
+
+        toStringBuilder.append("WorkerID:\t\t" + workerID + "\n");
+        toStringBuilder.append("First Name:\t\t" + firstName + "\n");
+        toStringBuilder.append("Surname:\t\t" + surName + "\n");
+        toStringBuilder.append("E-mail:\t\t\t" + email + "\n");
+        toStringBuilder.append("Birthday:\t\t" + birthday + "\n");
+
+        return toStringBuilder.toString();
+    }
     
     /*
     ---------------------- Support Methods ----------------------

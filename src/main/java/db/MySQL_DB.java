@@ -28,6 +28,9 @@ public class MySQL_DB {
         Scanner scanner = new Scanner(System.in);
         password = scanner.next();
     }
+    public MySQL_DB (String password) {
+        this.password = password;
+    }
     
     /*
     ------------------------ Properties -------------------------
