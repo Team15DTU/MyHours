@@ -1,11 +1,8 @@
-package DAO.WorkPlace;
+package DAO.workPlace;
 
-import DTOs.shift.ShiftDTO;
 import DTOs.workPlace.WorkPlaceDTO;
 import DTOs.worker.WorkerDTO;
-import com.sun.tools.javac.api.JavacTaskPool;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,7 +15,7 @@ public interface IWorkPlaceDAO {
      */
 
     // returns a WorkPlaceDTO from an UserID and workPlaceID FIXME: Do we need to create a WorkplaceID?.
-    // FIXME: Or can we use UserID and WorkPlace.name(say it is a PrimaryKey)?
+    // FIXME: Or can we use UserID and workPlace.name(say it is a PrimaryKey)?
     WorkPlaceDTO getWorkPlace (int userID, int workPlaceID);
 
     // Returns a List of WorkPlaceDTO object.
@@ -27,10 +24,10 @@ public interface IWorkPlaceDAO {
     // Inserts the data from a WorkPlaceDTO into DB.
     void createWorkPlace (WorkPlaceDTO workPlaceDTO);
 
-    // Updates the data on a WorkPlace row in the DB.
+    // Updates the data on a workPlace row in the DB.
     void updateWorkPlace (WorkPlaceDTO workPlaceDTO);
 
-    // Deletes all information about one WorkPlace, from an UserID and WorkPlace.Name TODO: Maybe use workPlaceID?.
+    // Deletes all information about one workPlace, from an UserID and workPlace.Name TODO: Maybe use workPlaceID?.
     void deleteWorkPlace (int userID, String workPlaceName);
 
 

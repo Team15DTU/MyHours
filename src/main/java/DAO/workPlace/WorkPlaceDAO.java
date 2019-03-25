@@ -1,4 +1,4 @@
-package DAO.WorkPlace;
+package DAO.workPlace;
 
 import DTOs.workPlace.WorkPlaceDTO;
 import DTOs.worker.WorkerDTO;
