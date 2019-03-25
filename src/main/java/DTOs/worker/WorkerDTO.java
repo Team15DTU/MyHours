@@ -1,9 +1,8 @@
 package DTOs.worker;
 
 import DTOs.workPlace.WorkPlaceDTO;
-import address.Address;
+import DTOs.address.Address;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
