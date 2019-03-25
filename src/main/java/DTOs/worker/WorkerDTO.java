@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
-public class WorkerDTO {
+public class WorkerDTO implements IWorkerDTO {
 
     /*
     -------------------------- Fields --------------------------
