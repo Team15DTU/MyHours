@@ -80,7 +80,7 @@ body{
 
 /* Add a color to the active/current link */
 .topbar-l a.home {
-    background-color: #4CAF50;
+    background-color: #3977af;
     color: white;
 }
 
@@ -110,16 +110,17 @@ body{
 
 /* Add a color to the active/current link */
 .topbar-r a.home {
-    background-color: #4CAF50;
+    background-color: #3977af;
     color: white;
 }
 
 .login-box {
-    border: 2px #4CAF50 solid;
+    border: 4px #3977af solid;
+    background-color: rgba(57,119,175,0.8);
     width: 30%;
     padding: 10px;
     margin: 10px;
-    min-height: 650px;
+    min-height: 630px;
     float: right;
     border-radius: 20px;
     overflow: hidden;
@@ -130,7 +131,7 @@ body{
     margin: 10px;
 }
 .box {
-    border: 2px solid #000000;
+    border: 2px solid white;
     width: fit-content;
     border-radius: 20px ;
     color: white;
