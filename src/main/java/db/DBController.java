@@ -1,13 +1,11 @@
 package db;
 
-import DTOs.worker.WorkerDTO;
-
 import java.sql.Connection;
 
 /**
  * @author Rasmus Sander Larsen
  */
-public class DBController {
+public class DBController implements IConnPool {
 
     /*
     -------------------------- Fields --------------------------
@@ -37,7 +35,8 @@ public class DBController {
     ---------------------- Public Methods -----------------------
      */
 
-    public Connection createConnection () {
+    @Override
+    public Connection getConn() {
         return mySQL_DB.createConnection();
     }
     

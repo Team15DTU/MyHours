@@ -1,7 +1,8 @@
 package DAO.worker;
 
+import DAO.DALException;
 import DTOs.worker.WorkerDTO;
-import db.DBController;
+import db.IConnPool;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,15 +17,16 @@ public class WorkerDAO implements IWorkerDAO {
     -------------------------- Fields --------------------------
      */
     
-    private DBController dbController;
+    private IConnPool connPool;
     private final String WORKERS_TABLENAME = "workers";
     
     /*
     ----------------------- Constructor -------------------------
      */
     
-    public WorkerDAO (DBController dbController) {
-        this.dbController = dbController;
+    public WorkerDAO(IConnPool connPool)
+    {
+        this.connPool = connPool;
     }
     
     /*
@@ -41,15 +43,15 @@ public class WorkerDAO implements IWorkerDAO {
      */
 
     @Override
-    public WorkerDTO getWorker(String email) {
+    public WorkerDTO getWorker(String email) throws DALException {
 
         WorkerDTO workerToReturn = new WorkerDTO();
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT * FROM " + WORKERS_TABLENAME + " WHERE email = '" + email + "'");
+                    "SELECT * FROM " + WORKERS_TABLENAME + " WHERE " + Columns.email.toString() + " = '" + email + "'");
 
             while (resultSet.next()) {
                 workerToReturn.setWorkerID(resultSet.getInt("workerid"));
@@ -60,64 +62,76 @@ public class WorkerDAO implements IWorkerDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
         }
 
         return workerToReturn;
     }
 
     @Override
-    public List<WorkerDTO> getWorkerList() {
+    public List<WorkerDTO> getWorkerList() throws DALException
+    {
 
         List<WorkerDTO> listToReturn = new ArrayList<>();
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT email FROM " + WORKERS_TABLENAME);
+            ResultSet resultSet = statement.executeQuery("SELECT " + Columns.email.toString() + " FROM " + WORKERS_TABLENAME);
 
             while (resultSet.next()) {
-                listToReturn.add(getWorker(resultSet.getString("email")));
+                listToReturn.add(getWorker(resultSet.getString(Columns.email.toString())));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }
+        catch (SQLException e) {
+            throw new DALException(e.getMessage());
         }
 
         return listToReturn;
     }
 
     @Override
-    public void createWorker(WorkerDTO workerDTO, String password) {
+    public void createWorker(WorkerDTO workerDTO, String password) throws DALException
+    {
+        // The query to make
+        String query =
+                String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
+                        WORKERS_TABLENAME, Columns.firstname.toString(), Columns.surname.toString(), Columns.email.toString(),
+                        Columns.birthday.toString(), Columns.pass.toString());
+                
+        try (Connection c = connPool.getConn()) {
 
-        try (Connection c = dbController.createConnection()) {
-
-            PreparedStatement statement =
-                    c.prepareStatement("INSERT INTO "+ WORKERS_TABLENAME +" (firstname, surname, email, birthday, pass) VALUES (?,?,?,?,?)");
+            PreparedStatement statement = c.prepareStatement(query);
+            
             statement.setString(1, workerDTO.getFirstName());
             statement.setString(2, workerDTO.getSurName());
             statement.setString(3, workerDTO.getEmail());
             statement.setDate(4, Date.valueOf(workerDTO.getBirthday()));
             statement.setString(5, password);
 
-            statement.execute();
+            statement.executeUpdate();
 
             System.out.println("Worker have been added to: \t DB: myhours \tTable: " + WORKERS_TABLENAME);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
         }
     }
 
     @Override
-    public void updateWorker(WorkerDTO worker, String password) {
+    public int updateWorker(WorkerDTO worker, String password) throws DALException
+    {
+        int rowsAltered;
+        
+        // The query to make
+        String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = %d",
+                WORKERS_TABLENAME, Columns.firstname.toString(), Columns.surname.toString(), Columns.email.toString(),
+                Columns.birthday.toString(), Columns.pass.toString(), Columns.workerId.toString(), worker.getWorkerID());
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
-            PreparedStatement pStatement = c.prepareStatement(
-                    "UPDATE " + WORKERS_TABLENAME +
-                            " SET firstname = ?, surname = ?, email = ?, birthday = ?, pass = ?" +
-                            "WHERE workerid = '" + worker.getWorkerID() + "'");
+            PreparedStatement pStatement = c.prepareStatement(query);
 
             pStatement.setString(1, worker.getFirstName());
             pStatement.setString(2, worker.getSurName());
@@ -125,31 +139,44 @@ public class WorkerDAO implements IWorkerDAO {
             pStatement.setDate(4, Date.valueOf(worker.getBirthday()));
             pStatement.setString(5, password);
 
-            pStatement.execute();
+            rowsAltered = pStatement.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+        catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        }
+        
+        // Return the number of Rows effected by the update
+        return rowsAltered;
     }
 
     @Override
-    public void deleteWorker(String email) {
+    public void deleteWorker(String email) throws DALException
+    {
+        try (Connection c = connPool.getConn()) {
 
-        try (Connection c = dbController.createConnection()) {
-
-            PreparedStatement pStatement = c.prepareStatement("DELETE FROM " + WORKERS_TABLENAME + " WHERE email =?");
+            PreparedStatement pStatement =
+                    c.prepareStatement("DELETE FROM " + WORKERS_TABLENAME + " WHERE " + Columns.email.toString() + "=?");
+            
             pStatement.setString(1, email);
 
             pStatement.executeUpdate();
 
         } catch (SQLException e ) {
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
         }
     }
 
     /*
     ---------------------- Support Methods ----------------------
      */
-
-
+    
+    private enum Columns {
+    	workerId,
+		firstname,
+		surname,
+		email,
+		birthday,
+		pass
+	}
 }

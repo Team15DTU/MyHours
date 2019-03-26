@@ -3,7 +3,7 @@ package DTOs.job;
 import DTOs.shift.ShiftDTO;
 import DTOs.ruleSet.RuleSet;
 import DTOs.workPlace.WorkPlaceDTO;
-import address.Address;
+import DTOs.address.Address;
 
 import java.time.LocalDate;
 import java.util.List;

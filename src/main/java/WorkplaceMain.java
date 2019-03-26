@@ -1,4 +1,4 @@
-import DAO.WorkPlace.WorkPlaceDAO;
+import DAO.workPlace.WorkPlaceDAO;
 import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
 import db.MySQL_DB;

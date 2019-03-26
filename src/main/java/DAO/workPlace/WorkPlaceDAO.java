@@ -1,7 +1,8 @@
-package DAO.WorkPlace;
+package DAO.workPlace;
 
 import DTOs.workPlace.WorkPlaceDTO;
-import db.DBController;
+
+import db.IConnPool;
 
 import java.awt.*;
 import java.sql.*;
@@ -18,15 +19,15 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     -------------------------- Fields --------------------------
      */
 
-    private DBController dbController;
+    private IConnPool connPool;
     private final String WORKPLACES_TABLENAME = "Workplaces";
 
     /*
     ----------------------- Constructor -------------------------
      */
 
-    public WorkPlaceDAO (DBController dbController) {
-        this.dbController = dbController;
+    public WorkPlaceDAO (IConnPool connPool) {
+        this.connPool = connPool;
     }
 
     /*
@@ -42,11 +43,13 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     ---------------------- Public Methods -----------------------
      */
 
+
+
     @Override
     public WorkPlaceDTO getWorkPlace(int workplaceID) {
         WorkPlaceDTO workPlaceToReturn = new WorkPlaceDTO();
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -71,7 +74,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     public List<WorkPlaceDTO> getWorkPlaceList() {
         List<WorkPlaceDTO> listToReturn = new ArrayList<>();
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT workplaceID FROM " + WORKPLACES_TABLENAME);
@@ -91,7 +94,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     public List<WorkPlaceDTO> getWorkPlaceList(int workerID) {
         List<WorkPlaceDTO> listToReturn = new ArrayList<>();
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -111,7 +114,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     @Override
     public void createWorkPlace(WorkPlaceDTO workPlaceDTO) {
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             PreparedStatement pStatement = c.prepareStatement(
                     "INSERT INTO " + WORKPLACES_TABLENAME + "" +
@@ -132,7 +135,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     @Override
     public void updateWorkPlace(WorkPlaceDTO workPlaceDTO) {
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             PreparedStatement pStatement = c.prepareStatement(
                     "UPDATE " + WORKPLACES_TABLENAME +
@@ -154,7 +157,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     @Override
     public void deleteWorkPlace(int workplaceID) {
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             PreparedStatement pStatement = c.prepareStatement("DELETE FROM " + WORKPLACES_TABLENAME + " WHERE workplaceID = ?");
             pStatement.setInt(1, workplaceID);

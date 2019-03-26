@@ -1,7 +1,7 @@
 package DTOs.worker;
 
 import DTOs.workPlace.WorkPlaceDTO;
-import address.Address;
+import DTOs.address.Address;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
-public class WorkerDTO {
+public class WorkerDTO implements IWorkerDTO {
 
     /*
     -------------------------- Fields --------------------------

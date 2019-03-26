@@ -1,4 +1,4 @@
-package DAO.WorkPlace;
+package DAO.workPlace;
 
 import DTOs.workPlace.WorkPlaceDTO;
 import DTOs.worker.WorkerDTO;
@@ -26,11 +26,10 @@ public interface IWorkPlaceDAO {
     // Inserts the data from a WorkPlaceDTO into DB.
     void createWorkPlace (WorkPlaceDTO workPlaceDTO);
 
-    // Updates the data on a WorkPlace row in the DB.
+    // Updates the data on a workPlace row in the DB.
     void updateWorkPlace (WorkPlaceDTO workPlaceDTO);
 
-    // Deletes all information about one WorkPlace, from an workplaceID.
+    // Deletes all information about one workPlace, from an UserID and workPlace.Name TODO: Maybe use workPlaceID?.
     void deleteWorkPlace (int workplaceID);
-
 
 }
