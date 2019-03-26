@@ -2,9 +2,9 @@ package DAO.worker;
 
 import DAO.DALException;
 import DTOs.worker.WorkerDTO;
-import db.DBController;
 import db.IConnPool;
 
+import javax.management.QueryEval;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class WorkerDAO implements IWorkerDAO {
      */
 
     @Override
-    public WorkerDTO getWorker(String email) {
+    public WorkerDTO getWorker(String email) throws DALException {
 
         WorkerDTO workerToReturn = new WorkerDTO();
 
@@ -63,7 +63,7 @@ public class WorkerDAO implements IWorkerDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
         }
 
         return workerToReturn;
@@ -116,15 +116,18 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public void updateWorker(WorkerDTO worker, String password) throws DALException
+    public int updateWorker(WorkerDTO worker, String password) throws DALException
     {
+        int rowsAltered;
+        
+        // The query to make
+        String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = %d",
+                WORKERS_TABLENAME, Columns.firstname.toString(), Columns.surname.toString(), Columns.email.toString(),
+                Columns.birthday.toString(), Columns.pass.toString(), Columns.workerId.toString(), worker.getWorkerID());
 
         try (Connection c = connPool.getConn()) {
 
-            PreparedStatement pStatement = c.prepareStatement(
-                    "UPDATE " + WORKERS_TABLENAME +
-                            " SET firstname = ?, surname = ?, email = ?, birthday = ?, pass = ?" +
-                            "WHERE workerid = '" + worker.getWorkerID() + "'");
+            PreparedStatement pStatement = c.prepareStatement(query);
 
             pStatement.setString(1, worker.getFirstName());
             pStatement.setString(2, worker.getSurName());
@@ -132,12 +135,15 @@ public class WorkerDAO implements IWorkerDAO {
             pStatement.setDate(4, Date.valueOf(worker.getBirthday()));
             pStatement.setString(5, password);
 
-            pStatement.execute();
+            rowsAltered = pStatement.executeUpdate();
 
         }
         catch (SQLException e) {
             throw new DALException(e.getMessage());
         }
+        
+        // Return the number of Rows effected by the update
+        return rowsAltered;
     }
 
     @Override
