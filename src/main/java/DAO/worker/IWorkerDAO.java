@@ -27,13 +27,6 @@ public interface IWorkerDAO {
      */
     List<WorkerDTO> getWorkerList ();
 
-
-    /**
-     * This Method returns a List of WorkerDTO objects.
-     * @return a List<WorkerDTO>
-     */
-    List<WorkerDTO> getWorkerList (int noOfWorkersOnList);
-
     /**
      * This Method inserts the details from the inputted WorkerDTO into the MYSQL_DB
      * @param worker This is the object containing the details to pass into the DB.

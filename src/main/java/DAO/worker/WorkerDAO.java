@@ -4,9 +4,7 @@ import DTOs.worker.WorkerDTO;
 import db.DBController;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,7 +17,7 @@ public class WorkerDAO implements IWorkerDAO {
      */
     
     private DBController dbController;
-    private final String WORKERSTABLENAME = "workers";
+    private final String WORKERS_TABLENAME = "workers";
     
     /*
     ----------------------- Constructor -------------------------
@@ -51,7 +49,7 @@ public class WorkerDAO implements IWorkerDAO {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT * FROM " + WORKERSTABLENAME + " WHERE email = '" + email + "'");
+                    "SELECT * FROM " + WORKERS_TABLENAME + " WHERE email = '" + email + "'");
 
             while (resultSet.next()) {
                 workerToReturn.setWorkerID(resultSet.getInt("workerid"));
@@ -76,7 +74,7 @@ public class WorkerDAO implements IWorkerDAO {
         try (Connection c = dbController.createConnection()) {
 
             Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT email FROM " + WORKERSTABLENAME);
+            ResultSet resultSet = statement.executeQuery("SELECT email FROM " + WORKERS_TABLENAME);
 
             while (resultSet.next()) {
                 listToReturn.add(getWorker(resultSet.getString("email")));
@@ -90,17 +88,12 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public List<WorkerDTO> getWorkerList(int noOfWorkersOnList) {
-        return null;
-    }
-
-    @Override
     public void createWorker(WorkerDTO workerDTO, String password) {
 
         try (Connection c = dbController.createConnection()) {
 
             PreparedStatement statement =
-                    c.prepareStatement("INSERT INTO "+ WORKERSTABLENAME +" (firstname, surname, email, birthday, pass) VALUES (?,?,?,?,?)");
+                    c.prepareStatement("INSERT INTO "+ WORKERS_TABLENAME +" (firstname, surname, email, birthday, pass) VALUES (?,?,?,?,?)");
             statement.setString(1, workerDTO.getFirstName());
             statement.setString(2, workerDTO.getSurName());
             statement.setString(3, workerDTO.getEmail());
@@ -109,12 +102,11 @@ public class WorkerDAO implements IWorkerDAO {
 
             statement.execute();
 
-            System.out.println("Worker have been added to: \t DB: myhours \tTable: " + WORKERSTABLENAME);
+            System.out.println("Worker have been added to: \t DB: myhours \tTable: " + WORKERS_TABLENAME);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -123,7 +115,7 @@ public class WorkerDAO implements IWorkerDAO {
         try (Connection c = dbController.createConnection()) {
 
             PreparedStatement pStatement = c.prepareStatement(
-                    "UPDATE " + WORKERSTABLENAME +
+                    "UPDATE " + WORKERS_TABLENAME +
                             " SET firstname = ?, surname = ?, email = ?, birthday = ?, pass = ?" +
                             "WHERE workerid = '" + worker.getWorkerID() + "'");
 
@@ -145,7 +137,7 @@ public class WorkerDAO implements IWorkerDAO {
 
         try (Connection c = dbController.createConnection()) {
 
-            PreparedStatement pStatement = c.prepareStatement("DELETE FROM " + WORKERSTABLENAME + " WHERE email =?");
+            PreparedStatement pStatement = c.prepareStatement("DELETE FROM " + WORKERS_TABLENAME + " WHERE email =?");
             pStatement.setString(1, email);
 
             pStatement.executeUpdate();
@@ -153,10 +145,9 @@ public class WorkerDAO implements IWorkerDAO {
         } catch (SQLException e ) {
             e.printStackTrace();
         }
-
     }
 
-/*
+    /*
     ---------------------- Support Methods ----------------------
      */
 
