@@ -1,4 +1,4 @@
-package DAO.Job;
+package DAO.job;
 
 /**
  * @author Rasmus Sander Larsen
