@@ -15,7 +15,7 @@ public class WorkerDTO implements IWorkerDTO {
     -------------------------- Fields --------------------------
      */
 
-    private int userID;
+    private int workerID;
     private String firstName;
     private String surName;
     private String email;
@@ -35,12 +35,12 @@ public class WorkerDTO implements IWorkerDTO {
 
     // region "Properties"
 
-    public int getUserID() {
-        return userID;
+    public int getWorkerID() {
+        return workerID;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setWorkerID(int workerID) {
+        this.workerID = workerID;
     }
 
     public String getFirstName() {
@@ -98,7 +98,18 @@ public class WorkerDTO implements IWorkerDTO {
     ---------------------- Public Methods -----------------------
      */
     
-    
+    public String toString () {
+
+        StringBuilder toStringBuilder = new StringBuilder();
+
+        toStringBuilder.append("WorkerID:\t\t" + workerID + "\n");
+        toStringBuilder.append("First Name:\t\t" + firstName + "\n");
+        toStringBuilder.append("Surname:\t\t" + surName + "\n");
+        toStringBuilder.append("E-mail:\t\t\t" + email + "\n");
+        toStringBuilder.append("Birthday:\t\t" + birthday + "\n");
+
+        return toStringBuilder.toString();
+    }
     
     /*
     ---------------------- Support Methods ----------------------

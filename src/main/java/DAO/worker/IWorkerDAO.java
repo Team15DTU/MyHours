@@ -14,19 +14,37 @@ public interface IWorkerDAO {
     ---------------------- Public Methods -----------------------
      */
 
-    // returns a WorkerDTO from an e-mail
+    /**
+     * This Methods should return a WorkerDTO object, containing all the details matching the inputted email
+     * @param email this is the email the methods creates a WorkerDTO from.
+     * @return a WorkerDTO containing the correct details.
+     */
     WorkerDTO getWorker (String email);
 
-    // Returns a List of workerDTO objects.
+    /**
+     * This Method returns a List of WorkerDTO objects.
+     * @return a List<WorkerDTO>
+     */
     List<WorkerDTO> getWorkerList ();
 
-    // Inserts the data from the WorkerDTO and a password into the DB.
+    /**
+     * This Method inserts the details from the inputted WorkerDTO into the MYSQL_DB
+     * @param worker This is the object containing the details to pass into the DB.
+     * @param password This is the password which should be added to the respected WorkerDTO.
+     */
     void createWorker (WorkerDTO worker, String password);
 
-    // Updates the data on a Worker row in the DB.
-    void updateWorker (WorkerDTO worker);
+    /**
+     * This Method finds the Worker matching the WorkerDTO object that is inputted
+     * and updates the existing details in the DB with the information from the inputted WorkerDTO.
+     * @param worker This object contains the details that DB should be updated with.
+     */
+    void updateWorker (WorkerDTO worker, String password);
 
-    // Deletes all information about one Worker, from its email.
+    /**
+     * This method should delete all information about a specific Worker matching the inputted email.
+     * @param email This is the email matching the Worker we wishes to delete.
+     */
     void deleteWorker (String email);
 
 }
