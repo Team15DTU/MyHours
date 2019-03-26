@@ -154,7 +154,6 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public void deleteWorker(String email) throws DALException
     {
-
         try (Connection c = connPool.getConn()) {
 
             PreparedStatement pStatement =
