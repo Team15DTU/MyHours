@@ -4,7 +4,6 @@ import DAO.DALException;
 import DTOs.worker.WorkerDTO;
 import db.IConnPool;
 
-import javax.management.QueryEval;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ public class WorkerDAO implements IWorkerDAO {
      */
     
     private IConnPool connPool;
-    private final String WORKERS_TABLENAME = "workers";
+    private final String WORKERS_TABLENAME = "Workers";
     
     /*
     ----------------------- Constructor -------------------------
