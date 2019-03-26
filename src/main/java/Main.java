@@ -10,7 +10,6 @@ public class Main {
 
     public static void main(String[] args) throws DALException {
 
-        // TODO: Indsæt den rigtige kode til DB og slet den igen før du committer.
         MySQL_DB mySQL_db = new MySQL_DB();
 
         DBController dbController = new DBController(mySQL_db);

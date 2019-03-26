@@ -120,8 +120,8 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public int updateWorker(WorkerDTO worker, String password) throws DALException
-    {
+    public int updateWorker(WorkerDTO worker, String password) throws DALException {
+
         int rowsAltered;
         
         // The query to make

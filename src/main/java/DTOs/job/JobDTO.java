@@ -16,10 +16,12 @@ public class JobDTO {
     /*
     -------------------------- Fields --------------------------
      */
-    
-    private String name;
+
+    private int jobID;
+    private WorkPlaceDTO workPlaceDTO; //TODO: Skal vi bruge WorkplaceDTO objekt eller bare WorkplaceID?
+    private String jobName;
     private LocalDate hireDate;
-    private WorkPlaceDTO workPlaceDTO;
+    private double stdSalary;
     private Address jobAddress;
     private RuleSet ruleSet;
     private List<ShiftDTO> shifts;
@@ -28,7 +30,9 @@ public class JobDTO {
     ----------------------- Constructor -------------------------
      */
     
-    public JobDTO () {}
+    public JobDTO () {
+        hireDate = LocalDate.parse("0001-01-01");
+    }
     
     /*
     ------------------------ Properties -------------------------
@@ -36,12 +40,28 @@ public class JobDTO {
 
     // <editor-folder desc="Properties"
 
-    public String getName() {
-        return name;
+    public int getJobID() {
+        return jobID;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setJobID(int jobID) {
+        this.jobID = jobID;
+    }
+
+    public WorkPlaceDTO getWorkPlaceDTO() {
+        return workPlaceDTO;
+    }
+
+    public void setWorkPlaceDTO(WorkPlaceDTO workPlaceDTO) {
+        this.workPlaceDTO = workPlaceDTO;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
     public LocalDate getHireDate() {
@@ -52,12 +72,12 @@ public class JobDTO {
         this.hireDate = hireDate;
     }
 
-    public WorkPlaceDTO getWorkPlaceDTO() {
-        return workPlaceDTO;
+    public double getStdSalary() {
+        return stdSalary;
     }
 
-    public void setWorkPlaceDTO(WorkPlaceDTO workPlaceDTO) {
-        this.workPlaceDTO = workPlaceDTO;
+    public void setStdSalary(double stdSalary) {
+        this.stdSalary = stdSalary;
     }
 
     public Address getJobAddress() {
@@ -90,9 +110,18 @@ public class JobDTO {
     /*
     ---------------------- Public Methods -----------------------
      */
-    
-    
-    
+
+    public String toString () {
+        StringBuilder toStringBuilder = new StringBuilder();
+        toStringBuilder.append("JobID: \t\t\t\t" + jobID + "\n");
+        toStringBuilder.append("WorkplaceID:\t\t" + workPlaceDTO.getWorkplaceID() + "\n");
+        toStringBuilder.append("Job Name: \t\t\t" + jobName + "\n");
+        toStringBuilder.append("HireDate: \t\t\t" + hireDate.getDayOfMonth() + "-" + hireDate.getMonthValue() + "-" + hireDate.getYear()+ "\n");
+        toStringBuilder.append("Standard Salary:\t" + stdSalary + "\n");
+
+        return toStringBuilder.toString();
+    }
+
     /*
     ---------------------- Support Methods ----------------------
      */
