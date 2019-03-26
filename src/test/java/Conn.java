@@ -2,18 +2,29 @@ import db.IConnPool;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Conn implements IConnPool {
 	
-	//region DB Constants
-	
-	private final String url = "jdbc:mysql://mysql26.unoeuro.com:3306/runningessentials_dk_db_myhours";
-	private final String user = "runningesse_dk";
-	
-	//endregion
-	
 	public Connection getConn()
 	{
-		return null;
+		// DiplomPortal Database
+		String password = "iowRz3Cj5QgJ8Ok7dX7iI";
+		String user = "s160107";
+		String url = "jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com";
+		
+		Connection conn = null;
+		
+		try
+		{
+			conn = DriverManager.getConnection(url, user, password);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		// Return the Connection
+		return conn;
 	}
 }
