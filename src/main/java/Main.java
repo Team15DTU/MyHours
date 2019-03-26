@@ -4,7 +4,6 @@ import DTOs.worker.WorkerDTO;
 import db.MySQL_DB;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Main {
 

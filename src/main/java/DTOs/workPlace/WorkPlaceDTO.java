@@ -13,10 +13,12 @@ public class WorkPlaceDTO {
     /*
     -------------------------- Fields --------------------------
      */
-    
+
+    private int workplaceID;
+    private int workerID;
     private String name;
     private Color color;
-    private int tlf;
+    private int telephone;
     private List<JobDTO> jobList;
     
     /*
@@ -30,6 +32,22 @@ public class WorkPlaceDTO {
      */
 
     // <editor-folder desc="Properties"
+
+    public int getWorkplaceID() {
+        return workplaceID;
+    }
+
+    public void setWorkplaceID(int workplaceID) {
+        this.workplaceID = workplaceID;
+    }
+
+    public int getWorkerID() {
+        return workerID;
+    }
+
+    public void setWorkerID(int workerID) {
+        this.workerID = workerID;
+    }
 
     public String getName() {
         return name;
@@ -47,12 +65,12 @@ public class WorkPlaceDTO {
         this.color = color;
     }
 
-    public int getTlf() {
-        return tlf;
+    public int getTelephone() {
+        return telephone;
     }
 
-    public void setTlf(int tlf) {
-        this.tlf = tlf;
+    public void setTelephone(int telephone) {
+        this.telephone = telephone;
     }
 
     public List<JobDTO> getJobDTOList() {
@@ -70,11 +88,20 @@ public class WorkPlaceDTO {
     ---------------------- Public Methods -----------------------
      */
     
-    
+    public String toString () {
+        StringBuilder toStringBuilder = new StringBuilder();
+
+        toStringBuilder.append("WorkplaceID: \t" + workplaceID + "\n");
+        toStringBuilder.append("WorkerID: \t" + workerID + "\n");
+        toStringBuilder.append("Workplace Name: \t" + name + "\n");
+        toStringBuilder.append("Color: \t" + color.toString() + "\n");
+        toStringBuilder.append("Telephone: \t" + telephone + "\n");
+
+        return toStringBuilder.toString();
+    }
     
     /*
     ---------------------- Support Methods ----------------------
      */
-
 
 }

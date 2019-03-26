@@ -14,12 +14,14 @@ public interface IWorkPlaceDAO {
     ---------------------- Public Methods -----------------------
      */
 
-    // returns a WorkPlaceDTO from an UserID and workPlaceID FIXME: Do we need to create a WorkplaceID?.
-    // FIXME: Or can we use UserID and WorkPlace.name(say it is a PrimaryKey)?
-    WorkPlaceDTO getWorkPlace (int userID, int workPlaceID);
+    // returns a WorkPlaceDTO from an workplaceID
+    WorkPlaceDTO getWorkPlace (int workplaceID);
 
-    // Returns a List of WorkPlaceDTO object.
-    List<WorkPlaceDTO> getWorkPlaceList (WorkerDTO workerDTO);
+    // Returns a List of ALL WorkPlaceDTO object.
+    List<WorkPlaceDTO> getWorkPlaceList ();
+
+    // Returns a List of ONE workers WorkPlaceDTO object.
+    List<WorkPlaceDTO> getWorkPlaceList (int workerID);
 
     // Inserts the data from a WorkPlaceDTO into DB.
     void createWorkPlace (WorkPlaceDTO workPlaceDTO);
@@ -27,8 +29,8 @@ public interface IWorkPlaceDAO {
     // Updates the data on a WorkPlace row in the DB.
     void updateWorkPlace (WorkPlaceDTO workPlaceDTO);
 
-    // Deletes all information about one WorkPlace, from an UserID and WorkPlace.Name TODO: Maybe use workPlaceID?.
-    void deleteWorkPlace (int userID, String workPlaceName);
+    // Deletes all information about one WorkPlace, from an workplaceID.
+    void deleteWorkPlace (int workplaceID);
 
 
 }
