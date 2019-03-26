@@ -6,4 +6,9 @@ public class DALException extends Exception {
 	{
 		super(message);
 	}
+	
+	public DALException(String message, Throwable cause)
+	{
+		super(message, cause);
+	}
 }
