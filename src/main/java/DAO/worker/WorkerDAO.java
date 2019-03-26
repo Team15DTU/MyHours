@@ -95,18 +95,23 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public void createWorker(WorkerDTO workerDTO, String password) throws DALException
     {
-
+        // The query to make
+        String query =
+                String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
+                        WORKERS_TABLENAME, Columns.firstname.toString(), Columns.surname.toString(), Columns.email.toString(),
+                        Columns.birthday.toString(), Columns.pass.toString());
+                
         try (Connection c = connPool.getConn()) {
 
-            PreparedStatement statement =
-                    c.prepareStatement("INSERT INTO "+ WORKERS_TABLENAME +" (firstname, surname, email, birthday, pass) VALUES (?,?,?,?,?)");
+            PreparedStatement statement = c.prepareStatement(query);
+            
             statement.setString(1, workerDTO.getFirstName());
             statement.setString(2, workerDTO.getSurName());
             statement.setString(3, workerDTO.getEmail());
             statement.setDate(4, Date.valueOf(workerDTO.getBirthday()));
             statement.setString(5, password);
 
-            statement.execute();
+            statement.executeUpdate();
 
             System.out.println("Worker have been added to: \t DB: myhours \tTable: " + WORKERS_TABLENAME);
 
