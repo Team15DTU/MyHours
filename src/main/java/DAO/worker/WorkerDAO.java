@@ -18,7 +18,7 @@ public class WorkerDAO implements IWorkerDAO {
      */
     
     private IConnPool connPool;
-    private final String WORKERS_TABLENAME = "workers";
+    private final String WORKERS_TABLENAME = "Workers";
     
     /*
     ----------------------- Constructor -------------------------

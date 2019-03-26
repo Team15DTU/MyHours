@@ -12,7 +12,7 @@ public class WorkplaceMain {
 
     public static void main(String[] args) {
 
-        MySQL_DB mySQL_db = new MySQL_DB("ras92mus");
+        MySQL_DB mySQL_db = new MySQL_DB();
 
         DBController dbController = new DBController(mySQL_db);
 
