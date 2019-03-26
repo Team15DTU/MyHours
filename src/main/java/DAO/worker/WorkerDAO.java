@@ -2,6 +2,7 @@ package DAO.worker;
 
 import DTOs.worker.WorkerDTO;
 import db.DBController;
+import db.IConnPool;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,15 +17,16 @@ public class WorkerDAO implements IWorkerDAO {
     -------------------------- Fields --------------------------
      */
     
-    private DBController dbController;
+    private IConnPool connPool;
     private final String WORKERS_TABLENAME = "workers";
     
     /*
     ----------------------- Constructor -------------------------
      */
     
-    public WorkerDAO (DBController dbController) {
-        this.dbController = dbController;
+    public WorkerDAO(IConnPool connPool)
+    {
+        this.connPool = connPool;
     }
     
     /*
@@ -45,7 +47,7 @@ public class WorkerDAO implements IWorkerDAO {
 
         WorkerDTO workerToReturn = new WorkerDTO();
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -71,7 +73,7 @@ public class WorkerDAO implements IWorkerDAO {
 
         List<WorkerDTO> listToReturn = new ArrayList<>();
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT email FROM " + WORKERS_TABLENAME);
@@ -90,7 +92,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public void createWorker(WorkerDTO workerDTO, String password) {
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             PreparedStatement statement =
                     c.prepareStatement("INSERT INTO "+ WORKERS_TABLENAME +" (firstname, surname, email, birthday, pass) VALUES (?,?,?,?,?)");
@@ -112,7 +114,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public void updateWorker(WorkerDTO worker, String password) {
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             PreparedStatement pStatement = c.prepareStatement(
                     "UPDATE " + WORKERS_TABLENAME +
@@ -135,7 +137,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public void deleteWorker(String email) {
 
-        try (Connection c = dbController.createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             PreparedStatement pStatement = c.prepareStatement("DELETE FROM " + WORKERS_TABLENAME + " WHERE email =?");
             pStatement.setString(1, email);
@@ -150,6 +152,6 @@ public class WorkerDAO implements IWorkerDAO {
     /*
     ---------------------- Support Methods ----------------------
      */
-
-
+    
+    
 }
