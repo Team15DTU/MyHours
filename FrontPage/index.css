@@ -47,6 +47,7 @@ body{
     margin: 0;
     background-image: url(../Images/adult-analysis-chart-1516704.jpg);
     background-size: cover;
+    font-family: "Source Code Pro", monospace;
 }
 
 
@@ -140,10 +141,35 @@ body{
 input[type=text], input[type=password] {
     width: 100%;
     padding: 12px 20px;
-    margin: 8px 0;
+    margin: 10px 0;
     display: inline-block;
     border: 1px solid #000000;
     box-sizing: border-box;
     border-radius: 20px;
 }
 
+.button {
+    background-color: #3977af;
+    color: #000000;
+    padding: 14px 20px;
+    margin: 15px 0;
+    border: 1px solid #000000;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 20px;
+}
+
+.remember {
+    font: "";
+
+}
+
+.new-user {
+    float: right;
+    color: white;
+}
+
+.forgot-password {
+    float: right;
+    color: white;
+}
