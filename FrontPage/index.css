@@ -157,10 +157,10 @@ input[type=text], input[type=password] {
     cursor: pointer;
     width: 100%;
     border-radius: 20px;
+    font-size: 15px;
 }
 
 .remember {
-    font: "";
 
 }
 
