@@ -31,7 +31,6 @@ public class JobDTO {
      */
     
     public JobDTO () {
-        hireDate = LocalDate.parse("0001-01-01");
     }
     
     /*
@@ -116,7 +115,9 @@ public class JobDTO {
         toStringBuilder.append("JobID: \t\t\t\t" + jobID + "\n");
         toStringBuilder.append("WorkplaceID:\t\t" + workPlaceDTO.getWorkplaceID() + "\n");
         toStringBuilder.append("Job Name: \t\t\t" + jobName + "\n");
-        toStringBuilder.append("HireDate: \t\t\t" + hireDate.getDayOfMonth() + "-" + hireDate.getMonthValue() + "-" + hireDate.getYear()+ "\n");
+        if (hireDate != null) {
+            toStringBuilder.append("HireDate: \t\t\t" + hireDate.toString() + "//" + hireDate.getDayOfMonth() + "-" + hireDate.getMonthValue() + "-" + hireDate.getYear() + "\n");
+        }
         toStringBuilder.append("Standard Salary:\t" + stdSalary + "\n");
 
         return toStringBuilder.toString();

@@ -1,3 +1,4 @@
+import DAO.DALException;
 import DAO.workPlace.WorkPlaceDAO;
 import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
@@ -10,7 +11,7 @@ import java.awt.*;
  */
 public class WorkplaceMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DALException {
 
         MySQL_DB mySQL_db = new MySQL_DB();
 

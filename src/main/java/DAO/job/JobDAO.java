@@ -8,6 +8,7 @@ import db.DBController;
 
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +74,8 @@ public class JobDAO implements IJobDAO {
             // Sets JobName.
             jobDTOToReturn.setJobName(resultSet.getString(JobTableColumns.jobName.toString()));
             // Sets HireDate (LocalDate object).
-            jobDTOToReturn.setHireDate(resultSet.getDate(JobTableColumns.hireDate.toString()).toLocalDate());
+            System.out.println(resultSet.getDate("hireDate"));
+            jobDTOToReturn.setHireDate(resultSet.getDate(JobTableColumns.hireDate.name()).toLocalDate());
             // Sets stdSalary.
             jobDTOToReturn.setStdSalary(resultSet.getDouble(JobTableColumns.stdSalary.toString()));
 
@@ -149,6 +151,27 @@ public class JobDAO implements IJobDAO {
 
     @Override
     public int updateJob(JobDTO jobDTO) throws DALException {
+
+        String query = String.format("UPDATE %s SET %s = ? , %s = ? , %s = ? , %s = ? WHERE %s = ?",
+                JOBS_TABLENAME, JobTableColumns.workplaceID, JobTableColumns.jobName, JobTableColumns.hireDate,
+                JobTableColumns.stdSalary, JobTableColumns.jobID);
+
+        try (Connection c = dbController.getConn()){
+
+            PreparedStatement pStatement = c.prepareStatement(query);
+
+            pStatement.setInt(1, jobDTO.getWorkPlaceDTO().getWorkplaceID());
+            pStatement.setString(2, jobDTO.getJobName());
+            pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
+            pStatement.setDouble(4, jobDTO.getStdSalary());
+            pStatement.setInt(5, jobDTO.getJobID());
+
+            pStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        }
+
         return 0;
     }
 

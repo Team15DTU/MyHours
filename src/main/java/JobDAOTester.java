@@ -35,13 +35,24 @@ public class JobDAOTester {
 
         // jobDAO.createJob(testJobDTO);
 
+        JobDTO beforeUpdateJobDTO = jobDAO.getJob(7);
+        System.out.println("Before Update:");
+        System.out.println(beforeUpdateJobDTO);
+        //jobDAO.updateJob(beforeUpdateJobDTO);
+
+
+        JobDTO afterUpdateJobDTO = jobDAO.getJob(7);
+        System.out.println("After update:");
+        System.out.println(afterUpdateJobDTO);
+
+
         // System.out.println(jobDAO.getJob(1));
         // workPlaceDAO.createWorkPlace(workplace);
         //System.out.println(workplace);
 
-       // System.out.println(workPlaceDAO.getWorkPlace(2));
+        // System.out.println(workPlaceDAO.getWorkPlace(2));
 
-
+/*
         int counter = 1;
 
         for (JobDTO jobDTO : jobDAO.getJobList("workplaceID = 2" )) {
