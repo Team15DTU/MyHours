@@ -29,16 +29,25 @@ public class Main {
         System.out.println(testWorkerDTO);
 
         WorkerDAO workerDAO = new WorkerDAO(dbController);
-        workerDAO.createWorker(testWorkerDTO,"testtest");
-        /*
-        WorkerDTO beforeUpdate = workerDAO.getWorker("test2@testWorkerDTO.dk");
+        // workerDAO.createWorker(testWorkerDTO,"testtest");
+
+        WorkerDTO beforeUpdate = workerDAO.getWorker("test1@testWorkerDTO.dk");
         System.out.println("BEFORE:");
         System.out.println(beforeUpdate);
         beforeUpdate.setFirstName("Mikkel");
         workerDAO.updateWorker(beforeUpdate,"testtest");
 
         System.out.println("AFTER:");
-        System.out.println(workerDAO.getWorker("test2@testWorkerDTO.dk"));
-        */
+        System.out.println(workerDAO.getWorker("test1@testWorkerDTO.dk"));
+
+        System.out.println("List size = " + workerDAO.getWorkerList().size());
+
+        workerDAO.deleteWorker("test1@testWorkerDTO.dk");
+
+        System.out.println("List size = " + workerDAO.getWorkerList().size());
+
+
+
+
     }
 }

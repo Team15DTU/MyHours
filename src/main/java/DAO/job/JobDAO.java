@@ -6,9 +6,7 @@ import DTOs.job.JobDTO;
 import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,9 +71,12 @@ public class JobDAO implements IJobDAO {
 
             // Sets JobName.
             jobDTOToReturn.setJobName(resultSet.getString(JobTableColumns.jobName.toString()));
-            // Sets HireDate (LocalDate object).
-            System.out.println(resultSet.getDate("hireDate"));
-            jobDTOToReturn.setHireDate(resultSet.getDate(JobTableColumns.hireDate.name()).toLocalDate());
+            // Sets HireDate (LocalDate object). If no date, hireDate is set to null.
+            if (resultSet.getDate(JobTableColumns.hireDate.toString()) != null) {
+                jobDTOToReturn.setHireDate(resultSet.getDate(JobTableColumns.hireDate.name()).toLocalDate());
+            } else {
+                jobDTOToReturn.setHireDate(null);
+            }
             // Sets stdSalary.
             jobDTOToReturn.setStdSalary(resultSet.getDouble(JobTableColumns.stdSalary.toString()));
 
@@ -139,7 +140,12 @@ public class JobDAO implements IJobDAO {
             PreparedStatement pStatement = c.prepareStatement(query);
             pStatement.setInt(1, jobDTO.getWorkPlaceDTO().getWorkplaceID());
             pStatement.setString(2, jobDTO.getJobName());
-            pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
+            // Inserts null if no hire date.
+            if (jobDTO.getHireDate() != null ) {
+                pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
+            } else {
+                pStatement.setDate(3,null);
+            }
             pStatement.setDouble(4, jobDTO.getStdSalary());
 
             pStatement.executeUpdate();
@@ -162,7 +168,11 @@ public class JobDAO implements IJobDAO {
 
             pStatement.setInt(1, jobDTO.getWorkPlaceDTO().getWorkplaceID());
             pStatement.setString(2, jobDTO.getJobName());
-            pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
+            if (jobDTO.getHireDate() != null) {
+                pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
+            } else {
+                pStatement.setDate(3, null);
+            }
             pStatement.setDouble(4, jobDTO.getStdSalary());
             pStatement.setInt(5, jobDTO.getJobID());
 

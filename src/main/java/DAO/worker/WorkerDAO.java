@@ -90,7 +90,13 @@ public class WorkerDAO implements IWorkerDAO {
 
         }
         catch (SQLException e) {
+            System.out.println();
             throw new DALException(e.getMessage());
+        }
+        catch (NullPointerException e) {
+
+            e.printStackTrace();
+
         }
 
         return listToReturn;

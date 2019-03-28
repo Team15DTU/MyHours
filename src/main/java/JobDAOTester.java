@@ -7,6 +7,8 @@ import db.DBController;
 import db.MySQL_DB;
 
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @author Rasmus Sander Larsen
@@ -33,15 +35,15 @@ public class JobDAOTester {
 
         //System.out.println(testJobDTO);
 
-        // jobDAO.createJob(testJobDTO);
+        jobDAO.createJob(testJobDTO);
 
-        JobDTO beforeUpdateJobDTO = jobDAO.getJob(7);
+        JobDTO beforeUpdateJobDTO = jobDAO.getJob(1);
         System.out.println("Before Update:");
         System.out.println(beforeUpdateJobDTO);
-        //jobDAO.updateJob(beforeUpdateJobDTO);
+        beforeUpdateJobDTO.setHireDate(LocalDate.parse("2018-01-01"));
+        jobDAO.updateJob(beforeUpdateJobDTO);
 
-
-        JobDTO afterUpdateJobDTO = jobDAO.getJob(7);
+        JobDTO afterUpdateJobDTO = jobDAO.getJob(1);
         System.out.println("After update:");
         System.out.println(afterUpdateJobDTO);
 
@@ -81,10 +83,5 @@ public class JobDAOTester {
         }
         */
 
-    }
-
-    public enum hej {
-        hej,
-        farvel
     }
 }
