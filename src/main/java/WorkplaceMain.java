@@ -1,3 +1,4 @@
+import DAO.DALException;
 import DAO.workPlace.WorkPlaceDAO;
 import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
@@ -10,7 +11,7 @@ import java.awt.*;
  */
 public class WorkplaceMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DALException {
 
         MySQL_DB mySQL_db = new MySQL_DB();
 
@@ -24,7 +25,7 @@ public class WorkplaceMain {
         workplace.setColor(Color.decode("#"+"FAEBD7"));
         workplace.setTelephone(12345678);
 
-        // workPlaceDAO.createWorkPlace(workplace);
+        workPlaceDAO.createWorkPlace(workplace);
         //System.out.println(workplace);
 
        // System.out.println(workPlaceDAO.getWorkPlace(2));
@@ -35,7 +36,7 @@ public class WorkplaceMain {
         for (WorkPlaceDTO workPlaceDTO : workPlaceDAO.getWorkPlaceList()) {
             System.out.println("~~~~ Workplace: " + counter++ + " ~~~~");
             System.out.println(workPlaceDTO);
-        } */
+        }
 
         WorkPlaceDTO updatingWP = workPlaceDAO.getWorkPlace(13);
 
@@ -55,6 +56,6 @@ public class WorkplaceMain {
             System.out.println("~~~~ Workplace: " + counter++ + " ~~~~");
             System.out.println(workPlaceDTO);
         }
-
+        */
     }
 }
