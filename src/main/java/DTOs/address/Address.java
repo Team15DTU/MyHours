@@ -21,6 +21,15 @@ public class Address implements IAddress {
     
     public Address() {}
     
+    public Address(String country, String city, String street, int zip, int houseNo)
+    {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.zip = zip;
+        this.houseNo = houseNo;
+    }
+    
     /*
     ------------------------ Properties -------------------------
      */

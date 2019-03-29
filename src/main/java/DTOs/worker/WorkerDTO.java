@@ -1,5 +1,6 @@
 package DTOs.worker;
 
+import DTOs.address.IAddress;
 import DTOs.workPlace.WorkPlaceDTO;
 import DTOs.address.Address;
 
@@ -20,7 +21,7 @@ public class WorkerDTO implements IWorkerDTO {
     private String surName;
     private String email;
     private LocalDate birthday;
-    private Address homeAddress;
+    private IAddress homeAddress;
     private List<WorkPlaceDTO> workPlaces;
     
     /*
@@ -29,10 +30,20 @@ public class WorkerDTO implements IWorkerDTO {
     
     public WorkerDTO () {}
     
+    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<WorkPlaceDTO> workPlaces)
+    {
+        this.firstName = firstName;
+        this.surName = surName;
+        this.email = email;
+        this.birthday = birthday;
+        this.homeAddress = homeAddress;
+        this.workPlaces = workPlaces;
+    }
+    
     /*
     ------------------------ Properties -------------------------
      */
-
+    
     // region "Properties"
 
     public int getWorkerID() {
@@ -75,11 +86,11 @@ public class WorkerDTO implements IWorkerDTO {
         this.birthday = birthday;
     }
 
-    public Address getHomeAddress() {
+    public IAddress getHomeAddress() {
         return homeAddress;
     }
 
-    public void setHomeAddress(Address homeAddress) {
+    public void setHomeAddress(IAddress homeAddress) {
         this.homeAddress = homeAddress;
     }
 
