@@ -3,7 +3,9 @@ package DTOs.worker;
 import DTOs.address.Address;
 import DTOs.workPlace.WorkPlaceDTO;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IWorkerDTO {

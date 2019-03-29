@@ -2,10 +2,15 @@ package DAO.worker;
 
 import DAO.DALException;
 import DTOs.worker.WorkerDTO;
+import com.mysql.cj.x.protobuf.MysqlxResultset;
 import db.IConnPool;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -45,7 +50,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public WorkerDTO getWorker(String email) throws DALException {
 
-        WorkerDTO workerToReturn = new WorkerDTO();
+            WorkerDTO workerToReturn = new WorkerDTO();
 
         try (Connection c = connPool.getConn()) {
 
@@ -85,7 +90,13 @@ public class WorkerDAO implements IWorkerDAO {
 
         }
         catch (SQLException e) {
+            System.out.println();
             throw new DALException(e.getMessage());
+        }
+        catch (NullPointerException e) {
+
+            e.printStackTrace();
+
         }
 
         return listToReturn;
@@ -97,8 +108,8 @@ public class WorkerDAO implements IWorkerDAO {
         // The query to make
         String query =
                 String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
-                        WORKERS_TABLENAME, Columns.firstname.toString(), Columns.surname.toString(), Columns.email.toString(),
-                        Columns.birthday.toString(), Columns.pass.toString());
+                        WORKERS_TABLENAME, Columns.firstname, Columns.surname, Columns.email,
+                        Columns.birthday, Columns.pass);
                 
         try (Connection c = connPool.getConn()) {
 
@@ -112,6 +123,7 @@ public class WorkerDAO implements IWorkerDAO {
 
             statement.executeUpdate();
 
+            // TODO: Print skal fjernes på et tidspunkt.
             System.out.println("Worker have been added to: \t DB: myhours \tTable: " + WORKERS_TABLENAME);
 
         } catch (SQLException e) {
@@ -120,14 +132,14 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public int updateWorker(WorkerDTO worker, String password) throws DALException
-    {
+    public int updateWorker(WorkerDTO worker, String password) throws DALException {
+
         int rowsAltered;
         
         // The query to make
         String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = %d",
-                WORKERS_TABLENAME, Columns.firstname.toString(), Columns.surname.toString(), Columns.email.toString(),
-                Columns.birthday.toString(), Columns.pass.toString(), Columns.workerId.toString(), worker.getWorkerID());
+                WORKERS_TABLENAME, Columns.firstname, Columns.surname, Columns.email, Columns.birthday,
+                Columns.pass, Columns.workerId, worker.getWorkerID());
 
         try (Connection c = connPool.getConn()) {
 
@@ -156,7 +168,7 @@ public class WorkerDAO implements IWorkerDAO {
         try (Connection c = connPool.getConn()) {
 
             PreparedStatement pStatement =
-                    c.prepareStatement("DELETE FROM " + WORKERS_TABLENAME + " WHERE " + Columns.email.toString() + "=?");
+                    c.prepareStatement("DELETE FROM " + WORKERS_TABLENAME + " WHERE " + Columns.email + " = ?");
             
             pStatement.setString(1, email);
 
