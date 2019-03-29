@@ -36,15 +36,20 @@ public class WorkerDAOTest {
 	public void createWorker() throws DALException
 	{
 		IWorkerDAO workerDAO = new WorkerDAO(connPool);
-		for (int i=0; i < testWorkers.length; i++)
-		{
-			workerDAO.createWorker(testWorkers[i], "FuckingPassword");
-		}
+		
+		// Try to Create them
+		for (IWorkerDTO worker : testWorkers)
+			workerDAO.createWorker(worker, "FuckingPassword");
+		
+		// Delete again
+		for (IWorkerDTO worker : testWorkers)
+			workerDAO.deleteWorker(worker.getEmail());
 	}
 	
 	@Test
 	public void getWorker()
 	{
+	
 	}
 	
 	@Test

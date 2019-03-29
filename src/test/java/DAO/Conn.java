@@ -19,7 +19,8 @@ public class Conn implements IConnPool {
 		
 		try
 		{
-			conn = DriverManager.getConnection(url, user, password);
+			conn = DriverManager.getConnection("jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s160107?"
+					+ "user=s160107&password=iowRz3Cj5QgJ8Ok7dX7iI");
 		}
 		catch (SQLException e)
 		{
