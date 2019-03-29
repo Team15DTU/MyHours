@@ -10,7 +10,7 @@ public class Conn implements IConnPool {
 	{
 		// DiplomPortal Database
 		String password = "iowRz3Cj5QgJ8Ok7dX7iI";
-		String user = "s160107";
+		String user = "s160107";	// Alfred
 		String url = "jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com";
 		
 		Connection conn = null;
