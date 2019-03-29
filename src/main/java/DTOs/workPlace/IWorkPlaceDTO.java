@@ -14,9 +14,8 @@ public interface IWorkPlaceDTO {
 	Color getColor();
 	void setColor(Color color);
 	
-	int getTlf();
-	void setTlf(int tlf);
-	
 	java.util.List<JobDTO> getJobDTOList();
 	void setJobDTOList(List<JobDTO> jobDTOList);
+
+	
 }

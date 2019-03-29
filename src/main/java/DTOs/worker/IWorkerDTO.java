@@ -9,8 +9,6 @@ import java.util.List;
 public interface IWorkerDTO {
 	
 	// Methods
-	int getUserID();
-	void setUserID(int userID);
 	
 	String getFirstName();
 	void setFirstName(String firstName);

@@ -14,23 +14,16 @@ public class MySQL_DB {
     -------------------------- Fields --------------------------
      */
 
-    private final String url = "jdbc:mysql://mysql26.unoeuro.com:3306/runningessentials_dk_db_myhours";
-    private final String user = "runningesse_dk";
-    private final String password;
+    private final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
+    private final String user = "s185097";
+    private final String password = "qsNAphOJ13ySzlpn1kh6Y";
     
     
     /*
     ----------------------- Constructor -------------------------
      */
-    
-    public MySQL_DB () {
-        System.out.println("Enter DB password:");
-        Scanner scanner = new Scanner(System.in);
-        password = scanner.next();
-    }
-    public MySQL_DB (String password) {
-        this.password = password;
-    }
+
+    public MySQL_DB () {}
     
     /*
     ------------------------ Properties -------------------------
@@ -47,7 +40,7 @@ public class MySQL_DB {
 
     public Connection createConnection()  {
         try {
-            return DriverManager.getConnection(url,user, password);
+            return DriverManager.getConnection("jdbc:mysql://"+url,user, password);
         } catch (SQLException e) {
             throw new IllegalStateException();
         }

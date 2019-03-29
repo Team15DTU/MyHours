@@ -1,17 +1,17 @@
+import DAO.DALException;
 import DAO.worker.WorkerDAO;
 import db.DBController;
 import DTOs.worker.WorkerDTO;
 import db.MySQL_DB;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DALException {
 
         // TODO: Indsæt den rigtige kode til DB og slet den igen før du committer.
-        MySQL_DB mySQL_db = new MySQL_DB("PASSWORD");
+        MySQL_DB mySQL_db = new MySQL_DB();
 
         DBController dbController = new DBController(mySQL_db);
 
@@ -21,11 +21,12 @@ public class Main {
         //TODO: Mailen skal ændres hver gang programmet køres, fordi mailen er primaryKey og derfor unik!
         testWorkerDTO.setEmail("test@testWorkerDTO.dk");
         testWorkerDTO.setBirthday(LocalDate.parse("1992-01-06"));
-        System.out.println(testWorkerDTO);
+        // System.out.println(testWorkerDTO);
 
         WorkerDAO workerDAO = new WorkerDAO(dbController);
 
-        workerDAO.createWorker(testWorkerDTO, "password");
+        System.out.println(workerDAO.getWorker("test1@test.dk"));
+
 
 
     }
