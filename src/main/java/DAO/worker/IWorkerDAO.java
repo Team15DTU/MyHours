@@ -1,6 +1,7 @@
 package DAO.worker;
 
 import DAO.DALException;
+import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public interface IWorkerDAO {
      * @param password This is the password which should be added to the respected WorkerDTO.
 	 * @exception DALException Will throw a DALException.
      */
-    void createWorker (WorkerDTO worker, String password) throws DALException;
+    void createWorker (IWorkerDTO worker, String password) throws DALException;
 
     /**
      * This Method finds the Worker matching the WorkerDTO object that is inputted
@@ -45,7 +46,7 @@ public interface IWorkerDAO {
 	 * @return Will return the number of rows affected.
 	 * @exception DALException Will throw a DALException.
 	 */
-    int updateWorker (WorkerDTO worker, String password) throws DALException;
+    int updateWorker (IWorkerDTO worker, String password) throws DALException;
 
     /**
      * This method should delete all information about a specific Worker matching the inputted email.

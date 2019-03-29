@@ -1,6 +1,7 @@
 package DAO.worker;
 
 import DAO.DALException;
+import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 import com.mysql.cj.x.protobuf.MysqlxResultset;
 import db.IConnPool;
@@ -103,7 +104,7 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public void createWorker(WorkerDTO workerDTO, String password) throws DALException
+    public void createWorker(IWorkerDTO workerDTO, String password) throws DALException
     {
         // The query to make
         String query =
@@ -132,8 +133,8 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public int updateWorker(WorkerDTO worker, String password) throws DALException {
-
+    public int updateWorker(IWorkerDTO worker, String password) throws DALException
+    {
         int rowsAltered;
         
         // The query to make

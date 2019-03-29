@@ -1,6 +1,7 @@
 package DTOs.worker;
 
 import DTOs.address.Address;
+import DTOs.address.IAddress;
 import DTOs.workPlace.WorkPlaceDTO;
 
 import java.sql.Date;
@@ -24,9 +25,11 @@ public interface IWorkerDTO {
 	LocalDate getBirthday();
 	void setBirthday(LocalDate birthday);
 	
-	Address getHomeAddress();
-	void setHomeAddress(Address homeAddress);
+	IAddress getHomeAddress();
+	void setHomeAddress(IAddress homeAddress);
 	
 	List<WorkPlaceDTO> getWorkPlaces();
 	void setWorkPlaces(List<WorkPlaceDTO> workPlaces);
+	
+	int getWorkerID();
 }
