@@ -5,6 +5,14 @@
     <link rel="stylesheet" href="index.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet">
     <script src="index.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#drop").click(function(){
+                $("#login").slideToggle("slow");
+            });
+        });
+    </script>
     <title>MyHours</title>
 </head>
 <body>
@@ -14,14 +22,13 @@
     <a class="about" href="#">About</a>
     <span class="topbar-r">
     <a class="Signup">Sign up</a>
-        <a class="Login dropbtn" onclick="myFunction()">Login</a>
+        <a class="Login dropbtn" id="drop">Login</a>
 </span>
 
 </div>
 
-<div class="login-box dropdown dropdown-content" id="login">
+<div class="login-box dropdown dropdown-content" id="login" data-target="test2">
     <div class="login-form">
-        <span class='exit-dropdown' onclick="">X</span>
         <label for="uname"><b>Username</b></label>
         <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
 
