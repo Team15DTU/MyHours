@@ -15,6 +15,15 @@ import java.util.List;
  */
 public class JobDAO implements IJobDAO {
 
+    // Names on columns in the DB table: Jobs
+    public enum JobTableColumns {
+        jobID,
+        workplaceID,
+        jobName,
+        hireDate,
+        stdSalary
+    }
+
     /*
     -------------------------- Fields --------------------------
      */
@@ -64,10 +73,9 @@ public class JobDAO implements IJobDAO {
             // Sets JobID.
             jobDTOToReturn.setJobID(resultSet.getInt(JobTableColumns.jobID.toString()));
 
-            // Creating workPlaceDTO and sets it as Jobs WorkplaceDTO. TODO: Skal vi have workplaceID i stedet for WorkplaceDTO objekt?
-            // TODO: Eller skal vi finde en anden måde at få fingrene i WorkplaceListen?
-            WorkPlaceDTO workPlaceDTO = workPlaceDAO.getWorkPlace(resultSet.getInt(JobTableColumns.workplaceID.toString()));
-            jobDTOToReturn.setWorkPlaceDTO(workPlaceDTO);
+            // Sets workplaceID.
+            jobDTOToReturn.setWorkplaceID(resultSet.getInt(JobTableColumns.workplaceID.toString()));
+
 
             // Sets JobName.
             jobDTOToReturn.setJobName(resultSet.getString(JobTableColumns.jobName.toString()));
@@ -138,7 +146,7 @@ public class JobDAO implements IJobDAO {
         try (Connection c = dbController.getConn()) {
 
             PreparedStatement pStatement = c.prepareStatement(query);
-            pStatement.setInt(1, jobDTO.getWorkPlaceDTO().getWorkplaceID());
+            pStatement.setInt(1, jobDTO.getWorkplaceID());
             pStatement.setString(2, jobDTO.getJobName());
             // Inserts null if no hire date.
             if (jobDTO.getHireDate() != null ) {
@@ -166,7 +174,7 @@ public class JobDAO implements IJobDAO {
 
             PreparedStatement pStatement = c.prepareStatement(query);
 
-            pStatement.setInt(1, jobDTO.getWorkPlaceDTO().getWorkplaceID());
+            pStatement.setInt(1, jobDTO.getWorkplaceID());
             pStatement.setString(2, jobDTO.getJobName());
             if (jobDTO.getHireDate() != null) {
                 pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
@@ -190,18 +198,10 @@ public class JobDAO implements IJobDAO {
 
     }
 
-
-    
     /*
     ---------------------- Support Methods ----------------------
      */
 
-    public enum JobTableColumns {
-        jobID,
-        workplaceID,
-        jobName,
-        hireDate,
-        stdSalary
-    }
+
 
 }

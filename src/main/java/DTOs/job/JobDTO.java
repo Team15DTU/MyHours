@@ -18,7 +18,7 @@ public class JobDTO {
      */
 
     private int jobID;
-    private WorkPlaceDTO workPlaceDTO; //TODO: Skal vi bruge WorkplaceDTO objekt eller bare WorkplaceID?
+    private int workplaceID;
     private String jobName;
     private LocalDate hireDate;
     private double stdSalary;
@@ -47,12 +47,12 @@ public class JobDTO {
         this.jobID = jobID;
     }
 
-    public WorkPlaceDTO getWorkPlaceDTO() {
-        return workPlaceDTO;
+    public int getWorkplaceID() {
+        return workplaceID;
     }
 
-    public void setWorkPlaceDTO(WorkPlaceDTO workPlaceDTO) {
-        this.workPlaceDTO = workPlaceDTO;
+    public void setWorkplaceID(int workplaceID) {
+        this.workplaceID = workplaceID;
     }
 
     public String getJobName() {
@@ -113,7 +113,7 @@ public class JobDTO {
     public String toString () {
         StringBuilder toStringBuilder = new StringBuilder();
         toStringBuilder.append("JobID: \t\t\t\t" + jobID + "\n");
-        toStringBuilder.append("WorkplaceID:\t\t" + workPlaceDTO.getWorkplaceID() + "\n");
+        toStringBuilder.append("WorkplaceID:\t\t" + workplaceID + "\n");
         toStringBuilder.append("Job Name: \t\t\t" + jobName + "\n");
         if (hireDate != null) {
             toStringBuilder.append("HireDate: \t\t\t" + hireDate.toString() + "//" + hireDate.getDayOfMonth() + "-" + hireDate.getMonthValue() + "-" + hireDate.getYear() + "\n");
