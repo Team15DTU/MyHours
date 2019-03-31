@@ -4,6 +4,7 @@ import DAO.DALException;
 import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 import com.mysql.cj.x.protobuf.MysqlxResultset;
+import db.DBController;
 import db.IConnPool;
 
 import java.sql.*;
@@ -23,16 +24,16 @@ public class WorkerDAO implements IWorkerDAO {
     -------------------------- Fields --------------------------
      */
     
-    private IConnPool connPool;
+    private DBController dbController;
     private final String WORKERS_TABLENAME = "Workers";
     
     /*
     ----------------------- Constructor -------------------------
      */
     
-    public WorkerDAO(IConnPool connPool)
+    public WorkerDAO(DBController dbController)
     {
-        this.connPool = connPool;
+        this.dbController = dbController;
     }
     
     /*
@@ -53,7 +54,7 @@ public class WorkerDAO implements IWorkerDAO {
 
             WorkerDTO workerToReturn = new WorkerDTO();
 
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -80,7 +81,7 @@ public class WorkerDAO implements IWorkerDAO {
 
         List<WorkerDTO> listToReturn = new ArrayList<>();
 
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT " + Columns.email.toString() + " FROM " + WORKERS_TABLENAME);
@@ -112,7 +113,7 @@ public class WorkerDAO implements IWorkerDAO {
                         WORKERS_TABLENAME, Columns.firstname, Columns.surname, Columns.email,
                         Columns.birthday, Columns.pass);
                 
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             PreparedStatement statement = c.prepareStatement(query);
             
@@ -142,7 +143,7 @@ public class WorkerDAO implements IWorkerDAO {
                 WORKERS_TABLENAME, Columns.firstname, Columns.surname, Columns.email, Columns.birthday,
                 Columns.pass, Columns.workerId, worker.getWorkerID());
 
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             PreparedStatement pStatement = c.prepareStatement(query);
 
@@ -166,7 +167,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public void deleteWorker(String email) throws DALException
     {
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             PreparedStatement pStatement =
                     c.prepareStatement("DELETE FROM " + WORKERS_TABLENAME + " WHERE " + Columns.email + " = ?");

@@ -6,6 +6,7 @@ import DTOs.address.Address;
 import DTOs.address.IAddress;
 import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
+import db.DBController;
 import db.IConnPool;
 import org.junit.Test;
 
@@ -16,6 +17,8 @@ public class WorkerDAOTest {
 	//region Test Material
 	
 	IConnPool connPool = new Conn();
+
+	DBController dbController = new DBController(connPool);
 	
 	String firstName0 = "Bo"; String surName0 = "Børgesen";
 	String email0 = String.format("%s.%s@hotmail.com", firstName0, surName0);
@@ -35,7 +38,7 @@ public class WorkerDAOTest {
 	@Test
 	public void createWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = new WorkerDAO(connPool);
+		IWorkerDAO workerDAO = new WorkerDAO(dbController);
 		
 		// Try to Create them
 		for (IWorkerDTO worker : testWorkers)

@@ -7,7 +7,7 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
-public class MySQL_DB {
+public class MySQL_DB implements IConnPool {
 
     /*
     -------------------------- Fields --------------------------
@@ -21,11 +21,7 @@ public class MySQL_DB {
     ----------------------- Constructor -------------------------
      */
 
-    public MySQL_DB () {
-
-        TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
-
-    }
+    public MySQL_DB () {}
 
     /*
     ------------------------ Properties -------------------------
@@ -40,7 +36,7 @@ public class MySQL_DB {
     ---------------------- Public Methods -----------------------
      */
 
-    public Connection createConnection()  {
+    public Connection getConn()  {
         try {
             return DriverManager.getConnection("jdbc:mysql://"+url,user, password);
         } catch (SQLException e) {
@@ -52,17 +48,5 @@ public class MySQL_DB {
     ---------------------- Support Methods ----------------------
      */
 
-    private String setTimeZoneFromSQLServer ()  {
-        try (Connection c = createConnection()) {
 
-            Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT @@system_time_zone");
-            resultSet.next();
-            return resultSet.getString(1);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "GMT";
-        }
-    }
 }

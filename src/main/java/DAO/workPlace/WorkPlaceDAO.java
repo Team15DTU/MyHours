@@ -2,6 +2,7 @@ package DAO.workPlace;
 
 import DTOs.workPlace.WorkPlaceDTO;
 
+import db.DBController;
 import db.IConnPool;
 
 import java.awt.*;
@@ -19,15 +20,15 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     -------------------------- Fields --------------------------
      */
 
-    private IConnPool connPool;
+    private DBController dbController;
     private final String WORKPLACES_TABLENAME = "Workplaces";
 
     /*
     ----------------------- Constructor -------------------------
      */
 
-    public WorkPlaceDAO (IConnPool connPool) {
-        this.connPool = connPool;
+    public WorkPlaceDAO (DBController dbController) {
+        this.dbController = dbController;
     }
 
     /*
@@ -49,7 +50,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     public WorkPlaceDTO getWorkPlace(int workplaceID) {
         WorkPlaceDTO workPlaceToReturn = new WorkPlaceDTO();
 
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -74,7 +75,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     public List<WorkPlaceDTO> getWorkPlaceList() {
         List<WorkPlaceDTO> listToReturn = new ArrayList<>();
 
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT workplaceID FROM " + WORKPLACES_TABLENAME);
@@ -94,7 +95,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     public List<WorkPlaceDTO> getWorkPlaceList(int workerID) {
         List<WorkPlaceDTO> listToReturn = new ArrayList<>();
 
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -114,10 +115,10 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     @Override
     public void createWorkPlace(WorkPlaceDTO workPlaceDTO) {
 
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             PreparedStatement pStatement = c.prepareStatement(
-                    "INSERT INTO " + WORKPLACES_TABLENAME + "" +
+                    "INSERT INTO " + WORKPLACES_TABLENAME +
                             "(workerID, workplaceName, colorHEX, telephone) VALUES (?,?,?,?)");
 
             pStatement.setInt(1, workPlaceDTO.getWorkerID());
@@ -135,7 +136,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     @Override
     public void updateWorkPlace(WorkPlaceDTO workPlaceDTO) {
 
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             PreparedStatement pStatement = c.prepareStatement(
                     "UPDATE " + WORKPLACES_TABLENAME +
@@ -157,7 +158,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     @Override
     public void deleteWorkPlace(int workplaceID) {
 
-        try (Connection c = connPool.getConn()) {
+        try (Connection c = dbController.createConnection()) {
 
             PreparedStatement pStatement = c.prepareStatement("DELETE FROM " + WORKPLACES_TABLENAME + " WHERE workplaceID = ?");
             pStatement.setInt(1, workplaceID);
