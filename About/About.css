@@ -1,6 +1,12 @@
 body{
-
+    background-attachment: fixed;
 }
-.about{
-
+.AboutUs{
+    border: 5px solid white;
+    width: 99.3%;
+    height: 800px;
+    background: white;
+    opacity: 0.5;
+    transform: translateY(20%);
+    
 }

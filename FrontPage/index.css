@@ -50,6 +50,7 @@ body{
     background-image: url(../Images/adult-analysis-chart-1516704.jpg);
     background-size: cover;
     font-family: "Source Code Pro", monospace;
+    background-attachment: fixed;
 }
 
 
