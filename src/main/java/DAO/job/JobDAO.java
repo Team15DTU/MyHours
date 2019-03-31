@@ -193,6 +193,16 @@ public class JobDAO implements IJobDAO {
     @Override
     public void deleteJob(int jobID) throws DALException {
 
+        try (Connection c = dbController.getConn()) {
+
+            Statement statement = c.createStatement();
+            statement.executeQuery(
+                    "DELETE FROM " + JOBS_TABLENAME + " WHERE " + JobTableColumns.jobID + " = '" + jobID + "'");
+
+        } catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        }
+
     }
 
     /*
