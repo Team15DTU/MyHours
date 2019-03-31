@@ -1,12 +1,7 @@
 package db;
 
-import DAO.DALException;
-import com.mysql.cj.x.protobuf.MysqlxResultset;
-
-import java.io.PipedReader;
 import java.sql.*;
-import java.util.PriorityQueue;
-import java.util.Scanner;
+
 import java.util.TimeZone;
 
 /**

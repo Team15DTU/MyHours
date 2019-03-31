@@ -30,17 +30,14 @@ public class JobDAO implements IJobDAO {
     
     private DBController dbController;
     private final String JOBS_TABLENAME = "Jobs";
-
-    private WorkPlaceDAO workPlaceDAO;
     
     /*
     ----------------------- Constructor -------------------------
      */
 
-    public JobDAO (DBController dbController, WorkPlaceDAO workPlaceDAO) {
+    public JobDAO (DBController dbController) {
 
         this.dbController = dbController;
-        this.workPlaceDAO = workPlaceDAO;
     }
     
     
