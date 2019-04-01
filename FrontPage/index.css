@@ -226,3 +226,11 @@ input[type=text], input[type=password] {
 
        }
 }
+.closebtn {
+    background-image: url('../Modal_Fra_Ven/images/Close-Button.png');
+    background-size: 15px;
+    background-repeat: no-repeat;
+    margin-top: -15px;
+    float: right;
+    cursor: pointer;
+}

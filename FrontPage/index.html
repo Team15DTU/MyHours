@@ -37,19 +37,17 @@
 
 <div class="login-box dropdown dropdown-content" id="login">
     <div class="login-form">
-        <label for="email"><b>E-Mail</b></label>
-        <input type="text" placeholder="Enter E-Mail" name="email" id="email" required>
+        <a class ="closebtn" onclick=" $('#login').slideUp('slow')"></a>
+        <label for="email login"><b>E-Mail</b></label>
+        <input type="text" placeholder="Enter E-Mail" id="email login" required>
 
         <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+        <input type="password" placeholder="Enter Password" id="psw" required>
 
         <label>
             <input type="checkbox" checked="checked" name="remember" class="remember"> Remember me
         </label>
-        <label>
-            <a href="../New%20User/CreateUser.html" class="new-user">New User</a>
-        </label>
-        <button type="submit" class="button">Login</button>
+        <button type="submit" class="button" data-wait="Please wait...">Login</button>
 
         <label>
             <a href="../Forgot%20Password/ForgotPassword.html" class="forgot-password">Forgot your password?</a>
@@ -59,22 +57,23 @@
 </div>
 <div class="login-box dropdown dropdown-content" id="signup">
     <div class="login-form">
+        <a class ="closebtn" onclick=" $('#signup').slideUp('slow')"></a>
         <label for="fname"><b>Firstname</b></label>
-        <input type="text" placeholder="Enter Firstname" name="uname" id="fname" required>
+        <input type="text" placeholder="Enter Firstname" id="fname" required>
 
         <label for="lname"><b>Lastname</b></label>
-        <input type="text" placeholder="Enter Lastname" name="uname" id="lname" required>
+        <input type="text" placeholder="Enter Lastname" id="lname" required>
 
-        <label for="email"><b>E-mail</b></label>
-        <input type="text" placeholder="Enter E-mail" name="uname" id="email" required>
+        <label for="email signup"><b>E-mail</b></label>
+        <input type="text" placeholder="Enter E-mail" id="email signup" required>
 
-        <label for="npsw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" id="npsw" required>
+        <label for="n1psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" id="n1psw" required>
 
-        <label for="npsw"><b>Repeat your password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" id="npsw" required>
+        <label for="n2psw"><b>Repeat your password</b></label>
+        <input type="password" placeholder="Enter Password" id="n2psw" required>
 
-        <button type="submit" class="button">Create user</button>
+        <button type="submit" class="button" data-wait="Please wait...">Create user</button>
 
     </div>
 </div>
