@@ -1,3 +1,11 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-image: url(../Images/adult-analysis-chart-1516704.jpg);
+    background-size: cover;
+    font-family: "Source Code Pro", monospace;
+    background-attachment: fixed;
+}
 /* Dropdown Button */
 .dropbtn {
     color: white;
@@ -42,15 +50,6 @@
 .exit-dropdown {
     float: right;
     top: 5%;
-}
-
-body{
-    margin: 0;
-    padding: 0;
-    background-image: url(../Images/adult-analysis-chart-1516704.jpg);
-    background-size: cover;
-    font-family: "Source Code Pro", monospace;
-    background-attachment: fixed;
 }
 
 
@@ -175,8 +174,11 @@ input[type=text], input[type=password] {
     position: absolute;
     text-align: center;
     width: 100%;
-    transform: translateX(42%);
     top: 0.5%;
+    float: right;
+    display: flex;
+    justify-content: right;
+
 }
 .btn {
     display: inline-block;
