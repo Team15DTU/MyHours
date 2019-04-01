@@ -29,7 +29,7 @@
     <a class="home" href="../FrontPage/index.html">Home</a>
     <a class="about" href="../About/AboutUs.html">About</a>
     <span class="topbar-r">
-    <a class="Signup">Sign up</a>
+    <a class="Login dropbtn" id="dropSign">Sign up</a>
         <a class="Login dropbtn" id="drop">Login</a>
 </span>
 
@@ -38,6 +38,28 @@
 <div class="login-box dropdown dropdown-content" id="login">
     <div class="login-form">
         <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+
+        <label>
+            <input type="checkbox" checked="checked" name="remember" class="remember"> Remember me
+        </label>
+        <label>
+            <a href="../New%20User/CreateUser.html" class="new-user">New User</a>
+        </label>
+        <button type="submit" class="button">Login</button>
+
+        <label>
+            <a href="../Forgot%20Password/ForgotPassword.html" class="forgot-password">Forgot your password?</a>
+        </label>
+
+    </div>
+</div>
+<div class="login-box dropdown dropdown-content" id="signup">
+    <div class="login-form">
+        <label for="uname"><b>Dette er en test</b></label>
         <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
 
         <label for="psw"><b>Password</b></label>
