@@ -202,7 +202,7 @@ public class WorkPlaceDAOTest {
         iWorkPlaceDAO.deleteWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
     }
-    // PASSED
+
 
     @Test
     public void deleteWorkPlace() throws DALException {
@@ -224,5 +224,5 @@ public class WorkPlaceDAOTest {
         assertEquals(noOfWorkPlacesInTableAfterDelettion,0);
 
     }
-    // PASSED
+
 }
