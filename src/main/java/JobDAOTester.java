@@ -20,9 +20,9 @@ public class JobDAOTester {
         MySQL_DB mySQL_db = new MySQL_DB();
 
         DBController dbController = new DBController(mySQL_db);
-        WorkPlaceDAO workPlaceDAO = new WorkPlaceDAO(dbController);
+        WorkPlaceDAO workPlaceDAO = new WorkPlaceDAO(mySQL_db);
 
-        JobDAO jobDAO = new JobDAO(dbController);
+        JobDAO jobDAO = new JobDAO(mySQL_db);
 
         JobDTO testJobDTO = new JobDTO();
 

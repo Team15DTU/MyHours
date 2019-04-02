@@ -28,7 +28,7 @@ public class Main {
         testWorkerDTO.setBirthday(LocalDate.parse("1992-01-06"));
         System.out.println(testWorkerDTO);
 
-        WorkerDAO workerDAO = new WorkerDAO(dbController);
+        WorkerDAO workerDAO = new WorkerDAO(mySQL_db);
         // workerDAO.createWorker(testWorkerDTO,"testtest");
 
         WorkerDTO beforeUpdate = workerDAO.getWorker("test1@testWorkerDTO.dk");
