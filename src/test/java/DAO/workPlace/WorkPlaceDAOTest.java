@@ -1,5 +1,6 @@
 package DAO.workPlace;
 
+import DAO.DALException;
 import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
 import db.IConnPool;
@@ -7,7 +8,6 @@ import db.MySQL_TEST_DB;
 import org.junit.Test;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -22,7 +22,7 @@ public class WorkPlaceDAOTest {
 
     private DBController dbController = new DBController(test_DB);
 
-    private WorkPlaceDAO workPlaceDAO = new WorkPlaceDAO(dbController);
+    private IWorkPlaceDAO iWorkPlaceDAO = dbController.getiWorkPlaceDAO();
 
     // region Test Material
 
@@ -50,7 +50,7 @@ public class WorkPlaceDAOTest {
 
     // endregion
 
-    public WorkPlaceDAOTest () {
+    public WorkPlaceDAOTest () throws DALException {
 
         // Setting up workPlaceDTONo1
         workPlaceDTONo1.setWorkerID(workplaceNo1_workerID);
@@ -73,16 +73,16 @@ public class WorkPlaceDAOTest {
      */
 
     @Test
-    public void createWorkPlaces() {
+    public void createWorkPlaces() throws DALException {
 
         // WorkplaceDTO No. 1
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
         workplaceNo1_workplaceID_assigned = nextAutoIncrementalForWorkplaceNo1;
 
-        workPlaceDAO.createWorkPlace(workPlaceDTONo1);
+        iWorkPlaceDAO.createWorkPlace(workPlaceDTONo1);
 
-        WorkPlaceDTO returnedWorkplaceDTOOfNo1 = workPlaceDAO.getWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        WorkPlaceDTO returnedWorkplaceDTOOfNo1 = iWorkPlaceDAO.getWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
         assertEquals(returnedWorkplaceDTOOfNo1.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo1);
         assertEquals(returnedWorkplaceDTOOfNo1.getWorkerID(), workplaceNo1_workerID);
@@ -96,9 +96,9 @@ public class WorkPlaceDAOTest {
 
         workplaceNo2_workplaceID_assigned = nextAutoIncrementalForWorkplaceNo2;
 
-        workPlaceDAO.createWorkPlace(workPlaceDTONo2);
+        iWorkPlaceDAO.createWorkPlace(workPlaceDTONo2);
 
-        WorkPlaceDTO returnedWorkplaceDTOOfNo2 = workPlaceDAO.getWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        WorkPlaceDTO returnedWorkplaceDTOOfNo2 = iWorkPlaceDAO.getWorkPlace(nextAutoIncrementalForWorkplaceNo2);
 
         assertEquals(returnedWorkplaceDTOOfNo2.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo2);
         assertEquals(returnedWorkplaceDTOOfNo2.getWorkerID(), workplaceNo2_workerID);
@@ -109,26 +109,26 @@ public class WorkPlaceDAOTest {
     }
 
     @Test
-    public void getWorkPlaceList() {
+    public void getWorkPlaceList() throws DALException {
 
         // Test of getWorkPlaceList()
 
         List<WorkPlaceDTO> workPlaceDTOList;
 
-        workPlaceDTOList = workPlaceDAO.getWorkPlaceList();
+        workPlaceDTOList = iWorkPlaceDAO.getWorkPlaceList();
 
         assertEquals(workPlaceDTOList.size(),2);
 
     }
 
     @Test
-    public void getWorkPlaceListFromWorkerID() {
+    public void getWorkPlaceListFromWorkerID() throws DALException {
 
         // Test of getWorkPlaceList(int workerID)
 
         List<WorkPlaceDTO> workPlaceDTOListFromWorkerID;
 
-        workPlaceDTOListFromWorkerID = workPlaceDAO.getWorkPlaceList(workplaceNo1_workerID);
+        workPlaceDTOListFromWorkerID = iWorkPlaceDAO.getWorkPlaceList(workplaceNo1_workerID);
 
         int listSize = workPlaceDTOListFromWorkerID.size();
 
@@ -137,9 +137,9 @@ public class WorkPlaceDAOTest {
     }
 
     @Test
-    public void getWorkPlace() {
+    public void getWorkPlace() throws DALException {
 
-        WorkPlaceDTO returnedWorkplaceDTO = workPlaceDAO.getWorkPlace(workplaceNo2_workplaceID_assigned);
+        WorkPlaceDTO returnedWorkplaceDTO = iWorkPlaceDAO.getWorkPlace(workplaceNo2_workplaceID_assigned);
 
         assertEquals(returnedWorkplaceDTO.getWorkplaceID(),workplaceNo2_workplaceID_assigned);
         assertEquals(returnedWorkplaceDTO.getWorkerID(), workplaceNo2_workerID);
@@ -150,11 +150,11 @@ public class WorkPlaceDAOTest {
     }
 
     @Test
-    public void updateWorkPlace() {
+    public void updateWorkPlace() throws DALException {
 
     }
 
     @Test
-    public void deleteWorkPlace() {
+    public void deleteWorkPlace() throws DALException {
     }
 }

@@ -1,5 +1,6 @@
 package db;
 
+import DAO.DALException;
 import DTOs.worker.WorkerDTO;
 
 /**
@@ -7,8 +8,8 @@ import DTOs.worker.WorkerDTO;
  */
 public interface IDBController  {
 
-    void createWorker(WorkerDTO workerDTO);
+    void createWorker(WorkerDTO workerDTO) throws DALException;
 
-    String setTimeZoneFromSQLServer();
+    String setTimeZoneFromSQLServer() throws DALException;
 
 }
