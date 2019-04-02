@@ -1,5 +1,7 @@
 package db;
 
+import DAO.DALException;
+
 import java.sql.*;
 
 import java.util.TimeZone;
@@ -36,14 +38,25 @@ public class MySQL_DB implements IConnPool {
     ---------------------- Public Methods -----------------------
      */
 
-    public Connection getConn()  {
+    public Connection getConn() throws DALException  {
         try {
             return DriverManager.getConnection("jdbc:mysql://"+url,user, password);
         } catch (SQLException e) {
-            throw new IllegalStateException();
+            throw new DALException(e.getMessage());
         }
     }
-    
+
+    @Override
+    public void releaseConnection(Connection connection) throws DALException {
+        try {
+            if (!connection.isClosed())
+                connection.close();
+        }
+        catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        }
+    }
+
     /*
     ---------------------- Support Methods ----------------------
      */

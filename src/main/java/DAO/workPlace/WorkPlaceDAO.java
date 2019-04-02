@@ -78,7 +78,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
         try (Connection c = dbController.createConnection()) {
 
             Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT workplaceID FROM " + WORKPLACES_TABLENAME);
+            ResultSet resultSet = statement.executeQuery("SELECT workplaceID FROM " + WORKPLACES_TABLENAME );
 
             while (resultSet.next()) {
                 listToReturn.add(getWorkPlace(resultSet.getInt("workplaceID")));
@@ -93,6 +93,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
 
     @Override
     public List<WorkPlaceDTO> getWorkPlaceList(int workerID) {
+
         List<WorkPlaceDTO> listToReturn = new ArrayList<>();
 
         try (Connection c = dbController.createConnection()) {

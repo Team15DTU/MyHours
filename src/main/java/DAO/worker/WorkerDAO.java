@@ -31,7 +31,7 @@ public class WorkerDAO implements IWorkerDAO {
     ----------------------- Constructor -------------------------
      */
     
-    public WorkerDAO(DBController dbController)
+    public WorkerDAO(IConnPool dbController)
     {
         this.dbController = dbController;
     }
@@ -55,6 +55,7 @@ public class WorkerDAO implements IWorkerDAO {
             WorkerDTO workerToReturn = new WorkerDTO();
 
         try (Connection c = dbController.createConnection()) {
+            Conn c = iConnPool.getConn;
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -67,6 +68,8 @@ public class WorkerDAO implements IWorkerDAO {
                 workerToReturn.setEmail(resultSet.getString("email"));
                 workerToReturn.setBirthday(resultSet.getDate("birthday").toLocalDate());
             }
+
+            iConn.releaseConn(c);
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());

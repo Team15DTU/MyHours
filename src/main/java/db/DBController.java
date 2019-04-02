@@ -1,5 +1,7 @@
 package db;
 
+import DAO.worker.WorkerDAO;
+
 import java.sql.*;
 import java.util.TimeZone;
 
@@ -13,16 +15,20 @@ public class DBController {
      */
     
     private IConnPool iConnPool;
+    private IWorkerDAO workerDAO;
+
     
     /*
     ----------------------- Constructor -------------------------
      */
     
-    public DBController (IConnPool iConnPool) {
+    public DBController () {
 
-        this.iConnPool = iConnPool;
+        iConnPool = new MySQL_DB();
 
         TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
+
+        workerDAO = new WorkerDAO(iConnPool);
 
     }
     
@@ -45,15 +51,18 @@ public class DBController {
 
     }
 
-    public int getNextAutoIncreamental (String tableName) {
+    public int getNextAutoIncremental(String tableName) {
 
         int nextAIValue;
 
         try (Connection c = createConnection()) {
 
+            Statement statement = c.createStatement();
+            statement.executeQuery("ANALYZE TABLE " + tableName);
+
             PreparedStatement pStatement = c.prepareStatement(
-                    "SELECT `auto_increment` FROM INFORMATION_SCHEMA.TABLES\n" +
-                            "WHERE table_name = ?");
+                    "SELECT `auto_increment` FROM INFORMATION_SCHEMA.TABLES " +
+                            " WHERE table_name = ?");
             pStatement.setString(1, tableName);
 
             ResultSet resultset = pStatement.executeQuery();
