@@ -104,8 +104,11 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public void createWorker(IWorkerDTO workerDTO, String password) throws DALException {
+    public void createWorker(IWorkerDTO workerDTO, String password) throws DALException
+    {
+        // Get a Connection from the ConnPool
         Connection c = connPool.getConn();
+        
         // The query to make
         String query =
                 String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
@@ -127,9 +130,12 @@ public class WorkerDAO implements IWorkerDAO {
             // TODO: Print skal fjernes på et tidspunkt.
             System.out.println("Worker have been added to: \t DB: myhours \tTable: " + WORKERS_TABLENAME);
 
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             throw new DALException(e.getMessage());
-        } finally {
+        }
+        finally {
+            // Return the Connection to the Pool
             connPool.releaseConnection(c);
         }
     }
