@@ -94,7 +94,9 @@ public class DBController {
 
     public int getNextAutoIncremental(String tableName) throws DALException {
 
-        try (Connection c = iConnPool.getConn()) {
+        Connection c = iConnPool.getConn();
+
+        try {
 
             Statement statement = c.createStatement();
             statement.executeQuery("ANALYZE TABLE " + tableName);
@@ -112,6 +114,8 @@ public class DBController {
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
     }
     
