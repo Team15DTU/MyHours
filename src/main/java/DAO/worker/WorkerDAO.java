@@ -50,12 +50,14 @@ public class WorkerDAO implements IWorkerDAO {
      */
 
     @Override
-    public WorkerDTO getWorker(String email) throws DALException {
-
+    public WorkerDTO getWorker(String email) throws DALException
+    {
         WorkerDTO workerToReturn = new WorkerDTO();
+        
+        // Get connection from ConnPool
         Connection c = connPool.getConn();
 
-        try  {
+        try {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -72,6 +74,7 @@ public class WorkerDAO implements IWorkerDAO {
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
         } finally {
+            // Return the Connection
             connPool.releaseConnection(c);
         }
 
@@ -79,8 +82,9 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public List<WorkerDTO> getWorkerList() throws DALException {
-
+    public List<WorkerDTO> getWorkerList() throws DALException
+    {
+        // Get connection from the ConnPool
         Connection c = connPool.getConn();
 
         List<WorkerDTO> listToReturn = new ArrayList<>();
@@ -97,6 +101,7 @@ public class WorkerDAO implements IWorkerDAO {
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
         } finally {
+            // Return the connection to the ConnPool
             connPool.releaseConnection(c);
         }
 
@@ -141,7 +146,9 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public int updateWorker(IWorkerDTO worker, String password) throws DALException {
+    public int updateWorker(IWorkerDTO worker, String password) throws DALException
+    {
+        // Get connection from ConnPool
         Connection c = connPool.getConn();
 
         int rowsAltered;
@@ -166,6 +173,7 @@ public class WorkerDAO implements IWorkerDAO {
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
         } finally {
+            // Return the connection to ConnPool
             connPool.releaseConnection(c);
         }
         
@@ -174,8 +182,9 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public void deleteWorker(String email) throws DALException{
-
+    public void deleteWorker(String email) throws DALException
+    {
+        // Get connection from ConnPool
         Connection c = connPool.getConn();
         try {
 
@@ -189,6 +198,7 @@ public class WorkerDAO implements IWorkerDAO {
         } catch (SQLException e ) {
             throw new DALException(e.getMessage());
         } finally {
+            // Return connection to ConnPool
             connPool.releaseConnection(c);
         }
     }
