@@ -2,8 +2,6 @@ package DAO.worker;
 
 import DAO.Conn;
 import DAO.DALException;
-import DAO.worker.IWorkerDAO;
-import DAO.worker.WorkerDAO;
 import DTOs.address.Address;
 import DTOs.address.IAddress;
 import DTOs.worker.IWorkerDTO;
