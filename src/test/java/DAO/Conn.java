@@ -32,7 +32,15 @@ public class Conn implements IConnPool {
 	}
 
 	@Override
-	public void releaseConnection(Connection connection) throws DALException {
-
+	public void releaseConnection(Connection connection) throws DALException
+	{
+		try {
+			if (!connection.isClosed())
+				connection.close();
+		}
+		catch (SQLException e)
+		{
+			throw new DALException("Release Connection failure: " + e.getMessage());
+		}
 	}
 }
