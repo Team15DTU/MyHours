@@ -22,14 +22,12 @@ public class JobDAOTester {
         DBController dbController = new DBController(mySQL_db);
         WorkPlaceDAO workPlaceDAO = new WorkPlaceDAO(dbController);
 
-        JobDAO jobDAO = new JobDAO(dbController, workPlaceDAO);
-
-        WorkPlaceDTO testWorkplaceDTO = workPlaceDAO.getWorkPlace(1);
+        JobDAO jobDAO = new JobDAO(dbController);
 
         JobDTO testJobDTO = new JobDTO();
 
         testJobDTO.setJobName("TestJob2");
-        testJobDTO.setWorkPlaceDTO(testWorkplaceDTO);
+        testJobDTO.setWorkplaceID(1);
         testJobDTO.setJobName("Flaskedreng");
         testJobDTO.setStdSalary(150.00);
 

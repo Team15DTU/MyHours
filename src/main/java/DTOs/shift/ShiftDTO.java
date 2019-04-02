@@ -1,7 +1,5 @@
 package DTOs.shift;
 
-import DTOs.job.JobDTO;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -16,7 +14,7 @@ public class ShiftDTO {
     
     private LocalDateTime startingDateTime;
     private LocalDateTime endingDateTime;
-    private JobDTO job;
+    private int jobID;
     private Duration pause; // break in minutes!
     private double shiftValue;
 
@@ -48,12 +46,12 @@ public class ShiftDTO {
         this.endingDateTime = endingDateTime;
     }
 
-    public JobDTO getJob() {
-        return job;
+    public int getJobID() {
+        return jobID;
     }
 
-    public void setJob(JobDTO job) {
-        this.job = job;
+    public void setJobID(int jobID) {
+        this.jobID = jobID;
     }
 
     public Duration getPause() {

@@ -5,6 +5,7 @@ import DAO.workPlace.WorkPlaceDAO;
 import DTOs.job.JobDTO;
 import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
+import db.IConnPool;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,23 +16,30 @@ import java.util.List;
  */
 public class JobDAO implements IJobDAO {
 
+    // Names on columns in the DB table: Jobs
+    public enum JobTableColumns {
+        jobID,
+        workplaceID,
+        jobName,
+        hireDate,
+        stdSalary
+    }
+
     /*
     -------------------------- Fields --------------------------
      */
     
-    private DBController dbController;
+    private IConnPool iConnPool;
     private final String JOBS_TABLENAME = "Jobs";
-
-    private WorkPlaceDAO workPlaceDAO;
     
     /*
     ----------------------- Constructor -------------------------
      */
 
-    public JobDAO (DBController dbController, WorkPlaceDAO workPlaceDAO) {
+    public JobDAO (IConnPool iConnPool) {
 
-        this.dbController = dbController;
-        this.workPlaceDAO = workPlaceDAO;
+        this.iConnPool = iConnPool;
+
     }
     
     
@@ -51,9 +59,11 @@ public class JobDAO implements IJobDAO {
     @Override
     public JobDTO getJob(int jobID) throws DALException {
 
+        Connection c = iConnPool.getConn();
+
         JobDTO jobDTOToReturn = new JobDTO();
 
-        try (Connection c = dbController.getConn()) {
+        try {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + JOBS_TABLENAME + " WHERE " + JobTableColumns.jobID + " = " + jobID);
@@ -64,10 +74,9 @@ public class JobDAO implements IJobDAO {
             // Sets JobID.
             jobDTOToReturn.setJobID(resultSet.getInt(JobTableColumns.jobID.toString()));
 
-            // Creating workPlaceDTO and sets it as Jobs WorkplaceDTO. TODO: Skal vi have workplaceID i stedet for WorkplaceDTO objekt?
-            // TODO: Eller skal vi finde en anden måde at få fingrene i WorkplaceListen?
-            WorkPlaceDTO workPlaceDTO = workPlaceDAO.getWorkPlace(resultSet.getInt(JobTableColumns.workplaceID.toString()));
-            jobDTOToReturn.setWorkPlaceDTO(workPlaceDTO);
+            // Sets workplaceID.
+            jobDTOToReturn.setWorkplaceID(resultSet.getInt(JobTableColumns.workplaceID.toString()));
+
 
             // Sets JobName.
             jobDTOToReturn.setJobName(resultSet.getString(JobTableColumns.jobName.toString()));
@@ -82,6 +91,8 @@ public class JobDAO implements IJobDAO {
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
 
         return jobDTOToReturn;
@@ -89,9 +100,12 @@ public class JobDAO implements IJobDAO {
 
     @Override
     public List<JobDTO> getJobList() throws DALException {
+
+        Connection c = iConnPool.getConn();
+
         List<JobDTO> jobDTOListToReturn = new ArrayList<>();
 
-        try (Connection c = dbController.getConn()) {
+        try {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -103,6 +117,8 @@ public class JobDAO implements IJobDAO {
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
 
         return jobDTOListToReturn;
@@ -110,9 +126,12 @@ public class JobDAO implements IJobDAO {
 
     @Override
     public List<JobDTO> getJobList(String condition) throws DALException {
+
+        Connection c = iConnPool.getConn();
+
         List<JobDTO> jobDTOListToReturn = new ArrayList<>();
 
-        try (Connection c = dbController.getConn()) {
+        try {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -124,6 +143,8 @@ public class JobDAO implements IJobDAO {
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
 
         return jobDTOListToReturn;
@@ -132,13 +153,15 @@ public class JobDAO implements IJobDAO {
     @Override
     public void createJob(JobDTO jobDTO) throws DALException {
 
+        Connection c = iConnPool.getConn();
+
         String query = String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (?,?,?,?)",
                 JOBS_TABLENAME, JobTableColumns.workplaceID, JobTableColumns.jobName, JobTableColumns.hireDate, JobTableColumns.stdSalary);
 
-        try (Connection c = dbController.getConn()) {
+        try {
 
             PreparedStatement pStatement = c.prepareStatement(query);
-            pStatement.setInt(1, jobDTO.getWorkPlaceDTO().getWorkplaceID());
+            pStatement.setInt(1, jobDTO.getWorkplaceID());
             pStatement.setString(2, jobDTO.getJobName());
             // Inserts null if no hire date.
             if (jobDTO.getHireDate() != null ) {
@@ -152,21 +175,25 @@ public class JobDAO implements IJobDAO {
 
         } catch (SQLException e) {
             throw  new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
     }
 
     @Override
     public int updateJob(JobDTO jobDTO) throws DALException {
 
+        Connection c = iConnPool.getConn();
+
         String query = String.format("UPDATE %s SET %s = ? , %s = ? , %s = ? , %s = ? WHERE %s = ?",
                 JOBS_TABLENAME, JobTableColumns.workplaceID, JobTableColumns.jobName, JobTableColumns.hireDate,
                 JobTableColumns.stdSalary, JobTableColumns.jobID);
 
-        try (Connection c = dbController.getConn()){
+        try {
 
             PreparedStatement pStatement = c.prepareStatement(query);
 
-            pStatement.setInt(1, jobDTO.getWorkPlaceDTO().getWorkplaceID());
+            pStatement.setInt(1, jobDTO.getWorkplaceID());
             pStatement.setString(2, jobDTO.getJobName());
             if (jobDTO.getHireDate() != null) {
                 pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
@@ -180,6 +207,8 @@ public class JobDAO implements IJobDAO {
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
 
         return 0;
@@ -188,20 +217,26 @@ public class JobDAO implements IJobDAO {
     @Override
     public void deleteJob(int jobID) throws DALException {
 
+        Connection c = iConnPool.getConn();
+
+        try {
+
+            Statement statement = c.createStatement();
+            statement.executeQuery(
+                    "DELETE FROM " + JOBS_TABLENAME + " WHERE " + JobTableColumns.jobID + " = '" + jobID + "'");
+
+        } catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
+        }
+
     }
 
-
-    
     /*
     ---------------------- Support Methods ----------------------
      */
 
-    public enum JobTableColumns {
-        jobID,
-        workplaceID,
-        jobName,
-        hireDate,
-        stdSalary
-    }
+
 
 }
