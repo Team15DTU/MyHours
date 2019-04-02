@@ -30,4 +30,9 @@ public class Conn implements IConnPool {
 		// Return the Connection
 		return conn;
 	}
+
+	@Override
+	public void releaseConnection(Connection connection) throws DALException {
+
+	}
 }

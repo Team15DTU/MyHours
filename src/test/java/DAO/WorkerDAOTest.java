@@ -32,13 +32,16 @@ public class WorkerDAOTest {
 	IWorkerDTO worker1 = new WorkerDTO(firstName1, surName1, email1, birthday1, address1, null);
 	
 	IWorkerDTO[] testWorkers = {worker0, worker1};
-	
+
+	public WorkerDAOTest() throws DALException {
+	}
+
 	//endregion
 	
 	@Test
 	public void createWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = new WorkerDAO(dbController);
+		IWorkerDAO workerDAO = dbController.getiWorkerDAO();
 		
 		// Try to Create them
 		for (IWorkerDTO worker : testWorkers)
