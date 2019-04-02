@@ -1,5 +1,6 @@
 package DAO.workPlace;
 
+import DAO.DALException;
 import DTOs.workPlace.WorkPlaceDTO;
 
 import db.DBController;
@@ -20,15 +21,15 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     -------------------------- Fields --------------------------
      */
 
-    private DBController dbController;
+    private IConnPool iConnPool;
     private final String WORKPLACES_TABLENAME = "Workplaces";
 
     /*
     ----------------------- Constructor -------------------------
      */
 
-    public WorkPlaceDAO (DBController dbController) {
-        this.dbController = dbController;
+    public WorkPlaceDAO (IConnPool iConnPool) {
+        this.iConnPool = iConnPool;
     }
 
     /*
@@ -47,10 +48,12 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
 
 
     @Override
-    public WorkPlaceDTO getWorkPlace(int workplaceID) {
+    public WorkPlaceDTO getWorkPlace(int workplaceID)  throws DALException {
+        Connection c = iConnPool.getConn();
+
         WorkPlaceDTO workPlaceToReturn = new WorkPlaceDTO();
 
-        try (Connection c = dbController.createConnection()) {
+        try {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -65,17 +68,21 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
 
         return workPlaceToReturn;
     }
 
     @Override
-    public List<WorkPlaceDTO> getWorkPlaceList() {
+    public List<WorkPlaceDTO> getWorkPlaceList() throws DALException {
+        Connection c = iConnPool.getConn();
+
         List<WorkPlaceDTO> listToReturn = new ArrayList<>();
 
-        try (Connection c = dbController.createConnection()) {
+        try {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT workplaceID FROM " + WORKPLACES_TABLENAME );
@@ -85,18 +92,22 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
 
         return listToReturn;
     }
 
     @Override
-    public List<WorkPlaceDTO> getWorkPlaceList(int workerID) {
+    public List<WorkPlaceDTO> getWorkPlaceList(int workerID) throws DALException {
+
+        Connection c = iConnPool.getConn();
 
         List<WorkPlaceDTO> listToReturn = new ArrayList<>();
 
-        try (Connection c = dbController.createConnection()) {
+        try {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -107,16 +118,20 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
 
         return listToReturn;
     }
 
     @Override
-    public void createWorkPlace(WorkPlaceDTO workPlaceDTO) {
+    public void createWorkPlace(WorkPlaceDTO workPlaceDTO) throws DALException {
 
-        try (Connection c = dbController.createConnection()) {
+        Connection c = iConnPool.getConn();
+
+        try {
 
             PreparedStatement pStatement = c.prepareStatement(
                     "INSERT INTO " + WORKPLACES_TABLENAME +
@@ -130,14 +145,18 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
             pStatement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
     }
 
     @Override
-    public void updateWorkPlace(WorkPlaceDTO workPlaceDTO) {
+    public void updateWorkPlace(WorkPlaceDTO workPlaceDTO) throws DALException {
 
-        try (Connection c = dbController.createConnection()) {
+        Connection c = iConnPool.getConn();
+
+        try {
 
             PreparedStatement pStatement = c.prepareStatement(
                     "UPDATE " + WORKPLACES_TABLENAME +
@@ -152,14 +171,18 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
             pStatement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
     }
 
     @Override
-    public void deleteWorkPlace(int workplaceID) {
+    public void deleteWorkPlace(int workplaceID) throws DALException {
 
-        try (Connection c = dbController.createConnection()) {
+        Connection c = iConnPool.getConn();
+
+        try {
 
             PreparedStatement pStatement = c.prepareStatement("DELETE FROM " + WORKPLACES_TABLENAME + " WHERE workplaceID = ?");
             pStatement.setInt(1, workplaceID);
@@ -167,7 +190,9 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
             pStatement.executeUpdate();
 
         } catch (SQLException e ) {
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
         }
 
     }

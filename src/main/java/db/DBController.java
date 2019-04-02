@@ -1,6 +1,9 @@
 package db;
 
+import DAO.DALException;
+import DAO.worker.IWorkerDAO;
 import DAO.worker.WorkerDAO;
+import DTOs.worker.WorkerDTO;
 
 import java.sql.*;
 import java.util.TimeZone;
@@ -14,7 +17,7 @@ public class DBController {
     -------------------------- Fields --------------------------
      */
     
-    private IConnPool iConnPool;
+    private IConnPool connPool;
     private IWorkerDAO workerDAO;
 
     
@@ -22,13 +25,13 @@ public class DBController {
     ----------------------- Constructor -------------------------
      */
     
-    public DBController () {
+    public DBController () throws DALException {
 
-        iConnPool = new MySQL_DB();
+        connPool = new MySQL_DB();
 
         TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
 
-        workerDAO = new WorkerDAO(iConnPool);
+        workerDAO = new WorkerDAO(connPool);
 
     }
     
@@ -45,17 +48,9 @@ public class DBController {
     ---------------------- Public Methods -----------------------
      */
 
-    public Connection createConnection() {
+    public int getNextAutoIncremental(String tableName) throws DALException {
 
-        return iConnPool.getConn();
-
-    }
-
-    public int getNextAutoIncremental(String tableName) {
-
-        int nextAIValue;
-
-        try (Connection c = createConnection()) {
+        try (Connection c = connPool.getConn()) {
 
             Statement statement = c.createStatement();
             statement.executeQuery("ANALYZE TABLE " + tableName);
@@ -69,33 +64,36 @@ public class DBController {
 
             resultset.next();
 
-            nextAIValue = resultset.getInt(1);
+            return resultset.getInt(1);
 
         } catch (SQLException e) {
-            nextAIValue = 666;
-            e.printStackTrace();
+            throw new DALException(e.getMessage());
         }
-
-        return nextAIValue;
     }
     
     /*
     ---------------------- Support Methods ----------------------
      */
 
-    private String setTimeZoneFromSQLServer ()  {
-        try (Connection c = createConnection()) {
-
+    private String setTimeZoneFromSQLServer ()  throws DALException{
+        Connection c = connPool.getConn();
+        try {
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT @@system_time_zone");
             resultSet.next();
             return resultSet.getString(1);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return "GMT";
+            throw new DALException(e.getMessage());
+        } finally {
+            connPool.releaseConnection(c);
         }
     }
 
+    public void createWorker (WorkerDTO workerDTO, String password) throws DALException {
+
+        workerDAO.createWorker(workerDTO,password);
+
+    }
 
 }

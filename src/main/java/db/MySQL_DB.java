@@ -4,8 +4,6 @@ import DAO.DALException;
 
 import java.sql.*;
 
-import java.util.TimeZone;
-
 /**
  * @author Rasmus Sander Larsen
  */
