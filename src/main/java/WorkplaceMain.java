@@ -17,7 +17,7 @@ public class WorkplaceMain {
 
         DBController dbController = new DBController(mySQL_db);
 
-        WorkPlaceDAO workPlaceDAO = new WorkPlaceDAO(dbController);
+        WorkPlaceDAO workPlaceDAO = new WorkPlaceDAO(mySQL_db);
 
         WorkPlaceDTO workplace = new WorkPlaceDTO();
         workplace.setWorkerID(2);

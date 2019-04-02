@@ -4,6 +4,7 @@ import DAO.DALException;
 import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 import com.mysql.cj.x.protobuf.MysqlxResultset;
+import db.DBController;
 import db.IConnPool;
 
 import java.sql.*;
@@ -51,9 +52,10 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public WorkerDTO getWorker(String email) throws DALException {
 
-            WorkerDTO workerToReturn = new WorkerDTO();
+        WorkerDTO workerToReturn = new WorkerDTO();
+        Connection c = connPool.getConn();
 
-        try (Connection c = connPool.getConn()) {
+        try  {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
@@ -69,18 +71,21 @@ public class WorkerDAO implements IWorkerDAO {
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
+        } finally {
+            connPool.releaseConnection(c);
         }
 
         return workerToReturn;
     }
 
     @Override
-    public List<WorkerDTO> getWorkerList() throws DALException
-    {
+    public List<WorkerDTO> getWorkerList() throws DALException {
+
+        Connection c = connPool.getConn();
 
         List<WorkerDTO> listToReturn = new ArrayList<>();
 
-        try (Connection c = connPool.getConn()) {
+        try {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT " + Columns.email.toString() + " FROM " + WORKERS_TABLENAME);
@@ -89,30 +94,25 @@ public class WorkerDAO implements IWorkerDAO {
                 listToReturn.add(getWorker(resultSet.getString(Columns.email.toString())));
             }
 
-        }
-        catch (SQLException e) {
-            System.out.println();
+        } catch (SQLException e) {
             throw new DALException(e.getMessage());
-        }
-        catch (NullPointerException e) {
-
-            e.printStackTrace();
-
+        } finally {
+            connPool.releaseConnection(c);
         }
 
         return listToReturn;
     }
 
     @Override
-    public void createWorker(IWorkerDTO workerDTO, String password) throws DALException
-    {
+    public void createWorker(IWorkerDTO workerDTO, String password) throws DALException {
+        Connection c = connPool.getConn();
         // The query to make
         String query =
                 String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
                         WORKERS_TABLENAME, Columns.firstname, Columns.surname, Columns.email,
                         Columns.birthday, Columns.pass);
                 
-        try (Connection c = connPool.getConn()) {
+        try {
 
             PreparedStatement statement = c.prepareStatement(query);
             
@@ -129,12 +129,15 @@ public class WorkerDAO implements IWorkerDAO {
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
+        } finally {
+            connPool.releaseConnection(c);
         }
     }
 
     @Override
-    public int updateWorker(IWorkerDTO worker, String password) throws DALException
-    {
+    public int updateWorker(IWorkerDTO worker, String password) throws DALException {
+        Connection c = connPool.getConn();
+
         int rowsAltered;
         
         // The query to make
@@ -142,7 +145,7 @@ public class WorkerDAO implements IWorkerDAO {
                 WORKERS_TABLENAME, Columns.firstname, Columns.surname, Columns.email, Columns.birthday,
                 Columns.pass, Columns.workerId, worker.getWorkerID());
 
-        try (Connection c = connPool.getConn()) {
+        try {
 
             PreparedStatement pStatement = c.prepareStatement(query);
 
@@ -154,9 +157,10 @@ public class WorkerDAO implements IWorkerDAO {
 
             rowsAltered = pStatement.executeUpdate();
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new DALException(e.getMessage());
+        } finally {
+            connPool.releaseConnection(c);
         }
         
         // Return the number of Rows effected by the update
@@ -164,9 +168,10 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public void deleteWorker(String email) throws DALException
-    {
-        try (Connection c = connPool.getConn()) {
+    public void deleteWorker(String email) throws DALException{
+
+        Connection c = connPool.getConn();
+        try {
 
             PreparedStatement pStatement =
                     c.prepareStatement("DELETE FROM " + WORKERS_TABLENAME + " WHERE " + Columns.email + " = ?");
@@ -177,6 +182,8 @@ public class WorkerDAO implements IWorkerDAO {
 
         } catch (SQLException e ) {
             throw new DALException(e.getMessage());
+        } finally {
+            connPool.releaseConnection(c);
         }
     }
 

@@ -1,13 +1,13 @@
 package db;
 
-import java.sql.*;
+import DAO.DALException;
 
-import java.util.TimeZone;
+import java.sql.*;
 
 /**
  * @author Rasmus Sander Larsen
  */
-public class MySQL_DB {
+public class MySQL_DB implements IConnPool {
 
     /*
     -------------------------- Fields --------------------------
@@ -21,11 +21,7 @@ public class MySQL_DB {
     ----------------------- Constructor -------------------------
      */
 
-    public MySQL_DB () {
-
-        TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
-
-    }
+    public MySQL_DB () {}
 
     /*
     ------------------------ Properties -------------------------
@@ -40,29 +36,28 @@ public class MySQL_DB {
     ---------------------- Public Methods -----------------------
      */
 
-    public Connection createConnection()  {
+    public Connection getConn() throws DALException  {
         try {
             return DriverManager.getConnection("jdbc:mysql://"+url,user, password);
         } catch (SQLException e) {
-            throw new IllegalStateException();
+            throw new DALException(e.getMessage());
         }
     }
-    
+
+    @Override
+    public void releaseConnection(Connection connection) throws DALException {
+        try {
+            if (!connection.isClosed())
+                connection.close();
+        }
+        catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        }
+    }
+
     /*
     ---------------------- Support Methods ----------------------
      */
 
-    private String setTimeZoneFromSQLServer ()  {
-        try (Connection c = createConnection()) {
 
-            Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT @@system_time_zone");
-            resultSet.next();
-            return resultSet.getString(1);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "GMT";
-        }
-    }
 }
