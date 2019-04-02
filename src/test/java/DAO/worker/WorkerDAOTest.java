@@ -1,5 +1,7 @@
-package DAO;
+package DAO.worker;
 
+import DAO.Conn;
+import DAO.DALException;
 import DAO.worker.IWorkerDAO;
 import DAO.worker.WorkerDAO;
 import DTOs.address.Address;
@@ -17,8 +19,6 @@ public class WorkerDAOTest {
 	//region Test Material
 	
 	IConnPool connPool = new Conn();
-
-	DBController dbController = new DBController(connPool);
 	
 	String firstName0 = "Bo"; String surName0 = "Børgesen";
 	String email0 = String.format("%s.%s@hotmail.com", firstName0, surName0);
@@ -33,15 +33,12 @@ public class WorkerDAOTest {
 	
 	IWorkerDTO[] testWorkers = {worker0, worker1};
 
-	public WorkerDAOTest() throws DALException {
-	}
-
 	//endregion
 	
 	@Test
 	public void createWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = dbController.getiWorkerDAO();
+		IWorkerDAO workerDAO = new DBController(connPool).getiWorkerDAO();
 		
 		// Try to Create them
 		for (IWorkerDTO worker : testWorkers)
