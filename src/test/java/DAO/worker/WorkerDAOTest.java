@@ -61,6 +61,11 @@ public class WorkerDAOTest {
 		
 		// Get Alfred from DB
 		IWorkerDTO worker = workerDAO.getWorker("a.rottger_rydahl@live.dk");
+		
+		// Validate data
+		assertEquals(worker.getFirstName(), "Alfred");
+		assertEquals(worker.getSurName(), "Rydahl");
+		assertEquals(worker.getEmail(), "a.rottger_rydahl@live.dk");
 	}
 	
 	@Test
