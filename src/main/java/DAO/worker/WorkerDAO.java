@@ -65,9 +65,6 @@ public class WorkerDAO implements IWorkerDAO {
                 workerToReturn.setEmail(resultSet.getString("email"));
                 workerToReturn.setBirthday(resultSet.getDate("birthday").toLocalDate());
             }
-            
-            // Add all Workplaces
-            workerToReturn.setWorkPlaces( new WorkPlaceDAO(connPool).getWorkPlaceList( workerToReturn.getWorkerID() ) );
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());

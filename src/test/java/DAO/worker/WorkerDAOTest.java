@@ -4,7 +4,6 @@ import DAO.Conn;
 import DAO.DALException;
 import DTOs.address.Address;
 import DTOs.address.IAddress;
-import DTOs.workPlace.IWorkPlaceDTO;
 import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 import db.DBController;
@@ -29,13 +28,13 @@ public class WorkerDAOTest {
 	String firstName0 = "Bo"; String surName0 = "Børgesen";
 	String email0 = String.format("%s.%s@hotmail.com", firstName0, surName0);
 	LocalDate birthday0 = LocalDate.now();
-	IWorkerDTO worker0 = new WorkerDTO(firstName0, surName0, email0, birthday0, null, null);
+	IWorkerDTO worker0 = new WorkerDTO(firstName0, surName0, email0, birthday0, null);
 	
 	String firstName1 = "Geden"; String surName1 = "Johannes";
 	String email1 = String.format("%s.%s@hotmail.com", firstName1, surName1);
 	LocalDate birthday1 = LocalDate.now();
 	IAddress address1 = new Address("Rumænien", "Babuska", "Babuski", 666, 69);
-	IWorkerDTO worker1 = new WorkerDTO(firstName1, surName1, email1, birthday1, address1, null);
+	IWorkerDTO worker1 = new WorkerDTO(firstName1, surName1, email1, birthday1, address1);
 	
 	IWorkerDTO[] testWorkers = {worker0, worker1};
 
@@ -67,7 +66,6 @@ public class WorkerDAOTest {
 		assertEquals(worker.getFirstName(), "Alfred");
 		assertEquals(worker.getSurName(), "Rydahl");
 		assertEquals(worker.getEmail(), "a.rottger_rydahl@live.dk");
-		assertEquals(worker.getWorkPlaces().size(), 3);
 	}
 	
 	@Test

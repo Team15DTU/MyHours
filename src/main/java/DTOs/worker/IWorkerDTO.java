@@ -28,8 +28,5 @@ public interface IWorkerDTO {
 	IAddress getHomeAddress();
 	void setHomeAddress(IAddress homeAddress);
 	
-	List<WorkPlaceDTO> getWorkPlaces();
-	void setWorkPlaces(List<WorkPlaceDTO> workPlaces);
-	
 	int getWorkerID();
 }

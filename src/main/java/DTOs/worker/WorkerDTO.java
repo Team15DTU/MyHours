@@ -22,7 +22,6 @@ public class WorkerDTO implements IWorkerDTO {
     private String email;
     private LocalDate birthday;
     private IAddress homeAddress;
-    private List<WorkPlaceDTO> workPlaces;
     
     /*
     ----------------------- Constructor -------------------------
@@ -30,14 +29,13 @@ public class WorkerDTO implements IWorkerDTO {
     
     public WorkerDTO () {}
     
-    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<WorkPlaceDTO> workPlaces)
+    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress)
     {
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
         this.birthday = birthday;
         this.homeAddress = homeAddress;
-        this.workPlaces = workPlaces;
     }
     
     /*
@@ -93,15 +91,6 @@ public class WorkerDTO implements IWorkerDTO {
     public void setHomeAddress(IAddress homeAddress) {
         this.homeAddress = homeAddress;
     }
-
-    public List<WorkPlaceDTO> getWorkPlaces() {
-        return workPlaces;
-    }
-
-    public void setWorkPlaces(List<WorkPlaceDTO> workPlaces) {
-        this.workPlaces = workPlaces;
-    }
-
 
     // endregion
     
