@@ -1,18 +1,14 @@
 package DAO.worker;
 
 import DAO.DALException;
+import DAO.workPlace.IWorkPlaceDAO;
+import DAO.workPlace.WorkPlaceDAO;
 import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
-import com.mysql.cj.x.protobuf.MysqlxResultset;
-import db.DBController;
 import db.IConnPool;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -50,7 +46,7 @@ public class WorkerDAO implements IWorkerDAO {
      */
 
     @Override
-    public WorkerDTO getWorker(String email) throws DALException
+    public IWorkerDTO getWorker(String email) throws DALException
     {
         WorkerDTO workerToReturn = new WorkerDTO();
         
@@ -58,9 +54,8 @@ public class WorkerDAO implements IWorkerDAO {
         Connection c = connPool.getConn();
 
         try {
-
-            Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery(
+            Statement stmtWorkers = c.createStatement();    // Stmt to get Worker Resultset
+            ResultSet resultSet = stmtWorkers.executeQuery( //TODO: Need to be made preparedstmt
                     "SELECT * FROM " + WORKERS_TABLENAME + " WHERE " + Columns.email.toString() + " = '" + email + "'");
 
             while (resultSet.next()) {
@@ -70,6 +65,9 @@ public class WorkerDAO implements IWorkerDAO {
                 workerToReturn.setEmail(resultSet.getString("email"));
                 workerToReturn.setBirthday(resultSet.getDate("birthday").toLocalDate());
             }
+            
+            // Add all Workplaces
+            workerToReturn.setWorkPlaces( new WorkPlaceDAO(connPool).getWorkPlaceList( workerToReturn.getWorkerID() ) );
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
@@ -82,12 +80,12 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public List<WorkerDTO> getWorkerList() throws DALException
+    public List<IWorkerDTO> getWorkerList() throws DALException
     {
         // Get connection from the ConnPool
         Connection c = connPool.getConn();
 
-        List<WorkerDTO> listToReturn = new ArrayList<>();
+        List<IWorkerDTO> listToReturn = new ArrayList<>();
 
         try {
 

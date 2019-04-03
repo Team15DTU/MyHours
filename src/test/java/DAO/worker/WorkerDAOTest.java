@@ -16,6 +16,7 @@ import org.junit.runners.MethodSorters;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @FixMethodOrder(MethodSorters.JVM)		// Make sure tests run in order
@@ -66,11 +67,40 @@ public class WorkerDAOTest {
 		assertEquals(worker.getFirstName(), "Alfred");
 		assertEquals(worker.getSurName(), "Rydahl");
 		assertEquals(worker.getEmail(), "a.rottger_rydahl@live.dk");
+		assertEquals(worker.getWorkPlaces().size(), 3);
 	}
 	
 	@Test
-	public void getWorkerList()
+	public void getWorkerList() throws DALException
 	{
+		IWorkerDAO workerDAO = new DBController(connPool).getiWorkerDAO();
+		
+		// Create two extra workers - three total
+		for (IWorkerDTO worker : testWorkers)
+			workerDAO.createWorker(worker, "FuckingPassword");
+		
+		// Get list
+		List<IWorkerDTO> workerList = workerDAO.getWorkerList();
+		
+		// Check currently added workers
+		boolean first = false;
+		boolean second = false;
+		for (IWorkerDTO fromDB : workerList)
+		{
+			if (fromDB.getEmail().equals(email0))
+				first = true;
+			
+			else if (fromDB.getEmail().equals(email1))
+				second = true;
+			
+			if (first && second)
+				break;
+		}
+		assertTrue(first); assertTrue(second);
+		
+		// Delete the extra workers
+		for (IWorkerDTO worker : testWorkers)
+			workerDAO.deleteWorker(worker.getEmail());
 	}
 	
 	@Test

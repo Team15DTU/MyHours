@@ -2,7 +2,6 @@ package DAO.worker;
 
 import DAO.DALException;
 import DTOs.worker.IWorkerDTO;
-import DTOs.worker.WorkerDTO;
 
 import java.util.List;
 
@@ -21,14 +20,14 @@ public interface IWorkerDAO {
      * @return a WorkerDTO containing the correct details.
 	 * @exception DALException Will throw a DALException.
      */
-    WorkerDTO getWorker (String email) throws DALException;
+    IWorkerDTO getWorker (String email) throws DALException;
 
     /**
      * This Method returns a List of WorkerDTO objects.
      * @return a List<WorkerDTO>
 	 * @exception DALException Will throw a DALException.
      */
-    List<WorkerDTO> getWorkerList () throws DALException;
+    List<IWorkerDTO> getWorkerList () throws DALException;
 
     /**
      * This Method inserts the details from the inputted WorkerDTO into the MYSQL_DB
