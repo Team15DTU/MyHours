@@ -59,27 +59,8 @@ public class WorkerDAOTest {
 	{
 		IWorkerDAO workerDAO = new DBController(connPool).getiWorkerDAO();
 		
-		// Try to Create them
-		for (IWorkerDTO worker : testWorkers)
-			workerDAO.createWorker(worker, "FuckingPassword");
-		
-		// Validate DB data
-		for (IWorkerDTO worker : testWorkers)
-		{
-			IWorkerDTO fromDB = workerDAO.getWorker(worker.getEmail());
-			
-			assertEquals(fromDB.getFirstName(), worker.getFirstName());
-			assertEquals(fromDB.getSurName(), worker.getSurName());
-			assertEquals(fromDB.getEmail(), worker.getEmail());
-			assertEquals(fromDB.getBirthday(), worker.getBirthday());
-			assertEquals(fromDB.getHomeAddress(), worker.getHomeAddress());
-			for (IWorkPlaceDTO workPlace : worker.getWorkPlaces())
-				assertTrue(fromDB.getWorkPlaces().contains(workPlace));
-		}
-		
-		// Delete again
-		for (IWorkerDTO worker : testWorkers)
-			workerDAO.deleteWorker(worker.getEmail());
+		// Get Alfred from DB
+		IWorkerDTO worker = workerDAO.getWorker("a.rottger_rydahl@live.dk");
 	}
 	
 	@Test
