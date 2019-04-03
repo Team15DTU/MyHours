@@ -1,8 +1,7 @@
 package DTOs.worker;
 
 import DTOs.address.IAddress;
-import DTOs.workPlace.WorkPlaceDTO;
-import DTOs.address.Address;
+import DTOs.workPlace.IWorkPlaceDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +21,7 @@ public class WorkerDTO implements IWorkerDTO {
     private String email;
     private LocalDate birthday;
     private IAddress homeAddress;
+    private List<IWorkPlaceDTO> workPlaces;
     
     /*
     ----------------------- Constructor -------------------------
@@ -29,13 +29,14 @@ public class WorkerDTO implements IWorkerDTO {
     
     public WorkerDTO () {}
     
-    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress)
+    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IWorkPlaceDTO> workPlaces)
     {
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
         this.birthday = birthday;
         this.homeAddress = homeAddress;
+        this.workPlaces = workPlaces;
     }
     
     /*
@@ -91,7 +92,13 @@ public class WorkerDTO implements IWorkerDTO {
     public void setHomeAddress(IAddress homeAddress) {
         this.homeAddress = homeAddress;
     }
-
+    
+    @Override
+    public List<IWorkPlaceDTO> getWorkPlaces() { return workPlaces; }
+    
+    @Override
+    public void setWorkPlaces(List<IWorkPlaceDTO> workPlaces) { this.workPlaces = workPlaces; }
+    
     // endregion
     
     /*

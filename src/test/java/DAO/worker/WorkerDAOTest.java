@@ -12,10 +12,11 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import static org.junit.Assert.*;
-
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 @FixMethodOrder(MethodSorters.JVM)		// Make sure tests run in order
@@ -28,13 +29,13 @@ public class WorkerDAOTest {
 	String firstName0 = "Bo"; String surName0 = "Børgesen";
 	String email0 = String.format("%s.%s@hotmail.com", firstName0, surName0);
 	LocalDate birthday0 = LocalDate.now();
-	IWorkerDTO worker0 = new WorkerDTO(firstName0, surName0, email0, birthday0, null);
+	IWorkerDTO worker0 = new WorkerDTO(firstName0, surName0, email0, birthday0, null, null);
 	
 	String firstName1 = "Geden"; String surName1 = "Johannes";
 	String email1 = String.format("%s.%s@hotmail.com", firstName1, surName1);
 	LocalDate birthday1 = LocalDate.now();
 	IAddress address1 = new Address("Rumænien", "Babuska", "Babuski", 666, 69);
-	IWorkerDTO worker1 = new WorkerDTO(firstName1, surName1, email1, birthday1, address1);
+	IWorkerDTO worker1 = new WorkerDTO(firstName1, surName1, email1, birthday1, address1, null);
 	
 	IWorkerDTO[] testWorkers = {worker0, worker1};
 
@@ -66,6 +67,9 @@ public class WorkerDAOTest {
 		assertEquals(worker.getFirstName(), "Alfred");
 		assertEquals(worker.getSurName(), "Rydahl");
 		assertEquals(worker.getEmail(), "a.rottger_rydahl@live.dk");
+		//TODO: Check WorkPlaces
+		//TODO: Check Jobs
+		//TODO: Check Shifts
 	}
 	
 	@Test
