@@ -9,16 +9,19 @@ import DAO.workPlace.IWorkPlaceDAO;
 import DAO.workPlace.WorkPlaceDAO;
 import DAO.worker.IWorkerDAO;
 import DAO.worker.WorkerDAO;
+import DTOs.job.IJobDTO;
+import DTOs.shift.IShiftDTO;
+import DTOs.workPlace.IWorkPlaceDTO;
 import DTOs.worker.IWorkerDTO;
-import DTOs.worker.WorkerDTO;
 
 import java.sql.*;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
  * @author Rasmus Sander Larsen
  */
-public class DBController {
+public class DBController implements IDBController {
 
     /*
     -------------------------- Fields --------------------------
@@ -124,7 +127,7 @@ public class DBController {
     ---------------------- Support Methods ----------------------
      */
 
-    private String setTimeZoneFromSQLServer ()  throws DALException{
+    public String setTimeZoneFromSQLServer ()  throws DALException{
         Connection c = iConnPool.getConn();
         try {
             Statement statement = c.createStatement();
@@ -139,15 +142,40 @@ public class DBController {
         }
     }
 
-    public void createWorker (WorkerDTO workerDTO, String password) throws DALException {
+    public void createWorker (IWorkerDTO workerDTO, String password) throws DALException {
 
         iWorkerDAO.createWorker(workerDTO,password);
 
     }
 
-    public IWorkerDTO getWorkerDTO (String email) throws DALException {
+    /**
+     * This methods returns a FULL IWorkerDTO Object.
+     * Including:
+     * 1) A list of the workers Workplaces.
+     * 2) Each of those Workplaces contains a list of its Jobs
+     * 3) Each of those Jobs contains a list of its Shifts
+     * @param email We find the Worker, from its email as it is unique
+     * @return A IWorkerDTO
+     * @throws DALException Will throw a DALException.
+     */
+    public IWorkerDTO getIWorkerDTO (String email) throws DALException {
+        // Gets the IWorkerDTO
         IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
-        workerDTOToReturn.setWorkPlaces(iWorkPlaceDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
+        // Sets WorkerDTOs List<IWorkplaceDTO> workplaces via WorkplaceDAO.
+        workerDTOToReturn.setIWorkPlaces(iWorkPlaceDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
+        // Sets WorkplaceDTOs List<IJobDTO> jobList via JobDAO, for each WorkplaceDTO in Workers List<WorkplaceDTO>
+        for (IWorkPlaceDTO workPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
+            List<IJobDTO> iJobDToList = iJobDAO.getIJobList(workPlaceDTO.getWorkplaceID());
+            workPlaceDTO.setJobDTOList(iJobDToList);
+        }
+        // Sets JobDTOs List<IShiftDTO> shiftList via ShiftDAO, for each IJobDTO in each IWorkplaceDTO in Workers List<WorkplaceDTO>
+        for (IWorkPlaceDTO iworkPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
+            for (IJobDTO iJobDTO : iworkPlaceDTO.getJobDTOList()) {
+                List<IShiftDTO> iShiftDTOList = iShiftDAO.getIShiftList(iJobDTO.getJobID());
+                iJobDTO.setiShiftDTOList(iShiftDTOList);
+            }
+        }
+
         return workerDTOToReturn;
     }
 

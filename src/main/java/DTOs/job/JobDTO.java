@@ -1,5 +1,6 @@
 package DTOs.job;
 
+import DTOs.shift.IShiftDTO;
 import DTOs.shift.ShiftDTO;
 import DTOs.ruleSet.RuleSet;
 import DTOs.workPlace.WorkPlaceDTO;
@@ -24,7 +25,7 @@ public class JobDTO implements IJobDTO {
     private double stdSalary;
     private Address jobAddress;
     private RuleSet ruleSet;
-    private List<ShiftDTO> shifts;
+    private List<IShiftDTO> iShiftDTOList;
     
     /*
     ----------------------- Constructor -------------------------
@@ -95,14 +96,13 @@ public class JobDTO implements IJobDTO {
         this.ruleSet = ruleSet;
     }
 
-    public List<ShiftDTO> getShifts() {
-        return shifts;
+    public List<IShiftDTO> getiShiftDTOList() {
+        return iShiftDTOList;
     }
 
-    public void setShifts(List<ShiftDTO> shifts) {
-        this.shifts = shifts;
+    public void setiShiftDTOList(List<IShiftDTO> iShiftDTOList) {
+        this.iShiftDTOList = iShiftDTOList;
     }
-
 
     // </editor-folder>
     

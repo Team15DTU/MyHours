@@ -94,10 +94,10 @@ public class WorkerDTO implements IWorkerDTO {
     }
     
     @Override
-    public List<IWorkPlaceDTO> getWorkPlaces() { return workPlaces; }
+    public List<IWorkPlaceDTO> getIWorkPlaces() { return workPlaces; }
     
     @Override
-    public void setWorkPlaces(List<IWorkPlaceDTO> workPlaces) { this.workPlaces = workPlaces; }
+    public void setIWorkPlaces(List<IWorkPlaceDTO> workPlaces) { this.workPlaces = workPlaces; }
     
     // endregion
     

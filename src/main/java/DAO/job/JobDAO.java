@@ -123,6 +123,33 @@ public class JobDAO implements IJobDAO {
     }
 
     @Override
+    public List<IJobDTO> getIJobList(int workplaceID) throws DALException {
+
+        Connection c = iConnPool.getConn();
+
+        List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
+
+        try {
+
+            Statement statement = c.createStatement();
+            //TODO, nedståend skal laves smartere!
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT " + JobTableColumns.jobID + " FROM " + JOBS_TABLENAME + " WHERE "+ JobTableColumns.workplaceID + " = " + workplaceID );
+
+            while (resultSet.next()) {
+                jobDTOListToReturn.add(getIJob(resultSet.getInt(JobTableColumns.jobID.toString())));
+            }
+
+        } catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
+        }
+
+        return jobDTOListToReturn;
+    }
+
+    @Override
     public List<IJobDTO> getIJobList(String condition) throws DALException {
 
         Connection c = iConnPool.getConn();
