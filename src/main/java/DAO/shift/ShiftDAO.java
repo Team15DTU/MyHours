@@ -1,5 +1,6 @@
 package DAO.shift;
 
+import DTOs.shift.IShiftDTO;
 import DTOs.shift.ShiftDTO;
 import DTOs.worker.WorkerDTO;
 import db.IConnPool;
@@ -41,37 +42,37 @@ public class ShiftDAO implements IShiftDAO {
      */
 
     @Override
-    public ShiftDTO getShift(int userID, LocalDateTime dateAndTime) {
+    public IShiftDTO getIShift(int userID, LocalDateTime dateAndTime) {
         return null;
     }
 
     @Override
-    public List<ShiftDTO> getShiftList() {
+    public List<IShiftDTO> getIShiftList() {
         return null;
     }
 
     @Override
-    public List<ShiftDTO> getShiftList(int jobID) {
+    public List<IShiftDTO> getIShiftList(int jobID) {
         return null;
     }
 
     @Override
-    public List<ShiftDTO> getShiftList(int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime) {
+    public List<IShiftDTO> getIShiftList(int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime) {
         return null;
     }
 
     @Override
-    public void createShift(ShiftDTO shift) {
+    public void createIShift(IShiftDTO shift) {
 
     }
 
     @Override
-    public void updateShift(ShiftDTO shift) {
+    public void updateIShift(IShiftDTO shift) {
 
     }
 
     @Override
-    public void deleteShift(int userID, LocalDateTime dateAndTime) {
+    public void deleteIShift(int userID, LocalDateTime dateAndTime) {
 
     }
 
