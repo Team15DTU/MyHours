@@ -2,7 +2,6 @@ package DTOs.job;
 
 import DTOs.shift.ShiftDTO;
 import DTOs.ruleSet.RuleSet;
-import DTOs.workPlace.WorkPlaceDTO;
 import DTOs.address.Address;
 
 import java.time.LocalDate;
@@ -24,14 +23,32 @@ public class JobDTO {
     private double stdSalary;
     private Address jobAddress;
     private RuleSet ruleSet;
-    private List<ShiftDTO> shifts;
+    private List<ShiftDTO> shiftList;
     
     /*
     ----------------------- Constructor -------------------------
      */
     
-    public JobDTO () {
+    public JobDTO () {}
+    public JobDTO (int workplaceID, String jobName, double stdSalary) {
+        this.workplaceID = workplaceID;
+        this.jobName = jobName;
+        this.stdSalary = stdSalary;
+        hireDate = null;
+        jobAddress = null;
+        ruleSet = null;
+        shiftList = null;
     }
+    public JobDTO (int workplaceID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, RuleSet ruleSet, List<ShiftDTO> shiftList) {
+        this.workplaceID = workplaceID;
+        this.jobName = jobName;
+        this.stdSalary = stdSalary;
+        this.hireDate = hireDate;
+        this.jobAddress = jobAddress;
+        this.ruleSet = ruleSet;
+        this.shiftList = shiftList;
+    }
+
     
     /*
     ------------------------ Properties -------------------------
@@ -95,12 +112,12 @@ public class JobDTO {
         this.ruleSet = ruleSet;
     }
 
-    public List<ShiftDTO> getShifts() {
-        return shifts;
+    public List<ShiftDTO> getShiftList() {
+        return shiftList;
     }
 
-    public void setShifts(List<ShiftDTO> shifts) {
-        this.shifts = shifts;
+    public void setShiftList(List<ShiftDTO> shiftList) {
+        this.shiftList = shiftList;
     }
 
 

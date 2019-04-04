@@ -1,6 +1,7 @@
 package DTOs.workPlace;
 
 import DTOs.job.JobDTO;
+import DTOs.worker.WorkerDTO;
 
 import java.awt.*;
 import java.util.List;
@@ -26,6 +27,21 @@ public class WorkPlaceDTO implements IWorkPlaceDTO {
      */
     
     public WorkPlaceDTO () {}
+
+    public WorkPlaceDTO (int workerID, String name) {
+        this.workerID = workerID;
+        this.name = name;
+        color = null;
+        jobList = null;
+    }
+
+    public WorkPlaceDTO (int workerID, String name, Color color, int telephone, List<JobDTO> jobList) {
+        this.workerID = workerID;
+        this.name = name;
+        this.color = color;
+        this.telephone = telephone;
+        this.jobList = jobList;
+    }
     
     /*
     ------------------------ Properties -------------------------

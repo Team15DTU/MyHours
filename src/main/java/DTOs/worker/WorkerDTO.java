@@ -28,7 +28,16 @@ public class WorkerDTO implements IWorkerDTO {
      */
     
     public WorkerDTO () {}
-    
+
+    public WorkerDTO (String firstName, String surName, String email) {
+        this.firstName = firstName;
+        this.surName = surName;
+        this.email = email;
+        birthday = null;
+        homeAddress = null;
+        workPlaces = null;
+    }
+
     public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IWorkPlaceDTO> workPlaces)
     {
         this.firstName = firstName;
