@@ -8,10 +8,18 @@ import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 import db.DBController;
 import db.IConnPool;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+
+@FixMethodOrder(MethodSorters.JVM)		// Make sure tests run in order
 public class WorkerDAOTest {
 	
 	//region Test Material
@@ -48,14 +56,53 @@ public class WorkerDAOTest {
 	}
 	
 	@Test
-	public void getWorker()
+	public void getWorker() throws DALException
 	{
-	
+		IWorkerDAO workerDAO = new DBController(connPool).getiWorkerDAO();
+		
+		// Get Alfred from DB
+		IWorkerDTO worker = workerDAO.getWorker("a.rottger_rydahl@live.dk");
+		
+		// Validate data
+		assertEquals(worker.getFirstName(), "Alfred");
+		assertEquals(worker.getSurName(), "Rydahl");
+		assertEquals(worker.getEmail(), "a.rottger_rydahl@live.dk");
+		//TODO: Check WorkPlaces
+		//TODO: Check Jobs
+		//TODO: Check Shifts
 	}
 	
 	@Test
-	public void getWorkerList()
+	public void getWorkerList() throws DALException
 	{
+		IWorkerDAO workerDAO = new DBController(connPool).getiWorkerDAO();
+		
+		// Create two extra workers - three total
+		for (IWorkerDTO worker : testWorkers)
+			workerDAO.createWorker(worker, "FuckingPassword");
+		
+		// Get list
+		List<IWorkerDTO> workerList = workerDAO.getWorkerList();
+		
+		// Check currently added workers
+		boolean first = false;
+		boolean second = false;
+		for (IWorkerDTO fromDB : workerList)
+		{
+			if (fromDB.getEmail().equals(email0))
+				first = true;
+			
+			else if (fromDB.getEmail().equals(email1))
+				second = true;
+			
+			if (first && second)
+				break;
+		}
+		assertTrue(first); assertTrue(second);
+		
+		// Delete the extra workers
+		for (IWorkerDTO worker : testWorkers)
+			workerDAO.deleteWorker(worker.getEmail());
 	}
 	
 	@Test
