@@ -9,6 +9,7 @@ import DAO.workPlace.IWorkPlaceDAO;
 import DAO.workPlace.WorkPlaceDAO;
 import DAO.worker.IWorkerDAO;
 import DAO.worker.WorkerDAO;
+import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 
 import java.sql.*;
@@ -142,6 +143,12 @@ public class DBController {
 
         iWorkerDAO.createWorker(workerDTO,password);
 
+    }
+
+    public IWorkerDTO getWorkerDTO (String email) throws DALException {
+        IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
+        workerDTOToReturn.setWorkPlaces(iWorkPlaceDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
+        return workerDTOToReturn;
     }
 
 }

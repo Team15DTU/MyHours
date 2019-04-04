@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
-public class JobDTO {
+public class JobDTO implements IJobDTO {
 
     /*
     -------------------------- Fields --------------------------

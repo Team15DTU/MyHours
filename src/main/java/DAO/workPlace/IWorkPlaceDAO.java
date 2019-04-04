@@ -1,6 +1,7 @@
 package DAO.workPlace;
 
 import DAO.DALException;
+import DTOs.workPlace.IWorkPlaceDTO;
 import DTOs.workPlace.WorkPlaceDTO;
 import DTOs.worker.WorkerDTO;
 
@@ -16,21 +17,21 @@ public interface IWorkPlaceDAO {
      */
 
     // returns a WorkPlaceDTO from an workplaceID
-    WorkPlaceDTO getWorkPlace (int workplaceID) throws DALException;
+    IWorkPlaceDTO getIWorkPlace(int workplaceID) throws DALException;
 
     // Returns a List of ALL WorkPlaceDTO object.
-    List<WorkPlaceDTO> getWorkPlaceList () throws DALException;
+    List<IWorkPlaceDTO> getIWorkPlaceList() throws DALException;
 
     // Returns a List of ONE workers WorkPlaceDTO object.
-    List<WorkPlaceDTO> getWorkPlaceList (int workerID) throws DALException;
+    List<IWorkPlaceDTO> getIWorkPlaceList(int workerID) throws DALException;
 
     // Inserts the data from a WorkPlaceDTO into DB.
-    void createWorkPlace (WorkPlaceDTO workPlaceDTO) throws DALException;
+    void createIWorkPlace(IWorkPlaceDTO workPlaceDTO) throws DALException;
 
     // Updates the data on a workPlace row in the DB.
-    void updateWorkPlace (WorkPlaceDTO workPlaceDTO) throws DALException;
+    void updateIWorkPlace(IWorkPlaceDTO workPlaceDTO) throws DALException;
 
     // Deletes all information about one workPlace, from an UserID and workPlace.Name TODO: Maybe use workPlaceID?.
-    void deleteWorkPlace (int workplaceID) throws DALException;
+    void deleteIWorkPlace(int workplaceID) throws DALException;
 
 }

@@ -1,12 +1,14 @@
 package DTOs.shift;
 
+import DAO.shift.IShiftDAO;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
  * @author Rasmus Sander Larsen
  */
-public class ShiftDTO {
+public class ShiftDTO implements IShiftDTO {
 
     /*
     -------------------------- Fields --------------------------
