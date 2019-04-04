@@ -1,6 +1,7 @@
 package DAO.workPlace;
 
 import DAO.DALException;
+import DTOs.workPlace.IWorkPlaceDTO;
 import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
 import db.IConnPool;
@@ -33,7 +34,7 @@ public class WorkPlaceDAOTest {
     private int workplaceNo1_telephone = 12345678;
     private int workplaceNo1_workplaceID_assigned;
 
-    private WorkPlaceDTO workPlaceDTONo1 = new WorkPlaceDTO();
+    private IWorkPlaceDTO workPlaceDTONo1 = new WorkPlaceDTO();
 
     // endregion
 
@@ -45,7 +46,7 @@ public class WorkPlaceDAOTest {
     private int workplaceNo2_telephone = 87654321;
     int workplaceNo2_workplaceID_assigned;
 
-    private WorkPlaceDTO workPlaceDTONo2 = new WorkPlaceDTO();
+    private IWorkPlaceDTO workPlaceDTONo2 = new WorkPlaceDTO();
 
     // endregion
 
@@ -80,7 +81,7 @@ public class WorkPlaceDAOTest {
 
         iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo1);
 
-        WorkPlaceDTO returnedWorkplaceDTOOfNo1 = iWorkPlaceDAO.getIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        IWorkPlaceDTO returnedWorkplaceDTOOfNo1 = iWorkPlaceDAO.getIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
         assertEquals(returnedWorkplaceDTOOfNo1.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo1);
         assertEquals(returnedWorkplaceDTOOfNo1.getWorkerID(), workplaceNo1_workerID);
@@ -109,7 +110,7 @@ public class WorkPlaceDAOTest {
 
         // Test of getIWorkPlaceList()
 
-        List<WorkPlaceDTO> workPlaceDTOList;
+        List<IWorkPlaceDTO> workPlaceDTOList;
 
         workPlaceDTOList= iWorkPlaceDAO.getIWorkPlaceList();
 
@@ -137,7 +138,7 @@ public class WorkPlaceDAOTest {
 
         // Test of getIWorkPlaceList(int workerID)
 
-        List<WorkPlaceDTO> workPlaceDTOListFromWorkerID;
+        List<IWorkPlaceDTO> workPlaceDTOListFromWorkerID;
 
         workPlaceDTOListFromWorkerID = iWorkPlaceDAO.getIWorkPlaceList(workplaceNo1_workerID);
 
@@ -157,7 +158,7 @@ public class WorkPlaceDAOTest {
 
         iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo2);
 
-        WorkPlaceDTO returnedWorkplaceDTOOfNo2 = iWorkPlaceDAO.getIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        IWorkPlaceDTO returnedWorkplaceDTOOfNo2 = iWorkPlaceDAO.getIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
 
         assertEquals(returnedWorkplaceDTOOfNo2.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo2);
         assertEquals(returnedWorkplaceDTOOfNo2.getWorkerID(), workplaceNo2_workerID);
@@ -178,7 +179,7 @@ public class WorkPlaceDAOTest {
 
         iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo1);
 
-        WorkPlaceDTO workplaceDTOOfNo1ToUpdate = iWorkPlaceDAO.getIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        IWorkPlaceDTO workplaceDTOOfNo1ToUpdate = iWorkPlaceDAO.getIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
         // Values of WorkplaceDTO No. 2 inserted into "workplaceDTOOfNo1ToUpdate".
 
