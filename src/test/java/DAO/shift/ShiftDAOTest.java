@@ -7,36 +7,36 @@ import static org.junit.Assert.*;
 public class ShiftDAOTest {
 	
 	@Test
-	public void getShift()
+	public void getIShift()
 	{
 	}
 	
 	@Test
-	public void getShiftList()
+	public void getIShiftList()
 	{
 	}
 	
 	@Test
-	public void getShiftList1()
+	public void getIShiftList1()
 	{
 	}
 	
 	@Test
-	public void getShiftList2()
+	public void getIShiftList2()
 	{
 	}
 	
 	@Test
-	public void createShift()
+	public void createIShift()
 	{
 	}
 	
 	@Test
-	public void updateShift()
+	public void updateIShift()
 	{
 	}
 	
 	@Test
-	public void deleteShift()
+	public void deleteIShift()
 	{}
 }
