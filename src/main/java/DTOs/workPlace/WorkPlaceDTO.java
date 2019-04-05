@@ -1,8 +1,7 @@
 package DTOs.workPlace;
 
 import DTOs.job.IJobDTO;
-import DTOs.job.JobDTO;
-import DTOs.worker.WorkerDTO;
+
 
 import java.awt.*;
 import java.util.List;

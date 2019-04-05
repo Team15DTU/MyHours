@@ -2,8 +2,6 @@ package DAO.workPlace;
 
 import DAO.DALException;
 import DTOs.workPlace.IWorkPlaceDTO;
-import DTOs.workPlace.WorkPlaceDTO;
-import DTOs.worker.WorkerDTO;
 
 import java.util.List;
 

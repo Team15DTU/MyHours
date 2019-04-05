@@ -29,4 +29,5 @@ public interface IWorkerDTO {
 	void setIWorkPlaces(List<IWorkPlaceDTO> workPlaces);
 	
 	int getWorkerID();
+	void setWorkerID(int workerID);
 }
