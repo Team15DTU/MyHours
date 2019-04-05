@@ -48,9 +48,9 @@ public interface IJobDTO {
 
     void setRuleSet(RuleSet ruleSet);
 
-    List<IShiftDTO> getiShiftDTOList();
+    List<IShiftDTO> getIShiftDTOList();
 
-    void setiShiftDTOList(List<IShiftDTO> iShiftDTOList);
+    void setIShiftDTOList(List<IShiftDTO> iShiftDTOList);
 
 
     // </editor-folder>

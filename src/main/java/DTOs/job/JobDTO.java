@@ -32,6 +32,7 @@ public class JobDTO implements IJobDTO {
      */
     
     public JobDTO () {}
+
     public JobDTO (int workplaceID, String jobName, double stdSalary) {
         this.workplaceID = workplaceID;
         this.jobName = jobName;
@@ -41,16 +42,16 @@ public class JobDTO implements IJobDTO {
         ruleSet = null;
         iShiftDTOList = null;
     }
-    public JobDTO (int workplaceID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, RuleSet ruleSet, List<ShiftDTO> shiftList) {
+
+    public JobDTO (int workplaceID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, RuleSet ruleSet, List<IShiftDTO> iShiftDTOList) {
         this.workplaceID = workplaceID;
         this.jobName = jobName;
         this.stdSalary = stdSalary;
         this.hireDate = hireDate;
         this.jobAddress = jobAddress;
         this.ruleSet = ruleSet;
-        this.shiftList = shiftList;
+        this.iShiftDTOList = iShiftDTOList;
     }
-
 
     /*
     ------------------------ Properties -------------------------
@@ -114,14 +115,13 @@ public class JobDTO implements IJobDTO {
         this.ruleSet = ruleSet;
     }
 
-    public List<IShiftDTO> getiShiftDTOList() {
+    public List<IShiftDTO> getIShiftDTOList() {
         return iShiftDTOList;
     }
 
-    public void setiShiftDTOList(List<IShiftDTO> iShiftDTOList) {
+    public void setIShiftDTOList(List<IShiftDTO> iShiftDTOList) {
         this.iShiftDTOList = iShiftDTOList;
     }
-
 
     // </editor-folder>
     
