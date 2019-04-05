@@ -1,7 +1,5 @@
 package DTOs.shift;
 
-import DAO.shift.IShiftDAO;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -25,7 +23,22 @@ public class ShiftDTO implements IShiftDTO {
      */
     
     public ShiftDTO () {}
-    
+
+    public ShiftDTO (LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID) {
+        this.startingDateTime = startingDateTime;
+        this.endingDateTime = endingDateTime;
+        this.jobID = jobID;
+
+    }
+
+    public ShiftDTO (LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID, Duration pause) {
+        this.startingDateTime = startingDateTime;
+        this.endingDateTime = endingDateTime;
+        this.jobID = jobID;
+        this.pause = pause;
+
+    }
+
     /*
     ------------------------ Properties -------------------------
      */
