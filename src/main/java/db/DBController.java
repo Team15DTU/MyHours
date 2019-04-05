@@ -13,6 +13,8 @@ import DTOs.job.IJobDTO;
 import DTOs.shift.IShiftDTO;
 import DTOs.workPlace.IWorkPlaceDTO;
 import DTOs.worker.IWorkerDTO;
+import cache.Cache;
+import cache.ICache;
 
 import java.sql.*;
 import java.util.List;
@@ -32,6 +34,7 @@ public class DBController implements IDBController {
     private IWorkPlaceDAO iWorkPlaceDAO;
     private IJobDAO iJobDAO;
     private IShiftDAO iShiftDAO;
+    private ICache iCache;
 
     
     /*
@@ -48,6 +51,7 @@ public class DBController implements IDBController {
         iWorkPlaceDAO = new WorkPlaceDAO(this.iConnPool);
         iJobDAO = new JobDAO(this.iConnPool);
         iShiftDAO = new ShiftDAO(this.iConnPool);
+        iCache = new Cache();
 
     }
     
@@ -122,7 +126,29 @@ public class DBController implements IDBController {
             iConnPool.releaseConnection(c);
         }
     }
-    
+
+    /**
+     * This methods returns a FULL IWorkerDTO Object.
+     * Including:
+     * 1) A list of the workers Workplaces.
+     * 2) Each of those Workplaces contains a list of its Jobs
+     * 3) Each of those Jobs contains a list of its Shifts
+     * @param email We find the Worker, from its email as it is unique
+     * @return A IWorkerDTO
+     * @throws DALException Will throw a DALException.
+     */
+    public IWorkerDTO getIWorkerDTO (String email) throws DALException {
+
+        IWorkerDTO iWorkerDTOToReturn = iCache.getIWorkerDTOFromCache(email);
+        if (iWorkerDTOToReturn == null) {
+            iWorkerDTOToReturn = createFullIWorkerDTO(email);
+            //TODO: Add threading for method below;
+            iCache.addIWorkerDTOToCache(iWorkerDTOToReturn);
+        }
+        return iWorkerDTOToReturn;
+    }
+
+
     /*
     ---------------------- Support Methods ----------------------
      */
@@ -158,7 +184,8 @@ public class DBController implements IDBController {
      * @return A IWorkerDTO
      * @throws DALException Will throw a DALException.
      */
-    public IWorkerDTO getIWorkerDTO (String email) throws DALException {
+    private IWorkerDTO createFullIWorkerDTO (String email) throws DALException {
+
         // Gets the IWorkerDTO
         IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
         // Sets WorkerDTOs List<IWorkplaceDTO> workplaces via WorkplaceDAO.
