@@ -166,13 +166,13 @@ public class DBController implements IDBController {
         // Sets WorkplaceDTOs List<IJobDTO> jobList via JobDAO, for each WorkplaceDTO in Workers List<WorkplaceDTO>
         for (IWorkPlaceDTO workPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
             List<IJobDTO> iJobDToList = iJobDAO.getIJobList(workPlaceDTO.getWorkplaceID());
-            workPlaceDTO.setJobDTOList(iJobDToList);
+            workPlaceDTO.setIJobList(iJobDToList);
         }
         // Sets JobDTOs List<IShiftDTO> shiftList via ShiftDAO, for each IJobDTO in each IWorkplaceDTO in Workers List<WorkplaceDTO>
         for (IWorkPlaceDTO iworkPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
-            for (IJobDTO iJobDTO : iworkPlaceDTO.getJobDTOList()) {
+            for (IJobDTO iJobDTO : iworkPlaceDTO.getIJobList()) {
                 List<IShiftDTO> iShiftDTOList = iShiftDAO.getIShiftList(iJobDTO.getJobID());
-                iJobDTO.setiShiftDTOList(iShiftDTOList);
+                iJobDTO.setIShiftDTOList(iShiftDTOList);
             }
         }
 

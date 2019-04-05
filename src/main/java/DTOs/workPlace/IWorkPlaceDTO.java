@@ -25,8 +25,8 @@ public interface IWorkPlaceDTO {
 	int getTelephone();
 	void setTelephone(int telephone);
 	
-	java.util.List<IJobDTO> getJobDTOList();
-	void setJobDTOList(List<IJobDTO> jobDTOList);
+	java.util.List<IJobDTO> getIJobList();
+	void setIJobList(List<IJobDTO> iJobList);
 
 	
 }

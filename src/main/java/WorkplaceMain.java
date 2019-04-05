@@ -25,7 +25,7 @@ public class WorkplaceMain {
         workplace.setColor(Color.decode("#"+"FAEBD7"));
         workplace.setTelephone(12345678);
 
-        workPlaceDAO.createWorkPlace(workplace);
+        workPlaceDAO.createIWorkPlace(workplace);
         //System.out.println(workplace);
 
        // System.out.println(workPlaceDAO.getIWorkPlace(2));
