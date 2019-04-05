@@ -27,12 +27,19 @@ public interface IJobDAO {
     List<IJobDTO> getIJobList () throws DALException;
 
     /**
+     * This method returns a List of JobDTOs. This list should contain all jobs existing in the DB.
+     * @return A List of JobDTO objects.
+     * @throws DALException Will throw a DALException.
+     */
+    List<IJobDTO> getIJobList (int workplaceID) throws DALException;
+
+    /**
      * This method returns a List of JobDTOs matching the inputted condition.
-     * @param condition This sting will be inserted after the "WHERE" clause in the "SELECT * FROM" query.
+     * @param specialCondition This sting will be inserted after the "WHERE" clause in the "SELECT * FROM" query.
      * @return A List object of JobDTO objects matching the inputted Condition.
      * @throws DALException Will throw a DALException.
      */
-    List<IJobDTO> getIJobList (String condition) throws DALException;
+    List<IJobDTO> getIJobList (String specialCondition) throws DALException;
 
     /**
      * This method inserts the details from the inputted JobDTO object into the DB.

@@ -1,5 +1,6 @@
 package DTOs.workPlace;
 
+import DTOs.job.IJobDTO;
 import DTOs.job.JobDTO;
 
 import java.awt.*;
@@ -24,8 +25,8 @@ public interface IWorkPlaceDTO {
 	int getTelephone();
 	void setTelephone(int telephone);
 	
-	java.util.List<JobDTO> getJobDTOList();
-	void setJobDTOList(List<JobDTO> jobDTOList);
+	java.util.List<IJobDTO> getJobDTOList();
+	void setJobDTOList(List<IJobDTO> jobDTOList);
 
 	
 }
