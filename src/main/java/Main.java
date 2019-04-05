@@ -2,6 +2,8 @@ import DAO.DALException;
 import DAO.worker.WorkerDAO;
 import db.DBController;
 import DTOs.worker.WorkerDTO;
+import db.IConnPool;
+import db.IDBController;
 import db.MySQL_DB;
 
 import java.sql.Date;
@@ -14,40 +16,11 @@ public class Main {
 
     public static void main(String[] args) throws DALException {
 
+        // This is the MySQL DB that the program is running on.
+        IConnPool iConnPool = new MySQL_DB();
 
-        /*
-        MySQL_DB mySQL_db = new MySQL_DB();
-
-        DBController dbController = new DBController(mySQL_db);
-
-        WorkerDTO testWorkerDTO = new WorkerDTO();
-        testWorkerDTO.setFirstName("Test1");
-        testWorkerDTO.setSurName("Test1");
-        //TODO: Mailen skal ændres hver gang programmet køres, fordi mailen er primaryKey og derfor unik!
-        testWorkerDTO.setEmail("test1@testWorkerDTO.dk");
-        testWorkerDTO.setBirthday(LocalDate.parse("1992-01-06"));
-        System.out.println(testWorkerDTO);
-
-        WorkerDAO workerDAO = new WorkerDAO(mySQL_db);
-        // workerDAO.createWorker(testWorkerDTO,"testtest");
-
-        WorkerDTO beforeUpdate = workerDAO.getWorker("test1@testWorkerDTO.dk");
-        System.out.println("BEFORE:");
-        System.out.println(beforeUpdate);
-        beforeUpdate.setFirstName("Mikkel");
-        workerDAO.updateWorker(beforeUpdate,"testtest");
-
-        System.out.println("AFTER:");
-        System.out.println(workerDAO.getWorker("test1@testWorkerDTO.dk"));
-
-        System.out.println("List size = " + workerDAO.getWorkerList().size());
-
-        workerDAO.deleteWorker("test1@testWorkerDTO.dk");
-
-        System.out.println("List size = " + workerDAO.getWorkerList().size());
-
-        */
-
+        // This is the MySQL DB Controller which accesses the DB an executes all actions.
+        IDBController idbController = new DBController(iConnPool);
 
     }
 }

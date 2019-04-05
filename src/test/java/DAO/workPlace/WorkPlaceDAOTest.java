@@ -1,6 +1,7 @@
 package DAO.workPlace;
 
 import DAO.DALException;
+import DTOs.workPlace.IWorkPlaceDTO;
 import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
 import db.IConnPool;
@@ -33,7 +34,7 @@ public class WorkPlaceDAOTest {
     private int workplaceNo1_telephone = 12345678;
     private int workplaceNo1_workplaceID_assigned;
 
-    private WorkPlaceDTO workPlaceDTONo1 = new WorkPlaceDTO();
+    private IWorkPlaceDTO workPlaceDTONo1 = new WorkPlaceDTO();
 
     // endregion
 
@@ -45,7 +46,7 @@ public class WorkPlaceDAOTest {
     private int workplaceNo2_telephone = 87654321;
     int workplaceNo2_workplaceID_assigned;
 
-    private WorkPlaceDTO workPlaceDTONo2 = new WorkPlaceDTO();
+    private IWorkPlaceDTO workPlaceDTONo2 = new WorkPlaceDTO();
 
     // endregion
 
@@ -78,9 +79,9 @@ public class WorkPlaceDAOTest {
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
 
-        iWorkPlaceDAO.createWorkPlace(workPlaceDTONo1);
+        iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo1);
 
-        WorkPlaceDTO returnedWorkplaceDTOOfNo1 = iWorkPlaceDAO.getWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        IWorkPlaceDTO returnedWorkplaceDTOOfNo1 = iWorkPlaceDAO.getIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
         assertEquals(returnedWorkplaceDTOOfNo1.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo1);
         assertEquals(returnedWorkplaceDTOOfNo1.getWorkerID(), workplaceNo1_workerID);
@@ -88,7 +89,7 @@ public class WorkPlaceDAOTest {
         assertEquals(returnedWorkplaceDTOOfNo1.getColor(), workplaceNo1_color);
         assertEquals(returnedWorkplaceDTOOfNo1.getTelephone(),workplaceNo1_telephone);
 
-        iWorkPlaceDAO.deleteWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iWorkPlaceDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
     }
 
@@ -99,24 +100,24 @@ public class WorkPlaceDAOTest {
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
 
-        iWorkPlaceDAO.createWorkPlace(workPlaceDTONo1);
+        iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo1);
 
         // Creates WorkplaceDTO No. 2
 
         int nextAutoIncrementalForWorkplaceNo2 = dbController.getNextAutoIncremental("Workplaces");
 
-        iWorkPlaceDAO.createWorkPlace(workPlaceDTONo2);
+        iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo2);
 
-        // Test of getWorkPlaceList()
+        // Test of getIWorkPlaceList()
 
-        List<WorkPlaceDTO> workPlaceDTOList;
+        List<IWorkPlaceDTO> workPlaceDTOList;
 
-        workPlaceDTOList= iWorkPlaceDAO.getWorkPlaceList();
+        workPlaceDTOList= iWorkPlaceDAO.getIWorkPlaceList();
 
         assertEquals(workPlaceDTOList.size(),2);
 
-        iWorkPlaceDAO.deleteWorkPlace(nextAutoIncrementalForWorkplaceNo1);
-        iWorkPlaceDAO.deleteWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        iWorkPlaceDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iWorkPlaceDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
 
     }
 
@@ -127,24 +128,24 @@ public class WorkPlaceDAOTest {
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
 
-        iWorkPlaceDAO.createWorkPlace(workPlaceDTONo1);
+        iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo1);
 
         // Creates WorkplaceDTO No. 2
 
         int nextAutoIncrementalForWorkplaceNo2 = dbController.getNextAutoIncremental("Workplaces");
 
-        iWorkPlaceDAO.createWorkPlace(workPlaceDTONo2);
+        iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo2);
 
-        // Test of getWorkPlaceList(int workerID)
+        // Test of getIWorkPlaceList(int workerID)
 
-        List<WorkPlaceDTO> workPlaceDTOListFromWorkerID;
+        List<IWorkPlaceDTO> workPlaceDTOListFromWorkerID;
 
-        workPlaceDTOListFromWorkerID = iWorkPlaceDAO.getWorkPlaceList(workplaceNo1_workerID);
+        workPlaceDTOListFromWorkerID = iWorkPlaceDAO.getIWorkPlaceList(workplaceNo1_workerID);
 
         assertEquals(workPlaceDTOListFromWorkerID.size(),1);
 
-        iWorkPlaceDAO.deleteWorkPlace(nextAutoIncrementalForWorkplaceNo1);
-        iWorkPlaceDAO.deleteWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        iWorkPlaceDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iWorkPlaceDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
 
     }
 
@@ -155,9 +156,9 @@ public class WorkPlaceDAOTest {
 
         int nextAutoIncrementalForWorkplaceNo2 = dbController.getNextAutoIncremental("Workplaces");
 
-        iWorkPlaceDAO.createWorkPlace(workPlaceDTONo2);
+        iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo2);
 
-        WorkPlaceDTO returnedWorkplaceDTOOfNo2 = iWorkPlaceDAO.getWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        IWorkPlaceDTO returnedWorkplaceDTOOfNo2 = iWorkPlaceDAO.getIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
 
         assertEquals(returnedWorkplaceDTOOfNo2.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo2);
         assertEquals(returnedWorkplaceDTOOfNo2.getWorkerID(), workplaceNo2_workerID);
@@ -165,7 +166,7 @@ public class WorkPlaceDAOTest {
         assertEquals(returnedWorkplaceDTOOfNo2.getColor(), workplaceNo2_color);
         assertEquals(returnedWorkplaceDTOOfNo2.getTelephone(),workplaceNo2_telephone);
 
-        iWorkPlaceDAO.deleteWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        iWorkPlaceDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
 
     }
 
@@ -176,9 +177,9 @@ public class WorkPlaceDAOTest {
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
 
-        iWorkPlaceDAO.createWorkPlace(workPlaceDTONo1);
+        iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo1);
 
-        WorkPlaceDTO workplaceDTOOfNo1ToUpdate = iWorkPlaceDAO.getWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        IWorkPlaceDTO workplaceDTOOfNo1ToUpdate = iWorkPlaceDAO.getIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
         // Values of WorkplaceDTO No. 2 inserted into "workplaceDTOOfNo1ToUpdate".
 
@@ -189,7 +190,7 @@ public class WorkPlaceDAOTest {
 
         // Updates the WorkplaceDTO with the information that is passed into the method
 
-        iWorkPlaceDAO.updateWorkPlace(workplaceDTOOfNo1ToUpdate);
+        iWorkPlaceDAO.updateIWorkPlace(workplaceDTOOfNo1ToUpdate);
 
         assertEquals(workplaceDTOOfNo1ToUpdate.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo1);
         assertEquals(workplaceDTOOfNo1ToUpdate.getWorkerID(), workplaceNo2_workerID);
@@ -199,7 +200,7 @@ public class WorkPlaceDAOTest {
 
         // Deletes the created Workplace
 
-        iWorkPlaceDAO.deleteWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iWorkPlaceDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
     }
 
@@ -211,15 +212,15 @@ public class WorkPlaceDAOTest {
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
 
-        iWorkPlaceDAO.createWorkPlace(workPlaceDTONo1);
+        iWorkPlaceDAO.createIWorkPlace(workPlaceDTONo1);
 
-        int noOfWorkplacesInTable = iWorkPlaceDAO.getWorkPlaceList().size();
+        int noOfWorkplacesInTable = iWorkPlaceDAO.getIWorkPlaceList().size();
 
         assertEquals(noOfWorkplacesInTable, 1);
 
-        iWorkPlaceDAO.deleteWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iWorkPlaceDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
-        int noOfWorkPlacesInTableAfterDelettion = iWorkPlaceDAO.getWorkPlaceList().size();
+        int noOfWorkPlacesInTableAfterDelettion = iWorkPlaceDAO.getIWorkPlaceList().size();
 
         assertEquals(noOfWorkPlacesInTableAfterDelettion,0);
 

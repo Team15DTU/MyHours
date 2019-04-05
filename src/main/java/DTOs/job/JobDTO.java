@@ -1,5 +1,6 @@
 package DTOs.job;
 
+import DTOs.shift.IShiftDTO;
 import DTOs.shift.ShiftDTO;
 import DTOs.ruleSet.RuleSet;
 import DTOs.workPlace.WorkPlaceDTO;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
-public class JobDTO {
+public class JobDTO implements IJobDTO {
 
     /*
     -------------------------- Fields --------------------------
@@ -24,15 +25,34 @@ public class JobDTO {
     private double stdSalary;
     private Address jobAddress;
     private RuleSet ruleSet;
-    private List<ShiftDTO> shifts;
+    private List<IShiftDTO> iShiftDTOList;
     
     /*
     ----------------------- Constructor -------------------------
      */
     
-    public JobDTO () {
+    public JobDTO () {}
+
+    public JobDTO (int workplaceID, String jobName, double stdSalary) {
+        this.workplaceID = workplaceID;
+        this.jobName = jobName;
+        this.stdSalary = stdSalary;
+        hireDate = null;
+        jobAddress = null;
+        ruleSet = null;
+        iShiftDTOList = null;
     }
-    
+
+    public JobDTO (int workplaceID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, RuleSet ruleSet, List<IShiftDTO> iShiftDTOList) {
+        this.workplaceID = workplaceID;
+        this.jobName = jobName;
+        this.stdSalary = stdSalary;
+        this.hireDate = hireDate;
+        this.jobAddress = jobAddress;
+        this.ruleSet = ruleSet;
+        this.iShiftDTOList = iShiftDTOList;
+    }
+
     /*
     ------------------------ Properties -------------------------
      */
@@ -95,14 +115,13 @@ public class JobDTO {
         this.ruleSet = ruleSet;
     }
 
-    public List<ShiftDTO> getShifts() {
-        return shifts;
+    public List<IShiftDTO> getIShiftDTOList() {
+        return iShiftDTOList;
     }
 
-    public void setShifts(List<ShiftDTO> shifts) {
-        this.shifts = shifts;
+    public void setIShiftDTOList(List<IShiftDTO> iShiftDTOList) {
+        this.iShiftDTOList = iShiftDTOList;
     }
-
 
     // </editor-folder>
     

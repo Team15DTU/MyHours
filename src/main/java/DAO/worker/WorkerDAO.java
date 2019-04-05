@@ -1,8 +1,6 @@
 package DAO.worker;
 
 import DAO.DALException;
-import DAO.workPlace.IWorkPlaceDAO;
-import DAO.workPlace.WorkPlaceDAO;
 import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 import db.IConnPool;
@@ -48,7 +46,7 @@ public class WorkerDAO implements IWorkerDAO {
     @Override
     public IWorkerDTO getWorker(String email) throws DALException
     {
-        WorkerDTO workerToReturn = new WorkerDTO();
+        IWorkerDTO workerToReturn = new WorkerDTO();
         
         // Get connection from ConnPool
         Connection c = connPool.getConn();

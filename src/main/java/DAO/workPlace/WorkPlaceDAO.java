@@ -1,9 +1,9 @@
 package DAO.workPlace;
 
 import DAO.DALException;
+import DTOs.workPlace.IWorkPlaceDTO;
 import DTOs.workPlace.WorkPlaceDTO;
 
-import db.DBController;
 import db.IConnPool;
 
 import java.awt.*;
@@ -48,10 +48,10 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
 
 
     @Override
-    public WorkPlaceDTO getWorkPlace(int workplaceID)  throws DALException {
+    public IWorkPlaceDTO getIWorkPlace(int workplaceID)  throws DALException {
         Connection c = iConnPool.getConn();
 
-        WorkPlaceDTO workPlaceToReturn = new WorkPlaceDTO();
+        IWorkPlaceDTO workPlaceToReturn = new WorkPlaceDTO();
 
         try {
 
@@ -77,10 +77,10 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     }
 
     @Override
-    public List<WorkPlaceDTO> getWorkPlaceList() throws DALException {
+    public List<IWorkPlaceDTO> getIWorkPlaceList() throws DALException {
         Connection c = iConnPool.getConn();
 
-        List<WorkPlaceDTO> listToReturn = new ArrayList<>();
+        List<IWorkPlaceDTO> listToReturn = new ArrayList<>();
 
         try {
 
@@ -88,7 +88,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
             ResultSet resultSet = statement.executeQuery("SELECT workplaceID FROM " + WORKPLACES_TABLENAME );
 
             while (resultSet.next()) {
-                listToReturn.add(getWorkPlace(resultSet.getInt("workplaceID")));
+                listToReturn.add(getIWorkPlace(resultSet.getInt("workplaceID")));
             }
 
         } catch (SQLException e) {
@@ -101,11 +101,11 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     }
 
     @Override
-    public List<WorkPlaceDTO> getWorkPlaceList(int workerID) throws DALException {
+    public List<IWorkPlaceDTO> getIWorkPlaceList(int workerID) throws DALException {
 
         Connection c = iConnPool.getConn();
 
-        List<WorkPlaceDTO> listToReturn = new ArrayList<>();
+        List<IWorkPlaceDTO> listToReturn = new ArrayList<>();
 
         try {
 
@@ -114,7 +114,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
                     "SELECT workplaceID FROM " + WORKPLACES_TABLENAME + " WHERE workerID = " + workerID);
 
             while (resultSet.next()) {
-                listToReturn.add(getWorkPlace(resultSet.getInt("workplaceID")));
+                listToReturn.add(getIWorkPlace(resultSet.getInt("workplaceID")));
             }
 
         } catch (SQLException e) {
@@ -127,7 +127,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     }
 
     @Override
-    public void createWorkPlace(WorkPlaceDTO workPlaceDTO) throws DALException {
+    public void createIWorkPlace(IWorkPlaceDTO workPlaceDTO) throws DALException {
 
         Connection c = iConnPool.getConn();
 
@@ -152,7 +152,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     }
 
     @Override
-    public void updateWorkPlace(WorkPlaceDTO workPlaceDTO) throws DALException {
+    public void updateIWorkPlace(IWorkPlaceDTO workPlaceDTO) throws DALException {
 
         Connection c = iConnPool.getConn();
 
@@ -178,7 +178,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     }
 
     @Override
-    public void deleteWorkPlace(int workplaceID) throws DALException {
+    public void deleteIWorkPlace(int workplaceID) throws DALException {
 
         Connection c = iConnPool.getConn();
 

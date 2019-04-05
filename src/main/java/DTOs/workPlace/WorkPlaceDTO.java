@@ -1,6 +1,7 @@
 package DTOs.workPlace;
 
-import DTOs.job.JobDTO;
+import DTOs.job.IJobDTO;
+
 
 import java.awt.*;
 import java.util.List;
@@ -19,13 +20,28 @@ public class WorkPlaceDTO implements IWorkPlaceDTO {
     private String name;
     private Color color;
     private int telephone;
-    private List<JobDTO> jobList;
-    
+    private List<IJobDTO> iJobList;
+
     /*
     ----------------------- Constructor -------------------------
      */
     
     public WorkPlaceDTO () {}
+
+    public WorkPlaceDTO (int workerID, String name) {
+        this.workerID = workerID;
+        this.name = name;
+        color = null;
+        iJobList = null;
+    }
+
+    public WorkPlaceDTO (int workerID, String name, Color color, int telephone, List<IJobDTO> iJobList) {
+        this.workerID = workerID;
+        this.name = name;
+        this.color = color;
+        this.telephone = telephone;
+        this.iJobList = iJobList;
+    }
     
     /*
     ------------------------ Properties -------------------------
@@ -73,14 +89,13 @@ public class WorkPlaceDTO implements IWorkPlaceDTO {
         this.telephone = telephone;
     }
 
-    public List<JobDTO> getJobDTOList() {
-        return jobList;
+    public List<IJobDTO> getIJobList() {
+        return iJobList;
     }
 
-    public void setJobDTOList(List<JobDTO> jobDTOList) {
-        this.jobList = jobDTOList;
+    public void setIJobList(List<IJobDTO> iJobList) {
+        this.iJobList = iJobList;
     }
-
 
     // </editor-folder>
     

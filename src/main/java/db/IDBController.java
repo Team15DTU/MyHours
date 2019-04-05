@@ -1,15 +1,16 @@
 package db;
 
 import DAO.DALException;
-import DTOs.worker.WorkerDTO;
+import DTOs.worker.IWorkerDTO;
 
 /**
  * @author Rasmus Sander Larsen
  */
 public interface IDBController  {
 
-    void createWorker(WorkerDTO workerDTO) throws DALException;
+    void createWorker(IWorkerDTO workerDTO, String password) throws DALException;
 
     String setTimeZoneFromSQLServer() throws DALException;
 
+    IWorkerDTO getIWorkerDTO (String email) throws DALException;
 }

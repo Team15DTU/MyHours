@@ -25,34 +25,34 @@ public class WorkplaceMain {
         workplace.setColor(Color.decode("#"+"FAEBD7"));
         workplace.setTelephone(12345678);
 
-        workPlaceDAO.createWorkPlace(workplace);
+        workPlaceDAO.createIWorkPlace(workplace);
         //System.out.println(workplace);
 
-       // System.out.println(workPlaceDAO.getWorkPlace(2));
+       // System.out.println(workPlaceDAO.getIWorkPlace(2));
 
         /*
         int counter = 1;
 
-        for (WorkPlaceDTO workPlaceDTO : workPlaceDAO.getWorkPlaceList()) {
+        for (WorkPlaceDTO workPlaceDTO : workPlaceDAO.getIWorkPlaceList()) {
             System.out.println("~~~~ Workplace: " + counter++ + " ~~~~");
             System.out.println(workPlaceDTO);
         }
 
-        WorkPlaceDTO updatingWP = workPlaceDAO.getWorkPlace(13);
+        WorkPlaceDTO updatingWP = workPlaceDAO.getIWorkPlace(13);
 
         System.out.println("OPDATING WP");
         System.out.println(updatingWP);
 
         updatingWP.setTelephone(12345678);
-        workPlaceDAO.updateWorkPlace(updatingWP);
+        workPlaceDAO.updateIWorkPlace(updatingWP);
 
-        System.out.println(workPlaceDAO.getWorkPlace(13));
+        System.out.println(workPlaceDAO.getIWorkPlace(13));
 
-        workPlaceDAO.deleteWorkPlace(13);
+        workPlaceDAO.deleteIWorkPlace(13);
 
         int counter = 1;
 
-        for (WorkPlaceDTO workPlaceDTO : workPlaceDAO.getWorkPlaceList()) {
+        for (WorkPlaceDTO workPlaceDTO : workPlaceDAO.getIWorkPlaceList()) {
             System.out.println("~~~~ Workplace: " + counter++ + " ~~~~");
             System.out.println(workPlaceDTO);
         }

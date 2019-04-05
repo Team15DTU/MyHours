@@ -1,10 +1,8 @@
 package DAO.job;
 
 import DAO.DALException;
-import DAO.workPlace.WorkPlaceDAO;
+import DTOs.job.IJobDTO;
 import DTOs.job.JobDTO;
-import DTOs.workPlace.WorkPlaceDTO;
-import db.DBController;
 import db.IConnPool;
 
 import java.sql.*;
@@ -57,11 +55,11 @@ public class JobDAO implements IJobDAO {
      */
 
     @Override
-    public JobDTO getJob(int jobID) throws DALException {
+    public IJobDTO getIJob(int jobID) throws DALException {
 
         Connection c = iConnPool.getConn();
 
-        JobDTO jobDTOToReturn = new JobDTO();
+        IJobDTO jobDTOToReturn = new JobDTO();
 
         try {
 
@@ -99,11 +97,11 @@ public class JobDAO implements IJobDAO {
     }
 
     @Override
-    public List<JobDTO> getJobList() throws DALException {
+    public List<IJobDTO> getIJobList() throws DALException {
 
         Connection c = iConnPool.getConn();
 
-        List<JobDTO> jobDTOListToReturn = new ArrayList<>();
+        List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
 
         try {
 
@@ -112,7 +110,7 @@ public class JobDAO implements IJobDAO {
                     "SELECT " + JobTableColumns.jobID + " FROM " + JOBS_TABLENAME );
 
             while (resultSet.next()) {
-                jobDTOListToReturn.add(getJob(resultSet.getInt(JobTableColumns.jobID.toString())));
+                jobDTOListToReturn.add(getIJob(resultSet.getInt(JobTableColumns.jobID.toString())));
             }
 
         } catch (SQLException e) {
@@ -125,11 +123,38 @@ public class JobDAO implements IJobDAO {
     }
 
     @Override
-    public List<JobDTO> getJobList(String condition) throws DALException {
+    public List<IJobDTO> getIJobList(int workplaceID) throws DALException {
 
         Connection c = iConnPool.getConn();
 
-        List<JobDTO> jobDTOListToReturn = new ArrayList<>();
+        List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
+
+        try {
+
+            Statement statement = c.createStatement();
+            //TODO, nedståend skal laves smartere!
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT " + JobTableColumns.jobID + " FROM " + JOBS_TABLENAME + " WHERE "+ JobTableColumns.workplaceID + " = " + workplaceID );
+
+            while (resultSet.next()) {
+                jobDTOListToReturn.add(getIJob(resultSet.getInt(JobTableColumns.jobID.toString())));
+            }
+
+        } catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
+        }
+
+        return jobDTOListToReturn;
+    }
+
+    @Override
+    public List<IJobDTO> getIJobList(String condition) throws DALException {
+
+        Connection c = iConnPool.getConn();
+
+        List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
 
         try {
 
@@ -138,7 +163,7 @@ public class JobDAO implements IJobDAO {
                     "SELECT " + JobTableColumns.jobID + " FROM " + JOBS_TABLENAME + " WHERE " + condition );
 
             while (resultSet.next()) {
-                jobDTOListToReturn.add(getJob(resultSet.getInt(JobTableColumns.jobID.toString())));
+                jobDTOListToReturn.add(getIJob(resultSet.getInt(JobTableColumns.jobID.toString())));
             }
 
         } catch (SQLException e) {
@@ -151,7 +176,7 @@ public class JobDAO implements IJobDAO {
     }
 
     @Override
-    public void createJob(JobDTO jobDTO) throws DALException {
+    public void createIJob(IJobDTO jobDTO) throws DALException {
 
         Connection c = iConnPool.getConn();
 
@@ -181,7 +206,7 @@ public class JobDAO implements IJobDAO {
     }
 
     @Override
-    public int updateJob(JobDTO jobDTO) throws DALException {
+    public int updateIJob(IJobDTO jobDTO) throws DALException {
 
         Connection c = iConnPool.getConn();
 
@@ -215,7 +240,7 @@ public class JobDAO implements IJobDAO {
     }
 
     @Override
-    public void deleteJob(int jobID) throws DALException {
+    public void deleteIJob(int jobID) throws DALException {
 
         Connection c = iConnPool.getConn();
 
