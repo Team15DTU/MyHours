@@ -6,6 +6,8 @@
     <title>NewFrontPage</title>
     <link rel="stylesheet" href="Front.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="Front.js"></script>
 </head>
 <body>
 <header>
@@ -15,7 +17,16 @@
             <ul>
                 <li><a href="#">Home</a> </li>
                 <li><a href="#">About</a></li>
-                <li><a href="#">Login</a> </li>
+                <li><a id="trigger">Login</a>
+                    <div class="login-menu" id="login">
+                        <form action="../Login%20FrontPage/PersonalSite.html" method="post">
+                        <label for="email">E-mail</label>
+                        <input type="text" placeholder="Enter E-Mail" id="email" required>
+                        <label for="password">Password</label>
+                        <input type="password" placeholder="Enter Password" id="password">
+                        </form>
+                    </div>
+                </li>
                 <li><a href="#">SignUp</a> </li>
             </ul>
         </nav>
