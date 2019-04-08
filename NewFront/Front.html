@@ -17,13 +17,35 @@
             <ul>
                 <li><a href="#">Home</a> </li>
                 <li><a href="#">About</a></li>
-                <li><a id="trigger">Login</a>
-                    <div class="login-menu" id="login">
-                        <form action="../Login%20FrontPage/PersonalSite.html" method="post">
-                        <label for="email">E-mail</label>
-                        <input type="text" placeholder="Enter E-Mail" id="email" required>
-                        <label for="password">Password</label>
-                        <input type="password" placeholder="Enter Password" id="password">
+                <li><a onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</a>
+                    <!-- Button to open the modal login form -->
+                    <!-- The Modal -->
+                    <div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'"
+        class="close" title="Close Modal">&times;</span>
+
+                        <!-- Modal Content -->
+                        <form class="modal-content animate">
+                            <div class="imgcontainer">
+                                <img src="../Modal_Fra_Ven/images/myhours_logo.png" alt="Avatar" class="avatar">
+                            </div>
+
+                            <div class="containermodal">
+                                <label for="uname"><b>Username</b></label>
+                                <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
+
+                                <label for="psw"><b>Password</b></label>
+                                <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+
+                                <button type="submit">Login</button>
+                                <label>
+                                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                                </label>
+                            </div>
+
+                            <div class="containermodal" style="background-color:#f1f1f1">
+                                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                            </div>
                         </form>
                     </div>
                 </li>
