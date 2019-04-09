@@ -17,39 +17,38 @@
             <ul>
                 <li><a href="#">Home</a> </li>
                 <li><a href="#">About</a></li>
-                <li><a onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</a>
+                <li><a onclick="document.getElementById('id01').style.display='block'">Login</a></li>
+                <li><a href="#">SignUp</a> </li>
                     <!-- Button to open the modal login form -->
                     <!-- The Modal -->
-                    <div id="id01" class="modal">
+            </ul>
+        </nav>
+    </div>
+    <div id="id01" class="modal">
   <span onclick="document.getElementById('id01').style.display='none'"
         class="close" title="Close Modal">&times;</span>
 
-                        <!-- Modal Content -->
-                        <form class="modal-content animate">
-                            <div class="imgcontainer">
-                                <img src="../Images/myhours-time-tracking.jpg" alt="Avatar" class="avatar">
-                            </div>
-                            <div class="containermodal">
-                                <label for="uname"><b>Username</b></label>
-                                <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
+        <!-- Modal Content -->
+        <form class="modal-content animate">
+            <div class="imgcontainer">
+                <img src="../Images/myhours-time-tracking.jpg" alt="Avatar" class="avatar">
+            </div>
+            <div class="containermodal">
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
 
-                                <label for="psw"><b>Password</b></label>
-                                <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
 
-                                <button type="submit">Login</button>
-                                <label>
-                                    <input type="checkbox" checked="checked" name="remember"> Remember me
-                                </label>
-                            </div>
-                            <div class="containermodal" style="background-color:#f1f1f1">
-                                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-                <li><a href="#">SignUp</a> </li>
-            </ul>
-        </nav>
+                <button type="submit">Login</button>
+                <label>
+                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                </label>
+            </div>
+            <div class="containermodal" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            </div>
+        </form>
     </div>
 </header>
 
