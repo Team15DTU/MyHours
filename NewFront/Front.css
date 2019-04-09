@@ -168,8 +168,8 @@ img.avatar {
 .close {
     /* Position it in the top right corner outside of the modal */
     position: absolute;
-    right: 25px;
-    top: 0;
+    right: 120px;
+    top: 70px;
     color: #000;
     font-size: 35px;
     font-weight: bold;
@@ -178,7 +178,7 @@ img.avatar {
 /* Close button on hover */
 .close:hover,
 .close:focus {
-    color: red;
+    color: #3977af;
     cursor: pointer;
 }
 
@@ -196,6 +196,10 @@ img.avatar {
 @keyframes animatezoom {
     from {transform: scale(0)}
     to {transform: scale(1)}
+}
+
+.login {
+    cursor: pointer;
 }
 
 
