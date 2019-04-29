@@ -9,7 +9,7 @@
     overflow: hidden;
 }
 .item {
-    border-top: 1px solid #2980b9;
+    border-top: 1px solid #3498DB;
     overflow: hidden;
 }
 .btn_menu {
@@ -61,9 +61,13 @@
 .smenu a:hover:before{
     opacity: 1;
 }
-.item:target .smenu{
-    max-height: 20em;
+.menu input{
+    display: none;
 }
-#btnc:checked + label {
+.menu label {
+    cursor: pointer;
+}
+
+.item input:checked ~ .smenu{
     max-height: 20em;
 }
