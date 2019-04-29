@@ -71,3 +71,6 @@
 .item input:checked ~ .smenu{
     max-height: 20em;
 }
+.item input:default ~ .smenu{
+    max-height: 20em;
+}
