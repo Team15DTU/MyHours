@@ -11,8 +11,9 @@ import java.util.List;
 
 
 //TODO: Method for closing the Connection Pool - Closing all connections
-//TODO: Implement getSize() method
 //TODO: Add threading for keeping connections alive
+//TODO: Add timer for refreshing connections
+//TODO: Add threaded method for keeping free connections alive
 
 /**
  * @author Alfred Röttger Rydahl
@@ -51,6 +52,7 @@ public class ConnPoolV1 implements IConnPool {
 		usedConnList = new ArrayList<>(MAXCONNS);
 		
 		// Create all Connections
+		boolean success = true; DALException exception = null;
 		try
 		{
 			for (int i = 0; i < MAXCONNS; i++)
@@ -59,13 +61,47 @@ public class ConnPoolV1 implements IConnPool {
 		catch (DALException e)
 		{
 			System.err.println("ERROR: Creating Connection Pool");
-			throw e;
+			exception = e;
+			success = false;
 		}
+		
+		if ( !success )
+			throw exception;
 	}
 	
     /*------------------------------------------------------------
     | Properties                                                 |
     -------------------------------------------------------------*/
+	
+	/**
+	 * Gets the total amount of connections in this pool, both in-use and
+	 * free connections.
+	 * @return Amount of connections in pool as int
+	 */
+	public int getSize()
+	{
+		return freeConnList.size() + usedConnList.size();
+	}
+	
+	/**
+	 * Gets the total amount of available connections in the connection
+	 * pool.
+	 * @return amount of available connections as int
+	 */
+	public int getFreeConns()
+	{
+		return freeConnList.size();
+	}
+	
+	/**
+	 * Gets the total amount of connections in use.
+	 * @return Amount of connections in use
+	 */
+	public int getUsedConns()
+	{
+		return usedConnList.size();
+	}
+    
     /*------------------------------------------------------------
     | Public Methods                                             |
     -------------------------------------------------------------*/
@@ -75,7 +111,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * @return ConnPoolV1 object
 	 * @throws DALException Data Access Layer Exception
 	 */
-	public static ConnPoolV1 getInstance() throws DALException
+	public synchronized static ConnPoolV1 getInstance() throws DALException
 	{
 		try
 		{
@@ -112,6 +148,8 @@ public class ConnPoolV1 implements IConnPool {
 	public Connection getConn() throws DALException
 	{
 		//TODO: Implement me!
+		// Make sure connection is alive
+		// Move from free to used
 		return null;
 	}
 	
