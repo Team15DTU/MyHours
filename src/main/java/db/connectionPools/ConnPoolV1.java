@@ -9,17 +9,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-//TODO: Method for closing the Connection Pool - Closing all connections
 //TODO: Add threading for keeping connections alive
 //TODO: Add timer for refreshing connections
 //TODO: Add threaded method for keeping free connections alive
+//TODO: Make all outside callable functions threading compatible
 
 /**
  * @author Alfred Röttger Rydahl
  */
-
-
 public class ConnPoolV1 implements IConnPool {
 	
     /*------------------------------------------------------------
@@ -40,7 +37,6 @@ public class ConnPoolV1 implements IConnPool {
     /*------------------------------------------------------------
     | Constructors                                               |
     -------------------------------------------------------------*/
-	
 	/**
 	 * Creates the ConnPoolV1 object, and initializing everything.
 	 * @throws DALException Data Access Layer Exception
@@ -69,10 +65,10 @@ public class ConnPoolV1 implements IConnPool {
 			throw exception;
 	}
 	
+	
     /*------------------------------------------------------------
     | Properties                                                 |
     -------------------------------------------------------------*/
-	
 	/**
 	 * Gets the total amount of connections in this pool, both in-use and
 	 * free connections.
@@ -101,11 +97,10 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		return usedConnList.size();
 	}
-    
+	
     /*------------------------------------------------------------
     | Public Methods                                             |
     -------------------------------------------------------------*/
-	
 	/**
 	 * Gives the instance of the Connection Pool.
 	 * @return ConnPoolV1 object
@@ -156,7 +151,6 @@ public class ConnPoolV1 implements IConnPool {
     /*------------------------------------------------------------
     | Private Methods                                            |
     -------------------------------------------------------------*/
-	
 	/**
 	 * Establishes a connection with the Database.
 	 * @return Connection object
@@ -173,5 +167,31 @@ public class ConnPoolV1 implements IConnPool {
 			System.err.println("ERROR: Create Connection Failure!");
 			throw new DALException(e.getMessage(), e.getCause());
 		}
+	}
+	
+	/**
+	 * Extends the finalize method to make sure that all connections is
+	 * closed before termination.
+	 * @throws Throwable Exception
+	 */
+	@Override
+	protected void finalize() throws Throwable
+	{
+		//TODO: Research if there's another method that isn't deprecated
+		// that the GC uses
+		
+		// Close all connections in both Lists
+		for ( Connection c : freeConnList )
+		{
+			if ( !c.isClosed() )
+				c.close();
+		}
+		for ( Connection c : usedConnList )
+		{
+			if ( !c.isClosed() )
+				c.close();
+		}
+		
+		super.finalize();
 	}
 }
