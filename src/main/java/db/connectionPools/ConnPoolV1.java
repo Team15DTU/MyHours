@@ -4,6 +4,8 @@ import DAO.DALException;
 import db.IConnPool;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -17,6 +19,9 @@ public class ConnPoolV1 implements IConnPool {
     -------------------------------------------------------------*/
     private static ConnPoolV1 instance;
     public static final int MAXCONNS = 8;
+	private final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
+	private final String user = "s185097";
+	private final String password = "qsNAphOJ13ySzlpn1kh6Y";
     
     private List<Connection> freeConnList;
     private List<Connection> usedConnList;
@@ -74,4 +79,22 @@ public class ConnPoolV1 implements IConnPool {
     /*------------------------------------------------------------
     | Private Methods                                            |
     -------------------------------------------------------------*/
+	
+	/**
+	 * Establishes a connection with the Database.
+	 * @return Connection object
+	 * @throws DALException Data Access Layer Exception
+	 */
+	private Connection createConnection() throws DALException
+	{
+		try
+		{
+			return DriverManager.getConnection("jdbc:mysql://"+url,user, password);
+		}
+		catch (SQLException e)
+		{
+			System.err.println("ERROR: Create Connection Failure!");
+			throw new DALException(e.getMessage(), e.getCause());
+		}
+	}
 }
