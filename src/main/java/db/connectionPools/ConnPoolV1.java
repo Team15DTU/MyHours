@@ -4,6 +4,7 @@ import DAO.DALException;
 import db.IConnPool;
 
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * @author Alfred Röttger Rydahl
@@ -14,15 +15,40 @@ public class ConnPoolV1 implements IConnPool {
     /*------------------------------------------------------------
     | Fields                                                     |
     -------------------------------------------------------------*/
+    private static ConnPoolV1 instance;
+    public static final int MAXCONNS = 8;
+    
+    private List<Connection> freeConnList;
+    private List<Connection> usedConnList;
+    
     /*------------------------------------------------------------
     | Constructors                                               |
     -------------------------------------------------------------*/
+	
+	private ConnPoolV1()
+	{
+		//TODO: Instantiate Lists
+		//TODO: Create all Connections
+	}
+	
     /*------------------------------------------------------------
     | Properties                                                 |
     -------------------------------------------------------------*/
     /*------------------------------------------------------------
     | Public Methods                                             |
     -------------------------------------------------------------*/
+	
+	/**
+	 * Gives the instance of the Connection Pool.
+	 * @return ConnPoolV1 object
+	 */
+	public static ConnPoolV1 getInstance()
+	{
+		if ( instance == null )
+			instance = new ConnPoolV1();
+		
+		return instance;
+	}
 	
 	/**
 	 * Returns the Connection to the connection pool.
