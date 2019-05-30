@@ -7,6 +7,9 @@ import java.util.HashMap;
 /**
  * @author Rasmus Sander Larsen
  */
+
+//TODO: Elements in cache needs to be cleaned up from time to time
+
 public class Cache implements ICache {
 
     /*
