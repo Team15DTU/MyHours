@@ -9,9 +9,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//TODO: Method for closing the Connection Pool - Closing all connections
+//TODO: Implement getSize() method
+//TODO: Add threading for keeping connections alive
+
 /**
  * @author Alfred Röttger Rydahl
  */
+
 
 public class ConnPoolV1 implements IConnPool {
 	
