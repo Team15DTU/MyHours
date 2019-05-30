@@ -6,6 +6,7 @@ import db.IConnPool;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,10 +31,27 @@ public class ConnPoolV1 implements IConnPool {
     | Constructors                                               |
     -------------------------------------------------------------*/
 	
-	private ConnPoolV1()
+	/**
+	 * Creates the ConnPoolV1 object, and initializing everything.
+	 * @throws DALException Data Access Layer Exception
+	 */
+	private ConnPoolV1() throws DALException
 	{
-		//TODO: Instantiate Lists
-		//TODO: Create all Connections
+		// Instantiating Lists
+		freeConnList = new ArrayList<>(MAXCONNS);
+		usedConnList = new ArrayList<>(MAXCONNS);
+		
+		// Create all Connections
+		try
+		{
+			for (int i = 0; i < MAXCONNS; i++)
+				freeConnList.add(createConnection());
+		}
+		catch (DALException e)
+		{
+			System.err.println("ERROR: Creating Connection Pool");
+			throw e;
+		}
 	}
 	
     /*------------------------------------------------------------
@@ -46,13 +64,22 @@ public class ConnPoolV1 implements IConnPool {
 	/**
 	 * Gives the instance of the Connection Pool.
 	 * @return ConnPoolV1 object
+	 * @throws DALException Data Access Layer Exception
 	 */
-	public static ConnPoolV1 getInstance()
+	public static ConnPoolV1 getInstance() throws DALException
 	{
-		if ( instance == null )
-			instance = new ConnPoolV1();
-		
-		return instance;
+		try
+		{
+			if (instance == null)
+				instance = new ConnPoolV1();
+			
+			return instance;
+		}
+		catch (DALException e)
+		{
+			System.err.println("ERROR: Couldn't get ConnPoolV1 instance");
+			throw e;
+		}
 	}
 	
 	/**
@@ -61,8 +88,9 @@ public class ConnPoolV1 implements IConnPool {
 	 * @throws DALException Data Access Layer Exception
 	 */
 	@Override
-	public void releaseConnection(Connection connection) throws DALException {
-	
+	public void releaseConnection(Connection connection) throws DALException
+	{
+		//TODO: Implement me!
 	}
 	
 	/**
@@ -72,7 +100,9 @@ public class ConnPoolV1 implements IConnPool {
 	 * @throws DALException Data Access Layer Exception
 	 */
 	@Override
-	public Connection getConn() throws DALException {
+	public Connection getConn() throws DALException
+	{
+		//TODO: Implement me!
 		return null;
 	}
 	
