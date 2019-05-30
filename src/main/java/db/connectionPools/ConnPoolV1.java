@@ -26,9 +26,12 @@ public class ConnPoolV1 implements IConnPool {
     -------------------------------------------------------------*/
     private static ConnPoolV1 instance;
     public static final int MAXCONNS = 8;
+    
+    //region DB Info
 	private final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
 	private final String user = "s185097";
 	private final String password = "qsNAphOJ13ySzlpn1kh6Y";
+	//endregion
     
     private List<Connection> freeConnList;
     private List<Connection> usedConnList;
