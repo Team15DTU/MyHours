@@ -26,8 +26,8 @@ public class ConnPoolV1 implements IConnPool {
     private static ConnPoolV1 instance;
     
     //region keepAlive()
-    private static int refreshRate 	= 30000; // 30 seconds
-	private static int validTimeout	= 2;	// 2 seconds
+    private static int refreshRate 	= 30000; 	// 30 seconds
+	private static int validTimeout	= 2;		// 02 seconds
 	private static boolean stop		= false;
 	//endregion
     
@@ -76,7 +76,6 @@ public class ConnPoolV1 implements IConnPool {
 		if ( !success )
 			throw exception;
 	}
-	
 	
     /*------------------------------------------------------------
     | Properties                                                 |
@@ -140,7 +139,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * @throws DALException Data Access Layer Exception
 	 */
 	@Override
-	public void releaseConnection(Connection connection) throws DALException
+	public synchronized void releaseConnection(Connection connection) throws DALException
 	{
 		//TODO: Implement me!
 	}
@@ -152,7 +151,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * @throws DALException Data Access Layer Exception
 	 */
 	@Override
-	public Connection getConn() throws DALException
+	public synchronized Connection getConn() throws DALException
 	{
 		//TODO: Implement me!
 		// Make sure connection is alive
