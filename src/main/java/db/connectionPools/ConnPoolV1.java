@@ -13,6 +13,9 @@ import java.util.List;
 //TODO: Add threaded method for keeping free connections alive
 //TODO: Make all outside callable functions threading compatible
 //TODO: Create setRefreshRate()
+//TODO: Create getRefreshRate()
+//TODO: Create setValidTimeout()
+//TODO: Create getValidTimeout()
 
 /**
  * @author Alfred Röttger Rydahl
@@ -23,7 +26,12 @@ public class ConnPoolV1 implements IConnPool {
     | Fields                                                     |
     -------------------------------------------------------------*/
     private static ConnPoolV1 instance;
-    private static int refreshRate = 30000; // 30 seconds
+    
+    //region keepAlive()
+    private static int refreshRate 	= 30000; // 30 seconds
+	private static int validTimeout	= 2;	// 2 seconds
+	private static boolean stop		= false;
+	//endregion
     
     public static final int MAXCONNS = 8;
     
@@ -63,7 +71,8 @@ public class ConnPoolV1 implements IConnPool {
 			success = false;
 		}
 		
-		//TODO: Start thread to keep connections alive
+		//Start thread to keep connections alive
+		keepAlive();
 		
 		// Make sure to throw exception
 		if ( !success )
@@ -179,13 +188,11 @@ public class ConnPoolV1 implements IConnPool {
 	 */
 	private void keepAlive()
 	{
-		//TODO: Implement me!
-		
 		// Encapsulate in thread
 		Thread t = new Thread(() ->
 		{
 			// Start forever loop
-			while (true) {
+			while (!stop) {
 				
 				// Sleep the thread a set amount of time
 				try
@@ -194,13 +201,31 @@ public class ConnPoolV1 implements IConnPool {
 				}
 				catch (InterruptedException e)
 				{
-					System.err.println("ERROR: Couldn't sleep Conn refresh thread - " + e.getMessage());
+					System.err.println("ERROR: Couldn't sleep Connection refresh thread - " + e.getMessage());
 				}
 				
 				// Loop through all free connections
-					// Check if it's closed
-						// Refresh it
-					// Otherwise, continue loop
+				for ( Connection c : freeConnList )
+				{
+					// Check if GC is closing down
+					if (stop)
+						break;
+					
+					try
+					{
+						// Check if it's closed or has errors
+						if ( c.isClosed() || !(c.getWarnings() == null) || !c.isValid(validTimeout) )
+							c = createConnection();
+					}
+					catch (SQLException e)
+					{
+						System.err.println("ERROR: keepAlive error - " + e.getMessage());
+					}
+					catch (DALException e)
+					{
+						System.err.println("ERROR: DALException keepAlive error - " + e.getMessage());
+					}
+				}
 			}
 		});
 		
@@ -219,6 +244,9 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		//TODO: Research if there's another method that isn't deprecated
 		// that the GC uses
+		
+		// Make keepAlive thread stop
+		stop = true;
 		
 		// Close all connections in both Lists
 		for ( Connection c : freeConnList )
