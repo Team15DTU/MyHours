@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO: Add threading for keeping connections alive
-//TODO: Add timer for refreshing connections
 //TODO: Add threaded method for keeping free connections alive
 //TODO: Make all outside callable functions threading compatible
+//TODO: Create setRefreshRate()
 
 /**
  * @author Alfred Röttger Rydahl
@@ -23,6 +23,8 @@ public class ConnPoolV1 implements IConnPool {
     | Fields                                                     |
     -------------------------------------------------------------*/
     private static ConnPoolV1 instance;
+    private static int refreshRate = 30000; // 30 seconds
+    
     public static final int MAXCONNS = 8;
     
     //region DB Info
@@ -61,6 +63,9 @@ public class ConnPoolV1 implements IConnPool {
 			success = false;
 		}
 		
+		//TODO: Start thread to keep connections alive
+		
+		// Make sure to throw exception
 		if ( !success )
 			throw exception;
 	}
@@ -167,6 +172,41 @@ public class ConnPoolV1 implements IConnPool {
 			System.err.println("ERROR: Create Connection Failure!");
 			throw new DALException(e.getMessage(), e.getCause());
 		}
+	}
+	
+	/**
+	 *
+	 */
+	private void keepAlive()
+	{
+		//TODO: Implement me!
+		
+		// Encapsulate in thread
+		Thread t = new Thread(() ->
+		{
+			// Start forever loop
+			while (true) {
+				
+				// Sleep the thread a set amount of time
+				try
+				{
+					Thread.sleep(refreshRate);
+				}
+				catch (InterruptedException e)
+				{
+					System.err.println("ERROR: Couldn't sleep Conn refresh thread - " + e.getMessage());
+				}
+				
+				// Loop through all free connections
+					// Check if it's closed
+						// Refresh it
+					// Otherwise, continue loop
+			}
+		});
+		
+		// Set it as daemon thread and start
+		t.setDaemon(true);
+		t.start();
 	}
 	
 	/**
