@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO: Make all outside callable functions threading compatible
-//TODO: Create setRefreshRate()
-//TODO: Create getRefreshRate()
-//TODO: Create setValidTimeout()
-//TODO: Create getValidTimeout()
 
 /**
  * @author Alfred Röttger Rydahl
@@ -23,24 +19,24 @@ public class ConnPoolV1 implements IConnPool {
     /*------------------------------------------------------------
     | Fields                                                     |
     -------------------------------------------------------------*/
-    private static ConnPoolV1 instance;
+    protected static ConnPoolV1 instance;
     
     //region keepAlive()
-    private static int refreshRate 	= 30000; 	// 30 seconds
-	private static int validTimeout	= 2;		// 02 seconds
-	private static boolean stop		= false;
+    protected int refreshRate 	= 30000; 	// 30 seconds
+	protected int validTimeout	= 2;		// 02 seconds
+	protected boolean stop		= false;
 	//endregion
     
     public static final int MAXCONNS = 8;
     
     //region DB Info
-	private static final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
-	private static final String user = "s185097";
-	private static final String password = "qsNAphOJ13ySzlpn1kh6Y";
+	protected final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
+	protected final String user = "s185097";
+	protected final String password = "qsNAphOJ13ySzlpn1kh6Y";
 	//endregion
     
-    private List<Connection> freeConnList;
-    private List<Connection> usedConnList;
+    protected List<Connection> freeConnList;
+    protected List<Connection> usedConnList;
     
     /*------------------------------------------------------------
     | Constructors                                               |
@@ -49,7 +45,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * Creates the ConnPoolV1 object, and initializing everything.
 	 * @throws DALException Data Access Layer Exception
 	 */
-	private ConnPoolV1() throws DALException
+	protected ConnPoolV1() throws DALException
 	{
 		// Instantiating Lists
 		freeConnList = new ArrayList<>(MAXCONNS);
@@ -109,7 +105,44 @@ public class ConnPoolV1 implements IConnPool {
 		return usedConnList.size();
 	}
 	
-    /*------------------------------------------------------------
+	/**
+	 * Gets the current refresh rate of every connection update.
+	 * @return Rate in milliseconds as int
+	 */
+	public int getRefreshRate()
+	{
+		return refreshRate;
+	}
+	
+	/**
+	 * Sets the refresh rate of the connection update.
+	 * @param millis The time to wait in milliseconds
+	 */
+	public void setRefreshRate(int millis)
+	{
+		this.refreshRate = millis;
+	}
+	
+	/**
+	 * Gets the time which is used to determine how long to wait for a
+	 * connection to return valid.
+	 * @return The time in seconds as int
+	 */
+	public int getValidTimeout()
+	{
+		return validTimeout;
+	}
+	
+	/**
+	 * Sets the time to wait for a connection to be determined alive.
+	 * @param validTimeout Time in seconds
+	 */
+	public void setValidTimeout(int validTimeout)
+	{
+		this.validTimeout = validTimeout;
+	}
+	
+	/*------------------------------------------------------------
     | Public Methods                                             |
     -------------------------------------------------------------*/
 	/**
@@ -167,7 +200,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * @return Connection object
 	 * @throws DALException Data Access Layer Exception
 	 */
-	private Connection createConnection() throws DALException
+	protected Connection createConnection() throws DALException
 	{
 		try
 		{
@@ -191,7 +224,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * continues execution. The thread is a daemon thread, that runs in the background
 	 * with low priority.
 	 */
-	private void keepAlive()
+	protected void keepAlive()
 	{
 		// Encapsulate in thread
 		Thread t = new Thread(() ->
