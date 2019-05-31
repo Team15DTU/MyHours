@@ -9,8 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Add threading for keeping connections alive
-//TODO: Add threaded method for keeping free connections alive
 //TODO: Make all outside callable functions threading compatible
 //TODO: Create setRefreshRate()
 //TODO: Create getRefreshRate()
@@ -36,9 +34,9 @@ public class ConnPoolV1 implements IConnPool {
     public static final int MAXCONNS = 8;
     
     //region DB Info
-	private final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
-	private final String user = "s185097";
-	private final String password = "qsNAphOJ13ySzlpn1kh6Y";
+	private static final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
+	private static final String user = "s185097";
+	private static final String password = "qsNAphOJ13ySzlpn1kh6Y";
 	//endregion
     
     private List<Connection> freeConnList;
@@ -184,7 +182,15 @@ public class ConnPoolV1 implements IConnPool {
 	}
 	
 	/**
-	 *
+	 * Keeps all Connections alive in freeConnList. For every "refreshRate" milliseconds
+	 * it runs through the whole List, and checks if there's any problems with any
+	 * of the connections.
+	 * If a problems with a connection is detected, it refreshes the connection by
+	 * creating a new one, and makes the same variable point to the newly created
+	 * connection.
+	 * As the method is called, it starts and runs on its own thread, and the main thread
+	 * continues execution. The thread is a daemon thread, that runs in the background
+	 * with low priority.
 	 */
 	private void keepAlive()
 	{
