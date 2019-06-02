@@ -174,7 +174,9 @@ public class ConnPoolV1 implements IConnPool {
 	@Override
 	public synchronized void releaseConnection(Connection connection) throws DALException
 	{
-		//TODO: Implement me!
+		// Put connection back into freeConnList and remove from usedConnList
+		usedConnList.remove(connection);
+		freeConnList.add(connection);
 	}
 	
 	/**
@@ -189,6 +191,12 @@ public class ConnPoolV1 implements IConnPool {
 		//TODO: Implement me!
 		// Make sure connection is alive
 		// Move from free to used
+
+		// Get a connection
+		// Check if it's alive
+			// Return connection
+		// Otherwise try a new one
+		
 		return null;
 	}
 	
