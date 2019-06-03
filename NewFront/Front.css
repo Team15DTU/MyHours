@@ -248,3 +248,84 @@ img.avatar {
     width: 12%;
 }
 
+.info {
+    position: relative;
+    width: 1200px;
+    height: 300px;
+    margin: 280px auto;
+}
+
+.info .box {
+    position: relative;
+    width: calc(400px - 30px);
+    height: calc(300px - 30px);
+    background: white;
+    float: left;
+    margin: 15px;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 20px;
+
+}
+.info .box .icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #3977af;
+    transition: 0.5s;
+    z-index: 1;
+
+}
+
+.info .box:hover .icon{
+    top: 20px;
+    left: calc(50% - 40px);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.info .box .icon i{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    transition: 0.5s;
+    color: white;
+}
+
+.info .box:hover .icon i{
+    font-size: 40px;
+}
+
+.info .box .content {
+    position: absolute;
+    top: 100%;
+    height: calc(100% - 100px);
+    text-align: center;
+    left: 25%;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: 0.5s;
+    opacity: 0;
+
+}
+.info .box:hover .content {
+    top: 100px;
+    opacity: 1;
+}
+.info .box .content h3{
+    margin: 0 0 10px;
+    padding: 0;
+    font-size: 30px;
+    color: black;
+}
+.info .box .content p{
+    margin: 0;
+    padding: 0;
+    font-size: 15px
+}
+
