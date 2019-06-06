@@ -192,10 +192,13 @@ public class ConnPoolV1 implements IConnPool {
 		// Make sure connection is alive
 		// Move from free to used
 
-		// Get a connection
-		// Check if it's alive
-			// Return connection
-		// Otherwise try a new one
+		// Start loop
+			// Check if there's any free connections
+				// If it's alive
+					// Return connection
+				// Otherwise
+					// Wait until a connection is free
+			// Otherwise try a new one
 		
 		return null;
 	}
