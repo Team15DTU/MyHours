@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +23,7 @@ public class ConnPoolV1Test {
 	}
 	
 	@After
-	public void tearDown() throws Exception
+	public void tearDown()
 	{
 		try
 		{
@@ -96,6 +97,8 @@ public class ConnPoolV1Test {
 	}
 	
 	@Test
-	public void getConn() {
+	public void getConn() throws DALException, SQLException
+	{
+		assertTrue (connPool.getConn().isValid(500) );
 	}
 }
