@@ -9,8 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Make all outside callable functions threading compatible
-
 /**
  * @author Alfred Röttger Rydahl
  */
@@ -118,7 +116,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * Sets the refresh rate of the connection update.
 	 * @param millis The time to wait in milliseconds
 	 */
-	public void setRefreshRate(int millis)
+	public synchronized void setRefreshRate(int millis)
 	{
 		this.refreshRate = millis;
 	}
@@ -137,7 +135,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * Sets the time to wait for a connection to be determined alive.
 	 * @param validTimeout Time in seconds
 	 */
-	public void setValidTimeout(int validTimeout)
+	public synchronized void setValidTimeout(int validTimeout)
 	{
 		this.validTimeout = validTimeout;
 	}
