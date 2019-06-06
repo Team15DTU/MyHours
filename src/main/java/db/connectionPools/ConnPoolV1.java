@@ -174,9 +174,22 @@ public class ConnPoolV1 implements IConnPool {
 	@Override
 	public synchronized void releaseConnection(Connection connection) throws DALException
 	{
-		// Put connection back into freeConnList and remove from usedConnList
-		usedConnList.remove(connection);
-		freeConnList.add(connection);
+		try
+		{
+			// Roll back unfinished transactions
+			connection.rollback();
+		}
+		catch (SQLException e)
+		{
+			System.err.println("ERROR: Release connection and Rollback failure");
+			throw new DALException(e.getMessage());
+		}
+		finally
+		{
+			// Put connection back into freeConnList and remove from usedConnList
+			usedConnList.remove(connection);
+			freeConnList.add(connection);
+		}
 	}
 	
 	/**
