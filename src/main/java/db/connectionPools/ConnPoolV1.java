@@ -184,6 +184,10 @@ public class ConnPoolV1 implements IConnPool {
 			System.err.println("ERROR: Release connection and Rollback failure");
 			throw new DALException(e.getMessage());
 		}
+		catch (Exception e)
+		{
+			System.err.println("ERROR: Release connection - " + e.getMessage());
+		}
 		finally
 		{
 			// Put connection back into freeConnList and remove from usedConnList
@@ -201,19 +205,65 @@ public class ConnPoolV1 implements IConnPool {
 	@Override
 	public synchronized Connection getConn() throws DALException
 	{
-		//TODO: Implement me!
-		// Make sure connection is alive
-		// Move from free to used
+		Connection connection;
 
 		// Start loop
+		while (true)
+		{
 			// Check if there's any free connections
-				// If it's alive
-					// Return connection
-				// Otherwise
-					// Wait until a connection is free
-			// Otherwise try a new one
-		
-		return null;
+			if ( freeConnList.isEmpty() )
+			{
+				// Wait a little and try again
+				try
+				{
+					wait(200);	// 0,2 seconds
+				}
+				catch ( InterruptedException e )
+				{
+					System.err.println("ERROR: getConn() delay error - " + e.getMessage());
+					throw new DALException(e.getMessage());
+				}
+			}
+			
+			else
+			{
+				try
+				{
+					// Get the first connection
+					connection = freeConnList.get(freeConnList.size() - 1);
+					
+					// If connection isClosed then make a new and return
+					if ( connection == null || connection.isClosed() )
+					{
+						connection = DriverManager.getConnection("jdbc:mysql://" + url, user, password);
+						
+						usedConnList.add(connection);
+						freeConnList.remove(connection);
+						
+						return connection;
+					}
+					
+					// Otherwise, return connection normally
+					else
+					{
+						usedConnList.add(connection);
+						freeConnList.remove(connection);
+						
+						return connection;
+					}
+				}
+				catch ( SQLException e)
+				{
+					System.err.println("ERROR: getConn() failure - " + e.getMessage());
+					throw new DALException(e.getMessage());
+				}
+				catch ( Exception e )
+				{
+					System.err.println("ERROR: Unknown getConn() failure - " + e.getMessage());
+					throw new DALException(e.getMessage());
+				}
+			}
+		}
 	}
 	
     /*------------------------------------------------------------
