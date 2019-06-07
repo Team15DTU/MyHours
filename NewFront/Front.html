@@ -10,6 +10,7 @@
     <script type="text/javascript" src="Front.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="Front.js"></script>
 </head>
 <body>
 <header>
@@ -51,22 +52,12 @@
         </div>
     </div>
 
-    <!-- Login -->
+    <!-- Login/Signup -->
     <div id="id01" class="modal">
   <span onclick="document.getElementById('id01').style.display='none'"
         class="close" title="Close Modal">&times;</span>
         <form class="modal-content animate">
 
-            <!--
-
-                    https://www.latestblog.org/create-fancy-login-signup-form-in-html5-css3/
-                     Link til at skifte mellem tabs i en Login/Sign From. Der skal tilføjes at man
-                    kan skifte mellem tabs i Login form. !READ!
-
-                </a>
-
-            </div>
-    -->
             <div class="containermodalLogin" id="login">
                 <div id="tab-btnLogin">
                     <a href="#" class="login1 active">Sign In</a>
@@ -124,34 +115,7 @@
                 <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
             </div>
         </form>
-        <!--
-        <div class="containermodal1">
-            <form action="#" method="post" id="reg-box">
-                <label for="unames"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="unames" id="unames" required>
 
-                <label for="email"><b>E-mail</b></label>
-                <input type="email" placeholder="Enter E-mail" name="email" id="email">
-
-                <label for="psws"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psws" id="psws" required>
-
-                <label for="repsw"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Enter Password" name="repsw" id="repsw" required>
-
-                <button type="submit">Sign Up</button>
-                <label>
-                    <input type="checkbox" checked="checked" name="remember"> Remember me
-                </label>
-                -->
-
-                <!--
-                <input type="text" name="uname" placeholder="Enter Username" class="inp" required autofocus><br>
-                <input type="email" name="email" placeholder="Enter Email" class="inp" required><br>
-                <input type="password" name="pass" placeholder="Enter Password" class="inp" required><br>
-                <input type="password" name="repass" placeholder="Confirm Password" class="inp" required><br>
-                <input type="submit" name="submit" value="SIGN UP" id="sub-btn">
-                -->
         </div>
 
 </header>
@@ -167,22 +131,21 @@
 
 <footer>
     <script type="text/javascript" src="Front.js"></script>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
-            $(".register").click(function () {
-                $(".containermodalSignUp").show();
-                $(".containermodalLogin").hide();
-                $(".register").addClass('active');
-                $(".login1").removeClass('active');
-            });
-            $(".login1").click(function(){
-                $(".containermodalLogin").show();
-                $(".containermodalSignUp").hide();
-                $(".login1").addClass('active');
-                $(".register").removeClass('active');
-            });
+        $(".register").click(function () {
+            $(".containermodalSignUp").show();
+            $(".containermodalLogin").hide();
+            $(".register").addClass('active');
+            $(".login1").removeClass('active');
         });
-    </script>
+        $(".login1").click(function(){
+            $(".containermodalLogin").show();
+            $(".containermodalSignUp").hide();
+            $(".login1").addClass('active');
+            $(".register").removeClass('active');
+        });
+    });</script>
 
 </footer>
 
