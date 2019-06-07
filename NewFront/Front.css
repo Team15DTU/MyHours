@@ -211,6 +211,10 @@ img.avatar {
     cursor: pointer;
 }
 
+.signup{
+    cursor: pointer;
+}
+
 .tabbar {
     margin-bottom: 20px;
     position: relative;
