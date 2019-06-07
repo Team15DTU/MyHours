@@ -74,3 +74,19 @@
 .item input:default ~ .smenu{
     max-height: 20em;
 }
+
+
+/* Ekstra kode */
+
+.popup_mid {
+    position: absolute;
+    top: 15%;
+    transform: translate(52%);
+}
+.popup_content {
+    width: 800px;
+    height: 600px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #2F8EE0;
+}
