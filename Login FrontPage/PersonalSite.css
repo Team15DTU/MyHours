@@ -92,10 +92,11 @@
 }
 
 .pop_top {
-    width: 100%;
+    width: 20%;
     height: 15%;
     margin: auto;
-    background: white;
+    padding-top: 2.7%;
+    border-radius: 25px;
 }
 
 .pop_left {
@@ -104,7 +105,6 @@
     width: 30%;
     height: 75%;
     float: left;
-
     margin-left: 1%;
 }
 
@@ -127,18 +127,21 @@
     border: none;
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
-    border-radius:10px
+    border-radius:10px;
 }
 
+.left_table tr    {
+    background-color: #3498DB
+}
 
 .left_table td, th {
-    text-align: left;
+    text-align: center;
     padding: 8px;
     border: none;
+
 }
 
 tr:nth-child(even){background-color: #f2f2f2}
-tr:nth-child(odd){background-color: #3498DB}
 
 .left_table tr:last-child td:first-child {
     border-bottom-left-radius: 10px;

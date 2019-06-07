@@ -69,7 +69,7 @@
     <div class="popup_mid">
         <div class="popup_content">
 
-            <div class="pop_top">
+            <div class="pop_top" id="pop_top2">
                 <center>
                     <h1 id="pop_top_head"></h1>
                 </center>
@@ -100,17 +100,26 @@
             }
             if (site == 'job'){
                 header('Job');
-                left('job')
+                left('job');
+            }
+            if (site == 'workplace') {
+                header('Workplace');
+                left('workplace');
             }
             if (site == 'none'){
-                header('')
-                left('none')
+                header('');
+                left('none');
             }
         }
 
         function header(head) {
             document.getElementById('pop_top_head').innerHTML = head;
-        }
+            if (head == ''){
+                document.getElementById('pop_top2').style.backgroundColor = 'transparent';
+            } else {
+                document.getElementById('pop_top2').style.backgroundColor = 'rgb(52, 152, 219)';
+            }
+            }
 
 
 
@@ -120,6 +129,12 @@
             }
             if (type == 'job'){
                 job();
+            }
+            if (type == 'workplace') {
+                workplace();
+            }
+            if (type == 'none'){
+                none();
             }
 
         }
