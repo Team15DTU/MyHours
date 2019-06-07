@@ -93,7 +93,7 @@ header{
 }
 
 /* Full-width input fields */
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=email] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -104,7 +104,7 @@ input[type=text], input[type=password] {
 }
 
 /* Set a style for all buttons */
-.containermodal button {
+.containermodalLogin button {
     background-color: #3977af;
     color: white;
     padding: 14px 20px;
@@ -115,7 +115,7 @@ input[type=text], input[type=password] {
     border-radius: 40px;
 }
 
-.containermodal button:hover {
+.containermodalLogin button:hover {
     opacity: 0.8;
 }
 
@@ -138,12 +138,12 @@ img.avatar {
     width: 40%;
 }
 
-.containermodal {
+.containermodalLogin {
     padding: 16px;
     border-radius: 20px;
 }
 
-.containermodal span.psw {
+.containermodalLogin span.psw {
     float: right;
     padding-top: 16px;
     border-radius: 20px;
@@ -334,4 +334,55 @@ img.avatar {
     text-align: center;
     margin-bottom: 25px;
 }
+#tab-btnLogin{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+#tab-btnSignUp{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+.login1,.register{
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    background-color: #fffff4;
+    text-align: center;
+    color: black;
+    font-size: 25px;
+    padding: 10px;
+    border-radius: 20px;
+}
+.active{
+    background-color: #3977af;
+    color: #000;
+}
+.containermodalSignUp {
+    padding: 16px;
+    border-radius: 20px;
+    display: none;
+}
+
+.containermodalSignUp span.psw {
+    float: right;
+    padding-top: 16px;
+    border-radius: 20px;
+}
+.containermodalSignUp button {
+    background-color: #3977af;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 40px;
+}
+
+.containermodalSignUp button:hover {
+    opacity: 0.8;
+}
+
 

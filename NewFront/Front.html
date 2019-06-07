@@ -9,6 +9,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="Front.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 <header>
@@ -49,45 +50,34 @@
             </div>
         </div>
     </div>
-    <div class="test">
-        <div class="test2">
-            <h3>Test</h3>
-            <p>Test</p>
-        </div>
-    </div>
 
     <!-- Login -->
     <div id="id01" class="modal">
   <span onclick="document.getElementById('id01').style.display='none'"
         class="close" title="Close Modal">&times;</span>
         <form class="modal-content animate">
-            <div class="imgcontainer">
-                <img src="../Images/Logo2.svg" alt="Avatar" class="avatar">
-            </div>
 
             <!--
-            <ul class="tab-group">
-                <li class="tab active"><a href="#signup">Sign Up</a></li>
-                <li class="tab"><a href="#login">Log In</a></li>
-            </ul>
-            -->
-            <!--
-            <div class="tabbar">
-                <a class="currenttab">
-                    <span>Login</span>
-                </a>
-                <a  class="newtab">
-                    <span>Sign Up</span>
 
-
-                    <!-- https://www.latestblog.org/create-fancy-login-signup-form-in-html5-css3/ -->
-                    <!-- Link til at skifte mellem tabs i en Login/Sign From. Der skal tilføjes at man
+                    https://www.latestblog.org/create-fancy-login-signup-form-in-html5-css3/
+                     Link til at skifte mellem tabs i en Login/Sign From. Der skal tilføjes at man
                     kan skifte mellem tabs i Login form. !READ!
+
                 </a>
 
             </div>
-            -->
-            <div class="containermodal" id="login">
+    -->
+            <div class="containermodalLogin" id="login">
+                <div id="tab-btnLogin">
+                    <a href="#" class="login1 active">Sign In</a>
+                    <a href="#" class="register">Sign Up</a>
+                </div>
+
+                <div class="imgcontainer">
+                    <img src="../Images/Logo2.svg" alt="Avatar" class="avatar">
+                </div>
+
+
                 <label for="uname"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
 
@@ -99,28 +89,70 @@
                     <input type="checkbox" checked="checked" name="remember"> Remember me
                 </label>
             </div>
-            <!--
-            <div class="containermodal" id="signup">
+
+            <div class="containermodalLogin" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            </div>
+
+            <div class="containermodalSignUp" id="signup">
+                <div id="tab-btnSignUp">
+                    <a href="#" class="login1">Sign In</a>
+                    <a href="#" class="register">Sign Up</a>
+                </div>
+
+                <div class="imgcontainer">
+                    <img src="../Images/Logo2.svg" alt="Avatar" class="avatar">
+                </div>
+
+
+                <label for="unamesign"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="unamesign" id="unamesign" required>
+
+                <label for="email"><b>Email</b></label>
+                <input type="email" placeholder="Enter Email" name="email" id="email" required>
+
+                <label for="pswsign"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="pswsign" id="pswsign" required>
+
+                <label for="repsw"><b>Repeat Password</b></label>
+                <input type="password" placeholder="Enter Password" name="repsw" id="repsw" required>
+
+                <button type="submit">SignUp</button>
+
+            </div>
+            <div class="containermodalSignUp" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            </div>
+        </form>
+        <!--
+        <div class="containermodal1">
+            <form action="#" method="post" id="reg-box">
                 <label for="unames"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="unames" id="unames" required>
+
+                <label for="email"><b>E-mail</b></label>
+                <input type="email" placeholder="Enter E-mail" name="email" id="email">
 
                 <label for="psws"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="psws" id="psws" required>
 
-                <label for="psws1"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psws1" id="psws1" required>
+                <label for="repsw"><b>Repeat Password</b></label>
+                <input type="password" placeholder="Enter Password" name="repsw" id="repsw" required>
 
-                <button type="submit">Create User</button>
+                <button type="submit">Sign Up</button>
+                <label>
+                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                </label>
+                -->
 
-
-            </div>
-            -->
-            <div class="containermodal" style="background-color:#f1f1f1">
-                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-            </div>
-        </form>
-    </div>
-
+                <!--
+                <input type="text" name="uname" placeholder="Enter Username" class="inp" required autofocus><br>
+                <input type="email" name="email" placeholder="Enter Email" class="inp" required><br>
+                <input type="password" name="pass" placeholder="Enter Password" class="inp" required><br>
+                <input type="password" name="repass" placeholder="Confirm Password" class="inp" required><br>
+                <input type="submit" name="submit" value="SIGN UP" id="sub-btn">
+                -->
+        </div>
 
 </header>
 
@@ -135,6 +167,22 @@
 
 <footer>
     <script type="text/javascript" src="Front.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".register").click(function () {
+                $(".containermodalSignUp").show();
+                $(".containermodalLogin").hide();
+                $(".register").addClass('active');
+                $(".login1").removeClass('active');
+            });
+            $(".login1").click(function(){
+                $(".containermodalLogin").show();
+                $(".containermodalSignUp").hide();
+                $(".login1").addClass('active');
+                $(".register").removeClass('active');
+            });
+        });
+    </script>
 
 </footer>
 
