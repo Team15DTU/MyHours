@@ -21,4 +21,19 @@ $(document).ready(function () {
     });
 });
 
-
+/* Better version
+$(function () {
+    $("#drop").on('click', function () {
+        $.when( $("#signup").slideUp("slow")).done(function () {
+            $("#login").slideToggle("slow");
+        });
+    });
+});
+$(function () {
+    $("#dropSign").on('click', function () {
+        $.when( $("#login").slideUp("slow")).done(function () {
+            $("#signup").slideToggle("slow");
+        });
+    });
+});
+*/
