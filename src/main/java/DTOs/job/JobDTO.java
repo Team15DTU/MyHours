@@ -39,7 +39,7 @@ public class JobDTO implements IJobDTO {
         this.stdSalary = stdSalary;
         hireDate = null;
         jobAddress = null;
-        //ruleSet = null;
+        ruleSet = null;
         iShiftDTOList = null;
     }
 
