@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NewFrontPage</title>
+    <link rel="stylesheet" href="../NewFront/Front.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="PersonalSite.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="PersonalSite.js"></script>
+</head>
+<body>
+<header>
+    <div class="container">
+        <nav>
+            <span></span>
+            <a href="PersonalSite.html"><img class ="logo" src="../Images/Logo2.svg" alt="Avatar"></a>
+            <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Help</a> </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="middle_menu">
+        <div class="menu">
+
+
+            <li class="item" id="profile" onclick="changeFunction('none'), checkMenu0()">
+                <input id="myid" type="checkbox">
+              
+                <label for="myid" class="btn_menu"><i class="fas fa-user"></i>Profile</label>
+                <div class="smenu">
+                    <a href="#">Settings</a>
+                </div>
+            </li>
+
+            <li class="item" id="shifts" onclick="changeFunction('shifts'), checkMenu1()">
+                <input id="myid1" type="checkbox">
+
+                <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Shift</label>
+                <div class="smenu">
+                    <a href="#">Add</a>
+                    <a href="#">Edit</a>
+                    <a href="#">Delete</a>
+                </div>
+            </li>
+
+            <li class="item" id="job" onclick="changeFunction('job'), checkMenu2()">
+                <input id="myid2" type="checkbox">
+
+                <label for="myid2" class="btn_menu"><i class="fas fa-briefcase"></i>Job</label>
+                <div class="smenu">
+                    <a href="#">Add</a>
+                    <a href="#">Edit</a>
+                    <a href="#">Delete</a>
+                </div>
+            </li>
+            <li class="item" id="workplace" onclick="changeFunction('workplace'), checkMenu3()">
+                <input id="myid3" type="checkbox">
+
+                <label for="myid3" class="btn_menu"><i class="fas fa-building"></i>Workplace</label>
+                <div class="smenu">
+                    <a href="#">Add</a>
+                    <a href="#">Edit</a>
+                    <a href="#">Delete</a>
+                </div>
+            </li>
+            <li class="item">
+                <a href="#" class="btn_menu"><i class="fas fa-sign-out-alt"></i>Logout</a>
+            </li>
+        </div>
+    </div>
+
+    <div class="popup_mid">
+        <div class="popup_content">
+
+            <div class="pop_top" id="pop_top2">
+                <center>
+                    <h1 id="pop_top_head"></h1>
+                </center>
+
+            </div>
+            <div class="pop_left">
+                <table id="left_table" class="left_table">
+
+                </table>
+            </div>
+            <div class="pop_right">
+
+            </div>
+
+        </div>
+    </div>
+
+</header>
+
+<footer>
+    <script type="text/javascript" src="PersonalSite.js"></script>
+    <script>
+        function changeFunction(site) {
+            var elem = document.getElementById('content');
+            if (site == 'shifts'){
+                header('Shifts');
+                left('shifts');
+            }
+            if (site == 'job'){
+                header('Job');
+                left('job');
+            }
+            if (site == 'workplace') {
+                header('Workplace');
+                left('workplace');
+            }
+            if (site == 'none'){
+                header('');
+                left('none');
+            }
+        }
+
+        function header(head) {
+            document.getElementById('pop_top_head').innerHTML = head;
+            if (head == ''){
+                document.getElementById('pop_top2').style.backgroundColor = 'transparent';
+            } else {
+                document.getElementById('pop_top2').style.backgroundColor = 'rgb(52, 152, 219)';
+            }
+            }
+
+
+
+        function left(type) {
+            if (type == 'shifts') {
+                shifts();
+            }
+            if (type == 'job'){
+                job();
+            }
+            if (type == 'workplace') {
+                workplace();
+            }
+            if (type == 'none'){
+                none();
+            }
+
+        }
+
+
+    </script>
+</footer>
+
+
+</body>
+</html>
