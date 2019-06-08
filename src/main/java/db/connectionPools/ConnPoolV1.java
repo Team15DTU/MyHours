@@ -279,18 +279,18 @@ public class ConnPoolV1 implements IConnPool {
 		// Close all connections in both Lists
 		try
 		{
-			for (Connection c : freeConnList) {
-				closeConnection(c);
-			}
-			for (Connection c : usedConnList) {
-				closeConnection(c);
-			}
+			for (Connection c : freeConnList) { closeConnection(c); }
+			for (Connection c : usedConnList) { closeConnection(c); }
 		}
 		catch ( SQLException e )
 		{
 			System.err.println("ERROR: Error trying to close connection pool - " + e.getMessage());
 			throw new DALException( e.getMessage() );
 		}
+		
+		// Erase reference to instance and call GC
+		instance = null;
+		System.gc();
 	}
 	
     /*------------------------------------------------------------
