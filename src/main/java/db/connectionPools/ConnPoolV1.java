@@ -175,7 +175,8 @@ public class ConnPoolV1 implements IConnPool {
 		try
 		{
 			// Roll back unfinished transactions
-			connection.rollback();
+			if ( !connection.getAutoCommit() )
+				connection.rollback();
 		}
 		catch (SQLException e)
 		{
@@ -236,7 +237,7 @@ public class ConnPoolV1 implements IConnPool {
 						connection = DriverManager.getConnection("jdbc:mysql://" + url, user, password);
 						
 						usedConnList.add(connection);
-						freeConnList.remove(connection);
+						freeConnList.remove(freeConnList.size() - 1);
 						
 						return connection;
 					}
@@ -264,8 +265,36 @@ public class ConnPoolV1 implements IConnPool {
 		}
 	}
 	
+	/**
+	 * This method is shutting down the connection pool. Making sure
+	 * that every connection is closed correctly, and stops all
+	 * related threads.
+	 * @throws DALException Data Access Layer Exception
+	 */
+	public void closePool() throws DALException
+	{
+		// Make keepAlive thread stop
+		stop = true;
+		
+		// Close all connections in both Lists
+		try
+		{
+			for (Connection c : freeConnList) {
+				closeConnection(c);
+			}
+			for (Connection c : usedConnList) {
+				closeConnection(c);
+			}
+		}
+		catch ( SQLException e )
+		{
+			System.err.println("ERROR: Error trying to close connection pool - " + e.getMessage());
+			throw new DALException( e.getMessage() );
+		}
+	}
+	
     /*------------------------------------------------------------
-    | Private Methods                                            |
+    | Protected Methods                                            |
     -------------------------------------------------------------*/
 	/**
 	 * Establishes a connection with the Database.
@@ -282,6 +311,25 @@ public class ConnPoolV1 implements IConnPool {
 		{
 			System.err.println("ERROR: Create Connection Failure!");
 			throw new DALException(e.getMessage(), e.getCause());
+		}
+	}
+	
+	/**
+	 * Closed the given SQL Connection the correct way. If the connection
+	 * is already closed, then this won't do anything.
+	 * @param c The SQL Connection to close
+	 * @throws SQLException Handle this
+	 */
+	protected void closeConnection(Connection c) throws SQLException
+	{
+		// Check if connection is already closed
+		if ( !c.isClosed() )
+		{
+			// If autocommit == true, then just close
+			if ( c.getAutoCommit() ) { c.close(); }
+			
+			// Otherwise, make sure to make rollback first
+			else { c.rollback(); c.close(); }
 		}
 	}
 	
@@ -342,34 +390,5 @@ public class ConnPoolV1 implements IConnPool {
 		// Set it as daemon thread and start
 		t.setDaemon(true);
 		t.start();
-	}
-	
-	/**
-	 * Extends the finalize method to make sure that all connections is
-	 * closed before termination.
-	 * @throws Throwable Exception
-	 */
-	@Override
-	protected void finalize() throws Throwable
-	{
-		//TODO: Research if there's another method that isn't deprecated
-		// that the GC uses
-		
-		// Make keepAlive thread stop
-		stop = true;
-		
-		// Close all connections in both Lists
-		for ( Connection c : freeConnList )
-		{
-			if ( !c.isClosed() )
-				c.close();
-		}
-		for ( Connection c : usedConnList )
-		{
-			if ( !c.isClosed() )
-				c.close();
-		}
-		
-		super.finalize();
 	}
 }

@@ -27,7 +27,7 @@ public class ConnPoolV1Test {
 	{
 		try
 		{
-			connPool.finalize();
+			connPool.closePool();
 		}
 		catch (Throwable e)
 		{
@@ -54,7 +54,7 @@ public class ConnPoolV1Test {
 		}
 		catch (DALException e)
 		{
-			System.err.println("ERROR: Couldn't get a connection from the pool - " + e.getMessage());
+			fail("ERROR: Couldn't get a connection from the pool - " + e.getMessage());
 		}
 		
 		assertEquals(connSize-1, connPool.getFreeConns());
@@ -66,7 +66,7 @@ public class ConnPoolV1Test {
 		}
 		catch (DALException e)
 		{
-			System.err.println("ERROR: Couldn't release connection back to the pool - " + e.getMessage());
+			fail("ERROR: Couldn't release connection back to the pool - " + e.getMessage());
 		}
 		
 		assertEquals(connSize, connPool.getFreeConns());
