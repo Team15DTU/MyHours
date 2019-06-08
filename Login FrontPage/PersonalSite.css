@@ -9,13 +9,13 @@
     overflow: hidden;
 }
 .item {
-    border-top: 1px solid #3498DB;
+    border-top: 1px solid #3977af;
     overflow: hidden;
 }
 .btn_menu {
     display: block;
     padding: 16px 20px;
-    background: #3498DB;
+    background: #3977af;
     color: white;
     position: relative;
     font-size: 14px;
@@ -25,7 +25,7 @@
     position: absolute;
     width: 14px;
     height: 14px;
-    background: #3498DB;
+    background: #3977af;
     left: 20px;
     bottom: -7px;
     transform: rotate(45deg);
@@ -52,7 +52,7 @@
     position: absolute;
     width: 6px;
     height: 100%;
-    background: #3498DB;
+    background: #3977af;
     left: 0;
     top: 0;
     transition: 0.3s;
