@@ -6,9 +6,11 @@
     <title>NewFrontPage</title>
     <link rel="stylesheet" href="../NewFront/Front.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <link rel="stylesheet" href="PersonalSite.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="PersonalSite.js"></script>
 </head>
 <body>
 <header>
@@ -25,15 +27,19 @@
     <div class="middle_menu">
         <div class="menu">
 
-            <li class="item" id="profile" onclick="changeFunction('none')">
+
+            <li class="item" id="profile" onclick="changeFunction('none'), checkMenu0()">
                 <input id="myid" type="checkbox">
+              
                 <label for="myid" class="btn_menu"><i class="fas fa-user"></i>Profile</label>
                 <div class="smenu">
                     <a href="#">Settings</a>
                 </div>
             </li>
-            <li class="item" id="shifts" onclick="changeFunction('shifts')">
+
+            <li class="item" id="shifts" onclick="changeFunction('shifts'), checkMenu1()">
                 <input id="myid1" type="checkbox">
+
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Shift</label>
                 <div class="smenu">
                     <a href="#">Add</a>
@@ -42,8 +48,9 @@
                 </div>
             </li>
 
-            <li class="item" id="job" onclick="changeFunction('job')">
+            <li class="item" id="job" onclick="changeFunction('job'), checkMenu2()">
                 <input id="myid2" type="checkbox">
+
                 <label for="myid2" class="btn_menu"><i class="fas fa-briefcase"></i>Job</label>
                 <div class="smenu">
                     <a href="#">Add</a>
@@ -51,8 +58,9 @@
                     <a href="#">Delete</a>
                 </div>
             </li>
-            <li class="item" id="workplace" onclick="changeFunction('workplace')">
+            <li class="item" id="workplace" onclick="changeFunction('workplace'), checkMenu3()">
                 <input id="myid3" type="checkbox">
+
                 <label for="myid3" class="btn_menu"><i class="fas fa-building"></i>Workplace</label>
                 <div class="smenu">
                     <a href="#">Add</a>
