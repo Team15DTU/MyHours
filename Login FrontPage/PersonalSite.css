@@ -74,3 +74,87 @@
 .item input:default ~ .smenu{
     max-height: 20em;
 }
+
+
+/* Ekstra kode */
+
+.popup_mid {
+    position: absolute;
+    top: 18%;
+    transform: translate(50%);
+    font-size: 14px;
+}
+.popup_content {
+    width: 1000px;
+    height: 600px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.pop_top {
+    width: 20%;
+    height: 15%;
+    margin: auto;
+    padding-top: 2.7%;
+    border-radius: 25px;
+}
+
+.pop_left {
+    border-radius: 8px;
+    margin-top: 3%;
+    width: 30%;
+    height: 75%;
+    float: left;
+    margin-left: 1%;
+}
+
+.pop_right {
+    border-radius: 8px;
+    margin-top: 3%;
+    width: 65%;
+    height: 75%;
+    float: right;
+    background: green;
+    margin-right: 1%;
+}
+
+
+/* tabellerne */
+
+.left_table {
+    border-collapse: collapse;
+    width: 100%;
+    border: none;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    border-radius:10px;
+}
+
+.left_table tr    {
+    background-color: #3498DB
+}
+
+.left_table td, th {
+    text-align: center;
+    padding: 8px;
+    border: none;
+
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+.left_table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.left_table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+.left_table tr:first-child td:first-child {
+    border-top-left-radius: 10px;
+}
+
+.left_table tr:first-child td:last-child {
+    border-top-right-radius: 10px;
+}
