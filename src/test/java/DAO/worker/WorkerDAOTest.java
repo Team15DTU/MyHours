@@ -1,6 +1,5 @@
 package DAO.worker;
 
-import DAO.Conn;
 import DAO.DALException;
 import DTOs.address.Address;
 import DTOs.address.IAddress;
@@ -8,6 +7,9 @@ import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 import db.DBController;
 import db.IConnPool;
+import db.connectionPools.ConnPoolV1;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -20,11 +22,12 @@ import static org.junit.Assert.assertTrue;
 
 
 @FixMethodOrder(MethodSorters.JVM)		// Make sure tests run in order
-public class WorkerDAOTest {
+public class WorkerDAOTest
+{
 	
 	//region Test Material
 	
-	IConnPool connPool = new Conn();
+	IConnPool connPool;
 	
 	String firstName0 = "Bo"; String surName0 = "Børgesen";
 	String email0 = String.format("%s.%s@hotmail.com", firstName0, surName0);
@@ -40,6 +43,19 @@ public class WorkerDAOTest {
 	IWorkerDTO[] testWorkers = {worker0, worker1};
 
 	//endregion
+	
+	
+	@Before
+	public void setUp() throws Exception
+	{
+		connPool = ConnPoolV1.getInstance();
+	}
+	
+	@After
+	public void tearDown() throws Exception
+	{
+		connPool.closePool();
+	}
 	
 	@Test
 	public void createWorker() throws DALException

@@ -238,7 +238,7 @@ public class ConnPoolV1 implements IConnPool {
 					// If connection isClosed then make a new and return
 					if ( connection == null || connection.isClosed() )
 					{
-						connection = DriverManager.getConnection("jdbc:mysql://" + url, user, password);
+						connection = createConnection();
 						
 						usedConnList.add(connection);
 						freeConnList.remove(freeConnList.size() - 1);
@@ -275,6 +275,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * related threads.
 	 * @throws DALException Data Access Layer Exception
 	 */
+	@Override
 	public void closePool() throws DALException
 	{
 		// Make keepAlive thread stop

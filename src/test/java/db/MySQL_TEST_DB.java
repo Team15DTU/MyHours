@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
-public class MySQL_TEST_DB implements IConnPool {
-
+public class MySQL_TEST_DB implements IConnPool
+{
     // DiplomPortal Database - Alfred (TEST DB)
     private String password = "iowRz3Cj5QgJ8Ok7dX7iI";
     private String user = "s160107";
@@ -27,7 +27,8 @@ public class MySQL_TEST_DB implements IConnPool {
 
     }
 
-    private Connection createConn() throws DALException {
+    private Connection createConn() throws DALException
+    {
     try {
         return DriverManager.getConnection("jdbc:mysql://"+url,user, password);
     } catch (SQLException e) {
@@ -35,14 +36,16 @@ public class MySQL_TEST_DB implements IConnPool {
     }
 }
 
-    public Connection getConn() throws DALException  {
-
+    public Connection getConn() throws DALException
+    {
         return connectionList.get(0);
-
     }
 
     @Override
-    public void releaseConnection(Connection connection) throws DALException {
-
-    }
+    public void releaseConnection(Connection connection) throws DALException
+    {}
+    
+    @Override
+    public void closePool() throws DALException
+    {}
 }
