@@ -172,6 +172,10 @@ public class ConnPoolV1 implements IConnPool {
 	@Override
 	public synchronized void releaseConnection(Connection connection) throws DALException
 	{
+		// Make sure connection given back isn't null
+		if ( connection == null )
+			return;
+		
 		try
 		{
 			// Roll back unfinished transactions
@@ -287,10 +291,12 @@ public class ConnPoolV1 implements IConnPool {
 			System.err.println("ERROR: Error trying to close connection pool - " + e.getMessage());
 			throw new DALException( e.getMessage() );
 		}
-		
-		// Erase reference to instance and call GC
-		instance = null;
-		System.gc();
+		finally
+		{
+			// Erase reference to instance and call GC
+			instance = null;
+			System.gc();
+		}
 	}
 	
     /*------------------------------------------------------------

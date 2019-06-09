@@ -73,7 +73,33 @@ public class ConnPoolV1Test {
 	}
 	
 	@Test
-	public void getUsedConns() {
+	public void getUsedConns()
+	{
+		// Make sure it's zero at the start
+		assertEquals(0, connPool.getUsedConns());
+		
+		// Take a connection, and check that there's one used connection now
+		Connection c = null;
+		try
+		{
+			c = connPool.getConn();
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: Couldn't get a connection from pool - " + e.getMessage());
+		}
+		assertEquals(1, connPool.getUsedConns());
+		
+		// Release connection again
+		try
+		{
+			connPool.releaseConnection(c);
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: Couldn't release connection - " + e.getMessage());
+		}
+		assertEquals(0, connPool.getUsedConns());
 	}
 	
 	@Test
