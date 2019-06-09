@@ -1,25 +1,34 @@
-package address;
+package DTOs.address;
 
 /**
  * @author Rasmus Sander Larsen
  */
-public class Address {
+public class Address implements IAddress {
 
     /*
     -------------------------- Fields --------------------------
      */
     
-    private String street;
+    private String country;
     private String city;
+    private String street;
     private int zip;
     private int houseNo;
-    private String country;
     
     /*
     ----------------------- Constructor -------------------------
      */
     
     public Address() {}
+    
+    public Address(String country, String city, String street, int zip, int houseNo)
+    {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.zip = zip;
+        this.houseNo = houseNo;
+    }
     
     /*
     ------------------------ Properties -------------------------
@@ -66,7 +75,6 @@ public class Address {
     public void setCountry(String country) {
         this.country = country;
     }
-
 
     // </editor-folder>
     

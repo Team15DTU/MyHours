@@ -1,23 +1,26 @@
+import DAO.DALException;
+import DAO.worker.WorkerDAO;
 import db.DBController;
 import DTOs.worker.WorkerDTO;
+import db.IConnPool;
+import db.IDBController;
+import db.MySQL_DB;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.TimeZone;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DALException {
 
-        final String workerTableName = "workers";
+        // This is the MySQL DB that the program is running on.
+        IConnPool iConnPool = new MySQL_DB();
 
-        WorkerDTO test = new WorkerDTO();
-        test.setFirstName("Rasmus");
-        test.setSurName("Larsen");
-        //TODO: Mailen skal ændres hver gang programmet køres, fordi mailen er primaryKey og derfor unik!
-        test.setEmail("test5@test.dk");
-        test.setBirthday(LocalDate.parse("1992-01-06"));
-
-        DBController dbController = new DBController();
-        dbController.insertWorkerDTOInto(workerTableName, test);
+        // This is the MySQL DB Controller which accesses the DB an executes all actions.
+        IDBController idbController = new DBController(iConnPool);
 
     }
 }

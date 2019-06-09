@@ -13,36 +13,29 @@ public class ExtraHoursPR extends PaymentRule {
      */
     
     
-    
     /*
     ----------------------- Constructor -------------------------
      */
     
     
-    
     /*
     ------------------------ Properties -------------------------
      */
-
-    // <editor-folder desc="Properties"
-
-
-    // </editor-folder>
+    
     
     /*
     ---------------------- Public Methods -----------------------
      */
-    
-    public double calPayOut(ShiftDTO shiftDTO) {
-
-        double payOut = 1;
-
-        return payOut;
-    }
+	
+	public double calPayOut(ShiftDTO shiftDTO)
+	{
+		
+		double payOut = 1;
+		
+		return payOut;
+	}
     
     /*
     ---------------------- Support Methods ----------------------
      */
-
-
 }

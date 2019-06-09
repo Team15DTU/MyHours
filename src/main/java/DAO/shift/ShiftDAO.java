@@ -1,7 +1,7 @@
 package DAO.shift;
 
-import DTOs.shift.ShiftDTO;
-import DTOs.worker.WorkerDTO;
+import DTOs.shift.IShiftDTO;
+import db.IConnPool;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,14 +14,17 @@ public class ShiftDAO implements IShiftDAO {
     /*
     -------------------------- Fields --------------------------
      */
-    
+
+    private IConnPool iConnPool;
     
     
     /*
     ----------------------- Constructor -------------------------
      */
     
-    
+    public ShiftDAO (IConnPool iConnPool) {
+        this.iConnPool = iConnPool;
+    }
     
     /*
     ------------------------ Properties -------------------------
@@ -37,30 +40,40 @@ public class ShiftDAO implements IShiftDAO {
      */
 
     @Override
-    public ShiftDTO getShift(int userID, LocalDateTime dateAndTime) {
+    public IShiftDTO getIShift(int userID, LocalDateTime dateAndTime) {
         return null;
     }
 
     @Override
-    public List<ShiftDTO> getShiftList(WorkerDTO worker) {
+    public List<IShiftDTO> getIShiftList() {
         return null;
     }
 
     @Override
-    public void createShift(ShiftDTO shift) {
+    public List<IShiftDTO> getIShiftList(int jobID) {
+        return null;
+    }
+
+    @Override
+    public List<IShiftDTO> getIShiftList(int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime) {
+        return null;
+    }
+
+    @Override
+    public void createIShift(IShiftDTO shift) {
 
     }
 
     @Override
-    public void updateShift(ShiftDTO shift) {
+    public void updateIShift(IShiftDTO shift) {
 
     }
 
     @Override
-    public void deleteShift(int userID, LocalDateTime dateAndTime) {
+    public void deleteIShift(int userID, LocalDateTime dateAndTime) {
 
     }
-    
+
     /*
     ---------------------- Support Methods ----------------------
      */

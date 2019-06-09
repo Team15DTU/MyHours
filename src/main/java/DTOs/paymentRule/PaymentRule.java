@@ -10,33 +10,26 @@ public abstract class PaymentRule  {
     /*
     -------------------------- Fields --------------------------
      */
-    
-    protected String ruleName;
+	
+	protected String ruleName;
     
     /*
     ----------------------- Constructor -------------------------
      */
     
     
-    
     /*
     ------------------------ Properties -------------------------
      */
 
-    // <editor-folder desc="Properties"
-
-
-    // </editor-folder>
     
     /*
     ---------------------- Public Methods -----------------------
      */
-    
-    protected abstract double calPayOut(ShiftDTO shift);
+	
+	protected abstract double calPayOut(ShiftDTO shift);
     
     /*
     ---------------------- Support Methods ----------------------
      */
-
-
 }

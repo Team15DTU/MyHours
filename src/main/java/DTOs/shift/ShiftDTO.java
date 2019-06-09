@@ -1,14 +1,12 @@
 package DTOs.shift;
 
-import DTOs.job.JobDTO;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
  * @author Rasmus Sander Larsen
  */
-public class ShiftDTO {
+public class ShiftDTO implements IShiftDTO {
 
     /*
     -------------------------- Fields --------------------------
@@ -16,7 +14,7 @@ public class ShiftDTO {
     
     private LocalDateTime startingDateTime;
     private LocalDateTime endingDateTime;
-    private JobDTO job;
+    private int jobID;
     private Duration pause; // break in minutes!
     private double shiftValue;
 
@@ -25,7 +23,22 @@ public class ShiftDTO {
      */
     
     public ShiftDTO () {}
-    
+
+    public ShiftDTO (LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID) {
+        this.startingDateTime = startingDateTime;
+        this.endingDateTime = endingDateTime;
+        this.jobID = jobID;
+
+    }
+
+    public ShiftDTO (LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID, Duration pause) {
+        this.startingDateTime = startingDateTime;
+        this.endingDateTime = endingDateTime;
+        this.jobID = jobID;
+        this.pause = pause;
+
+    }
+
     /*
     ------------------------ Properties -------------------------
      */
@@ -48,12 +61,12 @@ public class ShiftDTO {
         this.endingDateTime = endingDateTime;
     }
 
-    public JobDTO getJob() {
-        return job;
+    public int getJobID() {
+        return jobID;
     }
 
-    public void setJob(JobDTO job) {
-        this.job = job;
+    public void setJobID(int jobID) {
+        this.jobID = jobID;
     }
 
     public Duration getPause() {

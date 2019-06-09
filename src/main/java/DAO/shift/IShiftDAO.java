@@ -1,7 +1,6 @@
 package DAO.shift;
 
-import DTOs.shift.ShiftDTO;
-import DTOs.worker.WorkerDTO;
+import DTOs.shift.IShiftDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,18 +15,26 @@ public interface IShiftDAO {
      */
 
     // returns a ShiftDTO from an UserID and a Date and time of the shift TODO: Maybe use ShiftID?.
-    ShiftDTO getShift (int userID, LocalDateTime dateAndTime);
+    IShiftDTO getIShift (int userID, LocalDateTime dateAndTime);
 
     // Returns a List of ShiftDTO object.
-    List<ShiftDTO> getShiftList (WorkerDTO worker);
+    List<IShiftDTO> getIShiftList ();
+
+    // Returns a List of ShiftDTO object.
+    List<IShiftDTO> getIShiftList (int jobID);
+
+    // Returns a List of ShiftDTO object.
+    List<IShiftDTO> getIShiftList (int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime);
+
+    //TODO: LIST som får alle en brugers vagter.
 
     // Inserts the data from a ShiftDTO into DB.
-    void createShift (ShiftDTO shift);
+    void createIShift (IShiftDTO shift);
 
     // Updates the data on a Shifts row in the DB.
-    void updateShift (ShiftDTO shift);
+    void updateIShift (IShiftDTO shift);
 
     // Deletes all information about one Shift, from an UserID and a Date and time of the shift TODO: Maybe use ShiftID?.
-    void deleteShift (int userID, LocalDateTime dateAndTime);
+    void deleteIShift (int userID, LocalDateTime dateAndTime);
 
 }

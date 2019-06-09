@@ -1,0 +1,160 @@
+.middle_menu{
+    position: absolute;
+    top: 50%;
+    transform: translate(30%,-50%);
+}
+.menu {
+    width: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.item {
+    border-top: 1px solid #3977af;
+    overflow: hidden;
+}
+.btn_menu {
+    display: block;
+    padding: 16px 20px;
+    background: #3977af;
+    color: white;
+    position: relative;
+    font-size: 14px;
+}
+.btn_menu:before {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #3977af;
+    left: 20px;
+    bottom: -7px;
+    transform: rotate(45deg);
+}
+.btn_menu i{
+    margin-right: 10px ;
+}
+.smenu {
+    background: #333;
+    overflow: hidden;
+    transition: max-height 0.7s;
+    max-height: 0;
+}
+.smenu a{
+    display: block;
+    padding: 16px 26px;
+    color: white;
+    font-size: 14px;
+    margin: 4px 0;
+    position: relative;
+}
+.smenu a:before{
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 100%;
+    background: #3977af;
+    left: 0;
+    top: 0;
+    transition: 0.3s;
+    opacity: 0;
+}
+.smenu a:hover:before{
+    opacity: 1;
+}
+.menu input{
+    display: none;
+}
+.menu label {
+    cursor: pointer;
+}
+
+.item input:checked ~ .smenu{
+    max-height: 20em;
+}
+.item input:default ~ .smenu{
+    max-height: 20em;
+}
+
+
+/* Ekstra kode */
+
+.popup_mid {
+    position: absolute;
+    top: 18%;
+    transform: translate(50%);
+    font-size: 14px;
+}
+.popup_content {
+    width: 1000px;
+    height: 600px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.pop_top {
+    width: 20%;
+    height: 15%;
+    margin: auto;
+    padding-top: 2.7%;
+    border-radius: 25px;
+}
+
+.pop_left {
+    border-radius: 8px;
+    margin-top: 3%;
+    width: 30%;
+    height: 75%;
+    float: left;
+    margin-left: 1%;
+}
+
+.pop_right {
+    border-radius: 8px;
+    margin-top: 3%;
+    width: 65%;
+    height: 75%;
+    float: right;
+    background: green;
+    margin-right: 1%;
+}
+
+
+/* tabellerne */
+
+.left_table {
+    border-collapse: collapse;
+    width: 100%;
+    border: none;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    border-radius:10px;
+}
+
+.left_table tr    {
+    background-color: #3498DB
+}
+
+.left_table td, th {
+    text-align: center;
+    padding: 8px;
+    border: none;
+
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+.left_table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.left_table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+.left_table tr:first-child td:first-child {
+    border-top-left-radius: 10px;
+}
+
+.left_table tr:first-child td:last-child {
+    border-top-right-radius: 10px;
+}
