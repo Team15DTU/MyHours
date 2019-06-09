@@ -6,7 +6,7 @@ import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
 import db.IConnPool;
 import db.TestConnPoolV1;
-import org.junit.Test;
+import org.junit.*;
 
 import java.awt.*;
 import java.util.List;
@@ -18,11 +18,11 @@ import static org.junit.Assert.assertEquals;
  */
 public class WorkPlaceDAOTest
 {
-    private IConnPool test_DB = TestConnPoolV1.getInstance();
+    private static IConnPool test_DB;
 
-    private DBController dbController = new DBController(test_DB);
+    private static DBController dbController;
 
-    private IWorkPlaceDAO iWorkPlaceDAO = dbController.getiWorkPlaceDAO();
+    private static IWorkPlaceDAO iWorkPlaceDAO;
 
     // region Test Material
 
@@ -67,7 +67,23 @@ public class WorkPlaceDAOTest
     }
 
     // endregion
-
+    
+    @BeforeClass
+    public static void setUp() throws Exception
+    {
+        test_DB = TestConnPoolV1.getInstance();
+    
+        dbController = new DBController(test_DB);
+    
+        iWorkPlaceDAO = dbController.getiWorkPlaceDAO();
+    }
+    
+    @AfterClass
+    public static void tearDown() throws Exception
+    {
+        test_DB.closePool();
+    }
+    
     /*
     ----------------------------- TESTS -----------------------------
      */
