@@ -27,7 +27,7 @@ public class ConnPoolV1Test {
 	{
 		try
 		{
-			connPool.finalize();
+			connPool.closePool();
 		}
 		catch (Throwable e)
 		{
@@ -54,7 +54,7 @@ public class ConnPoolV1Test {
 		}
 		catch (DALException e)
 		{
-			System.err.println("ERROR: Couldn't get a connection from the pool - " + e.getMessage());
+			fail("ERROR: Couldn't get a connection from the pool - " + e.getMessage());
 		}
 		
 		assertEquals(connSize-1, connPool.getFreeConns());
@@ -66,14 +66,40 @@ public class ConnPoolV1Test {
 		}
 		catch (DALException e)
 		{
-			System.err.println("ERROR: Couldn't release connection back to the pool - " + e.getMessage());
+			fail("ERROR: Couldn't release connection back to the pool - " + e.getMessage());
 		}
 		
 		assertEquals(connSize, connPool.getFreeConns());
 	}
 	
 	@Test
-	public void getUsedConns() {
+	public void getUsedConns()
+	{
+		// Make sure it's zero at the start
+		assertEquals(0, connPool.getUsedConns());
+		
+		// Take a connection, and check that there's one used connection now
+		Connection c = null;
+		try
+		{
+			c = connPool.getConn();
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: Couldn't get a connection from pool - " + e.getMessage());
+		}
+		assertEquals(1, connPool.getUsedConns());
+		
+		// Release connection again
+		try
+		{
+			connPool.releaseConnection(c);
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: Couldn't release connection - " + e.getMessage());
+		}
+		assertEquals(0, connPool.getUsedConns());
 	}
 	
 	@Test
