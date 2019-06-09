@@ -1,7 +1,7 @@
 package DTOs.job;
 
 import DTOs.address.Address;
-
+import DTOs.ruleSet.RuleSet;
 import DTOs.shift.IShiftDTO;
 import DTOs.shift.ShiftDTO;
 
@@ -44,7 +44,9 @@ public interface IJobDTO {
 
     void setJobAddress(Address jobAddress);
 
+    RuleSet getRuleSet();
 
+    void setRuleSet(RuleSet ruleSet);
 
     List<IShiftDTO> getIShiftDTOList();
 

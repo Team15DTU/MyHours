@@ -2,7 +2,7 @@ package DTOs.job;
 
 import DTOs.shift.IShiftDTO;
 import DTOs.shift.ShiftDTO;
-
+import DTOs.ruleSet.RuleSet;
 import DTOs.workPlace.WorkPlaceDTO;
 import DTOs.address.Address;
 
@@ -24,7 +24,7 @@ public class JobDTO implements IJobDTO {
     private LocalDate hireDate;
     private double stdSalary;
     private Address jobAddress;
-    //private RuleSet ruleSet;
+    private RuleSet ruleSet;
     private List<IShiftDTO> iShiftDTOList;
     
     /*
@@ -39,17 +39,17 @@ public class JobDTO implements IJobDTO {
         this.stdSalary = stdSalary;
         hireDate = null;
         jobAddress = null;
-        //ruleSet = null;
+        ruleSet = null;
         iShiftDTOList = null;
     }
 
-    public JobDTO (int workplaceID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, List<IShiftDTO> iShiftDTOList) {
+    public JobDTO (int workplaceID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, RuleSet ruleSet, List<IShiftDTO> iShiftDTOList) {
         this.workplaceID = workplaceID;
         this.jobName = jobName;
         this.stdSalary = stdSalary;
         this.hireDate = hireDate;
         this.jobAddress = jobAddress;
-
+        this.ruleSet = ruleSet;
         this.iShiftDTOList = iShiftDTOList;
     }
 
@@ -106,7 +106,7 @@ public class JobDTO implements IJobDTO {
     public void setJobAddress(Address jobAddress) {
         this.jobAddress = jobAddress;
     }
-/*
+
     public RuleSet getRuleSet() {
         return ruleSet;
     }
@@ -114,7 +114,7 @@ public class JobDTO implements IJobDTO {
     public void setRuleSet(RuleSet ruleSet) {
         this.ruleSet = ruleSet;
     }
-*/
+
     public List<IShiftDTO> getIShiftDTOList() {
         return iShiftDTOList;
     }
