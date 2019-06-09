@@ -105,30 +105,123 @@ public class ConnPoolV1Test {
 	@Test
 	public void getAndsetRefreshRate()
 	{
-		// Get the starting RefreshRate
-		int refreshRate = connPool.getRefreshRate();
+		int change = 2000;
 		
 		// Change it, and make sure it's correct
-		int change = 2000;
 		connPool.setRefreshRate(change);
 		assertEquals(change, connPool.getRefreshRate());
+		
+		// Change again and check
+		connPool.setRefreshRate(change + 50);
+		assertEquals(change+50, connPool.getRefreshRate());
+		
+		// Change again and check
+		connPool.setRefreshRate(change + 100);
+		assertEquals(change+100, connPool.getRefreshRate());
 	}
 	
 	@Test
-	public void getValidTimeout() {
-	}
-	
-	@Test
-	public void setValidTimeout() {
-	}
-	
-	@Test
-	public void releaseConnection() {
-	}
-	
-	@Test
-	public void getConn() throws DALException, SQLException
+	public void getAndsetValidTimeout()
 	{
-		assertTrue (connPool.getConn().isValid(500) );
+		int change = 2000;
+		
+		// Change it, and make sure it's correct
+		connPool.setValidTimeout(change);
+		assertEquals(change, connPool.getValidTimeout());
+		
+		// Change it, and make sure it's correct
+		connPool.setValidTimeout(change + 50);
+		assertEquals(change+50, connPool.getValidTimeout());
+		
+		// Change it, and make sure it's correct
+		connPool.setValidTimeout(change + 100);
+		assertEquals(change+100, connPool.getValidTimeout());
+	}
+	
+	@Test
+	public void releaseConnection() throws SQLException
+	{
+		// Get two connections and check parameters
+		Connection c1 = null, c2 = null;
+		
+		try
+		{
+			c1 = connPool.getConn();
+			c2 = connPool.getConn();
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: Couldn't get connections - " + e.getMessage());
+		}
+		
+		assertEquals(connSize-2, connPool.getFreeConns());
+		assertEquals(2, connPool.getUsedConns());
+		assertEquals(connSize, connPool.getSize());
+		assertTrue(c1.isValid(1000));
+		assertTrue(c2.isValid(1000));
+		
+		// Release first connection and check parameters
+		try
+		{
+			connPool.releaseConnection(c1);
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: Couldn't release first connection - " + e.getMessage());
+		}
+		
+		assertEquals(connSize-1, connPool.getFreeConns());
+		assertEquals(1, connPool.getUsedConns());
+		assertEquals(connSize, connPool.getSize());
+		
+		// Release second connection and check parameters
+		try
+		{
+			connPool.releaseConnection(c2);
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: Couldn't release first connection - " + e.getMessage());
+		}
+		
+		assertEquals(connSize, connPool.getFreeConns());
+		assertEquals(0, connPool.getUsedConns());
+		assertEquals(connSize, connPool.getSize());
+	}
+	
+	@Test
+	public void getConn() throws SQLException
+	{
+		// Get a connection and check parameters
+		Connection c1 = null;
+		try
+		{
+			c1 = connPool.getConn();
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: Can't get first connection from pool - " + e.getMessage());
+		}
+		
+		assertTrue(c1.isValid(1000));
+		assertEquals(connSize-1, connPool.getFreeConns());
+		assertEquals(1, connPool.getUsedConns());
+		assertEquals(connSize, connPool.getSize());
+		
+		// Get one more connection and check parameters
+		Connection c2 = null;
+		try
+		{
+			c2 = connPool.getConn();
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: Can't get second connection from pool - " + e.getMessage());
+		}
+		
+		assertTrue(c2.isValid(1000));
+		assertEquals(connSize-2, connPool.getFreeConns());
+		assertEquals(2, connPool.getUsedConns());
+		assertEquals(connSize, connPool.getSize());
 	}
 }
