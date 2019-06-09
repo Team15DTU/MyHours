@@ -8,11 +8,7 @@ import DTOs.worker.WorkerDTO;
 import db.DBController;
 import db.IConnPool;
 import db.TestConnPoolV1;
-import db.connectionPools.ConnPoolV1;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runners.MethodSorters;
 
 import java.time.LocalDate;
@@ -28,7 +24,7 @@ public class WorkerDAOTest
 	
 	//region Test Material
 	
-	private IConnPool connPool;
+	private static IConnPool connPool;
 	
 	private String firstName0 = "Bo"; String surName0 = "Børgesen";
 	private String email0 = String.format("%s.%s@hotmail.com", firstName0, surName0);
@@ -46,12 +42,12 @@ public class WorkerDAOTest
 	//endregion
 	
 	
-	@Before
-	public void setUp() throws Exception
+	@BeforeClass
+	public static void setUp() throws Exception
 	{ connPool = TestConnPoolV1.getInstance(); }
 	
-	@After
-	public void tearDown() throws Exception
+	@AfterClass
+	public static void tearDown() throws Exception
 	{ connPool.closePool(); }
 	
 	@Test

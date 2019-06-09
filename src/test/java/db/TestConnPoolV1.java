@@ -13,7 +13,7 @@ public class TestConnPoolV1 extends ConnPoolV1 implements IConnPool
      * as it isn't possible to use superclass constructor otherwise.
      * @throws DALException Data Access Layer Exception
      */
-    protected TestConnPoolV1() throws DALException { super(); }
+    private TestConnPoolV1() throws DALException { super(); }
     
     /**
      * Gives the instance of the Test Connection Pool, which is using
