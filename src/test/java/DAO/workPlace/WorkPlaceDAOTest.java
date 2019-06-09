@@ -5,7 +5,7 @@ import DTOs.workPlace.IWorkPlaceDTO;
 import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
 import db.IConnPool;
-import db.MySQL_TEST_DB;
+import db.TestConnPoolV1;
 import org.junit.Test;
 
 import java.awt.*;
@@ -16,9 +16,9 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Rasmus Sander Larsen
  */
-public class WorkPlaceDAOTest {
-
-    private IConnPool test_DB = new MySQL_TEST_DB();
+public class WorkPlaceDAOTest
+{
+    private IConnPool test_DB = TestConnPoolV1.getInstance();
 
     private DBController dbController = new DBController(test_DB);
 
@@ -203,8 +203,7 @@ public class WorkPlaceDAOTest {
         iWorkPlaceDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
     }
-
-
+    
     @Test
     public void deleteWorkPlace() throws DALException {
 

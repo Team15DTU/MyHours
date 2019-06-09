@@ -36,7 +36,9 @@ public class MySQL_DB implements IConnPool {
     ---------------------- Public Methods -----------------------
      */
 
-    public Connection getConn() throws DALException  {
+    @Override
+    public Connection getConn() throws DALException
+    {
         try {
             return DriverManager.getConnection("jdbc:mysql://"+url,user, password);
         } catch (SQLException e) {
@@ -45,7 +47,8 @@ public class MySQL_DB implements IConnPool {
     }
 
     @Override
-    public void releaseConnection(Connection connection) throws DALException {
+    public void releaseConnection(Connection connection) throws DALException
+    {
         try {
             if (!connection.isClosed())
                 connection.close();
@@ -54,7 +57,13 @@ public class MySQL_DB implements IConnPool {
             throw new DALException(e.getMessage());
         }
     }
-
+    
+    @Override
+    public void closePool() throws DALException
+    {
+        // Just to satisfy IConnPool
+    }
+    
     /*
     ---------------------- Support Methods ----------------------
      */

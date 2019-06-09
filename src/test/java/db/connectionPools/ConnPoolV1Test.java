@@ -31,7 +31,7 @@ public class ConnPoolV1Test {
 		}
 		catch (Throwable e)
 		{
-			System.err.println("ERROR: Couldn't call finalize() in tearDown() - " + e.getMessage());
+			System.err.println("ERROR: Couldn't call closePool() in tearDown() - " + e.getMessage());
 		}
 	}
 	
