@@ -141,7 +141,7 @@ public class ConnPoolV1Test {
 	@Test
 	public void releaseConnection() throws SQLException
 	{
-		// Get two connections and check parameters
+		//region Get two connections and check parameters
 		Connection c1 = null, c2 = null;
 		
 		try
@@ -160,7 +160,9 @@ public class ConnPoolV1Test {
 		assertTrue(c1.isValid(1000));
 		assertTrue(c2.isValid(1000));
 		
-		// Release first connection and check parameters
+		//endregion
+		
+		//region Release first connection and check parameters
 		try
 		{
 			connPool.releaseConnection(c1);
@@ -174,7 +176,9 @@ public class ConnPoolV1Test {
 		assertEquals(1, connPool.getUsedConns());
 		assertEquals(connSize, connPool.getSize());
 		
-		// Release second connection and check parameters
+		//endregion
+		
+		//region Release second connection and check parameters
 		try
 		{
 			connPool.releaseConnection(c2);
@@ -187,6 +191,26 @@ public class ConnPoolV1Test {
 		assertEquals(connSize, connPool.getFreeConns());
 		assertEquals(0, connPool.getUsedConns());
 		assertEquals(connSize, connPool.getSize());
+		
+		//endregion
+		
+		//region Try to release a connection which is null
+		Connection nullConnection = null;
+		
+		try
+		{
+			connPool.releaseConnection(nullConnection);
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: Couldn't release a null connection - " + e.getMessage());
+		}
+		
+		assertEquals(connSize, connPool.getFreeConns());
+		assertEquals(0, connPool.getUsedConns());
+		assertEquals(connSize, connPool.getSize());
+		
+		//endregion
 	}
 	
 	@Test
