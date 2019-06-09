@@ -1,10 +1,20 @@
 package DAO.shift;
 
-import org.junit.Test;
+import db.IConnPool;
+import db.TestConnPoolV1;
+import org.junit.*;
 
-import static org.junit.Assert.*;
-
-public class ShiftDAOTest {
+public class ShiftDAOTest
+{
+	private static IConnPool connPool;
+	
+	@BeforeClass
+	public static void setUp() throws Exception
+	{ connPool = TestConnPoolV1.getInstance(); }
+	
+	@AfterClass
+	public static void tearDown() throws Exception
+	{ connPool.closePool(); }
 	
 	@Test
 	public void getIShift()

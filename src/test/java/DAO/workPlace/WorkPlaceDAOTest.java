@@ -5,8 +5,8 @@ import DTOs.workPlace.IWorkPlaceDTO;
 import DTOs.workPlace.WorkPlaceDTO;
 import db.DBController;
 import db.IConnPool;
-import db.MySQL_TEST_DB;
-import org.junit.Test;
+import db.TestConnPoolV1;
+import org.junit.*;
 
 import java.awt.*;
 import java.util.List;
@@ -16,13 +16,13 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Rasmus Sander Larsen
  */
-public class WorkPlaceDAOTest {
+public class WorkPlaceDAOTest
+{
+    private static IConnPool test_DB;
 
-    private IConnPool test_DB = new MySQL_TEST_DB();
+    private static DBController dbController;
 
-    private DBController dbController = new DBController(test_DB);
-
-    private IWorkPlaceDAO iWorkPlaceDAO = dbController.getiWorkPlaceDAO();
+    private static IWorkPlaceDAO iWorkPlaceDAO;
 
     // region Test Material
 
@@ -67,7 +67,23 @@ public class WorkPlaceDAOTest {
     }
 
     // endregion
-
+    
+    @BeforeClass
+    public static void setUp() throws Exception
+    {
+        test_DB = TestConnPoolV1.getInstance();
+    
+        dbController = new DBController(test_DB);
+    
+        iWorkPlaceDAO = dbController.getiWorkPlaceDAO();
+    }
+    
+    @AfterClass
+    public static void tearDown() throws Exception
+    {
+        test_DB.closePool();
+    }
+    
     /*
     ----------------------------- TESTS -----------------------------
      */
@@ -203,8 +219,7 @@ public class WorkPlaceDAOTest {
         iWorkPlaceDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
 
     }
-
-
+    
     @Test
     public void deleteWorkPlace() throws DALException {
 
