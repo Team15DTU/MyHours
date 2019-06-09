@@ -103,11 +103,15 @@ public class ConnPoolV1Test {
 	}
 	
 	@Test
-	public void getRefreshRate() {
-	}
-	
-	@Test
-	public void setRefreshRate() {
+	public void getAndsetRefreshRate()
+	{
+		// Get the starting RefreshRate
+		int refreshRate = connPool.getRefreshRate();
+		
+		// Change it, and make sure it's correct
+		int change = 2000;
+		connPool.setRefreshRate(change);
+		assertEquals(change, connPool.getRefreshRate());
 	}
 	
 	@Test
