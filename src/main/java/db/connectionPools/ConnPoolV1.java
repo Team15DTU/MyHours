@@ -28,9 +28,9 @@ public class ConnPoolV1 implements IConnPool {
     public static final int MAXCONNS = 8;
     
     //region DB Info
-	protected final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
-	protected final String user = "s185097";
-	protected final String password = "qsNAphOJ13ySzlpn1kh6Y";
+	protected static String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
+	protected static String user = "s185097";
+	protected static String password = "qsNAphOJ13ySzlpn1kh6Y";
 	//endregion
     
     protected List<Connection> freeConnList;

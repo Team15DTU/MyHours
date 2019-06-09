@@ -7,6 +7,7 @@ import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 import db.DBController;
 import db.IConnPool;
+import db.TestConnPoolV1;
 import db.connectionPools.ConnPoolV1;
 import org.junit.After;
 import org.junit.Before;
@@ -27,35 +28,31 @@ public class WorkerDAOTest
 	
 	//region Test Material
 	
-	IConnPool connPool;
+	private IConnPool connPool;
 	
-	String firstName0 = "Bo"; String surName0 = "Børgesen";
-	String email0 = String.format("%s.%s@hotmail.com", firstName0, surName0);
-	LocalDate birthday0 = LocalDate.now();
-	IWorkerDTO worker0 = new WorkerDTO(firstName0, surName0, email0, birthday0, null, null);
+	private String firstName0 = "Bo"; String surName0 = "Børgesen";
+	private String email0 = String.format("%s.%s@hotmail.com", firstName0, surName0);
+	private LocalDate birthday0 = LocalDate.now();
+	private IWorkerDTO worker0 = new WorkerDTO(firstName0, surName0, email0, birthday0, null, null);
 	
-	String firstName1 = "Geden"; String surName1 = "Johannes";
-	String email1 = String.format("%s.%s@hotmail.com", firstName1, surName1);
-	LocalDate birthday1 = LocalDate.now();
-	IAddress address1 = new Address("Rumænien", "Babuska", "Babuski", 666, 69);
-	IWorkerDTO worker1 = new WorkerDTO(firstName1, surName1, email1, birthday1, address1, null);
+	private String firstName1 = "Geden"; String surName1 = "Johannes";
+	private String email1 = String.format("%s.%s@hotmail.com", firstName1, surName1);
+	private LocalDate birthday1 = LocalDate.now();
+	private IAddress address1 = new Address("Rumænien", "Babuska", "Babuski", 666, 69);
+	private IWorkerDTO worker1 = new WorkerDTO(firstName1, surName1, email1, birthday1, address1, null);
 	
-	IWorkerDTO[] testWorkers = {worker0, worker1};
+	private IWorkerDTO[] testWorkers = {worker0, worker1};
 
 	//endregion
 	
 	
 	@Before
 	public void setUp() throws Exception
-	{
-		connPool = ConnPoolV1.getInstance();
-	}
+	{ connPool = TestConnPoolV1.getInstance(); }
 	
 	@After
 	public void tearDown() throws Exception
-	{
-		connPool.closePool();
-	}
+	{ connPool.closePool(); }
 	
 	@Test
 	public void createWorker() throws DALException
