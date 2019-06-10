@@ -1,7 +1,7 @@
 package db;
 
 import DAO.DALException;
-import DTOs.worker.IWorkerDTO;
+import dto.worker.IWorkerDTO;
 
 /**
  * @author Rasmus Sander Larsen

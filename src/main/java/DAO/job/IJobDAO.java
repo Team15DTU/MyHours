@@ -1,7 +1,7 @@
 package DAO.job;
 
 import DAO.DALException;
-import DTOs.job.IJobDTO;
+import dto.job.IJobDTO;
 
 import java.util.List;
 

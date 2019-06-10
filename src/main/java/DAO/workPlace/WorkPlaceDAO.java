@@ -1,8 +1,8 @@
 package DAO.workPlace;
 
 import DAO.DALException;
-import DTOs.workPlace.IWorkPlaceDTO;
-import DTOs.workPlace.WorkPlaceDTO;
+import dto.workPlace.IWorkPlaceDTO;
+import dto.workPlace.WorkPlaceDTO;
 
 import db.IConnPool;
 

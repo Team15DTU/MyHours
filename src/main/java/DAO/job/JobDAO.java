@@ -1,8 +1,8 @@
 package DAO.job;
 
 import DAO.DALException;
-import DTOs.job.IJobDTO;
-import DTOs.job.JobDTO;
+import dto.job.IJobDTO;
+import dto.job.JobDTO;
 import db.IConnPool;
 
 import java.sql.*;

@@ -1,7 +1,7 @@
 package DAO.worker;
 
 import DAO.DALException;
-import DTOs.worker.IWorkerDTO;
+import dto.worker.IWorkerDTO;
 
 import java.util.List;
 

@@ -1,33 +1,35 @@
-package DTOs.ruleSet;
+package dto.paymentRule;
+
+import dto.shift.ShiftDTO;
 
 /**
  * @author Rasmus Sander Larsen
  */
-public class RuleSet {
+public abstract class PaymentRule  {
 
     /*
     -------------------------- Fields --------------------------
      */
 	
-	private double stdSalary;
+	protected String ruleName;
     
     /*
     ----------------------- Constructor -------------------------
      */
-	
-	public RuleSet () {}
+    
     
     /*
     ------------------------ Properties -------------------------
      */
+
     
     /*
     ---------------------- Public Methods -----------------------
      */
-    
+	
+	protected abstract double calPayOut(ShiftDTO shift);
     
     /*
     ---------------------- Support Methods ----------------------
      */
-	
 }

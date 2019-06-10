@@ -1,16 +1,8 @@
 import DAO.DALException;
-import DAO.worker.WorkerDAO;
 import db.DBController;
-import DTOs.worker.WorkerDTO;
 import db.IConnPool;
 import db.IDBController;
 import db.MySQL_DB;
-
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.TimeZone;
 
 public class Main {
 

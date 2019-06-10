@@ -9,10 +9,10 @@ import DAO.workPlace.IWorkPlaceDAO;
 import DAO.workPlace.WorkPlaceDAO;
 import DAO.worker.IWorkerDAO;
 import DAO.worker.WorkerDAO;
-import DTOs.job.IJobDTO;
-import DTOs.shift.IShiftDTO;
-import DTOs.workPlace.IWorkPlaceDTO;
-import DTOs.worker.IWorkerDTO;
+import dto.job.IJobDTO;
+import dto.shift.IShiftDTO;
+import dto.workPlace.IWorkPlaceDTO;
+import dto.worker.IWorkerDTO;
 import cache.Cache;
 import cache.ICache;
 

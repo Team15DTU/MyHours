@@ -1,4 +1,4 @@
-package DTOs.address;
+package dto.address;
 
 /**
  * @author Rasmus Sander Larsen

@@ -1,8 +1,8 @@
 package DAO.worker;
 
 import DAO.DALException;
-import DTOs.worker.IWorkerDTO;
-import DTOs.worker.WorkerDTO;
+import dto.worker.IWorkerDTO;
+import dto.worker.WorkerDTO;
 import db.IConnPool;
 
 import java.sql.*;

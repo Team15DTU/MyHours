@@ -1,10 +1,10 @@
 package DAO.worker;
 
 import DAO.DALException;
-import DTOs.address.Address;
-import DTOs.address.IAddress;
-import DTOs.worker.IWorkerDTO;
-import DTOs.worker.WorkerDTO;
+import dto.address.Address;
+import dto.address.IAddress;
+import dto.worker.IWorkerDTO;
+import dto.worker.WorkerDTO;
 import db.DBController;
 import db.IConnPool;
 import db.TestConnPoolV1;

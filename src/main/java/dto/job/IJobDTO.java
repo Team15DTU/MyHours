@@ -1,9 +1,8 @@
-package DTOs.job;
+package dto.job;
 
-import DTOs.address.Address;
-import DTOs.ruleSet.RuleSet;
-import DTOs.shift.IShiftDTO;
-import DTOs.shift.ShiftDTO;
+import dto.address.Address;
+import dto.ruleSet.RuleSet;
+import dto.shift.IShiftDTO;
 
 import java.time.LocalDate;
 import java.util.List;

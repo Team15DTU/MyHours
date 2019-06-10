@@ -1,7 +1,7 @@
-package DTOs.paymentRule.rules;
+package dto.paymentRule.rules;
 
-import DTOs.paymentRule.PaymentRule;
-import DTOs.shift.ShiftDTO;
+import dto.paymentRule.PaymentRule;
+import dto.shift.ShiftDTO;
 
 /**
  * @author Rasmus Sander Larsen

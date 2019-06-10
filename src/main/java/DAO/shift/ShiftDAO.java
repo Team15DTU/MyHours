@@ -1,6 +1,6 @@
 package DAO.shift;
 
-import DTOs.shift.IShiftDTO;
+import dto.shift.IShiftDTO;
 import db.IConnPool;
 
 import java.time.LocalDateTime;

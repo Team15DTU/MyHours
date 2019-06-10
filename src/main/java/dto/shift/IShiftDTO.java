@@ -1,4 +1,4 @@
-package DTOs.shift;
+package dto.shift;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

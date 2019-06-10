@@ -1,44 +1,69 @@
-package DTOs.worker;
+package dto.worker;
 
-import DTOs.address.IAddress;
-import DTOs.workPlace.IWorkPlaceDTO;
+import dto.address.IAddress;
+import dto.workPlace.IWorkPlaceDTO;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
 /**
  * @author Rasmus Sander Larsen
  */
-public class WorkerDTO implements IWorkerDTO {
+
+@Entity
+@Table (name = "Workers")
+public class WorkerHiberDTO implements IWorkerDTO {
 
     /*
     -------------------------- Fields --------------------------
      */
 
+    @Id
+    @Column(name = "workerID")
+    @GeneratedValue(generator="increment")
+    @GenericGenerator(name="increment", strategy = "increment")
     private int workerID;
+
+    @Column(name = "firstname")
     private String firstName;
+
+    @Column(name = "surname")
     private String surName;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "birthday")
     private LocalDate birthday;
+
+    @Column(name = "pass")
+    private String pass;
+
+    @Transient
     private IAddress homeAddress;
+
+    @Transient
     private List<IWorkPlaceDTO> workPlaces;
-    
+
     /*
     ----------------------- Constructor -------------------------
      */
-    
-    public WorkerDTO () {}
 
-    public WorkerDTO (String firstName, String surName, String email) {
+    public WorkerHiberDTO() {}
+
+    public WorkerHiberDTO(String firstName, String surName, String email, String pass) {
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
+        this.pass = pass;
         birthday = null;
         homeAddress = null;
         workPlaces = null;
     }
 
-    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IWorkPlaceDTO> workPlaces)
+    public WorkerHiberDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IWorkPlaceDTO> workPlaces)
     {
         this.firstName = firstName;
         this.surName = surName;
@@ -94,6 +119,14 @@ public class WorkerDTO implements IWorkerDTO {
         this.birthday = birthday;
     }
 
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
     public IAddress getHomeAddress() {
         return homeAddress;
     }
@@ -101,11 +134,9 @@ public class WorkerDTO implements IWorkerDTO {
     public void setHomeAddress(IAddress homeAddress) {
         this.homeAddress = homeAddress;
     }
-    
-    @Override
+
     public List<IWorkPlaceDTO> getIWorkPlaces() { return workPlaces; }
-    
-    @Override
+
     public void setIWorkPlaces(List<IWorkPlaceDTO> workPlaces) { this.workPlaces = workPlaces; }
     
     // endregion
