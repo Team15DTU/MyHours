@@ -44,7 +44,7 @@
                 </div>
             </li>
 
-            <li class="item" id="job" onclick="changeFunction('job');openInfo()">
+            <li class="item" id="job" onclick="changeFunction('job');openInfo();hoursOnWorkMounthly()">
                 <input id="myid2" type="checkbox">
                 <label for="myid2" class="btn_menu"><i class="fas fa-briefcase"></i>Job</label>
                 <div class="smenu">
@@ -53,7 +53,7 @@
                     <a href="#">Delete</a>
                 </div>
             </li>
-            <li class="item" id="workplace" onclick="changeFunction('workplace');openInfo()">
+            <li class="item" id="workplace" onclick="changeFunction('workplace');openInfo();hoursOnWorkMounthly()">
                 <input id="myid3" type="checkbox">
                 <label for="myid3" class="btn_menu"><i class="fas fa-building"></i>Workplace</label>
                 <div class="smenu">
@@ -62,7 +62,7 @@
                     <a href="#">Delete</a>
                 </div>
             </li>
-            <li class="item">
+            <li class="item" onclick="letsTryFuck()">
                 <a href="#" class="btn_menu"><i class="fas fa-sign-out-alt"></i>Logout</a>
             </li>
         </div>
@@ -175,8 +175,10 @@
                     var dataSet = anychart.data.set(data);
                     var i;
                     for (i=0;i<nrOfDays;i++){
-                        dataSet.append([i,hoursOfWork()]);
+                        var name = 'Den ' +(i+1)+'. i '+(mounth+1)+'.';
+                        dataSet.append([name,hoursOfWork()]);
                     };
+
 
 
                     // create the chart
@@ -184,6 +186,14 @@
 
                     // add the data
                     chart.data(dataSet);
+
+                    var i=0;
+                    // create a loop
+                    while (chart.getSeriesAt(i)){
+                        // rename each series
+                        chart.getSeriesAt(i).name('Irma');
+                        i++;
+                    }
 
                     // set the chart title
                     chart.title("Hours on work");
@@ -196,7 +206,11 @@
 
 
 
-    </script>
+        </script>
+
+
+
+
 </footer>
 
 

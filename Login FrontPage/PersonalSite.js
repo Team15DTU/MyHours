@@ -32,9 +32,9 @@ function job() {
     while(table.hasChildNodes()){
         table.removeChild(table.firstChild);
     }
-    var firm = 'Firma';
-    var lastpay = 'Sidste udbetaling';
-    var recivepay = 'Optjent løn';
+    var firm = 'Firm';
+    var lastpay = 'Last salary';
+    var recivepay = 'Estimated salary';
 
 
     var row = table.insertRow(0);
@@ -46,8 +46,8 @@ function job() {
     for (i = 0; i < 1; i++){
         var row2 = table.insertRow(i+1);
         row2.insertCell(0).innerHTML = findCompany(i);
-        row2.insertCell(1).innerHTML = lastPaycheck(i);
-        row2.insertCell(2).innerHTML = estimatePaycheck(i);
+        row2.insertCell(1).innerHTML = lastPaycheck(i)+' Kr.';
+        row2.insertCell(2).innerHTML = estimatePaycheck(i)+' Kr.';
     }
 }
 
@@ -84,11 +84,11 @@ function findCompany(nr) {
 }
 
 function lastPaycheck(nr) {
-    return '2500 kr.'
+    return 2500;
 }
 
 function estimatePaycheck(nr) {
-    return '1750 kr.'
+    return 1750;
 }
 
 function findShift(nr) {

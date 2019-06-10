@@ -80,8 +80,8 @@
 
 .popup_mid {
     position: absolute;
-    top: 18%;
-    transform: translate(50%);
+    top: 180px;
+    transform: translate(500px);
     font-size: 14px;
 }
 .popup_content {
@@ -97,30 +97,30 @@
 
 
 .pop_top {
-    width: 20%;
-    height: 15%;
+    width: 200px;
+    height: 90px;
     margin: auto;
-    padding-top: 2.7%;
+    padding-top: 27px;
     border-radius: 25px;
 }
 
 .pop_left {
     border-radius: 8px;
-    margin-top: 3%;
-    width: 30%;
-    height: 75%;
+    margin-top: 30px;
+    width: 300px;
+    height: 450px;
     float: left;
-    margin-left: 1%;
+    margin-left: 10px;
 
 }
 
 .pop_right {
     border-radius: 8px;
-    margin-top: 3%;
-    width: 65%;
-    height: 75%;
+    margin-top: 30px;
+    width: 650px;
+    height: 450px;
     float: right;
-    margin-right: 1%;
+    margin-right: 10px;
 }
 
 
@@ -128,7 +128,7 @@
 
 .left_table {
     border-collapse: collapse;
-    width: 100%;
+    width: 250px;
     border: none;
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
