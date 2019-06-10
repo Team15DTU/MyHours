@@ -89,8 +89,7 @@
     height: 0px;
     border-radius: 8px;
     overflow: hidden;
-    transition-duration: 0.5s;
-    transition-property: width, height;
+    
 }
 
 
