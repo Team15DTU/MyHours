@@ -25,14 +25,14 @@
     <div class="middle_menu">
         <div class="menu">
 
-            <li class="item" id="profile" onclick="changeFunction('none')">
+            <li class="item" id="profile" onclick="changeFunction('none'); closeInfo()">
                 <input id="myid" type="checkbox">
                 <label for="myid" class="btn_menu"><i class="fas fa-user"></i>Profile</label>
                 <div class="smenu">
                     <a href="#">Settings</a>
                 </div>
             </li>
-            <li class="item" id="shifts" onclick="changeFunction('shifts')">
+            <li class="item" id="shifts" onclick="changeFunction('shifts');openInfo()">
                 <input id="myid1" type="checkbox">
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Shift</label>
                 <div class="smenu">
@@ -42,7 +42,7 @@
                 </div>
             </li>
 
-            <li class="item" id="job" onclick="changeFunction('job')">
+            <li class="item" id="job" onclick="changeFunction('job');openInfo()">
                 <input id="myid2" type="checkbox">
                 <label for="myid2" class="btn_menu"><i class="fas fa-briefcase"></i>Job</label>
                 <div class="smenu">
@@ -51,7 +51,7 @@
                     <a href="#">Delete</a>
                 </div>
             </li>
-            <li class="item" id="workplace" onclick="changeFunction('workplace')">
+            <li class="item" id="workplace" onclick="changeFunction('workplace');openInfo()">
                 <input id="myid3" type="checkbox">
                 <label for="myid3" class="btn_menu"><i class="fas fa-building"></i>Workplace</label>
                 <div class="smenu">
@@ -67,7 +67,7 @@
     </div>
 
     <div class="popup_mid">
-        <div class="popup_content">
+        <div class="popup_content" id="popup_content" >
 
             <div class="pop_top" id="pop_top2">
                 <center>
@@ -92,6 +92,24 @@
 <footer>
     <script type="text/javascript" src="PersonalSite.js"></script>
     <script>
+
+        function openInfo() {
+
+            document.getElementById('popup_content').style.width = '1000px';
+            document.getElementById('popup_content').style.height = '600px';
+
+
+
+
+
+        }
+
+        function closeInfo() {
+            document.getElementById('popup_content').style.width = '0px';
+            document.getElementById('popup_content').style.height = '0px';
+
+        }
+
         function changeFunction(site) {
             var elem = document.getElementById('content');
             if (site == 'shifts'){

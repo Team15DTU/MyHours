@@ -85,11 +85,16 @@
     font-size: 14px;
 }
 .popup_content {
-    width: 1000px;
-    height: 600px;
+    width: 0px;
+    height: 0px;
     border-radius: 8px;
     overflow: hidden;
+    transition-duration: 0.5s;
+    transition-property: width, height;
 }
+
+
+
 
 .pop_top {
     width: 20%;
@@ -106,6 +111,7 @@
     height: 75%;
     float: left;
     margin-left: 1%;
+
 }
 
 .pop_right {
@@ -131,7 +137,7 @@
 }
 
 .left_table tr    {
-    background-color: #3498DB
+    background-color: #3498DB;
 }
 
 .left_table td, th {
@@ -158,3 +164,6 @@ tr:nth-child(even){background-color: #f2f2f2}
 .left_table tr:first-child td:last-child {
     border-top-right-radius: 10px;
 }
+
+/*  Forsøg med transision effekt */
+
