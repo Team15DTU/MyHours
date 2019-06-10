@@ -1,4 +1,4 @@
-package DTOs.shift;
+package DTOs.activity;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 /**
  * @author Rasmus Sander Larsen
  */
-public interface IShiftDTO {
+public interface IActivityDTO {
 
     /*
     ------------------------ Properties -------------------------
