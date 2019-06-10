@@ -15,6 +15,7 @@ import DTOs.workPlace.IEmployerDTO;
 import DTOs.worker.IWorkerDTO;
 
 import java.sql.*;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -45,9 +46,9 @@ public class DBController implements IDBController {
         TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
 
         iWorkerDAO      = new WorkerDAO(this.connPool);
-        iEmployerDAO = new EmployerDAO(this.connPool);
+        iEmployerDAO    = new EmployerDAO(this.connPool);
         iJobDAO         = new JobDAO(this.connPool);
-        iActivityDAO = new ActivityDAO(this.connPool);
+        iActivityDAO    = new ActivityDAO(this.connPool);
 
     }
     
@@ -55,8 +56,8 @@ public class DBController implements IDBController {
     ------------------------ Properties -------------------------
      */
 
-    // <editor-folder desc="Properties"
-
+    //region Properties
+    
     public IWorkerDAO getiWorkerDAO() {
         return iWorkerDAO;
     }
@@ -88,14 +89,16 @@ public class DBController implements IDBController {
     public void setiActivityDAO(IActivityDAO iActivityDAO) {
         this.iActivityDAO = iActivityDAO;
     }
-
-
-    // </editor-folder>
+    
+    //endregion
     
     /*
     ---------------------- Public Methods -----------------------
      */
-
+    
+    //region Utility
+    
+    @Override
     public int getNextAutoIncremental(String tableName) throws DALException
     {
         Connection c = connPool.getConn();
@@ -122,7 +125,31 @@ public class DBController implements IDBController {
             connPool.releaseConnection(c);
         }
     }
+    
+    @Override
+    public String setTimeZoneFromSQLServer ()  throws DALException
+    {
+        Connection c = connPool.getConn();
+        try {
+            Statement statement = c.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT @@system_time_zone");
+            resultSet.next();
+            return resultSet.getString(1);
+            
+        } catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        } finally {
+            connPool.releaseConnection(c);
+        }
+    }
+    
+    //endregion
 
+    //region Worker
+    
+    public void createWorker (IWorkerDTO workerDTO, String password) throws DALException
+    { iWorkerDAO.createWorker(workerDTO,password); }
+    
     /**
      * This methods returns a FULL IWorkerDTO Object.
      * Including:
@@ -133,6 +160,7 @@ public class DBController implements IDBController {
      * @return A IWorkerDTO
      * @throws DALException Will throw a DALException.
      */
+    @Override
     public IWorkerDTO getIWorkerDTO (String email) throws DALException
     {
         // Get the worker from DB, and make object
@@ -143,32 +171,107 @@ public class DBController implements IDBController {
         
         return worker;
     }
-
-
+    
+    @Override
+    public IWorkerDTO getIWorkerDTO (int id) throws DALException
+    { return null; }
+    
+    @Override
+    public List<IWorkerDTO> getIWorkerDTOList () throws DALException
+    { return null; }
+    
+    @Override
+    public List<IWorkerDTO> getIWorkerDTOList (int minID, int maxID) throws DALException
+    { return null; }
+    
+    @Override
+    public List<IWorkerDTO> getIWorkerDTOList (String name) throws DALException
+    { return null; }
+    
+    //endregion
+    
+    //region Employer
+    @Override
+    public void createEmployer(IEmployerDTO employer) throws DALException
+    { }
+    
+    @Override
+    public IEmployerDTO getIEmployerDTO(int id) throws DALException
+    { return null; }
+    
+    @Override
+    public List<IEmployerDTO> getIEmployerList() throws DALException
+    { return null; }
+    
+    @Override
+    public List<IEmployerDTO> getIEmployerList(int minID, int maxID) throws DALException
+    { return null; }
+    
+    @Override
+    public List<IEmployerDTO> getIEmployerList(String name) throws DALException
+    { return null; }
+    
+    //endregion
+    
+    //region Job
+    
+    @Override
+    public void createJob(IJobDTO job) throws DALException
+    { }
+    
+    @Override
+    public IJobDTO getIJobDTO(int id) throws DALException
+    { return null; }
+    
+    @Override
+    public List<IJobDTO> getIJobDTOList() throws DALException
+    { return null; }
+    
+    @Override
+    public List<IJobDTO> getIJobDTOList(int employerID) throws DALException
+    { return null; }
+    
+    @Override
+    public List<IJobDTO> getIJobDTOList(String name) throws DALException
+    { return null; }
+    
+    @Override
+    public List<IJobDTO> getIJobDTOList(double minSalary, double maxSalary) throws DALException
+    { return null; }
+    
+    //endregion
+    
+    //region Activity
+    
+    @Override
+    public void createActivity(IActivityDTO activity) throws DALException
+    { }
+    
+    @Override
+    public IActivityDTO getIActivity(int id) throws DALException
+    { return null; }
+    
+    @Override
+    public List<IActivityDTO> getIActivityList() throws DALException
+    { return null; }
+    
+    @Override
+    public List<IActivityDTO> getIActivityList(int jobID) throws DALException
+    { return null; }
+    
+    @Override
+    public List<IActivityDTO> getIActivityList(Date date) throws DALException
+    { return null; }
+    
+    @Override
+    public List<IActivityDTO> getIActivityList(double minVal, double maxVal) throws DALException
+    { return null; }
+    
+    //endregion
+    
     /*
     ---------------------- Support Methods ----------------------
      */
-
-    public String setTimeZoneFromSQLServer ()  throws DALException
-    {
-        Connection c = connPool.getConn();
-        try {
-            Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT @@system_time_zone");
-            resultSet.next();
-            return resultSet.getString(1);
-
-        } catch (SQLException e) {
-            throw new DALException(e.getMessage());
-        } finally {
-            connPool.releaseConnection(c);
-        }
-    }
-
-    public void createWorker (IWorkerDTO workerDTO, String password) throws DALException
-    {
-        iWorkerDAO.createWorker(workerDTO,password);
-    }
 
     /**
      * This methods returns a FULL IWorkerDTO Object.
