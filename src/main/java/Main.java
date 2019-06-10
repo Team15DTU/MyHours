@@ -17,11 +17,8 @@ public class Main {
 
     public static void main(String[] args) throws DALException
     {
-        // This is the MySQL DB that the program is running on.
-        IConnPool connPool = ConnPoolV1.getInstance();
-
         // This is the MySQL DB Controller which accesses the DB an executes all actions.
-        IDBController idbController = new DBController(connPool);
+        IDBController dbController = DBController.getInstance();
 
     }
 }

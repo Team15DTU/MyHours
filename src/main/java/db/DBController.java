@@ -13,6 +13,7 @@ import DTOs.job.IJobDTO;
 import DTOs.activity.IActivityDTO;
 import DTOs.workPlace.IEmployerDTO;
 import DTOs.worker.IWorkerDTO;
+import db.connectionPools.ConnPoolV1;
 
 import java.sql.*;
 import java.util.Date;
@@ -28,6 +29,8 @@ public class DBController implements IDBController {
     -------------------------- Fields --------------------------
      */
     
+    private static DBController instance;
+    
     private IConnPool connPool;
     private IWorkerDAO iWorkerDAO;
     private IEmployerDAO iEmployerDAO;
@@ -38,7 +41,7 @@ public class DBController implements IDBController {
     ----------------------- Constructor -------------------------
      */
     
-    public DBController (IConnPool connPool) throws DALException
+    private DBController (IConnPool connPool) throws DALException
     {
 
         this.connPool = connPool;
@@ -95,6 +98,23 @@ public class DBController implements IDBController {
     /*
     ---------------------- Public Methods -----------------------
      */
+	
+	/**
+	 * Gives the instance of the DBController. This takes care of which
+	 * connection pool is used.
+	 * @return DBController object
+	 * @throws DALException Data Access Layer Exception
+	 */
+	public static DBController getInstance() throws DALException
+	{
+		if ( instance == null )
+		{
+			IConnPool connPool = ConnPoolV1.getInstance();
+			instance = new DBController(connPool);
+		}
+		
+		return instance;
+	}
     
     //region Utility
     
