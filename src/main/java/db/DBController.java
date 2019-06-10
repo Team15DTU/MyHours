@@ -13,8 +13,6 @@ import DTOs.job.IJobDTO;
 import DTOs.shift.IShiftDTO;
 import DTOs.workPlace.IWorkPlaceDTO;
 import DTOs.worker.IWorkerDTO;
-import cache.Cache;
-import cache.ICache;
 
 import java.sql.*;
 import java.util.List;
@@ -29,29 +27,27 @@ public class DBController implements IDBController {
     -------------------------- Fields --------------------------
      */
     
-    private IConnPool iConnPool;
+    private IConnPool connPool;
     private IWorkerDAO iWorkerDAO;
     private IWorkPlaceDAO iWorkPlaceDAO;
     private IJobDAO iJobDAO;
     private IShiftDAO iShiftDAO;
-    private ICache iCache;
-
     
     /*
     ----------------------- Constructor -------------------------
      */
     
-    public DBController (IConnPool iConnPool) throws DALException {
+    public DBController (IConnPool connPool) throws DALException
+    {
 
-        this.iConnPool = iConnPool;
+        this.connPool = connPool;
 
         TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
 
-        iWorkerDAO = new WorkerDAO(this.iConnPool);
-        iWorkPlaceDAO = new WorkPlaceDAO(this.iConnPool);
-        iJobDAO = new JobDAO(this.iConnPool);
-        iShiftDAO = new ShiftDAO(this.iConnPool);
-        iCache = new Cache();
+        iWorkerDAO      = new WorkerDAO(this.connPool);
+        iWorkPlaceDAO   = new WorkPlaceDAO(this.connPool);
+        iJobDAO         = new JobDAO(this.connPool);
+        iShiftDAO       = new ShiftDAO(this.connPool);
 
     }
     
@@ -100,9 +96,9 @@ public class DBController implements IDBController {
     ---------------------- Public Methods -----------------------
      */
 
-    public int getNextAutoIncremental(String tableName) throws DALException {
-
-        Connection c = iConnPool.getConn();
+    public int getNextAutoIncremental(String tableName) throws DALException
+    {
+        Connection c = connPool.getConn();
 
         try {
 
@@ -123,7 +119,7 @@ public class DBController implements IDBController {
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
         } finally {
-            iConnPool.releaseConnection(c);
+            connPool.releaseConnection(c);
         }
     }
 
@@ -137,15 +133,15 @@ public class DBController implements IDBController {
      * @return A IWorkerDTO
      * @throws DALException Will throw a DALException.
      */
-    public IWorkerDTO getIWorkerDTO (String email) throws DALException {
-
-        IWorkerDTO iWorkerDTOToReturn = iCache.getIWorkerDTOFromCache(email);
-        if (iWorkerDTOToReturn == null) {
-            iWorkerDTOToReturn = createFullIWorkerDTO(email);
-            //TODO: Add threading for method below;
-            iCache.addIWorkerDTOToCache(iWorkerDTOToReturn);
-        }
-        return iWorkerDTOToReturn;
+    public IWorkerDTO getIWorkerDTO (String email) throws DALException
+    {
+        // Get the worker from DB, and make object
+        IWorkerDTO worker = createFullIWorkerDTO(email);
+        
+        if ( worker == null )
+            System.err.println("ERROR: Couldn't create WorkerDTO object");
+        
+        return worker;
     }
 
 
@@ -153,8 +149,9 @@ public class DBController implements IDBController {
     ---------------------- Support Methods ----------------------
      */
 
-    public String setTimeZoneFromSQLServer ()  throws DALException{
-        Connection c = iConnPool.getConn();
+    public String setTimeZoneFromSQLServer ()  throws DALException
+    {
+        Connection c = connPool.getConn();
         try {
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT @@system_time_zone");
@@ -164,14 +161,13 @@ public class DBController implements IDBController {
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
         } finally {
-            iConnPool.releaseConnection(c);
+            connPool.releaseConnection(c);
         }
     }
 
-    public void createWorker (IWorkerDTO workerDTO, String password) throws DALException {
-
+    public void createWorker (IWorkerDTO workerDTO, String password) throws DALException
+    {
         iWorkerDAO.createWorker(workerDTO,password);
-
     }
 
     /**
@@ -184,12 +180,14 @@ public class DBController implements IDBController {
      * @return A IWorkerDTO
      * @throws DALException Will throw a DALException.
      */
-    private IWorkerDTO createFullIWorkerDTO (String email) throws DALException {
-
+    private IWorkerDTO createFullIWorkerDTO (String email) throws DALException
+    {
         // Gets the IWorkerDTO
         IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
+        
         // Sets WorkerDTOs List<IWorkplaceDTO> workplaces via WorkplaceDAO.
         workerDTOToReturn.setIWorkPlaces(iWorkPlaceDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
+        
         // Sets WorkplaceDTOs List<IJobDTO> jobList via JobDAO, for each WorkplaceDTO in Workers List<WorkplaceDTO>
         for (IWorkPlaceDTO workPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
             List<IJobDTO> iJobDToList = iJobDAO.getIJobList(workPlaceDTO.getWorkplaceID());
