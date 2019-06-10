@@ -1,4 +1,4 @@
-
+//Dette metoderne til tabellen
 
 function shifts() {
 
@@ -77,6 +77,7 @@ function none() {
 }
 
 
+//her er de metoder til  felterne som skal snakke med serveren
 
 function findCompany(nr) {
     return 'irma'
@@ -103,3 +104,15 @@ function findWork(nr) {
 function findPaycheck(nr) {
     return '444 kr.'
 }
+
+//her er graferne
+
+function daysInMonth (month, year) {
+    return new Date(year, month, 0).getDate();
+}
+
+function hoursOfWork () {
+    return 4;
+}
+
+// her er de metoder som bliver brugt til at laver graferne, sammen med "chart.

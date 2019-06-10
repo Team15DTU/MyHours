@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="../NewFront/Front.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <link rel="stylesheet" href="PersonalSite.css">
 </head>
@@ -32,7 +34,7 @@
                     <a href="#">Settings</a>
                 </div>
             </li>
-            <li class="item" id="shifts" onclick="changeFunction('shifts');openInfo()">
+            <li class="item" id="shifts" onclick="changeFunction('shifts');openInfo();hoursOnWorkMounthly()">
                 <input id="myid1" type="checkbox">
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Shift</label>
                 <div class="smenu">
@@ -80,9 +82,7 @@
 
                 </table>
             </div>
-            <div class="pop_right">
-
-            </div>
+            <div class="pop_right" id="graph"></div>
 
         </div>
     </div>
@@ -92,7 +92,7 @@
 <footer>
     <script type="text/javascript" src="PersonalSite.js"></script>
     <script>
-
+        //her er delene som fremkalder content.
         function openInfo() {
 
             document.getElementById('popup_content').style.width = '1000px';
@@ -103,13 +103,14 @@
 
 
         }
-
         function closeInfo() {
             document.getElementById('popup_content').style.width = '0px';
             document.getElementById('popup_content').style.height = '0px';
 
         }
 
+
+        //her er delene som ændre ved content.
         function changeFunction(site) {
             var elem = document.getElementById('content');
             if (site == 'shifts'){
@@ -129,7 +130,6 @@
                 left('none');
             }
         }
-
         function header(head) {
             document.getElementById('pop_top_head').innerHTML = head;
             if (head == ''){
@@ -138,9 +138,6 @@
                 document.getElementById('pop_top2').style.backgroundColor = 'rgb(52, 152, 219)';
             }
             }
-
-
-
         function left(type) {
             if (type == 'shifts') {
                 shifts();
@@ -156,6 +153,47 @@
             }
 
         }
+
+        </script>
+
+        <script>
+            function hoursOnWorkMounthly(){
+                anychart.onDocumentReady(function() {
+
+
+                    var today = new Date();
+                    var mounth = String(today.getMonth());
+                    var year = today.getFullYear();
+
+                    var nrOfDays = daysInMonth(mounth,year);
+
+                    // set the data
+                    var data = {
+                        header: ["Date", "Hours"]
+                    };
+
+                    var dataSet = anychart.data.set(data);
+                    var i;
+                    for (i=0;i<nrOfDays;i++){
+                        dataSet.append([i,hoursOfWork()]);
+                    };
+
+
+                    // create the chart
+                    var chart = anychart.column();
+
+                    // add the data
+                    chart.data(dataSet);
+
+                    // set the chart title
+                    chart.title("Hours on work");
+
+                    // draw
+                    chart.container("graph");
+                    chart.draw();
+                });
+            }
+
 
 
     </script>
