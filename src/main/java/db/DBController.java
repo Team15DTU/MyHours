@@ -56,8 +56,8 @@ public class DBController implements IDBController {
     ------------------------ Properties -------------------------
      */
 
-    // <editor-folder desc="Properties"
-
+    //region Properties
+    
     public IWorkerDAO getiWorkerDAO() {
         return iWorkerDAO;
     }
@@ -89,14 +89,16 @@ public class DBController implements IDBController {
     public void setiActivityDAO(IActivityDAO iActivityDAO) {
         this.iActivityDAO = iActivityDAO;
     }
-
-
-    // </editor-folder>
+    
+    //endregion
     
     /*
     ---------------------- Public Methods -----------------------
      */
-
+    
+    //region Utility
+    
+    @Override
     public int getNextAutoIncremental(String tableName) throws DALException
     {
         Connection c = connPool.getConn();
@@ -124,6 +126,7 @@ public class DBController implements IDBController {
         }
     }
     
+    @Override
     public String setTimeZoneFromSQLServer ()  throws DALException
     {
         Connection c = connPool.getConn();
@@ -139,6 +142,8 @@ public class DBController implements IDBController {
             connPool.releaseConnection(c);
         }
     }
+    
+    //endregion
 
     //region Worker
     
@@ -184,7 +189,6 @@ public class DBController implements IDBController {
     { return null; }
     
     //endregion
-    
     
     //region Employer
     @Override

@@ -105,4 +105,5 @@ public interface IDBController
     | Utilities                                                  |
     -------------------------------------------------------------*/
     String setTimeZoneFromSQLServer() throws DALException;
+	int getNextAutoIncremental(String tableName) throws DALException;
 }
