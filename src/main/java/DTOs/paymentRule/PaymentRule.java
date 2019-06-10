@@ -1,6 +1,6 @@
 package DTOs.paymentRule;
 
-import DTOs.shift.ShiftDTO;
+import DTOs.activity.ActivityDTO;
 
 /**
  * @author Rasmus Sander Larsen
@@ -27,7 +27,7 @@ public abstract class PaymentRule  {
     ---------------------- Public Methods -----------------------
      */
 	
-	protected abstract double calPayOut(ShiftDTO shift);
+	protected abstract double calPayOut(ActivityDTO shift);
     
     /*
     ---------------------- Support Methods ----------------------

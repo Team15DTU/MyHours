@@ -1,6 +1,6 @@
-package DAO.shift;
+package DAO.activity;
 
-import DTOs.shift.IShiftDTO;
+import DTOs.activity.IActivityDTO;
 import db.IConnPool;
 
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
-public class ShiftDAO implements IShiftDAO {
+public class ActivityDAO implements IActivityDAO {
 
     /*
     -------------------------- Fields --------------------------
@@ -22,7 +22,7 @@ public class ShiftDAO implements IShiftDAO {
     ----------------------- Constructor -------------------------
      */
     
-    public ShiftDAO (IConnPool iConnPool) {
+    public ActivityDAO(IConnPool iConnPool) {
         this.iConnPool = iConnPool;
     }
     
@@ -40,32 +40,32 @@ public class ShiftDAO implements IShiftDAO {
      */
 
     @Override
-    public IShiftDTO getIShift(int userID, LocalDateTime dateAndTime) {
+    public IActivityDTO getIShift(int userID, LocalDateTime dateAndTime) {
         return null;
     }
 
     @Override
-    public List<IShiftDTO> getIShiftList() {
+    public List<IActivityDTO> getIShiftList() {
         return null;
     }
 
     @Override
-    public List<IShiftDTO> getIShiftList(int jobID) {
+    public List<IActivityDTO> getIShiftList(int jobID) {
         return null;
     }
 
     @Override
-    public List<IShiftDTO> getIShiftList(int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime) {
+    public List<IActivityDTO> getIShiftList(int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime) {
         return null;
     }
 
     @Override
-    public void createIShift(IShiftDTO shift) {
+    public void createIShift(IActivityDTO shift) {
 
     }
 
     @Override
-    public void updateIShift(IShiftDTO shift) {
+    public void updateIShift(IActivityDTO shift) {
 
     }
 

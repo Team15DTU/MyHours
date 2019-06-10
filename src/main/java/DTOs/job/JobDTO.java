@@ -1,9 +1,7 @@
 package DTOs.job;
 
-import DTOs.shift.IShiftDTO;
-import DTOs.shift.ShiftDTO;
+import DTOs.activity.IActivityDTO;
 import DTOs.ruleSet.RuleSet;
-import DTOs.workPlace.WorkPlaceDTO;
 import DTOs.address.Address;
 
 import java.time.LocalDate;
@@ -25,7 +23,7 @@ public class JobDTO implements IJobDTO {
     private double stdSalary;
     private Address jobAddress;
     private RuleSet ruleSet;
-    private List<IShiftDTO> iShiftDTOList;
+    private List<IActivityDTO> iActivityDTOList;
     
     /*
     ----------------------- Constructor -------------------------
@@ -40,17 +38,17 @@ public class JobDTO implements IJobDTO {
         hireDate = null;
         jobAddress = null;
         ruleSet = null;
-        iShiftDTOList = null;
+        iActivityDTOList = null;
     }
 
-    public JobDTO (int workplaceID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, RuleSet ruleSet, List<IShiftDTO> iShiftDTOList) {
+    public JobDTO (int workplaceID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, RuleSet ruleSet, List<IActivityDTO> iActivityDTOList) {
         this.workplaceID = workplaceID;
         this.jobName = jobName;
         this.stdSalary = stdSalary;
         this.hireDate = hireDate;
         this.jobAddress = jobAddress;
         this.ruleSet = ruleSet;
-        this.iShiftDTOList = iShiftDTOList;
+        this.iActivityDTOList = iActivityDTOList;
     }
 
     /*
@@ -115,12 +113,12 @@ public class JobDTO implements IJobDTO {
         this.ruleSet = ruleSet;
     }
 
-    public List<IShiftDTO> getIShiftDTOList() {
-        return iShiftDTOList;
+    public List<IActivityDTO> getIShiftDTOList() {
+        return iActivityDTOList;
     }
 
-    public void setIShiftDTOList(List<IShiftDTO> iShiftDTOList) {
-        this.iShiftDTOList = iShiftDTOList;
+    public void setIShiftDTOList(List<IActivityDTO> iActivityDTOList) {
+        this.iActivityDTOList = iActivityDTOList;
     }
 
     // </editor-folder>

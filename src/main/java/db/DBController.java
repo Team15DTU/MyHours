@@ -3,15 +3,15 @@ package db;
 import DAO.DALException;
 import DAO.job.IJobDAO;
 import DAO.job.JobDAO;
-import DAO.shift.IShiftDAO;
-import DAO.shift.ShiftDAO;
-import DAO.workPlace.IWorkPlaceDAO;
-import DAO.workPlace.WorkPlaceDAO;
+import DAO.activity.IActivityDAO;
+import DAO.activity.ActivityDAO;
+import DAO.employer.IEmployerDAO;
+import DAO.employer.EmployerDAO;
 import DAO.worker.IWorkerDAO;
 import DAO.worker.WorkerDAO;
 import DTOs.job.IJobDTO;
-import DTOs.shift.IShiftDTO;
-import DTOs.workPlace.IWorkPlaceDTO;
+import DTOs.activity.IActivityDTO;
+import DTOs.workPlace.IEmployerDTO;
 import DTOs.worker.IWorkerDTO;
 
 import java.sql.*;
@@ -29,9 +29,9 @@ public class DBController implements IDBController {
     
     private IConnPool connPool;
     private IWorkerDAO iWorkerDAO;
-    private IWorkPlaceDAO iWorkPlaceDAO;
+    private IEmployerDAO iEmployerDAO;
     private IJobDAO iJobDAO;
-    private IShiftDAO iShiftDAO;
+    private IActivityDAO iActivityDAO;
     
     /*
     ----------------------- Constructor -------------------------
@@ -45,9 +45,9 @@ public class DBController implements IDBController {
         TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
 
         iWorkerDAO      = new WorkerDAO(this.connPool);
-        iWorkPlaceDAO   = new WorkPlaceDAO(this.connPool);
+        iEmployerDAO = new EmployerDAO(this.connPool);
         iJobDAO         = new JobDAO(this.connPool);
-        iShiftDAO       = new ShiftDAO(this.connPool);
+        iActivityDAO = new ActivityDAO(this.connPool);
 
     }
     
@@ -65,12 +65,12 @@ public class DBController implements IDBController {
         this.iWorkerDAO = iWorkerDAO;
     }
 
-    public IWorkPlaceDAO getiWorkPlaceDAO() {
-        return iWorkPlaceDAO;
+    public IEmployerDAO getiEmployerDAO() {
+        return iEmployerDAO;
     }
 
-    public void setiWorkPlaceDAO(IWorkPlaceDAO iWorkPlaceDAO) {
-        this.iWorkPlaceDAO = iWorkPlaceDAO;
+    public void setiEmployerDAO(IEmployerDAO iEmployerDAO) {
+        this.iEmployerDAO = iEmployerDAO;
     }
 
     public IJobDAO getiJobDAO() {
@@ -81,12 +81,12 @@ public class DBController implements IDBController {
         this.iJobDAO = iJobDAO;
     }
 
-    public IShiftDAO getiShiftDAO() {
-        return iShiftDAO;
+    public IActivityDAO getiActivityDAO() {
+        return iActivityDAO;
     }
 
-    public void setiShiftDAO(IShiftDAO iShiftDAO) {
-        this.iShiftDAO = iShiftDAO;
+    public void setiActivityDAO(IActivityDAO iActivityDAO) {
+        this.iActivityDAO = iActivityDAO;
     }
 
 
@@ -186,18 +186,18 @@ public class DBController implements IDBController {
         IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
         
         // Sets WorkerDTOs List<IWorkplaceDTO> workplaces via WorkplaceDAO.
-        workerDTOToReturn.setIWorkPlaces(iWorkPlaceDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
+        workerDTOToReturn.setIWorkPlaces(iEmployerDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
         
         // Sets WorkplaceDTOs List<IJobDTO> jobList via JobDAO, for each WorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IWorkPlaceDTO workPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
+        for (IEmployerDTO workPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
             List<IJobDTO> iJobDToList = iJobDAO.getIJobList(workPlaceDTO.getWorkplaceID());
             workPlaceDTO.setIJobList(iJobDToList);
         }
-        // Sets JobDTOs List<IShiftDTO> shiftList via ShiftDAO, for each IJobDTO in each IWorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IWorkPlaceDTO iworkPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
+        // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IWorkplaceDTO in Workers List<WorkplaceDTO>
+        for (IEmployerDTO iworkPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
             for (IJobDTO iJobDTO : iworkPlaceDTO.getIJobList()) {
-                List<IShiftDTO> iShiftDTOList = iShiftDAO.getIShiftList(iJobDTO.getJobID());
-                iJobDTO.setIShiftDTOList(iShiftDTOList);
+                List<IActivityDTO> iActivityDTOList = iActivityDAO.getIShiftList(iJobDTO.getJobID());
+                iJobDTO.setIShiftDTOList(iActivityDTOList);
             }
         }
 
