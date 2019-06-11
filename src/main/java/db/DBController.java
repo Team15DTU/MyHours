@@ -127,9 +127,12 @@ public class DBController implements IDBController {
             Statement statement = c.createStatement();
             statement.executeQuery("ANALYZE TABLE " + tableName);
 
+            // Shit works
+			//TODO: Fix hardcoded Database
             PreparedStatement pStatement = c.prepareStatement(
-                    "SELECT `auto_increment` FROM INFORMATION_SCHEMA.TABLES " +
-                            " WHERE table_name = ?");
+                    "SELECT AUTO_INCREMENT FROM information_schema.TABLES where TABLE_SCHEMA = 's185097'" +
+							" AND TABLE_NAME = ?" )
+					;
             pStatement.setString(1, tableName);
 
             ResultSet resultset = pStatement.executeQuery();

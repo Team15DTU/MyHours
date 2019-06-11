@@ -1,5 +1,7 @@
 import DAO.DALException;
+import DAO.worker.IWorkerDAO;
 import DAO.worker.WorkerDAO;
+import DTOs.worker.IWorkerDTO;
 import db.DBController;
 import DTOs.worker.WorkerDTO;
 import db.IConnPool;
