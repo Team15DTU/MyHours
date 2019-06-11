@@ -1,10 +1,10 @@
-package DAO.shift;
+package DAO.activity;
 
 import db.IConnPool;
 import db.TestConnPoolV1;
 import org.junit.*;
 
-public class ShiftDAOTest
+public class ActivityDAOTest
 {
 	private static IConnPool connPool;
 	

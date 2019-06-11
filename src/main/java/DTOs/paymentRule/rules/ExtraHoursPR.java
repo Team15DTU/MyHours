@@ -1,7 +1,7 @@
 package DTOs.paymentRule.rules;
 
 import DTOs.paymentRule.PaymentRule;
-import DTOs.shift.ShiftDTO;
+import DTOs.activity.ActivityDTO;
 
 /**
  * @author Rasmus Sander Larsen
@@ -27,7 +27,7 @@ public class ExtraHoursPR extends PaymentRule {
     ---------------------- Public Methods -----------------------
      */
 	
-	public double calPayOut(ShiftDTO shiftDTO)
+	public double calPayOut(ActivityDTO shiftDTO)
 	{
 		
 		double payOut = 1;

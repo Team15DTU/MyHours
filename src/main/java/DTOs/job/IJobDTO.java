@@ -2,8 +2,7 @@ package DTOs.job;
 
 import DTOs.address.Address;
 import DTOs.ruleSet.RuleSet;
-import DTOs.shift.IShiftDTO;
-import DTOs.shift.ShiftDTO;
+import DTOs.activity.IActivityDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -48,9 +47,9 @@ public interface IJobDTO {
 
     void setRuleSet(RuleSet ruleSet);
 
-    List<IShiftDTO> getIShiftDTOList();
+    List<IActivityDTO> getIShiftDTOList();
 
-    void setIShiftDTOList(List<IShiftDTO> iShiftDTOList);
+    void setIShiftDTOList(List<IActivityDTO> iActivityDTOList);
 
 
     // </editor-folder>
