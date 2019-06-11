@@ -47,7 +47,6 @@ var showSignupModal = function() {
 
 function ajaxTest(){
     var userJson = $("#userform").serializeJSON();
-
     $.ajax({
         method: 'POST',
         url : "/MyHours/Kappa",
@@ -63,7 +62,6 @@ function ajaxTest(){
         }
     });
     console.log(userJson);
-
 }
 
 
