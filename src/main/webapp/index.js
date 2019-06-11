@@ -44,3 +44,43 @@ var showSignupModal = function() {
     cmLogin.hide();
     cmSignUp.show();
 };
+
+function ajaxTest(){
+    var userJson = $("#userform").serializeJSON();
+    $.ajax({
+        method: 'POST',
+        url : "/MyHours/Kappa",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Eyy det virker jo")
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error + "hey");
+            console.log("not gooooooooood")
+        }
+    });
+    console.log(userJson);
+}
+
+
+/*
+function ajaxTest(){
+    var userJson = $("#userform").serialize();
+    $.ajax({
+        method: 'GET',
+        url : "/MyHours/Test",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Eyy det virker jo")
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error + "hey");
+            console.log("not gooooooooood")
+        }
+    });
+console.log(userJson)}
+*/

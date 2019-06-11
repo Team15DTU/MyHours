@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <script src="jquery.serialize-object.min.js"></script>
     <script type="text/javascript" src="index.js"></script>
 </head>
 <body>
@@ -51,71 +52,86 @@
         </div>
     </div>
 </header>
-    <!-- Login/Signup -->
-    <div id="id01" class="modal">
+<!-- Login/Signup -->
+<div id="id01" class="modal">
   <span onclick="hideModal()"
         class="close" title="Close Modal">&times;</span>
-        <form class="modal-content animate">
+    <form class="modal-content animate">
 
-            <div class="containermodalLogin" id="login">
-                <div id="tab-btnLogin">
-                    <a href="#" class="login1">Sign In</a>
-                    <a href="#" onclick="showSignupModal()" class="register">Sign Up</a>
-                </div>
 
-                <div class="imgcontainer">
-                    <img src="Images/Logo2.svg" alt="Avatar" class="avatar">
-                </div>
+        <div class="containermodalLogin" id="login">
+            <div id="tab-btnLogin">
+                <a href="#" class="login1">Sign In</a>
+                <a href="#" onclick="showSignupModal()" class="register">Sign Up</a>
+            </div>
 
+            <div class="imgcontainer">
+                <img src="Images/Logo2.svg" alt="Avatar" class="avatar">
+            </div>
+
+            <form id="allLogin">
 
                 <label for="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" id="uname" required autofocus>
+                <input type="text" placeholder="Enter Username" name="username" id="uname" required autofocus>
 
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+            </form>
 
-                <button type="submit">Login</button>
-                <label>
-                    <input type="checkbox" checked="checked" name="remember"> Remember me
-                </label>
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" id="psw" required>
+
+
+
+
+            <form id="userform" >
+                <label>Brugernavn </label><input type="text" name="username">
+                <label>Password </label><input type="text" name="password">
+                <button type="button" onclick="ajaxTest()" >TEST</button>
+            </form>
+
+            <button type="submit">Login</button>
+            <label>
+                <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label>
+        </div>
+
+        <div class="containermodalLogin" style="background-color:#f1f1f1">
+            <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
+        </div>
+
+
+
+        <div class="containermodalSignUp" id="signup">
+            <div id="tab-btnSignUp">
+                <a href="#" onclick="showLoginModal()" class="login1">Sign In</a>
+                <a href="#" class="register">Sign Up</a>
             </div>
 
-            <div class="containermodalLogin" style="background-color:#f1f1f1">
-                <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
+            <div class="imgcontainer">
+                <img src="Images/Logo2.svg" alt="Avatar" class="avatar">
             </div>
 
-            <div class="containermodalSignUp" id="signup">
-                <div id="tab-btnSignUp">
-                    <a href="#" onclick="showLoginModal()" class="login1">Sign In</a>
-                    <a href="#" class="register">Sign Up</a>
-                </div>
 
-                <div class="imgcontainer">
-                    <img src="Images/Logo2.svg" alt="Avatar" class="avatar">
-                </div>
+            <label for="unamesign"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="unamesign" id="unamesign" required autofocus >
 
+            <label for="email"><b>Email</b></label>
+            <input type="email" placeholder="Enter Email" name="email" id="email" required>
 
-                <label for="unamesign"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="unamesign" id="unamesign" required autofocus >
+            <label for="pswsign"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="pswsign" id="pswsign" required>
 
-                <label for="email"><b>Email</b></label>
-                <input type="email" placeholder="Enter Email" name="email" id="email" required>
+            <label for="repsw"><b>Repeat Password</b></label>
+            <input type="password" placeholder="Enter Password" name="repsw" id="repsw" required>
 
-                <label for="pswsign"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="pswsign" id="pswsign" required>
-
-                <label for="repsw"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Enter Password" name="repsw" id="repsw" required>
-
-                <button type="submit">SignUp</button>
-
-            </div>
-            <div class="containermodalSignUp" style="background-color:#f1f1f1">
-                <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
-            </div>
-        </form>
+            <button type="submit">SignUp</button>
 
         </div>
+        <div class="containermodalSignUp" style="background-color:#f1f1f1">
+            <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
+        </div>
+    </form>
+
+</div>
 <script type="text/javascript" src="index.js"></script>
 </body>
 </html>

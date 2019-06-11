@@ -56,6 +56,7 @@ public class WorkerDAOTest
 		IWorkerDAO workerDAO = DBController.getInstance(TestConnPoolV1.getInstance()).getiWorkerDAO();
 		
 		// Try to Create them
+
 		for (IWorkerDTO worker : testWorkers)
 			workerDAO.createWorker(worker);
 		
