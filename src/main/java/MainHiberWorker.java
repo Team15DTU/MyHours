@@ -16,7 +16,7 @@ public class MainHiberWorker {
 
         WorkerHiberDAO workerHiberDAO = new WorkerHiberDAO(hibernateUtil);
 
-        IWorkerDTO workerHiberDTO = workerHiberDAO.getWorker("test@test.dk");;
+        IWorkerDTO workerHiberDTO = workerHiberDAO.getWorker("test@test.dk");
 
         System.out.println(workerHiberDTO);
 
@@ -30,7 +30,15 @@ public class MainHiberWorker {
             System.out.println(workerDTO);
         }
 
-        hibernateUtil.exit();
+        workerHiberDAO.deleteWorker("Email_2");
+
+        List<IWorkerDTO> workerListAfterDeletion = workerHiberDAO.getWorkerList();
+        System.out.println("WorkerDTO LIST:");
+        for (IWorkerDTO workerDTO : workerListAfterDeletion) {
+            System.out.println(workerDTO);
+        }
+
+            hibernateUtil.exit();
 
     }
 }

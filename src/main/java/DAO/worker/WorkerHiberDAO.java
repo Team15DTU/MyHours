@@ -2,8 +2,6 @@ package DAO.worker;
 
 import DAO.DALException;
 import dto.worker.IWorkerDTO;
-import dto.worker.WorkerDTO;
-import dto.worker.WorkerHiberDTO;
 import hibernate.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -124,22 +122,33 @@ public class WorkerHiberDAO implements IWorkerDAO {
      * This Method finds the Worker matching the WorkerDTO object that is inputted
      * and updates the existing details in the DB with the information from the inputted WorkerDTO.
      *
-     * @param worker   This object contains the details that DB should be updated with.
+     * @param workerDTO   This object contains the details that DB should be updated with.
      * @param password This is the password which should be added to the respected WorkerDTO.
      * @return Will return the number of rows affected.
      * @throws DALException Will throw a DALException.
      */
     @Override
     public int updateWorker(IWorkerDTO workerDTO, String password) throws DALException {
+        int changes = 0;
         Session session = hibernateUtil.getSession();
         session.beginTransaction();
 
-        session.update( workerDTO );
+        session.createQuery("update WorkerHiberDTO as w " +
+                "set w.email = :email," +
+                " w.pass = :pass," +
+                " w.firstName = :firstname," +
+                " w.surName = :surname where w.workerID = :workerID")
+                .setParameter("email", workerDTO.getEmail())
+                .setParameter("firstname", workerDTO.getFirstName())
+                .setParameter("surname", workerDTO.getSurName())
+                .setParameter("pass",workerDTO.getPass())
+                .setParameter("workerID", workerDTO.getWorkerID())
+                .executeUpdate();
 
         session.getTransaction().commit();
         session.close();
 
-        return 1; // TODO: Der skal ændres til boolean eller void.
+        return changes;
     }
 
     /**
@@ -153,7 +162,8 @@ public class WorkerHiberDAO implements IWorkerDAO {
 
         Session session = hibernateUtil.getSession();
         session.beginTransaction();
-        session.delete( workerDTO );
+        session.createQuery("delete WorkerHiberDTO where email = :email")
+                .setParameter("email",email).executeUpdate();
         session.getTransaction().commit();
         session.close();
 

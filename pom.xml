@@ -70,6 +70,13 @@
             <version>5.4.3.Final</version>
             <type>pom</type>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.197</version>
+            <scope>test</scope>
+        </dependency>
+
 
 
     </dependencies>

@@ -30,4 +30,7 @@ public interface IWorkerDTO {
 	
 	int getWorkerID();
 	void setWorkerID(int workerID);
+
+	String getPass();
+	void setPass(String pass);
 }

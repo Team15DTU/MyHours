@@ -19,6 +19,7 @@ public class WorkerDTO implements IWorkerDTO {
     private String firstName;
     private String surName;
     private String email;
+    private String pass;
     private LocalDate birthday;
     private IAddress homeAddress;
     private List<IWorkPlaceDTO> workPlaces;
@@ -107,7 +108,25 @@ public class WorkerDTO implements IWorkerDTO {
     
     @Override
     public void setIWorkPlaces(List<IWorkPlaceDTO> workPlaces) { this.workPlaces = workPlaces; }
-    
+
+    public List<IWorkPlaceDTO> getWorkPlaces() {
+        return workPlaces;
+    }
+
+    public void setWorkPlaces(List<IWorkPlaceDTO> workPlaces) {
+        this.workPlaces = workPlaces;
+    }
+
+    @Override
+    public String getPass() {
+        return pass;
+    }
+
+    @Override
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
     // endregion
     
     /*
