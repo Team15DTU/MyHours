@@ -80,7 +80,7 @@
 
 .popup_mid {
     position: absolute;
-    top: 180px;
+    top: 100px;
     transform: translate(500px);
     font-size: 14px;
 }
@@ -106,10 +106,10 @@
 .pop_left {
     border-radius: 8px;
     margin-top: 30px;
-    width: 300px;
-    height: 450px;
+    width: 250px;
+    height: 400px;
     float: left;
-    margin-left: 10px;
+    margin-left: 5px;
 
 }
 
