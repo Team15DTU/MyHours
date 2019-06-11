@@ -19,6 +19,5 @@ public class Main {
     {
         // This is the MySQL DB Controller which accesses the DB an executes all actions.
         IDBController dbController = DBController.getInstance(ConnPoolV1.getInstance());
-
     }
 }
