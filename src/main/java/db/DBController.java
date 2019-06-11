@@ -13,7 +13,6 @@ import DTOs.job.IJobDTO;
 import DTOs.activity.IActivityDTO;
 import DTOs.workPlace.IEmployerDTO;
 import DTOs.worker.IWorkerDTO;
-import db.connectionPools.ConnPoolV1;
 
 import java.sql.*;
 import java.util.Date;
@@ -162,13 +161,28 @@ public class DBController implements IDBController {
             connPool.releaseConnection(c);
         }
     }
+	
+	/**
+	 * This method checks if there's a correlation between the
+	 * provided email and password.
+	 * @param email The email
+	 * @param password The password
+	 * @return True if there's a correlation
+	 * @throws DALException Data Access Layer
+	 */
+	@Override
+    public boolean loginCheck(String email, String password) throws DALException
+    {
+		//TODO: Review this!
+        return getIWorkerDTO(email).getPassword().equals(password);
+    }
     
     //endregion
 
     //region Worker
     
-    public void createWorker (IWorkerDTO workerDTO, String password) throws DALException
-    { iWorkerDAO.createWorker(workerDTO,password); }
+    public void createWorker (IWorkerDTO workerDTO) throws DALException
+    { iWorkerDAO.createWorker(workerDTO); }
     
     /**
      * This methods returns a FULL IWorkerDTO Object.
@@ -309,15 +323,15 @@ public class DBController implements IDBController {
         IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
         
         // Sets WorkerDTOs List<IWorkplaceDTO> workplaces via WorkplaceDAO.
-        workerDTOToReturn.setIWorkPlaces(iEmployerDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
+        workerDTOToReturn.setIEmployers(iEmployerDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
         
         // Sets WorkplaceDTOs List<IJobDTO> jobList via JobDAO, for each WorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IEmployerDTO workPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
+        for (IEmployerDTO workPlaceDTO : workerDTOToReturn.getIEmployers()) {
             List<IJobDTO> iJobDToList = iJobDAO.getIJobList(workPlaceDTO.getWorkplaceID());
             workPlaceDTO.setIJobList(iJobDToList);
         }
         // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IWorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IEmployerDTO iworkPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
+        for (IEmployerDTO iworkPlaceDTO : workerDTOToReturn.getIEmployers()) {
             for (IJobDTO iJobDTO : iworkPlaceDTO.getIJobList()) {
                 List<IActivityDTO> iActivityDTOList = iActivityDAO.getIShiftList(iJobDTO.getJobID());
                 iJobDTO.setIShiftDTOList(iActivityDTOList);

@@ -19,14 +19,17 @@ public interface IWorkerDTO {
 	String getEmail();
 	void setEmail(String email);
 	
+	String getPassword();
+	void setPassword(String password);
+	
 	LocalDate getBirthday();
 	void setBirthday(LocalDate birthday);
 	
 	IAddress getHomeAddress();
 	void setHomeAddress(IAddress homeAddress);
 	
-	List<IEmployerDTO> getIWorkPlaces();
-	void setIWorkPlaces(List<IEmployerDTO> workPlaces);
+	List<IEmployerDTO> getIEmployers();
+	void setIEmployers(List<IEmployerDTO> workPlaces);
 	
 	int getWorkerID();
 	void setWorkerID(int workerID);
