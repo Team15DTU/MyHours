@@ -45,6 +45,7 @@ var showSignupModal = function() {
     cmSignUp.show();
 };
 
+/*
 function ajaxTest(){
     var userJson = $("#userform").serializeJSON();
     $.ajax({
@@ -63,11 +64,12 @@ function ajaxTest(){
     });
     console.log(userJson);
 }
+*/
 
 
-/*
+
 function ajaxTest(){
-    var userJson = $("#userform").serialize();
+    var userJson = $("#userform").serializeJSON();
     $.ajax({
         method: 'GET',
         url : "/MyHours/Test",
@@ -83,4 +85,3 @@ function ajaxTest(){
         }
     });
 console.log(userJson)}
-*/
