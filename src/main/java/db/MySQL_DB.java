@@ -7,6 +7,7 @@ import java.sql.*;
 /**
  * @author Rasmus Sander Larsen
  */
+@Deprecated
 public class MySQL_DB implements IConnPool {
 
     /*
