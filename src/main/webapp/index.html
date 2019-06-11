@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <script src="jquery.serialize-object.min.js"></script>
     <script type="text/javascript" src="index.js"></script>
 </head>
 <body>
@@ -68,13 +69,28 @@
                 </div>
 
 
-                <label for="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" id="uname" required autofocus>
+                <label for="email"><b>Username</b></label>
+                <input type="text" placeholder="Enter Email" name="email" id="email" required autofocus>
 
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+                <label for="password"><b>Password</b></label>
+                <input type="text" placeholder="Enter Password" name="password" id="password" required>
+
+                <!--<button type="button" onclick="ajaxTest()" >TEST</button>
+                -->
+
+
+                <form id="userform" name="userformname">
+                    <label>Brugernavn </label><input type="text" name="username">
+
+                    <label>Password </label><input type="text" name="password">
+
+    <button type="button" onclick="ajaxTest()" >TEST</button>
+</form>
+
 
                 <button type="submit">Login</button>
+
+
                 <label>
                     <input type="checkbox" checked="checked" name="remember"> Remember me
                 </label>
@@ -99,7 +115,7 @@
                 <input type="text" placeholder="Enter Username" name="unamesign" id="unamesign" required autofocus >
 
                 <label for="email"><b>Email</b></label>
-                <input type="email" placeholder="Enter Email" name="email" id="email" required>
+                <input type="email" placeholder="Enter Email" name="email2" id="email2" required>
 
                 <label for="pswsign"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="pswsign" id="pswsign" required>

@@ -57,9 +57,9 @@ public class WorkerDAOTest
 		IWorkerDAO workerDAO = DBController.getInstance(TestConnPoolV1.getInstance()).getiWorkerDAO();
 		
 		// Try to Create them
-		for (IWorkerDTO worker : testWorkers)
+	/*	for (IWorkerDTO worker : testWorkers)
 			workerDAO.createWorker(worker, "FuckingPassword");
-		
+		*/
 		// Delete again
 		for (IWorkerDTO worker : testWorkers)
 			workerDAO.deleteWorker(worker.getEmail());
@@ -88,9 +88,9 @@ public class WorkerDAOTest
 		IWorkerDAO workerDAO = DBController.getInstance(TestConnPoolV1.getInstance()).getiWorkerDAO();
 		
 		// Create two extra workers - three total
-		for (IWorkerDTO worker : testWorkers)
+	/*	for (IWorkerDTO worker : testWorkers)
 			workerDAO.createWorker(worker, "FuckingPassword");
-		
+		*/
 		// Get list
 		List<IWorkerDTO> workerList = workerDAO.getWorkerList();
 		

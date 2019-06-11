@@ -39,6 +39,12 @@ public class WorkerDTO implements IWorkerDTO {
         homeAddress = null;
         employers = null;
     }
+
+    public WorkerDTO (String email, String password)
+    {
+        this.email = email;
+        this.password = password;
+    }
     
     /**
      * This constructs a WorkerDTO object with all fields specified.

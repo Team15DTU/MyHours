@@ -13,7 +13,10 @@ import DTOs.job.IJobDTO;
 import DTOs.activity.IActivityDTO;
 import DTOs.workPlace.IEmployerDTO;
 import DTOs.worker.IWorkerDTO;
+import DTOs.worker.WorkerDTO;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
+@Path("/Test")
 public class DBController implements IDBController {
 
     /*
@@ -170,9 +174,17 @@ public class DBController implements IDBController {
 	 * @return True if there's a correlation
 	 * @throws DALException Data Access Layer
 	 */
+
+    @GET
+    @Path("{email}/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
 	@Override
-    public boolean loginCheck(String email, String password) throws DALException
+    public boolean loginCheck(@PathParam("email") String email, @PathParam("password") String password) throws DALException
     {
+        System.out.println(email +" " + password);
+        WorkerDTO w = new WorkerDTO(email,password);
+        System.out.println(w);
+
 		//TODO: Review this!
         return getIWorkerDTO(email).getPassword().equals(password);
     }
