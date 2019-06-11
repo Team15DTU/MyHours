@@ -102,7 +102,7 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public void createWorker(IWorkerDTO workerDTO, String password) throws DALException
+    public void createWorker(IWorkerDTO workerDTO) throws DALException
     {
         // Get a Connection from the ConnPool
         Connection c = connPool.getConn();
@@ -121,7 +121,7 @@ public class WorkerDAO implements IWorkerDAO {
             statement.setString(2, workerDTO.getSurName());
             statement.setString(3, workerDTO.getEmail());
             statement.setDate(4, Date.valueOf(workerDTO.getBirthday()));
-            statement.setString(5, password);
+            statement.setString(5, workerDTO.getPassword());
 
             statement.executeUpdate();
 

@@ -1,5 +1,7 @@
 import DAO.DALException;
+import DAO.worker.IWorkerDAO;
 import DAO.worker.WorkerDAO;
+import DTOs.worker.IWorkerDTO;
 import db.DBController;
 import DTOs.worker.WorkerDTO;
 import db.IConnPool;
@@ -18,7 +20,6 @@ public class Main {
     public static void main(String[] args) throws DALException
     {
         // This is the MySQL DB Controller which accesses the DB an executes all actions.
-        IDBController dbController = DBController.getInstance();
-
+        IDBController dbController = DBController.getInstance(ConnPoolV1.getInstance());
     }
 }

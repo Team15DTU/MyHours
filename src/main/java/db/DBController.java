@@ -13,7 +13,6 @@ import DTOs.job.IJobDTO;
 import DTOs.activity.IActivityDTO;
 import DTOs.workPlace.IEmployerDTO;
 import DTOs.worker.IWorkerDTO;
-import db.connectionPools.ConnPoolV1;
 
 import java.sql.*;
 import java.util.Date;
@@ -98,18 +97,18 @@ public class DBController implements IDBController {
     /*
     ---------------------- Public Methods -----------------------
      */
-	
-	/**
-	 * Gives the instance of the DBController. This takes care of which
-	 * connection pool is used.
-	 * @return DBController object
-	 * @throws DALException Data Access Layer Exception
-	 */
-	public static DBController getInstance() throws DALException
+    
+    /**
+     * Gives the instance of the DBController. If the DBController doesn't
+     * exist yet, it will create a new, with the given Connection Pool.
+     * @param connPool The Connection Pool to use
+     * @return DBController object
+     * @throws DALException Data Access Layer Exception
+     */
+	public static DBController getInstance(IConnPool connPool) throws DALException
 	{
 		if ( instance == null )
 		{
-			IConnPool connPool = ConnPoolV1.getInstance();
 			instance = new DBController(connPool);
 		}
 		
@@ -128,9 +127,12 @@ public class DBController implements IDBController {
             Statement statement = c.createStatement();
             statement.executeQuery("ANALYZE TABLE " + tableName);
 
+            // Shit works
+			//TODO: Fix hardcoded Database
             PreparedStatement pStatement = c.prepareStatement(
-                    "SELECT `auto_increment` FROM INFORMATION_SCHEMA.TABLES " +
-                            " WHERE table_name = ?");
+                    "SELECT AUTO_INCREMENT FROM information_schema.TABLES where TABLE_SCHEMA = 's185097'" +
+							" AND TABLE_NAME = ?" )
+					;
             pStatement.setString(1, tableName);
 
             ResultSet resultset = pStatement.executeQuery();
@@ -162,13 +164,28 @@ public class DBController implements IDBController {
             connPool.releaseConnection(c);
         }
     }
+	
+	/**
+	 * This method checks if there's a correlation between the
+	 * provided email and password.
+	 * @param email The email
+	 * @param password The password
+	 * @return True if there's a correlation
+	 * @throws DALException Data Access Layer Exception
+	 */
+	@Override
+    public boolean loginCheck(String email, String password) throws DALException
+    {
+		//TODO: Review this!
+        return getIWorkerDTO(email).getPassword().equals(password);
+    }
     
     //endregion
 
     //region Worker
     
-    public void createWorker (IWorkerDTO workerDTO, String password) throws DALException
-    { iWorkerDAO.createWorker(workerDTO,password); }
+    public void createWorker (IWorkerDTO workerDTO) throws DALException
+    { iWorkerDAO.createWorker(workerDTO); }
     
     /**
      * This methods returns a FULL IWorkerDTO Object.
@@ -309,15 +326,15 @@ public class DBController implements IDBController {
         IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
         
         // Sets WorkerDTOs List<IWorkplaceDTO> workplaces via WorkplaceDAO.
-        workerDTOToReturn.setIWorkPlaces(iEmployerDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
+        workerDTOToReturn.setIEmployers(iEmployerDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
         
         // Sets WorkplaceDTOs List<IJobDTO> jobList via JobDAO, for each WorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IEmployerDTO workPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
+        for (IEmployerDTO workPlaceDTO : workerDTOToReturn.getIEmployers()) {
             List<IJobDTO> iJobDToList = iJobDAO.getIJobList(workPlaceDTO.getWorkplaceID());
             workPlaceDTO.setIJobList(iJobDToList);
         }
         // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IWorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IEmployerDTO iworkPlaceDTO : workerDTOToReturn.getIWorkPlaces()) {
+        for (IEmployerDTO iworkPlaceDTO : workerDTOToReturn.getIEmployers()) {
             for (IJobDTO iJobDTO : iworkPlaceDTO.getIJobList()) {
                 List<IActivityDTO> iActivityDTOList = iActivityDAO.getIShiftList(iJobDTO.getJobID());
                 iJobDTO.setIShiftDTOList(iActivityDTOList);

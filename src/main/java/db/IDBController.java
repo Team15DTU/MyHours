@@ -19,7 +19,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createWorker   (IWorkerDTO workerDTO, String password) throws DALException;
+    void createWorker   (IWorkerDTO workerDTO) throws DALException;
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -104,6 +104,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Utilities                                                  |
     -------------------------------------------------------------*/
-    String setTimeZoneFromSQLServer() throws DALException;
-	int getNextAutoIncremental(String tableName) throws DALException;
+    String  setTimeZoneFromSQLServer    ()                              throws DALException;
+	int     getNextAutoIncremental      (String tableName)              throws DALException;
+	boolean loginCheck                  (String email, String password) throws DALException;
 }
