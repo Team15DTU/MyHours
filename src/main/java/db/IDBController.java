@@ -106,5 +106,5 @@ public interface IDBController
     -------------------------------------------------------------*/
     String  setTimeZoneFromSQLServer    ()                              throws DALException;
 	int     getNextAutoIncremental      (String tableName)              throws DALException;
-	boolean loginCheck                  (String email, String password) throws DALException;
+	boolean loginCheck                  (String email, String password);
 }
