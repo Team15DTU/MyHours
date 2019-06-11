@@ -32,10 +32,9 @@ public interface IWorkerDAO {
     /**
      * This Method inserts the details from the inputted WorkerDTO into the MYSQL_DB
      * @param worker This is the object containing the details to pass into the DB.
-     * @param password This is the password which should be added to the respected WorkerDTO.
 	 * @exception DALException Will throw a DALException.
      */
-    void createWorker (IWorkerDTO worker, String password) throws DALException;
+    void createWorker (IWorkerDTO worker) throws DALException;
 
     /**
      * This Method finds the Worker matching the WorkerDTO object that is inputted
