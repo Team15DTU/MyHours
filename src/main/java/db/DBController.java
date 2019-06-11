@@ -98,18 +98,18 @@ public class DBController implements IDBController {
     /*
     ---------------------- Public Methods -----------------------
      */
-	
-	/**
-	 * Gives the instance of the DBController. This takes care of which
-	 * connection pool is used.
-	 * @return DBController object
-	 * @throws DALException Data Access Layer Exception
-	 */
-	public static DBController getInstance() throws DALException
+    
+    /**
+     * Gives the instance of the DBController. If the DBController doesn't
+     * exist yet, it will create a new, with the given Connection Pool.
+     * @param connPool The Connection Pool to use
+     * @return DBController object
+     * @throws DALException Data Access Layer Exception
+     */
+	public static DBController getInstance(IConnPool connPool) throws DALException
 	{
 		if ( instance == null )
 		{
-			IConnPool connPool = ConnPoolV1.getInstance();
 			instance = new DBController(connPool);
 		}
 		

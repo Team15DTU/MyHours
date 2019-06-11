@@ -72,7 +72,7 @@ public class EmployerDAOTest
     {
         test_DB = TestConnPoolV1.getInstance();
     
-        dbController = new DBController(test_DB);
+        dbController = DBController.getInstance(test_DB);
     
         iEmployerDAO = dbController.getiEmployerDAO();
     }
