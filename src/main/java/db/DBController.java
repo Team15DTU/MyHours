@@ -161,12 +161,20 @@ public class DBController implements IDBController {
             connPool.releaseConnection(c);
         }
     }
-    
-    @Override
+	
+	/**
+	 * This method checks if there's a correlation between the
+	 * provided email and password.
+	 * @param email The email
+	 * @param password The password
+	 * @return True if there's a correlation
+	 * @throws DALException Data Access Layer
+	 */
+	@Override
     public boolean loginCheck(String email, String password) throws DALException
     {
-        //TODO: Implement this
-        return false;
+		//TODO: Review this!
+        return getIWorkerDTO(email).getPassword().equals(password);
     }
     
     //endregion
