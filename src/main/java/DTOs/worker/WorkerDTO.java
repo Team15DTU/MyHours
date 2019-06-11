@@ -27,7 +27,6 @@ public class WorkerDTO implements IWorkerDTO {
     /*
     ----------------------- Constructor -------------------------
      */
-    
     public WorkerDTO () {}
 
     public WorkerDTO (String firstName, String surName, String email)

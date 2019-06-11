@@ -43,7 +43,7 @@ public class DBController implements IDBController {
     /*
     ----------------------- Constructor -------------------------
      */
-    
+
     private DBController (IConnPool connPool) throws DALException
     {
 
@@ -178,18 +178,29 @@ public class DBController implements IDBController {
 	 * @throws DALException Data Access Layer Exception
 	 */
 
-    @GET
-    @Path("{email}/{password}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/hey")
+    @Consumes(MediaType.APPLICATION_JSON)
 	@Override
-    public boolean loginCheck(@PathParam("email") String email, @PathParam("password") String password) throws DALException
+    public boolean loginCheck(WorkerDTO user)
     {
+        System.out.println(user);
+        System.out.println(user.getEmail() +" "+user.getPassword());
+
+        System.out.println(user);
+
+        //System.out.println(worker.getEmail()+" "+worker.getPassword());
+
+        return true;
+        /*
         System.out.println(email +" " + password);
         WorkerDTO w = new WorkerDTO(email,password);
         System.out.println(w);
 
-		//TODO: Review this!
+
         return getIWorkerDTO(email).getPassword().equals(password);
+        */
+        //TODO: Review this!
     }
     
     //endregion

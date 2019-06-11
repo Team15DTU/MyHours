@@ -45,12 +45,12 @@ var showSignupModal = function() {
     cmSignUp.show();
 };
 
-/*
+
 function ajaxTest(){
     var userJson = $("#userform").serializeJSON();
     $.ajax({
         method: 'POST',
-        url : "/MyHours/Kappa",
+        url : "/MyHours/Test/hey",
         data : userJson,
         contentType: "application/json",
         success : function(data){
@@ -58,16 +58,16 @@ function ajaxTest(){
             console.log("Eyy det virker jo")
         },
         error: function(jqXHR, text, error){
-            alert(jqXHR.status + text + error + "hey");
+            alert(jqXHR.status + text + error + "fdsfdf");
             console.log("not gooooooooood")
         }
     });
     console.log(userJson);
 }
-*/
 
 
 
+/*
 function ajaxTest(){
     var userJson = $("#userform").serializeJSON();
     $.ajax({
@@ -85,3 +85,4 @@ function ajaxTest(){
         }
     });
 console.log(userJson)}
+*/
