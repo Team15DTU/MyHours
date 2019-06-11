@@ -8,7 +8,6 @@ import DTOs.worker.WorkerDTO;
 import db.DBController;
 import db.IConnPool;
 import db.TestConnPoolV1;
-import db.connectionPools.ConnPoolV1;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 
@@ -58,7 +57,7 @@ public class WorkerDAOTest
 		
 		// Try to Create them
 		for (IWorkerDTO worker : testWorkers)
-			workerDAO.createWorker(worker, "FuckingPassword");
+			workerDAO.createWorker(worker);
 		
 		// Delete again
 		for (IWorkerDTO worker : testWorkers)
@@ -89,7 +88,7 @@ public class WorkerDAOTest
 		
 		// Create two extra workers - three total
 		for (IWorkerDTO worker : testWorkers)
-			workerDAO.createWorker(worker, "FuckingPassword");
+			workerDAO.createWorker(worker);
 		
 		// Get list
 		List<IWorkerDTO> workerList = workerDAO.getWorkerList();
