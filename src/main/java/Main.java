@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) throws DALException
     {
         // This is the MySQL DB Controller which accesses the DB an executes all actions.
-        IDBController dbController = DBController.getInstance();
+        IDBController dbController = DBController.getInstance(ConnPoolV1.getInstance());
 
     }
 }
