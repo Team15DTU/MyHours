@@ -167,17 +167,30 @@ public class DBController implements IDBController {
 	
 	/**
 	 * This method checks if there's a correlation between the
-	 * provided email and password.
+	 * provided email and password. All exceptions is handled by
+     * the method.
 	 * @param email The email
 	 * @param password The password
 	 * @return True if there's a correlation
-	 * @throws DALException Data Access Layer Exception
 	 */
 	@Override
-    public boolean loginCheck(String email, String password) throws DALException
+    public boolean loginCheck(String email, String password)
     {
-		//TODO: Review this!
-        return getIWorkerDTO(email).getPassword().equals(password);
+		//TODO: This implementation needs to be updated to something more specific
+        try
+        { return getIWorkerDTO(email).getPassword().equals(password); }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: loginCheck DALException - " + e.getMessage());
+            return false;
+        }
+        catch ( NullPointerException e )
+        { return false; }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: Unexpected error - " + e.getMessage());
+            return false;
+        }
     }
     
     //endregion
