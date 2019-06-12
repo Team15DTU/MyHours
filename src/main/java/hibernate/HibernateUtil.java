@@ -23,10 +23,6 @@ public class HibernateUtil {
     ----------------------- Constructor -------------------------
      */
 
-    public HibernateUtil () {
-        //TimeZone.setDefault( TimeZone.getTimeZone( "UTC" ) );
-
-    }
 
     /*
     ------------------------ Properties -------------------------
