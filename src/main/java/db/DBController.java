@@ -10,6 +10,7 @@ import dao.employer.EmployerDAO;
 import dao.worker.IWorkerDAO;
 import dao.worker.WorkerConstants;
 import dao.worker.WorkerDAO;
+import db.connectionPools.ConnPoolV1;
 import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
@@ -29,7 +30,7 @@ public class DBController implements IDBController {
     -------------------------- Fields --------------------------
      */
     
-    private static DBController instance;
+    private static DBController instance = new DBController(ConnPoolV1.getInstance());
     
     private IConnPool connPool;
     private IWorkerDAO iWorkerDAO;
@@ -41,17 +42,23 @@ public class DBController implements IDBController {
     ----------------------- Constructor -------------------------
      */
     
-    private DBController (IConnPool connPool) throws DALException
+    private DBController (IConnPool connPool)
     {
-
-        this.connPool = connPool;
-
-        TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
-
-        iWorkerDAO      = new WorkerDAO(this.connPool);
-        iEmployerDAO    = new EmployerDAO(this.connPool);
-        iJobDAO         = new JobDAO(this.connPool);
-        iActivityDAO    = new ActivityDAO(this.connPool);
+        try
+        {
+            this.connPool   = connPool;
+    
+            TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
+    
+            iWorkerDAO      = new WorkerDAO(this.connPool);
+            iEmployerDAO    = new EmployerDAO(this.connPool);
+            iJobDAO         = new JobDAO(this.connPool);
+            iActivityDAO    = new ActivityDAO(this.connPool);
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController constructor Failure - " + e.getMessage());
+        }
 
     }
     
@@ -104,9 +111,8 @@ public class DBController implements IDBController {
      * exist yet, it will create a new, with the given Connection Pool.
      * @param connPool The Connection Pool to use
      * @return DBController object
-     * @throws DALException Data Access Layer Exception
      */
-	public static DBController getInstance(IConnPool connPool) throws DALException
+	public static DBController getInstance(IConnPool connPool)
 	{
 		if ( instance == null )
 		{
@@ -115,8 +121,33 @@ public class DBController implements IDBController {
 		
 		return instance;
 	}
+	
+	/**
+     * Gives the instance of the DBController. If the DBController doesn't
+     * exist yet, it will create a new.
+     * @return DBController object
+     */
+    public static DBController getInstance()
+    {
+        if ( instance == null )
+        {
+            instance = new DBController(ConnPoolV1.getInstance());
+        }
+        
+        return instance;
+    }
     
     //region Utility
+    
+    /**
+     * This method changes the Connection pool to the given
+     * Connection Pool.
+     * @param connPool Connection Pool that implements IConnPool interface
+     */
+    public void changeConnPool(IConnPool connPool)
+    {
+        //TODO: Implement this
+    }
     
     @Override
     public int getNextAutoIncremental(String tableName) throws DALException

@@ -150,9 +150,8 @@ public class ConnPoolV1 implements IConnPool {
 	/**
 	 * Gives the instance of the Connection Pool.
 	 * @return ConnPoolV1 object
-	 * @throws DALException Data Access Layer Exception
 	 */
-	public synchronized static ConnPoolV1 getInstance() throws DALException
+	public synchronized static ConnPoolV1 getInstance()
 	{
 		try
 		{
@@ -164,7 +163,7 @@ public class ConnPoolV1 implements IConnPool {
 		catch (DALException e)
 		{
 			System.err.println("ERROR: Couldn't get ConnPoolV1 instance");
-			throw e;
+			return null;
 		}
 	}
 	
