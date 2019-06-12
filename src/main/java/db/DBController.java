@@ -48,7 +48,7 @@ public class DBController implements IDBController {
     ----------------------- Constructor -------------------------
      */
     
-    private DBController ()
+    public DBController ()
     {
         try
         {
