@@ -18,8 +18,6 @@ public class HibernateUtil {
      */
 
     private SessionFactory sessionFactory;
-    private TimeZone timeZone;
-
 
     /*
     ----------------------- Constructor -------------------------
