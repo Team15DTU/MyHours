@@ -24,7 +24,7 @@ public class TestConnPoolV1 extends ConnPoolV1 implements IConnPool
     public synchronized static ConnPoolV1 getInstance() throws DALException
     {
         // DiplomPortal Database - Alfred (TEST DB)
-        password = "iowRz3Cj5QgJ8Ok7dX7iI";
+        password = "wOWElNh0bVravE9uGDNzw";
         user = "s160107";
         url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s160107?";
         
