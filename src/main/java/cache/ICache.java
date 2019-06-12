@@ -1,6 +1,6 @@
 package cache;
 
-import DTOs.worker.IWorkerDTO;
+import dto.worker.IWorkerDTO;
 
 import java.util.HashMap;
 

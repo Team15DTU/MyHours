@@ -1,4 +1,6 @@
+/*
 import DTOs.worker.IWorkerDTO;
+
 import DTOs.worker.WorkerDTO;
 
 import javax.ws.rs.*;
@@ -17,3 +19,4 @@ public class UserPassTest {
         return true;
     }
 }
+*/

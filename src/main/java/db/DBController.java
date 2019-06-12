@@ -1,23 +1,26 @@
 package db;
 
-import DAO.DALException;
-import DAO.job.IJobDAO;
-import DAO.job.JobDAO;
-import DAO.activity.IActivityDAO;
-import DAO.activity.ActivityDAO;
-import DAO.employer.IEmployerDAO;
-import DAO.employer.EmployerDAO;
-import DAO.worker.IWorkerDAO;
-import DAO.worker.WorkerDAO;
-import DTOs.job.IJobDTO;
-import DTOs.activity.IActivityDTO;
-import DTOs.workPlace.IEmployerDTO;
-import DTOs.worker.IWorkerDTO;
-import DTOs.worker.WorkerDTO;
+import dao.DALException;
+import dao.job.IJobDAO;
+import dao.job.JobDAO;
+import dao.activity.IActivityDAO;
+import dao.activity.ActivityDAO;
+import dao.employer.IEmployerDAO;
+import dao.employer.EmployerDAO;
+import dao.worker.IWorkerDAO;
+import dao.worker.WorkerConstants;
+import dao.worker.WorkerDAO;
+import db.connectionPools.ConnPoolV1;
+import dto.job.IJobDTO;
+import dto.activity.IActivityDTO;
+import dto.employer.IEmployerDTO;
+import dto.worker.IWorkerDTO;
+import dto.worker.WorkerDTO;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
@@ -26,48 +29,50 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
-@Path("/Test")
 public class DBController implements IDBController {
 
     /*
     -------------------------- Fields --------------------------
      */
-
-    private static DBController instance;
-
+    
+    private static DBController instance = new DBController(ConnPoolV1.getInstance());
+    
     private IConnPool connPool;
     private IWorkerDAO iWorkerDAO;
     private IEmployerDAO iEmployerDAO;
     private IJobDAO iJobDAO;
     private IActivityDAO iActivityDAO;
-
+    
     /*
     ----------------------- Constructor -------------------------
      */
-
-    private DBController (IConnPool connPool) throws DALException
+    
+    private DBController (IConnPool connPool)
     {
+        try
+        {
+            this.connPool   = connPool;
 
-        this.connPool = connPool;
+            TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
 
-        TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
-
-        iWorkerDAO      = new WorkerDAO(this.connPool);
-        iEmployerDAO    = new EmployerDAO(this.connPool);
-        iJobDAO         = new JobDAO(this.connPool);
-        iActivityDAO    = new ActivityDAO(this.connPool);
+            iWorkerDAO      = new WorkerDAO(this.connPool);
+            iEmployerDAO    = new EmployerDAO(this.connPool);
+            iJobDAO         = new JobDAO(this.connPool);
+            iActivityDAO    = new ActivityDAO(this.connPool);
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController constructor Failure - " + e.getMessage());
+        }
 
     }
-
-    public DBController() {}
-
-
+    
     /*
     ------------------------ Properties -------------------------
      */
 
     //region Properties
-
+    
     public IWorkerDAO getiWorkerDAO() {
         return iWorkerDAO;
     }
@@ -99,13 +104,13 @@ public class DBController implements IDBController {
     public void setiActivityDAO(IActivityDAO iActivityDAO) {
         this.iActivityDAO = iActivityDAO;
     }
-
+    
     //endregion
-
+    
     /*
     ---------------------- Public Methods -----------------------
      */
-
+    
     /**
      * Gives the instance of the DBController. If the DBController doesn't
      * exist yet, it will create a new, with the given Connection Pool.
@@ -113,17 +118,42 @@ public class DBController implements IDBController {
      * @return DBController object
      * @throws DALException Data Access Layer Exception
      */
-	public static DBController getInstance(IConnPool connPool) throws DALException
+	public static DBController getInstance(IConnPool connPool)
 	{
 		if ( instance == null )
 		{
 			instance = new DBController(connPool);
 		}
-
+		
 		return instance;
 	}
 
+	/**
+     * Gives the instance of the DBController. If the DBController doesn't
+     * exist yet, it will create a new.
+     * @return DBController object
+     */
+    public static DBController getInstance()
+    {
+        if ( instance == null )
+        {
+            instance = new DBController(ConnPoolV1.getInstance());
+        }
+
+        return instance;
+    }
+
     //region Utility
+
+    /**
+     * This method changes the Connection pool to the given
+     * Connection Pool.
+     * @param connPool Connection Pool that implements IConnPool interface
+     */
+    public void changeConnPool(IConnPool connPool)
+    {
+        //TODO: Implement this
+    }
 
     @Override
     public int getNextAutoIncremental(String tableName) throws DALException
@@ -155,7 +185,7 @@ public class DBController implements IDBController {
             connPool.releaseConnection(c);
         }
     }
-
+    
     @Override
     public String setTimeZoneFromSQLServer ()  throws DALException
     {
@@ -165,7 +195,7 @@ public class DBController implements IDBController {
             ResultSet resultSet = statement.executeQuery("SELECT @@system_time_zone");
             resultSet.next();
             return resultSet.getString(1);
-
+            
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
         } finally {
@@ -175,7 +205,8 @@ public class DBController implements IDBController {
 	
 	/**
 	 * This method checks if there's a correlation between the
-	 * provided email and password.
+	 * provided email and password. All exceptions is handled by
+     * the method.
 	 * @param email The email
 	 * @param password The password
 	 * @return True if there's a correlation
@@ -193,14 +224,15 @@ public class DBController implements IDBController {
 
         System.out.println(email);
         System.out.println(password);
-
-        boolean success = false;
+    	// Boolean to return
+		boolean success = false;
 
         // Query to be used
         String query  = String.format("SELECT %s, %s FROM %s WHERE %s = ? AND %s = ?",
-                "email", "pass", "Workers", "email", "pass");     //TODO: Enum needs to be used
+				WorkerConstants.email, WorkerConstants.password, WorkerConstants.TABLENAME,
+				WorkerConstants.email, WorkerConstants.password);
 
-        Connection conn = null; PreparedStatement stmt;
+		Connection conn = null; PreparedStatement stmt;
         try
         {
             // Get connection from pool
@@ -217,44 +249,38 @@ public class DBController implements IDBController {
             if ( rs.next() )
                 success = true;
 
-            // Close statement
-            stmt.close();
+			// Close statement
+			stmt.close();
 
             return success;
         }
         catch ( DALException e )
         {
-            System.err.println("ERROR: DALException thrown in loginCheck() - " + e.getMessage());
-            return success;
+			System.err.println("ERROR: DALException thrown in loginCheck() - " + e.getMessage());
+			return success;
         }
-
         catch ( SQLException e )
         {
-            System.err.println("ERROR: SQLException thrown in loginCheck() - " + e.getMessage());
-            return success;
+			System.err.println("ERROR: SQLException thrown in loginCheck() - " + e.getMessage());
+			return success;
         }
         finally
         {
-            try
-            {
-
-                connPool.releaseConnection(conn);
-
-            }
-            catch ( DALException e )
-            {
-                System.err.println("ERROR: releaseConnection() throwing DAL - " + e.getMessage());
-            }
-
+        	try
+			{
+				connPool.releaseConnection(conn);
+			}
+        	catch ( DALException e )
+			{
+				System.err.println("ERROR: releaseConnection() throwing DAL - " + e.getMessage());
+			}
         }
-
-        //TODO: Review this!
     }
     
     //endregion
 
     //region Worker
-
+    
     public void createWorker (IWorkerDTO workerDTO) throws DALException
     { iWorkerDAO.createWorker(workerDTO); }
     
@@ -302,23 +328,23 @@ public class DBController implements IDBController {
     @Override
     public void createEmployer(IEmployerDTO employer) throws DALException
     { }
-
+    
     @Override
     public IEmployerDTO getIEmployerDTO(int id) throws DALException
     { return null; }
-
+    
     @Override
     public List<IEmployerDTO> getIEmployerList() throws DALException
     { return null; }
-
+    
     @Override
     public List<IEmployerDTO> getIEmployerList(int minID, int maxID) throws DALException
     { return null; }
-
+    
     @Override
     public List<IEmployerDTO> getIEmployerList(String name) throws DALException
     { return null; }
-
+    
     //endregion
     
     //region Job
@@ -395,18 +421,18 @@ public class DBController implements IDBController {
     {
         // Gets the IWorkerDTO
         IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
-
-        // Sets WorkerDTOs List<IWorkplaceDTO> workplaces via WorkplaceDAO.
+        
+        // Sets WorkerDTOs List<IEmployersDTO> employers via EmployerDAO.
         workerDTOToReturn.setIEmployers(iEmployerDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
-
-        // Sets WorkplaceDTOs List<IJobDTO> jobList via JobDAO, for each WorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IEmployerDTO workPlaceDTO : workerDTOToReturn.getIEmployers()) {
-            List<IJobDTO> iJobDToList = iJobDAO.getIJobList(workPlaceDTO.getWorkplaceID());
-            workPlaceDTO.setIJobList(iJobDToList);
+        
+        // Sets EmployerDTOs List<IJobDTO> jobList via JobDAO, for each EmployerDTO in Workers List<EmployerDTO>
+        for (IEmployerDTO employerDTO : workerDTOToReturn.getIEmployers()) {
+            List<IJobDTO> iJobDToList = iJobDAO.getIJobList(employerDTO.getWorkplaceID());
+            employerDTO.setIJobList(iJobDToList);
         }
-        // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IWorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IEmployerDTO iworkPlaceDTO : workerDTOToReturn.getIEmployers()) {
-            for (IJobDTO iJobDTO : iworkPlaceDTO.getIJobList()) {
+        // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IEmployerDTO in Workers List<EmployerDTO>
+        for (IEmployerDTO employerDTO : workerDTOToReturn.getIEmployers()) {
+            for (IJobDTO iJobDTO : employerDTO.getIJobList()) {
                 List<IActivityDTO> iActivityDTOList = iActivityDAO.getIShiftList(iJobDTO.getJobID());
                 iJobDTO.setIShiftDTOList(iActivityDTOList);
             }

@@ -1,11 +1,12 @@
 package db;
 
-import DAO.DALException;
-import DTOs.job.IJobDTO;
-import DTOs.activity.IActivityDTO;
-import DTOs.workPlace.IEmployerDTO;
-import DTOs.worker.IWorkerDTO;
-import DTOs.worker.WorkerDTO;
+import dao.DALException;
+import dto.job.IJobDTO;
+import dto.activity.IActivityDTO;
+import dto.employer.IEmployerDTO;
+import dto.worker.IWorkerDTO;
+import dto.worker.WorkerDTO;
+
 import java.util.Date;
 import java.util.List;
 
