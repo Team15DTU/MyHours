@@ -1,6 +1,6 @@
 package db.connectionPools;
 
-import DAO.DALException;
+import dao.DALException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

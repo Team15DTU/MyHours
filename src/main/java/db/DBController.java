@@ -1,18 +1,19 @@
 package db;
 
-import DAO.DALException;
-import DAO.job.IJobDAO;
-import DAO.job.JobDAO;
-import DAO.activity.IActivityDAO;
-import DAO.activity.ActivityDAO;
-import DAO.employer.IEmployerDAO;
-import DAO.employer.EmployerDAO;
-import DAO.worker.IWorkerDAO;
-import DAO.worker.WorkerDAO;
-import DTOs.job.IJobDTO;
-import DTOs.activity.IActivityDTO;
-import DTOs.workPlace.IEmployerDTO;
-import DTOs.worker.IWorkerDTO;
+import dao.DALException;
+import dao.job.IJobDAO;
+import dao.job.JobDAO;
+import dao.activity.IActivityDAO;
+import dao.activity.ActivityDAO;
+import dao.employer.IEmployerDAO;
+import dao.employer.EmployerDAO;
+import dao.worker.IWorkerDAO;
+import dao.worker.WorkerConstants;
+import dao.worker.WorkerDAO;
+import dto.job.IJobDTO;
+import dto.activity.IActivityDTO;
+import dto.employer.IEmployerDTO;
+import dto.worker.IWorkerDTO;
 
 import java.sql.*;
 import java.util.Date;
@@ -167,17 +168,66 @@ public class DBController implements IDBController {
 	
 	/**
 	 * This method checks if there's a correlation between the
-	 * provided email and password.
+	 * provided email and password. All exceptions is handled by
+     * the method.
 	 * @param email The email
 	 * @param password The password
 	 * @return True if there's a correlation
-	 * @throws DALException Data Access Layer Exception
 	 */
 	@Override
-    public boolean loginCheck(String email, String password) throws DALException
+    public boolean loginCheck(String email, String password)
     {
-		//TODO: Review this!
-        return getIWorkerDTO(email).getPassword().equals(password);
+    	// Boolean to return
+		boolean success = false;
+    	
+        // Query to be used
+        String query  = String.format("SELECT %s, %s FROM %s WHERE %s = ? AND %s = ?",
+				WorkerConstants.email, WorkerConstants.password, WorkerConstants.TABLENAME,
+				WorkerConstants.email, WorkerConstants.password);
+        
+		Connection conn = null; PreparedStatement stmt;
+        try
+        {
+            // Get connection from pool
+            conn = connPool.getConn();
+            
+            // Create preparedStatement
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, email); stmt.setString(2, password);
+            
+            // Execute
+            ResultSet rs = stmt.executeQuery();
+            
+            // Check if there was a match
+            if ( rs.next() )
+                success = true;
+	
+			// Close statement
+			stmt.close();
+            
+            return success;
+        }
+        catch ( DALException e )
+        {
+			System.err.println("ERROR: DALException thrown in loginCheck() - " + e.getMessage());
+			return success;
+        }
+        catch ( SQLException e )
+        {
+			System.err.println("ERROR: SQLException thrown in loginCheck() - " + e.getMessage());
+			return success;
+        }
+        finally
+        {
+        	try
+			{
+				connPool.releaseConnection(conn);
+			}
+        	catch ( DALException e )
+			{
+				System.err.println("ERROR: releaseConnection() throwing DAL - " + e.getMessage());
+			}
+        }
     }
     
     //endregion
@@ -325,17 +375,17 @@ public class DBController implements IDBController {
         // Gets the IWorkerDTO
         IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
         
-        // Sets WorkerDTOs List<IWorkplaceDTO> workplaces via WorkplaceDAO.
+        // Sets WorkerDTOs List<IEmployersDTO> employers via EmployerDAO.
         workerDTOToReturn.setIEmployers(iEmployerDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
         
-        // Sets WorkplaceDTOs List<IJobDTO> jobList via JobDAO, for each WorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IEmployerDTO workPlaceDTO : workerDTOToReturn.getIEmployers()) {
-            List<IJobDTO> iJobDToList = iJobDAO.getIJobList(workPlaceDTO.getWorkplaceID());
-            workPlaceDTO.setIJobList(iJobDToList);
+        // Sets EmployerDTOs List<IJobDTO> jobList via JobDAO, for each EmployerDTO in Workers List<EmployerDTO>
+        for (IEmployerDTO employerDTO : workerDTOToReturn.getIEmployers()) {
+            List<IJobDTO> iJobDToList = iJobDAO.getIJobList(employerDTO.getWorkplaceID());
+            employerDTO.setIJobList(iJobDToList);
         }
-        // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IWorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IEmployerDTO iworkPlaceDTO : workerDTOToReturn.getIEmployers()) {
-            for (IJobDTO iJobDTO : iworkPlaceDTO.getIJobList()) {
+        // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IEmployerDTO in Workers List<EmployerDTO>
+        for (IEmployerDTO employerDTO : workerDTOToReturn.getIEmployers()) {
+            for (IJobDTO iJobDTO : employerDTO.getIJobList()) {
                 List<IActivityDTO> iActivityDTOList = iActivityDAO.getIShiftList(iJobDTO.getJobID());
                 iJobDTO.setIShiftDTOList(iActivityDTOList);
             }

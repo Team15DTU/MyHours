@@ -1,7 +1,7 @@
 package db;
 
-import DTOs.worker.IWorkerDTO;
-import DTOs.worker.WorkerDTO;
+import dto.worker.IWorkerDTO;
+import dto.worker.WorkerDTO;
 import org.junit.Test;
 
 import java.time.LocalDate;
