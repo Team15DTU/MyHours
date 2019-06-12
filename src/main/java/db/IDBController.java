@@ -6,7 +6,6 @@ import DTOs.activity.IActivityDTO;
 import DTOs.workPlace.IEmployerDTO;
 import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
-
 import java.util.Date;
 import java.util.List;
 
@@ -107,5 +106,5 @@ public interface IDBController
     -------------------------------------------------------------*/
     String  setTimeZoneFromSQLServer    ()                              throws DALException;
 	int     getNextAutoIncremental      (String tableName)              throws DALException;
-	boolean loginCheck                  (WorkerDTO worker) throws DALException;
+	boolean loginCheck                  (WorkerDTO user) throws DALException;
 }

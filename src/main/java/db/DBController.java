@@ -17,6 +17,7 @@ import DTOs.worker.WorkerDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
@@ -57,6 +58,7 @@ public class DBController implements IDBController {
         iActivityDAO    = new ActivityDAO(this.connPool);
 
     }
+
     
     /*
     ------------------------ Properties -------------------------
@@ -179,34 +181,67 @@ public class DBController implements IDBController {
 	 */
 
     @POST
-    @Path("/hey")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/hey")
 	@Override
     public boolean loginCheck(WorkerDTO user)
     {
+
         System.out.println(user);
         System.out.println(user.getEmail() +" "+user.getPassword());
 
         System.out.println(user);
 
+        return true;
         //System.out.println(worker.getEmail()+" "+worker.getPassword());
 
-        return true;
+
+
         /*
-        System.out.println(email +" " + password);
+         try {
+        if (getIWorkerDTO(email).getPassword().equals(password)){
+            return Response.ok(token).build();
+        }
+    } catch (DALException e) {
+        e.printStackTrace();
+        return Response.noContent().build();
+    }
+    */
+
+
+
+        /*System.out.println(email +" " + password);
         WorkerDTO w = new WorkerDTO(email,password);
         System.out.println(w);
+        *
 
 
-        return getIWorkerDTO(email).getPassword().equals(password);
+/*
+        try
+        { return getIWorkerDTO(email).getPassword().equals(password); }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: loginCheck DALException - " + e.getMessage());
+            return false;
+        }
+        catch ( NullPointerException e )
+        { return false; }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: Unexpected error - " + e.getMessage());
+            return false;
+        }
         */
+
+
+
         //TODO: Review this!
     }
     
     //endregion
 
     //region Worker
-    
+
     public void createWorker (IWorkerDTO workerDTO) throws DALException
     { iWorkerDAO.createWorker(workerDTO); }
     

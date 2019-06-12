@@ -5,6 +5,10 @@ import DTOs.worker.IWorkerDTO;
 import DTOs.worker.WorkerDTO;
 import db.IConnPool;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
+@Path("/Test3")
 public class WorkerDAO implements IWorkerDAO {
 
     /*
@@ -28,6 +33,10 @@ public class WorkerDAO implements IWorkerDAO {
     public WorkerDAO(IConnPool connPool)
     {
         this.connPool = connPool;
+    }
+
+    public WorkerDAO(){
+
     }
     
     /*
@@ -194,6 +203,19 @@ public class WorkerDAO implements IWorkerDAO {
             // Return connection to ConnPool
             connPool.releaseConnection(c);
         }
+    }
+    @POST
+    @Path("/hey")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean loginCheck(WorkerDTO user) {
+        System.out.println(user);
+        System.out.println(user.getEmail() + " " + user.getPassword());
+
+        System.out.println(user);
+
+        //System.out.println(worker.getEmail()+" "+worker.getPassword());
+
+        return true;
     }
 
     /*

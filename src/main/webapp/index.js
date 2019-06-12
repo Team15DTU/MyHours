@@ -47,6 +47,7 @@ var showSignupModal = function() {
 
 
 function ajaxTest(){
+    event.preventDefault();
     var userJson = $("#userform").serializeJSON();
     $.ajax({
         method: 'POST',

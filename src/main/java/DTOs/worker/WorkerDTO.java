@@ -3,12 +3,17 @@ package DTOs.worker;
 import DTOs.address.IAddress;
 import DTOs.workPlace.IEmployerDTO;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import java.time.LocalDate;
 import java.util.List;
 
 /**
  * @author Rasmus Sander Larsen
  */
+@Path("/Test2")
 public class WorkerDTO implements IWorkerDTO {
 
     /*
@@ -142,6 +147,23 @@ public class WorkerDTO implements IWorkerDTO {
     
     @Override
     public void setIEmployers(List<IEmployerDTO> workPlaces) { this.employers = workPlaces; }
+
+
+    @POST
+    @Path("/hey")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean loginCheck(WorkerDTO user) {
+        System.out.println(user);
+        System.out.println(user.getEmail() + " " + user.getPassword());
+
+        System.out.println(user);
+
+        //System.out.println(worker.getEmail()+" "+worker.getPassword());
+
+        return true;
+    }
+
+
     
     // endregion
     
