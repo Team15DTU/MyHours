@@ -9,7 +9,6 @@ import dto.worker.IWorkerDTO;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * @author Rasmus Sander Larsen
  */
