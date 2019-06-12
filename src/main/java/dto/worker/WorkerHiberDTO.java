@@ -1,7 +1,8 @@
 package dto.worker;
 
+import dao.worker.WorkerConstants;
 import dto.address.IAddress;
-import dto.workPlace.IEmployerDTO;
+import dto.employer.IEmployerDTO;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 
 @Entity
-@Table (name = "Workers")
+@Table (name = WorkerConstants.TABLENAME)
 public class WorkerHiberDTO implements IWorkerDTO {
 
     /*
@@ -21,24 +22,24 @@ public class WorkerHiberDTO implements IWorkerDTO {
      */
 
     @Id
-    @Column(name = "workerID")
+    @Column(name = WorkerConstants.id)
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
     private int workerID;
 
-    @Column(name = "firstname")
+    @Column(name = WorkerConstants.firstname)
     private String firstName;
 
-    @Column(name = "surname")
+    @Column(name = WorkerConstants.surname)
     private String surName;
 
-    @Column(name = "email")
+    @Column(name = WorkerConstants.email)
     private String email;
 
-    @Column(name = "birthday")
+    @Column(name = WorkerConstants.birthday)
     private LocalDate birthday;
 
-    @Column(name = "pass")
+    @Column(name = WorkerConstants.password)
     private String password;
 
     @Transient
