@@ -24,7 +24,7 @@ public class ConnPoolV1 implements IConnPool {
 	protected int validTimeout	= 2;		// 02 seconds
 	protected boolean stop		= false;
 	//endregion
-
+ 
 	/*
 	Hibernate uses 3 connections, and this uses 6. This means we have
 	1 connection free to use with Workbench and Datagrip.
@@ -57,6 +57,9 @@ public class ConnPoolV1 implements IConnPool {
 		boolean success = true; DALException exception = null;
 		try
 		{
+			// Specify Driver
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
 			for (int i = 0; i < MAXCONNS; i++)
 				freeConnList.add(createConnection());
 		}
@@ -64,6 +67,12 @@ public class ConnPoolV1 implements IConnPool {
 		{
 			System.err.println("ERROR: Creating Connection Pool");
 			exception = e;
+			success = false;
+		}
+		catch ( ClassNotFoundException e )
+		{
+			System.err.println("ERROR: Creating Connection Pool");
+			exception = new DALException(e.getMessage(), e.getCause());
 			success = false;
 		}
 		
@@ -150,7 +159,6 @@ public class ConnPoolV1 implements IConnPool {
 	/**
 	 * Gives the instance of the Connection Pool.
 	 * @return ConnPoolV1 object
-	 * @throws DALException Data Access Layer Exception
 	 */
 	public synchronized static ConnPoolV1 getInstance()
 	{

@@ -29,13 +29,14 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
+@Path("/Test")
 public class DBController implements IDBController {
 
     /*
     -------------------------- Fields --------------------------
      */
     
-    private static DBController instance = new DBController(ConnPoolV1.getInstance());
+    private static DBController instance;
     
     private IConnPool connPool;
     private IWorkerDAO iWorkerDAO;
@@ -47,18 +48,20 @@ public class DBController implements IDBController {
     ----------------------- Constructor -------------------------
      */
     
-    private DBController (IConnPool connPool)
+    private DBController ()
     {
         try
         {
-            this.connPool   = connPool;
-
+            this.connPool   = ConnPoolV1.getInstance();
+    
             TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
-
+    
             iWorkerDAO      = new WorkerDAO(this.connPool);
             iEmployerDAO    = new EmployerDAO(this.connPool);
             iJobDAO         = new JobDAO(this.connPool);
             iActivityDAO    = new ActivityDAO(this.connPool);
+            
+            instance = this;
         }
         catch ( DALException e )
         {
@@ -111,23 +114,6 @@ public class DBController implements IDBController {
     ---------------------- Public Methods -----------------------
      */
     
-    /**
-     * Gives the instance of the DBController. If the DBController doesn't
-     * exist yet, it will create a new, with the given Connection Pool.
-     * @param connPool The Connection Pool to use
-     * @return DBController object
-     * @throws DALException Data Access Layer Exception
-     */
-	public static DBController getInstance(IConnPool connPool)
-	{
-		if ( instance == null )
-		{
-			instance = new DBController(connPool);
-		}
-		
-		return instance;
-	}
-
 	/**
      * Gives the instance of the DBController. If the DBController doesn't
      * exist yet, it will create a new.
@@ -137,14 +123,14 @@ public class DBController implements IDBController {
     {
         if ( instance == null )
         {
-            instance = new DBController(ConnPoolV1.getInstance());
+            instance = new DBController();
         }
-
+        
         return instance;
     }
-
+    
     //region Utility
-
+    
     /**
      * This method changes the Connection pool to the given
      * Connection Pool.
@@ -154,7 +140,7 @@ public class DBController implements IDBController {
     {
         //TODO: Implement this
     }
-
+    
     @Override
     public int getNextAutoIncremental(String tableName) throws DALException
     {
@@ -207,51 +193,45 @@ public class DBController implements IDBController {
 	 * This method checks if there's a correlation between the
 	 * provided email and password. All exceptions is handled by
      * the method.
-	 * @param email The email
-	 * @param password The password
 	 * @return True if there's a correlation
-	 * @throws DALException Data Access Layer Exception
 	 */
-
     @POST
     @Path("/loginCheck")
     @Consumes(MediaType.APPLICATION_JSON)
-	@Override
-    public boolean loginCheck(WorkerDTO user)
+    @Override
+    public boolean loginCheck(IWorkerDTO user)
     {
         String email = user.getEmail();
         String password = user.getPassword();
-
-        System.out.println(email);
-        System.out.println(password);
+        
     	// Boolean to return
 		boolean success = false;
-
+    	
         // Query to be used
         String query  = String.format("SELECT %s, %s FROM %s WHERE %s = ? AND %s = ?",
 				WorkerConstants.email, WorkerConstants.password, WorkerConstants.TABLENAME,
 				WorkerConstants.email, WorkerConstants.password);
-
+        
 		Connection conn = null; PreparedStatement stmt;
         try
         {
             // Get connection from pool
             conn = connPool.getConn();
-
+            
             // Create preparedStatement
             stmt = conn.prepareStatement(query);
             stmt.setString(1, email); stmt.setString(2, password);
-
+            
             // Execute
             ResultSet rs = stmt.executeQuery();
-
+            
             // Check if there was a match
             if ( rs.next() )
                 success = true;
-
+	
 			// Close statement
 			stmt.close();
-
+            
             return success;
         }
         catch ( DALException e )

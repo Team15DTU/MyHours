@@ -5,7 +5,6 @@ import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
-import dto.worker.WorkerDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -16,10 +15,10 @@ import java.util.List;
 public interface IDBController
 {
     //region Worker
-    
-    /*------------------------------------------------------------
-    | Creators                                                   |
-    -------------------------------------------------------------*/
+	
+	/*------------------------------------------------------------
+	| Creators                                                   |
+	-------------------------------------------------------------*/
     void createWorker   (IWorkerDTO workerDTO) throws DALException;
     
     /*------------------------------------------------------------
@@ -107,5 +106,5 @@ public interface IDBController
     -------------------------------------------------------------*/
     String  setTimeZoneFromSQLServer    ()                              throws DALException;
 	int     getNextAutoIncremental      (String tableName)              throws DALException;
-	boolean loginCheck                  (WorkerDTO user) throws DALException;
+	boolean loginCheck                  (IWorkerDTO user);
 }
