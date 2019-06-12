@@ -190,15 +190,20 @@ public class DBController implements IDBController {
 
         //System.out.println(worker.getEmail()+" "+worker.getPassword());
 
+        String email = user.getEmail();
+        String password = user.getPassword();
+
         try
-        { return getIWorkerDTO(user.getEmail()).getPassword().equals(user.getPassword()); }
+        { return getIWorkerDTO(email).getPassword().equals(password); }
         catch ( DALException e )
         {
             System.err.println("ERROR: loginCheck DALException - " + e.getMessage());
             return false;
         }
         catch ( NullPointerException e )
-        { return false; }
+        {
+            System.out.println("Nullpointer");
+            return false; }
         catch ( Exception e )
         {
             System.err.println("ERROR: Unexpected error - " + e.getMessage());
