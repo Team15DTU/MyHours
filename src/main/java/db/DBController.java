@@ -199,11 +199,14 @@ public class DBController implements IDBController {
     @Path("/loginCheck")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public boolean loginCheck(IWorkerDTO user)
+    public boolean loginCheck(WorkerDTO user)
     {
         String email = user.getEmail();
         String password = user.getPassword();
-        
+
+        System.out.println(email);
+        System.out.println(password);
+
     	// Boolean to return
 		boolean success = false;
     	
