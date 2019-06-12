@@ -53,7 +53,7 @@ public class WorkerDAOTest
 	@Test
 	public void createWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = DBController.getInstance(TestConnPoolV1.getInstance()).getiWorkerDAO();
+		IWorkerDAO workerDAO = DBController.getInstance().getiWorkerDAO();	//TODO: Use change connection pool method
 		
 		// Try to Create them
 		for (IWorkerDTO worker : testWorkers)
@@ -67,7 +67,7 @@ public class WorkerDAOTest
 	@Test
 	public void getWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = DBController.getInstance(TestConnPoolV1.getInstance()).getiWorkerDAO();
+		IWorkerDAO workerDAO = DBController.getInstance().getiWorkerDAO();	//TODO: Use change connection pool method
 		
 		// Get Alfred from DB
 		IWorkerDTO worker = workerDAO.getWorker("a.rottger_rydahl@live.dk");
@@ -84,7 +84,7 @@ public class WorkerDAOTest
 	@Test
 	public void getWorkerList() throws DALException
 	{
-		IWorkerDAO workerDAO = DBController.getInstance(TestConnPoolV1.getInstance()).getiWorkerDAO();
+		IWorkerDAO workerDAO = DBController.getInstance().getiWorkerDAO();	//TODO: Use change connection pool method
 		
 		// Create two extra workers - three total
 		for (IWorkerDTO worker : testWorkers)
