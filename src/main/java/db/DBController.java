@@ -15,8 +15,12 @@ import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
+import dto.worker.WorkerDTO;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
@@ -189,13 +193,17 @@ public class DBController implements IDBController {
 	 * This method checks if there's a correlation between the
 	 * provided email and password. All exceptions is handled by
      * the method.
-	 * @param email The email
-	 * @param password The password
 	 * @return True if there's a correlation
 	 */
-	@Override
-    public boolean loginCheck(String email, String password)
+    @POST
+    @Path("/loginCheck")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Override
+    public boolean loginCheck(IWorkerDTO user)
     {
+        String email = user.getEmail();
+        String password = user.getPassword();
+        
     	// Boolean to return
 		boolean success = false;
     	
