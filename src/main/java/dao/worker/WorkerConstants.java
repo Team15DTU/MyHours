@@ -10,7 +10,7 @@ package dao.worker;
  */
 public class WorkerConstants
 {
-	public static final String TABLENAME 	= "TABLENAME";
+	public static final String TABLENAME 	= "Workers";
 	public static final String id 			= "id";
 	public static final String firstname 	= "firstname";
 	public static final String surname 		= "surname";
