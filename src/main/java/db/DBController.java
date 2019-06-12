@@ -188,15 +188,22 @@ public class DBController implements IDBController {
     public boolean loginCheck(WorkerDTO user)
     {
 
-        System.out.println(user);
-        System.out.println(user.getEmail() +" "+user.getPassword());
-
-        System.out.println(user);
-
-        return true;
         //System.out.println(worker.getEmail()+" "+worker.getPassword());
 
-
+        try
+        { return getIWorkerDTO(user.getEmail()).getPassword().equals(user.getPassword()); }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: loginCheck DALException - " + e.getMessage());
+            return false;
+        }
+        catch ( NullPointerException e )
+        { return false; }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: Unexpected error - " + e.getMessage());
+            return false;
+        }
 
         /*
          try {
