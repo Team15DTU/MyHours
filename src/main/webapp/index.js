@@ -51,7 +51,7 @@ function ajaxTest(){
     var userJson = $("#userform").serializeJSON();
     $.ajax({
         method: 'POST',
-        url : "/MyHours/Test",
+        url : "/MyHours/Test/loginCheck",
         data : userJson,
         contentType: "application/json",
         success : function(data){

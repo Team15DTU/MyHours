@@ -183,53 +183,17 @@ public class DBController implements IDBController {
 	 */
 
     @POST
+    @Path("/loginCheck")
     @Consumes(MediaType.APPLICATION_JSON)
 	@Override
     public boolean loginCheck(WorkerDTO user)
     {
-
-        //System.out.println(worker.getEmail()+" "+worker.getPassword());
-
         String email = user.getEmail();
         String password = user.getPassword();
 
-        try
-        { return getIWorkerDTO(email).getPassword().equals(password); }
-        catch ( DALException e )
-        {
-            System.err.println("ERROR: loginCheck DALException - " + e.getMessage());
-            return false;
-        }
-        catch ( NullPointerException e )
-        {
-            System.out.println("Nullpointer");
-            return false; }
-        catch ( Exception e )
-        {
-            System.err.println("ERROR: Unexpected error - " + e.getMessage());
-            return false;
-        }
+        System.out.println(email);
+        System.out.println(password);
 
-        /*
-         try {
-        if (getIWorkerDTO(email).getPassword().equals(password)){
-            return Response.ok(token).build();
-        }
-    } catch (DALException e) {
-        e.printStackTrace();
-        return Response.noContent().build();
-    }
-    */
-
-
-
-        /*System.out.println(email +" " + password);
-        WorkerDTO w = new WorkerDTO(email,password);
-        System.out.println(w);
-        *
-
-
-/*
         try
         { return getIWorkerDTO(email).getPassword().equals(password); }
         catch ( DALException e )
@@ -244,9 +208,6 @@ public class DBController implements IDBController {
             System.err.println("ERROR: Unexpected error - " + e.getMessage());
             return false;
         }
-        */
-
-
 
         //TODO: Review this!
     }
