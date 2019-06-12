@@ -12,7 +12,7 @@ import dao.worker.WorkerConstants;
 import dao.worker.WorkerDAO;
 import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
-import dto.workPlace.IEmployerDTO;
+import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
 
 import java.sql.*;

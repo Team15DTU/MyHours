@@ -3,7 +3,7 @@ package db;
 import dao.DALException;
 import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
-import dto.workPlace.IEmployerDTO;
+import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
 
 import java.util.Date;

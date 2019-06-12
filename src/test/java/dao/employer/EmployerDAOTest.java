@@ -1,8 +1,8 @@
 package dao.employer;
 
 import dao.DALException;
-import dto.workPlace.EmployerDTO;
-import dto.workPlace.IEmployerDTO;
+import dto.employer.EmployerDTO;
+import dto.employer.IEmployerDTO;
 import db.DBController;
 import db.IConnPool;
 import db.TestConnPoolV1;

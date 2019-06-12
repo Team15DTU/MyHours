@@ -1,7 +1,7 @@
 package dao.employer;
 
 import dao.DALException;
-import dto.workPlace.IEmployerDTO;
+import dto.employer.IEmployerDTO;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package dto.workPlace;
+package dto.employer;
 
 import dto.job.IJobDTO;
 

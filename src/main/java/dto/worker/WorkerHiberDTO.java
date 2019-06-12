@@ -2,7 +2,7 @@ package dto.worker;
 
 import dao.worker.WorkerConstants;
 import dto.address.IAddress;
-import dto.workPlace.IEmployerDTO;
+import dto.employer.IEmployerDTO;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
