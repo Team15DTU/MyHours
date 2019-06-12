@@ -59,6 +59,8 @@ public class DBController implements IDBController {
 
     }
 
+    public DBController() {}
+
     
     /*
     ------------------------ Properties -------------------------
@@ -182,7 +184,6 @@ public class DBController implements IDBController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/hey")
 	@Override
     public boolean loginCheck(WorkerDTO user)
     {
