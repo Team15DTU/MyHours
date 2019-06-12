@@ -57,6 +57,9 @@ public class ConnPoolV1 implements IConnPool {
 		boolean success = true; DALException exception = null;
 		try
 		{
+			// Specify Driver
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
 			for (int i = 0; i < MAXCONNS; i++)
 				freeConnList.add(createConnection());
 		}
@@ -64,6 +67,12 @@ public class ConnPoolV1 implements IConnPool {
 		{
 			System.err.println("ERROR: Creating Connection Pool");
 			exception = e;
+			success = false;
+		}
+		catch ( ClassNotFoundException e )
+		{
+			System.err.println("ERROR: Creating Connection Pool");
+			exception = new DALException(e.getMessage(), e.getCause());
 			success = false;
 		}
 		
