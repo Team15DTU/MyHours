@@ -1,6 +1,7 @@
 package db;
 
 import dao.DALException;
+import dao.employer.EmployerConstants;
 import dao.job.IJobDAO;
 import dao.job.JobDAO;
 import dao.activity.IActivityDAO;
@@ -10,11 +11,13 @@ import dao.employer.EmployerDAO;
 import dao.worker.IWorkerDAO;
 import dao.worker.WorkerConstants;
 import dao.worker.WorkerDAO;
+import dao.worker.WorkerHiberDAO;
 import db.connectionPools.ConnPoolV1;
 import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
+import hibernate.HibernateUtil;
 
 import java.sql.*;
 import java.util.Date;
@@ -24,15 +27,24 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
-public class DBController implements IDBController {
+public class DBController implements IDBController  {
 
     /*
     -------------------------- Fields --------------------------
      */
     
-    private static DBController instance = new DBController(ConnPoolV1.getInstance());
-    
+    private static DBController instance;
+
+    static {
+        try {
+            instance = new DBController(ConnPoolV1.getInstance());
+        } catch (DALException e) {
+            e.printStackTrace();
+        }
+    }
+
     private IConnPool connPool;
+    private HibernateUtil hibernateUtil;
     private IWorkerDAO iWorkerDAO;
     private IEmployerDAO iEmployerDAO;
     private IJobDAO iJobDAO;
@@ -47,10 +59,12 @@ public class DBController implements IDBController {
         try
         {
             this.connPool   = connPool;
+            hibernateUtil = new HibernateUtil();
+            hibernateUtil.setup();
     
             TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
     
-            iWorkerDAO      = new WorkerDAO(this.connPool);
+            iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
             iEmployerDAO    = new EmployerDAO(this.connPool);
             iJobDAO         = new JobDAO(this.connPool);
             iActivityDAO    = new ActivityDAO(this.connPool);
@@ -127,7 +141,7 @@ public class DBController implements IDBController {
      * exist yet, it will create a new.
      * @return DBController object
      */
-    public static DBController getInstance()
+    public static DBController getInstance() throws DALException
     {
         if ( instance == null )
         {
@@ -162,16 +176,20 @@ public class DBController implements IDBController {
             // Shit works
 			//TODO: Fix hardcoded Database
             PreparedStatement pStatement = c.prepareStatement(
-                    "SELECT AUTO_INCREMENT FROM information_schema.TABLES where TABLE_SCHEMA = 's185097'" +
+                    "SELECT AUTO_INCREMENT FROM information_schema.TABLES where TABLE_SCHEMA = ?" +
 							" AND TABLE_NAME = ?" )
 					;
-            pStatement.setString(1, tableName);
+            pStatement.setString(1,connPool.getUser());
+            pStatement.setString(2, EmployerConstants.TABLENAME);
 
             ResultSet resultset = pStatement.executeQuery();
 
             resultset.next();
 
+            System.out.println(resultset.getInt(1));
+
             return resultset.getInt(1);
+
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());

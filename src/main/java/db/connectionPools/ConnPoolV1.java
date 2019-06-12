@@ -17,7 +17,7 @@ public class ConnPoolV1 implements IConnPool {
     /*------------------------------------------------------------
     | Fields                                                     |
     -------------------------------------------------------------*/
-    protected static ConnPoolV1 instance;
+    protected static ConnPoolV1 instance ;
     
     //region keepAlive()
     protected int refreshRate 	= 30000; 	// 30 seconds
@@ -143,7 +143,11 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		this.validTimeout = validTimeout;
 	}
-	
+
+	public String getUser() {
+		return user;
+	}
+
 	/*------------------------------------------------------------
     | Public Methods                                             |
     -------------------------------------------------------------*/
@@ -151,7 +155,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * Gives the instance of the Connection Pool.
 	 * @return ConnPoolV1 object
 	 */
-	public synchronized static ConnPoolV1 getInstance()
+	public synchronized static ConnPoolV1 getInstance() throws DALException
 	{
 		try
 		{

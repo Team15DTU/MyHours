@@ -68,6 +68,7 @@ public class WorkerDAOTest
 	public void getWorker() throws DALException
 	{
 		IWorkerDAO workerDAO = DBController.getInstance(TestConnPoolV1.getInstance()).getiWorkerDAO();
+
 		
 		// Get Alfred from DB
 		IWorkerDTO worker = workerDAO.getWorker("a.rottger_rydahl@live.dk");
