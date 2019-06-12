@@ -1,6 +1,6 @@
 package db;
 
-import DAO.DALException;
+import dao.DALException;
 import db.connectionPools.ConnPoolV1;
 
 /**

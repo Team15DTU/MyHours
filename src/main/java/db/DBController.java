@@ -1,18 +1,18 @@
 package db;
 
-import DAO.DALException;
-import DAO.job.IJobDAO;
-import DAO.job.JobDAO;
-import DAO.activity.IActivityDAO;
-import DAO.activity.ActivityDAO;
-import DAO.employer.IEmployerDAO;
-import DAO.employer.EmployerDAO;
-import DAO.worker.IWorkerDAO;
-import DAO.worker.WorkerDAO;
-import DTOs.job.IJobDTO;
-import DTOs.activity.IActivityDTO;
-import DTOs.workPlace.IEmployerDTO;
-import DTOs.worker.IWorkerDTO;
+import dao.DALException;
+import dao.job.IJobDAO;
+import dao.job.JobDAO;
+import dao.activity.IActivityDAO;
+import dao.activity.ActivityDAO;
+import dao.employer.IEmployerDAO;
+import dao.employer.EmployerDAO;
+import dao.worker.IWorkerDAO;
+import dao.worker.WorkerDAO;
+import dto.job.IJobDTO;
+import dto.activity.IActivityDTO;
+import dto.workPlace.IEmployerDTO;
+import dto.worker.IWorkerDTO;
 
 import java.sql.*;
 import java.util.Date;

@@ -1,6 +1,6 @@
 package db.connectionPools;
 
-import DAO.DALException;
+import dao.DALException;
 import db.IConnPool;
 
 import java.sql.Connection;
