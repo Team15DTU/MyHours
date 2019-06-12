@@ -1,8 +1,8 @@
-package DAO.workPlace;
+package DAO.employer;
 
 import DAO.DALException;
-import dto.workPlace.IWorkPlaceDTO;
-import dto.workPlace.WorkPlaceDTO;
+import DTOs.workPlace.EmployerDTO;
+import DTOs.workPlace.IEmployerDTO;
 
 import db.IConnPool;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @author Rasmus Sander Larsen
  */
 
-public class WorkPlaceDAO implements IWorkPlaceDAO {
+public class EmployerDAO implements IEmployerDAO {
 
     /*
     -------------------------- Fields --------------------------
@@ -28,7 +28,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     ----------------------- Constructor -------------------------
      */
 
-    public WorkPlaceDAO (IConnPool iConnPool) {
+    public EmployerDAO(IConnPool iConnPool) {
         this.iConnPool = iConnPool;
     }
 
@@ -48,10 +48,10 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
 
 
     @Override
-    public IWorkPlaceDTO getIWorkPlace(int workplaceID)  throws DALException {
+    public IEmployerDTO getIWorkPlace(int workplaceID)  throws DALException {
         Connection c = iConnPool.getConn();
 
-        IWorkPlaceDTO workPlaceToReturn = new WorkPlaceDTO();
+        IEmployerDTO workPlaceToReturn = new EmployerDTO();
 
         try {
 
@@ -77,10 +77,10 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     }
 
     @Override
-    public List<IWorkPlaceDTO> getIWorkPlaceList() throws DALException {
+    public List<IEmployerDTO> getIWorkPlaceList() throws DALException {
         Connection c = iConnPool.getConn();
 
-        List<IWorkPlaceDTO> listToReturn = new ArrayList<>();
+        List<IEmployerDTO> listToReturn = new ArrayList<>();
 
         try {
 
@@ -101,11 +101,11 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     }
 
     @Override
-    public List<IWorkPlaceDTO> getIWorkPlaceList(int workerID) throws DALException {
+    public List<IEmployerDTO> getIWorkPlaceList(int workerID) throws DALException {
 
         Connection c = iConnPool.getConn();
 
-        List<IWorkPlaceDTO> listToReturn = new ArrayList<>();
+        List<IEmployerDTO> listToReturn = new ArrayList<>();
 
         try {
 
@@ -127,7 +127,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     }
 
     @Override
-    public void createIWorkPlace(IWorkPlaceDTO workPlaceDTO) throws DALException {
+    public void createIWorkPlace(IEmployerDTO workPlaceDTO) throws DALException {
 
         Connection c = iConnPool.getConn();
 
@@ -152,7 +152,7 @@ public class WorkPlaceDAO implements IWorkPlaceDAO {
     }
 
     @Override
-    public void updateIWorkPlace(IWorkPlaceDTO workPlaceDTO) throws DALException {
+    public void updateIWorkPlace(IEmployerDTO workPlaceDTO) throws DALException {
 
         Connection c = iConnPool.getConn();
 

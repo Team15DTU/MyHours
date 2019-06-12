@@ -1,6 +1,6 @@
-package DAO.worker;
+package dao.worker;
 
-import DAO.DALException;
+import dao.DALException;
 import dto.worker.IWorkerDTO;
 import hibernate.HibernateUtil;
 import org.hibernate.Session;
@@ -44,11 +44,10 @@ public class WorkerHiberDAO implements IWorkerDAO {
      * This Method inserts the details from the inputted WorkerDTO into the MYSQL_DB
      *
      * @param workerDTO   This is the object containing the details to pass into the DB.
-     * @param password This is the password which should be added to the respected WorkerDTO.
      * @throws DALException Will throw a DALException.
      */
     @Override
-    public void createWorker(IWorkerDTO workerDTO, String password) throws DALException {
+    public void createWorker(IWorkerDTO workerDTO) throws DALException {
         //TODO: Diverse interfaces skal gentænkes!
 
         Session session = null;
@@ -123,25 +122,24 @@ public class WorkerHiberDAO implements IWorkerDAO {
      * and updates the existing details in the DB with the information from the inputted WorkerDTO.
      *
      * @param workerDTO   This object contains the details that DB should be updated with.
-     * @param password This is the password which should be added to the respected WorkerDTO.
      * @return Will return the number of rows affected.
      * @throws DALException Will throw a DALException.
      */
     @Override
-    public int updateWorker(IWorkerDTO workerDTO, String password) throws DALException {
+    public int updateWorker(IWorkerDTO workerDTO) throws DALException {
         int changes = 0;
         Session session = hibernateUtil.getSession();
         session.beginTransaction();
 
         session.createQuery("update WorkerHiberDTO as w " +
                 "set w.email = :email," +
-                " w.pass = :pass," +
+                " w.password = :password," +
                 " w.firstName = :firstname," +
                 " w.surName = :surname where w.workerID = :workerID")
                 .setParameter("email", workerDTO.getEmail())
                 .setParameter("firstname", workerDTO.getFirstName())
                 .setParameter("surname", workerDTO.getSurName())
-                .setParameter("pass",workerDTO.getPass())
+                .setParameter("password",workerDTO.getPassword())
                 .setParameter("workerID", workerDTO.getWorkerID())
                 .executeUpdate();
 

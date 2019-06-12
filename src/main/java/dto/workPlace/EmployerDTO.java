@@ -1,6 +1,6 @@
-package dto.workPlace;
+package DTOs.workPlace;
 
-import dto.job.IJobDTO;
+import DTOs.job.IJobDTO;
 
 
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
-public class WorkPlaceDTO implements IWorkPlaceDTO {
+public class EmployerDTO implements IEmployerDTO {
 
     /*
     -------------------------- Fields --------------------------
@@ -26,16 +26,16 @@ public class WorkPlaceDTO implements IWorkPlaceDTO {
     ----------------------- Constructor -------------------------
      */
     
-    public WorkPlaceDTO () {}
+    public EmployerDTO() {}
 
-    public WorkPlaceDTO (int workerID, String name) {
+    public EmployerDTO(int workerID, String name) {
         this.workerID = workerID;
         this.name = name;
         color = null;
         iJobList = null;
     }
 
-    public WorkPlaceDTO (int workerID, String name, Color color, int telephone, List<IJobDTO> iJobList) {
+    public EmployerDTO(int workerID, String name, Color color, int telephone, List<IJobDTO> iJobList) {
         this.workerID = workerID;
         this.name = name;
         this.color = color;

@@ -1,6 +1,6 @@
-package DAO.worker;
+package dao.worker;
 
-import DAO.DALException;
+import dao.DALException;
 import dto.address.Address;
 import dto.address.IAddress;
 import dto.worker.IWorkerDTO;
@@ -53,11 +53,11 @@ public class WorkerDAOTest
 	@Test
 	public void createWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(connPool).getiWorkerDAO();
+		IWorkerDAO workerDAO = DBController.getInstance(TestConnPoolV1.getInstance()).getiWorkerDAO();
 		
 		// Try to Create them
 		for (IWorkerDTO worker : testWorkers)
-			workerDAO.createWorker(worker, "FuckingPassword");
+			workerDAO.createWorker(worker);
 		
 		// Delete again
 		for (IWorkerDTO worker : testWorkers)
@@ -67,7 +67,7 @@ public class WorkerDAOTest
 	@Test
 	public void getWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(connPool).getiWorkerDAO();
+		IWorkerDAO workerDAO = DBController.getInstance(TestConnPoolV1.getInstance()).getiWorkerDAO();
 		
 		// Get Alfred from DB
 		IWorkerDTO worker = workerDAO.getWorker("a.rottger_rydahl@live.dk");
@@ -84,11 +84,11 @@ public class WorkerDAOTest
 	@Test
 	public void getWorkerList() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(connPool).getiWorkerDAO();
+		IWorkerDAO workerDAO = DBController.getInstance(TestConnPoolV1.getInstance()).getiWorkerDAO();
 		
 		// Create two extra workers - three total
 		for (IWorkerDTO worker : testWorkers)
-			workerDAO.createWorker(worker, "FuckingPassword");
+			workerDAO.createWorker(worker);
 		
 		// Get list
 		List<IWorkerDTO> workerList = workerDAO.getWorkerList();

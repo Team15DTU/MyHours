@@ -1,7 +1,7 @@
-package dto.worker;
+package DTOs.worker;
 
-import dto.address.IAddress;
-import dto.workPlace.IWorkPlaceDTO;
+import DTOs.address.IAddress;
+import DTOs.workPlace.IEmployerDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,10 +19,10 @@ public class WorkerDTO implements IWorkerDTO {
     private String firstName;
     private String surName;
     private String email;
-    private String pass;
+    private String password;
     private LocalDate birthday;
     private IAddress homeAddress;
-    private List<IWorkPlaceDTO> workPlaces;
+    private List<IEmployerDTO> employers;
     
     /*
     ----------------------- Constructor -------------------------
@@ -30,23 +30,48 @@ public class WorkerDTO implements IWorkerDTO {
     
     public WorkerDTO () {}
 
-    public WorkerDTO (String firstName, String surName, String email) {
+    public WorkerDTO (String firstName, String surName, String email)
+    {
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
         birthday = null;
         homeAddress = null;
-        workPlaces = null;
+        employers = null;
     }
-
-    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IWorkPlaceDTO> workPlaces)
+    
+    /**
+     * This constructs a WorkerDTO object with all fields specified.
+     * @param workerID ID of Worker
+     * @param firstName Firstname
+     * @param surName Surname
+     * @param email Unique email of Worker
+     * @param password Password
+     * @param birthday Workers day of birth
+     * @param homeAddress Address of Worker
+     * @param employers List of Workers employers
+     */
+    public WorkerDTO(int workerID, String firstName, String surName, String email, String password, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
+    {
+        this.workerID = workerID;
+        this.firstName = firstName;
+        this.surName = surName;
+        this.email = email;
+        this.password = password;
+        this.birthday = birthday;
+        this.homeAddress = homeAddress;
+        this.employers = employers;
+    }
+    
+    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
     {
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
         this.birthday = birthday;
         this.homeAddress = homeAddress;
-        this.workPlaces = workPlaces;
+        this.employers = employers;
+        this.password = null;
     }
     
     /*
@@ -86,7 +111,11 @@ public class WorkerDTO implements IWorkerDTO {
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
+    public String getPassword() { return password; }
+    
+    public void setPassword(String password) { this.password = password; }
+    
     public LocalDate getBirthday() {
         return birthday;
     }
@@ -104,29 +133,11 @@ public class WorkerDTO implements IWorkerDTO {
     }
     
     @Override
-    public List<IWorkPlaceDTO> getIWorkPlaces() { return workPlaces; }
+    public List<IEmployerDTO> getIEmployers() { return employers; }
     
     @Override
-    public void setIWorkPlaces(List<IWorkPlaceDTO> workPlaces) { this.workPlaces = workPlaces; }
-
-    public List<IWorkPlaceDTO> getWorkPlaces() {
-        return workPlaces;
-    }
-
-    public void setWorkPlaces(List<IWorkPlaceDTO> workPlaces) {
-        this.workPlaces = workPlaces;
-    }
-
-    @Override
-    public String getPass() {
-        return pass;
-    }
-
-    @Override
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-
+    public void setIEmployers(List<IEmployerDTO> workPlaces) { this.employers = workPlaces; }
+    
     // endregion
     
     /*

@@ -1,11 +1,11 @@
-package dto.workPlace;
+package DTOs.workPlace;
 
-import dto.job.IJobDTO;
+import DTOs.job.IJobDTO;
 
 import java.awt.*;
 import java.util.List;
 
-public interface IWorkPlaceDTO {
+public interface IEmployerDTO {
 	
 	// Methods
 

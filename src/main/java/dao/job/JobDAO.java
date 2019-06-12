@@ -1,6 +1,6 @@
-package DAO.job;
+package dao.job;
 
-import DAO.DALException;
+import dao.DALException;
 import dto.job.IJobDTO;
 import dto.job.JobDTO;
 import db.IConnPool;

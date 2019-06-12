@@ -1,4 +1,4 @@
-package dto.shift;
+package DTOs.activity;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 /**
  * @author Rasmus Sander Larsen
  */
-public class ShiftDTO implements IShiftDTO {
+public class ActivityDTO implements IActivityDTO {
 
     /*
     -------------------------- Fields --------------------------
@@ -22,16 +22,16 @@ public class ShiftDTO implements IShiftDTO {
     ----------------------- Constructor -------------------------
      */
     
-    public ShiftDTO () {}
+    public ActivityDTO() {}
 
-    public ShiftDTO (LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID) {
+    public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID) {
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;
 
     }
 
-    public ShiftDTO (LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID, Duration pause) {
+    public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID, Duration pause) {
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;

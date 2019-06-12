@@ -1,6 +1,6 @@
-package DAO.worker;
+package dao.worker;
 
-import DAO.DALException;
+import dao.DALException;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 import db.IConnPool;
@@ -102,7 +102,7 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public void createWorker(IWorkerDTO workerDTO, String password) throws DALException
+    public void createWorker(IWorkerDTO workerDTO) throws DALException
     {
         // Get a Connection from the ConnPool
         Connection c = connPool.getConn();
@@ -121,7 +121,7 @@ public class WorkerDAO implements IWorkerDAO {
             statement.setString(2, workerDTO.getSurName());
             statement.setString(3, workerDTO.getEmail());
             statement.setDate(4, Date.valueOf(workerDTO.getBirthday()));
-            statement.setString(5, password);
+            statement.setString(5, workerDTO.getPassword());
 
             statement.executeUpdate();
 
@@ -139,7 +139,7 @@ public class WorkerDAO implements IWorkerDAO {
     }
 
     @Override
-    public int updateWorker(IWorkerDTO worker, String password) throws DALException
+    public int updateWorker(IWorkerDTO worker) throws DALException
     {
         // Get connection from ConnPool
         Connection c = connPool.getConn();
@@ -159,7 +159,7 @@ public class WorkerDAO implements IWorkerDAO {
             pStatement.setString(2, worker.getSurName());
             pStatement.setString(3, worker.getEmail());
             pStatement.setDate(4, Date.valueOf(worker.getBirthday()));
-            pStatement.setString(5, password);
+            pStatement.setString(5, worker.getPassword());
 
             rowsAltered = pStatement.executeUpdate();
 
