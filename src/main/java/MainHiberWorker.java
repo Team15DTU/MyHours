@@ -1,5 +1,5 @@
-import DAO.DALException;
-import DAO.worker.WorkerHiberDAO;
+import dao.DALException;
+import dao.worker.WorkerHiberDAO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerHiberDTO;
 import hibernate.HibernateUtil;

@@ -1,7 +1,7 @@
-package DAO.employer;
+package dao.employer;
 
-import DAO.DALException;
-import DTOs.workPlace.IEmployerDTO;
+import dao.DALException;
+import dto.workPlace.IEmployerDTO;
 
 import java.util.List;
 

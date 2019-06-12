@@ -1,7 +1,7 @@
 package dto.worker;
 
 import dto.address.IAddress;
-import dto.workPlace.IWorkPlaceDTO;
+import dto.workPlace.IEmployerDTO;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -39,13 +39,13 @@ public class WorkerHiberDTO implements IWorkerDTO {
     private LocalDate birthday;
 
     @Column(name = "pass")
-    private String pass;
+    private String password;
 
     @Transient
     private IAddress homeAddress;
 
     @Transient
-    private List<IWorkPlaceDTO> workPlaces;
+    private List<IEmployerDTO> employers;
 
     /*
     ----------------------- Constructor -------------------------
@@ -53,24 +53,24 @@ public class WorkerHiberDTO implements IWorkerDTO {
 
     public WorkerHiberDTO() {}
 
-    public WorkerHiberDTO(String firstName, String surName, String email, String pass) {
+    public WorkerHiberDTO(String firstName, String surName, String email, String password) {
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
-        this.pass = pass;
+        this.password = password;
         birthday = null;
         homeAddress = null;
-        workPlaces = null;
+        employers = null;
     }
 
-    public WorkerHiberDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IWorkPlaceDTO> workPlaces)
+    public WorkerHiberDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
     {
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
         this.birthday = birthday;
         this.homeAddress = homeAddress;
-        this.workPlaces = workPlaces;
+        this.employers = employers;
     }
     
     /*
@@ -119,12 +119,12 @@ public class WorkerHiberDTO implements IWorkerDTO {
         this.birthday = birthday;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public IAddress getHomeAddress() {
@@ -135,10 +135,14 @@ public class WorkerHiberDTO implements IWorkerDTO {
         this.homeAddress = homeAddress;
     }
 
-    public List<IWorkPlaceDTO> getIWorkPlaces() { return workPlaces; }
+    public List<IEmployerDTO> getIEmployers() {
+        return employers;
+    }
 
-    public void setIWorkPlaces(List<IWorkPlaceDTO> workPlaces) { this.workPlaces = workPlaces; }
-    
+    public void setIEmployers(List<IEmployerDTO> employers) {
+        this.employers = employers;
+    }
+
     // endregion
     
     /*

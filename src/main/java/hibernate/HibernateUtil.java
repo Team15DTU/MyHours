@@ -6,6 +6,8 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import java.util.TimeZone;
+
 /**
  * @author Rasmus Sander Larsen
  */
@@ -16,13 +18,17 @@ public class HibernateUtil {
      */
 
     private SessionFactory sessionFactory;
+    private TimeZone timeZone;
 
 
     /*
     ----------------------- Constructor -------------------------
      */
 
+    public HibernateUtil () {
+        //TimeZone.setDefault( TimeZone.getTimeZone( "UTC" ) );
 
+    }
 
     /*
     ------------------------ Properties -------------------------
@@ -46,6 +52,7 @@ public class HibernateUtil {
      */
 
     public void setup() {
+
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure() // configures settings from dao.cfg.xml
                 .build();
@@ -55,6 +62,9 @@ public class HibernateUtil {
             System.out.println(ex.getMessage());
             StandardServiceRegistryBuilder.destroy(registry);
         }
+
+        // Sets the program timezone to the same as the DB.
+        TimeZone.setDefault(TimeZone.getTimeZone(getTimeZoneFromDB()));
     }
 
     public void exit() {
@@ -75,5 +85,18 @@ public class HibernateUtil {
     ---------------------- Support Methods ----------------------
      */
 
+    // Gets the timezone of the DB.
+    private String getTimeZoneFromDB () {
+        String hibernateDialect = (String) sessionFactory.getProperties().get("hibernate.dialect");
+        Session session = getSession();
+
+        // H2 database bruger hibernate.dialect = "org.hibernate.dialect.H2Dialect".
+
+        if (hibernateDialect.equals("org.hibernate.dialect.H2Dialect")) {
+            return (String) session.createSQLQuery("select '@@system_time_zone'").uniqueResult();
+        } else {
+            return (String) session.createSQLQuery("SELECT @@system_time_zone").uniqueResult();
+        }
+    }
 
 }

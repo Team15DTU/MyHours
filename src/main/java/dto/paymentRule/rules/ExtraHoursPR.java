@@ -1,7 +1,7 @@
-package DTOs.paymentRule.rules;
+package dto.paymentRule.rules;
 
-import DTOs.paymentRule.PaymentRule;
-import DTOs.activity.ActivityDTO;
+import dto.paymentRule.PaymentRule;
+import dto.activity.ActivityDTO;
 
 /**
  * @author Rasmus Sander Larsen

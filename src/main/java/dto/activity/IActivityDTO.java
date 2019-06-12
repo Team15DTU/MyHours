@@ -1,4 +1,4 @@
-package DTOs.activity;
+package dto.activity;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

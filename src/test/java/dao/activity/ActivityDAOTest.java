@@ -1,4 +1,4 @@
-package DAO.activity;
+package dao.activity;
 
 import db.IConnPool;
 import db.TestConnPoolV1;

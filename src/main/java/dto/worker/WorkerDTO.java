@@ -1,7 +1,7 @@
-package DTOs.worker;
+package dto.worker;
 
-import DTOs.address.IAddress;
-import DTOs.workPlace.IEmployerDTO;
+import dto.address.IAddress;
+import dto.workPlace.IEmployerDTO;
 
 import java.time.LocalDate;
 import java.util.List;

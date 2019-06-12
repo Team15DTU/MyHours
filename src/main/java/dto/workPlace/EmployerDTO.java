@@ -1,6 +1,6 @@
-package DTOs.workPlace;
+package dto.workPlace;
 
-import DTOs.job.IJobDTO;
+import dto.job.IJobDTO;
 
 
 import java.awt.*;

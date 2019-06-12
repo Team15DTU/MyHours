@@ -1,8 +1,8 @@
-package DTOs.job;
+package dto.job;
 
-import DTOs.address.Address;
-import DTOs.ruleSet.RuleSet;
-import DTOs.activity.IActivityDTO;
+import dto.address.Address;
+import dto.ruleSet.RuleSet;
+import dto.activity.IActivityDTO;
 
 import java.time.LocalDate;
 import java.util.List;

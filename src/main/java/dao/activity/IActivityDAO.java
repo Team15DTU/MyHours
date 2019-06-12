@@ -1,6 +1,6 @@
-package DAO.activity;
+package dao.activity;
 
-import DTOs.activity.IActivityDTO;
+import dto.activity.IActivityDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;

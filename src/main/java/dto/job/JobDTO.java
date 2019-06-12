@@ -1,6 +1,5 @@
 package dto.job;
 
-import dto.shift.IShiftDTO;
 import dto.ruleSet.RuleSet;
 import dto.address.Address;
 import dto.activity.IActivityDTO;
