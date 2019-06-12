@@ -8,6 +8,7 @@ import dao.activity.ActivityDAO;
 import dao.employer.IEmployerDAO;
 import dao.employer.EmployerDAO;
 import dao.worker.IWorkerDAO;
+import dao.worker.WorkerConstants;
 import dao.worker.WorkerDAO;
 import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
@@ -181,7 +182,8 @@ public class DBController implements IDBController {
     	
         // Query to be used
         String query  = String.format("SELECT %s, %s FROM %s WHERE %s = ? AND %s = ?",
-                                        "email", "pass", "Workers", "email", "pass");     //TODO: Enum needs to be used
+				WorkerConstants.email, WorkerConstants.password, WorkerConstants.TABLENAME,
+				WorkerConstants.email, WorkerConstants.password);
         
 		Connection conn = null; PreparedStatement stmt;
         try
@@ -373,17 +375,17 @@ public class DBController implements IDBController {
         // Gets the IWorkerDTO
         IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
         
-        // Sets WorkerDTOs List<IWorkplaceDTO> workplaces via WorkplaceDAO.
+        // Sets WorkerDTOs List<IEmployersDTO> employers via EmployerDAO.
         workerDTOToReturn.setIEmployers(iEmployerDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
         
-        // Sets WorkplaceDTOs List<IJobDTO> jobList via JobDAO, for each WorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IEmployerDTO workPlaceDTO : workerDTOToReturn.getIEmployers()) {
-            List<IJobDTO> iJobDToList = iJobDAO.getIJobList(workPlaceDTO.getWorkplaceID());
-            workPlaceDTO.setIJobList(iJobDToList);
+        // Sets EmployerDTOs List<IJobDTO> jobList via JobDAO, for each EmployerDTO in Workers List<EmployerDTO>
+        for (IEmployerDTO employerDTO : workerDTOToReturn.getIEmployers()) {
+            List<IJobDTO> iJobDToList = iJobDAO.getIJobList(employerDTO.getWorkplaceID());
+            employerDTO.setIJobList(iJobDToList);
         }
-        // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IWorkplaceDTO in Workers List<WorkplaceDTO>
-        for (IEmployerDTO iworkPlaceDTO : workerDTOToReturn.getIEmployers()) {
-            for (IJobDTO iJobDTO : iworkPlaceDTO.getIJobList()) {
+        // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IEmployerDTO in Workers List<EmployerDTO>
+        for (IEmployerDTO employerDTO : workerDTOToReturn.getIEmployers()) {
+            for (IJobDTO iJobDTO : employerDTO.getIJobList()) {
                 List<IActivityDTO> iActivityDTOList = iActivityDAO.getIShiftList(iJobDTO.getJobID());
                 iJobDTO.setIShiftDTOList(iActivityDTOList);
             }
