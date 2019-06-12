@@ -22,7 +22,7 @@ public class MainHiberWorker {
 
         IWorkerDTO testInsertWorker = new WorkerHiberDTO("Firstname", "Surname", "Email_2", "pass");
 
-        //workerHiberDAO.createWorker(testInsertWorker, "Ligemeget");
+        workerHiberDAO.createWorker(testInsertWorker);
 
         List<IWorkerDTO> workerList = workerHiberDAO.getWorkerList();
         System.out.println("WorkerDTO LIST:");
@@ -30,7 +30,7 @@ public class MainHiberWorker {
             System.out.println(workerDTO);
         }
 
-        workerHiberDAO.deleteWorker("Email_2");
+        //workerHiberDAO.deleteWorker("Email_2");
 
         List<IWorkerDTO> workerListAfterDeletion = workerHiberDAO.getWorkerList();
         System.out.println("WorkerDTO LIST:");
