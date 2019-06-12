@@ -16,6 +16,7 @@ import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
 
+import javax.ws.rs.Path;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
@@ -24,13 +25,14 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
+@Path("/Test")
 public class DBController implements IDBController {
 
     /*
     -------------------------- Fields --------------------------
      */
     
-    private static DBController instance = new DBController(ConnPoolV1.getInstance());
+    private static DBController instance;
     
     private IConnPool connPool;
     private IWorkerDAO iWorkerDAO;
@@ -42,11 +44,11 @@ public class DBController implements IDBController {
     ----------------------- Constructor -------------------------
      */
     
-    private DBController (IConnPool connPool)
+    private DBController ()
     {
         try
         {
-            this.connPool   = connPool;
+            this.connPool   = ConnPoolV1.getInstance();
     
             TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
     
@@ -54,6 +56,8 @@ public class DBController implements IDBController {
             iEmployerDAO    = new EmployerDAO(this.connPool);
             iJobDAO         = new JobDAO(this.connPool);
             iActivityDAO    = new ActivityDAO(this.connPool);
+            
+            instance = this;
         }
         catch ( DALException e )
         {
@@ -106,22 +110,6 @@ public class DBController implements IDBController {
     ---------------------- Public Methods -----------------------
      */
     
-    /**
-     * Gives the instance of the DBController. If the DBController doesn't
-     * exist yet, it will create a new, with the given Connection Pool.
-     * @param connPool The Connection Pool to use
-     * @return DBController object
-     */
-	public static DBController getInstance(IConnPool connPool)
-	{
-		if ( instance == null )
-		{
-			instance = new DBController(connPool);
-		}
-		
-		return instance;
-	}
-	
 	/**
      * Gives the instance of the DBController. If the DBController doesn't
      * exist yet, it will create a new.
@@ -131,7 +119,7 @@ public class DBController implements IDBController {
     {
         if ( instance == null )
         {
-            instance = new DBController(ConnPoolV1.getInstance());
+            instance = new DBController();
         }
         
         return instance;
