@@ -176,7 +176,44 @@ public class DBController implements IDBController {
 	@Override
     public boolean loginCheck(String email, String password)
     {
-		//TODO: This implementation needs to be updated to something more specific
+        // Query to be used
+        String query  = String.format("SELECT %s, %s FROM %s WHERE %s = ? AND %s = ?",
+                                        "email", "pass", "Workers", "email", "pass");     //TODO: Enum needs to be used
+        Connection conn;
+        PreparedStatement stmt;
+        try
+        {
+            // Get connection from pool
+            conn = connPool.getConn();
+            
+            // Create preparedStatement
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            
+            // Execute
+            ResultSet rs = stmt.executeQuery();
+            
+            // Check if there was a match
+            if ( rs.next() )
+                return true;
+            else
+                return false;
+        }
+        catch ( DALException e )
+        {
+        
+        }
+        catch ( SQLException e )
+        {
+        
+        }
+        finally
+        {
+        
+        }
+        
+        /*
         try
         { return getIWorkerDTO(email).getPassword().equals(password); }
         catch ( DALException e )
@@ -191,6 +228,7 @@ public class DBController implements IDBController {
             System.err.println("ERROR: Unexpected error - " + e.getMessage());
             return false;
         }
+        */
     }
     
     //endregion
