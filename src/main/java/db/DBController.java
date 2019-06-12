@@ -176,11 +176,14 @@ public class DBController implements IDBController {
 	@Override
     public boolean loginCheck(String email, String password)
     {
+    	// Boolean to return
+		boolean success = false;
+    	
         // Query to be used
         String query  = String.format("SELECT %s, %s FROM %s WHERE %s = ? AND %s = ?",
                                         "email", "pass", "Workers", "email", "pass");     //TODO: Enum needs to be used
-        Connection conn;
-        PreparedStatement stmt;
+        
+		Connection conn = null; PreparedStatement stmt;
         try
         {
             // Get connection from pool
@@ -188,47 +191,41 @@ public class DBController implements IDBController {
             
             // Create preparedStatement
             stmt = conn.prepareStatement(query);
-            stmt.setString(1, email);
-            stmt.setString(2, password);
+            stmt.setString(1, email); stmt.setString(2, password);
             
             // Execute
             ResultSet rs = stmt.executeQuery();
             
             // Check if there was a match
             if ( rs.next() )
-                return true;
-            else
-                return false;
+                success = true;
+	
+			// Close statement
+			stmt.close();
+            
+            return success;
         }
         catch ( DALException e )
         {
-        
+			System.err.println("ERROR: DALException thrown in loginCheck() - " + e.getMessage());
+			return success;
         }
         catch ( SQLException e )
         {
-        
+			System.err.println("ERROR: SQLException thrown in loginCheck() - " + e.getMessage());
+			return success;
         }
         finally
         {
-        
+        	try
+			{
+				connPool.releaseConnection(conn);
+			}
+        	catch ( DALException e )
+			{
+				System.err.println("ERROR: releaseConnection() throwing DAL - " + e.getMessage());
+			}
         }
-        
-        /*
-        try
-        { return getIWorkerDTO(email).getPassword().equals(password); }
-        catch ( DALException e )
-        {
-            System.err.println("ERROR: loginCheck DALException - " + e.getMessage());
-            return false;
-        }
-        catch ( NullPointerException e )
-        { return false; }
-        catch ( Exception e )
-        {
-            System.err.println("ERROR: Unexpected error - " + e.getMessage());
-            return false;
-        }
-        */
     }
     
     //endregion
