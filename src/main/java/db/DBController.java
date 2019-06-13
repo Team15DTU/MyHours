@@ -422,8 +422,11 @@ public class DBController implements IDBController
     	return null;
     }
     
+    @GET
+	@Path("/getWorkersListName/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IWorkerDTO> getIWorkerDTOList (String name)
+    public List<IWorkerDTO> getIWorkerDTOList (@PathParam("name") String name)
     { return null; }
     
     //endregion
