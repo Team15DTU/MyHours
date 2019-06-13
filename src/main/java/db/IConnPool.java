@@ -8,7 +8,7 @@ public interface IConnPool
 {
 	Connection getConn() throws DALException;
 
-	void releaseConnection (Connection connection) throws DALException;
+	void releaseConnection (Connection connection);
 	
 	void closePool() throws DALException;
 

@@ -96,7 +96,7 @@ public class DBController implements IDBController
             iJobDAO         = new JobDAO(this.connPool);
             iActivityDAO    = new ActivityDAO(this.connPool);
         }
-        catch ( DALException e )
+        catch ( Exception e )
         {
             System.err.println("ERROR: DBController constructor Failure - " + e.getMessage());
         }
@@ -160,7 +160,7 @@ public class DBController implements IDBController
     }
     
     @Override
-    public int getNextAutoIncremental(String tableName) throws DALException
+    public int getNextAutoIncremental(String tableName)
     {
         Connection c = connPool.getConn();
 
@@ -193,21 +193,32 @@ public class DBController implements IDBController
             connPool.releaseConnection(c);
         }
     }
-    
-    @Override
-    public String setTimeZoneFromSQLServer ()  throws DALException
+	
+	/**
+	 * Gets the time zone of the server.
+	 * @return Time zone as a String e.g. "UTC"
+	 */
+	@Override
+    public String setTimeZoneFromSQLServer ()
     {
-        Connection c = connPool.getConn();
+		Connection c = null;
         try {
-            Statement statement = c.createStatement();
+			c = connPool.getConn();
+			Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT @@system_time_zone");
             resultSet.next();
             return resultSet.getString(1);
             
-        } catch (SQLException e) {
-            throw new DALException(e.getMessage());
-        } finally {
-            connPool.releaseConnection(c);
+        }
+        catch (Exception e)
+		{
+			System.err.println("ERROR: setTimeZoneFromSQLServer() - " + e.getMessage());
+			return "UTC";
+        }
+        finally
+		{
+			if ( c != null )
+            	connPool.releaseConnection(c);
         }
     }
 	
