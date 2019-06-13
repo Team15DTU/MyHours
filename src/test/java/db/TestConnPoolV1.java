@@ -19,9 +19,8 @@ public class TestConnPoolV1 extends ConnPoolV1 implements IConnPool
      * Gives the instance of the Test Connection Pool, which is using
      * another database for testing.
      * @return ConnPoolV1 object
-     * @throws DALException Data Access Layer Exception
      */
-    public synchronized static ConnPoolV1 getInstance() throws DALException
+    public synchronized static ConnPoolV1 getInstance()
     {
         // DiplomPortal Database - Alfred (TEST DB)
         password = "wOWElNh0bVravE9uGDNzw";
@@ -37,8 +36,8 @@ public class TestConnPoolV1 extends ConnPoolV1 implements IConnPool
         }
         catch (DALException e)
         {
-            System.err.println("ERROR: Couldn't get ConnPoolV1 instance");
-            throw e;
+            System.err.println("ERROR: Couldn't get ConnPoolV1 instance - " + e.getMessage());
+            return null;
         }
     }
 }

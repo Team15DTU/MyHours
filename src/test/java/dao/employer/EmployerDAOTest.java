@@ -107,7 +107,7 @@ public class EmployerDAOTest
     {
         test_DB = TestConnPoolV1.getInstance();
     
-        dbController = DBController.getInstance(test_DB);
+        dbController = DBController.getInstance();  //TODO: Use change ConnectionPool method here
     
         iEmployerDAO = dbController.getiEmployerDAO();
         iWorkerDAO  = dbController.getiWorkerDAO();
