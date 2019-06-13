@@ -11,4 +11,7 @@ public interface IConnPool
 	void releaseConnection (Connection connection) throws DALException;
 	
 	void closePool() throws DALException;
+
+	String getUser();
+
 }

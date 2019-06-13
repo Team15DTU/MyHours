@@ -19,7 +19,7 @@ public class EmployerDTO implements IEmployerDTO {
     private int workerID;
     private String name;
     private Color color;
-    private int telephone;
+    private String telephone;
     private List<IJobDTO> iJobList;
 
     /*
@@ -35,7 +35,7 @@ public class EmployerDTO implements IEmployerDTO {
         iJobList = null;
     }
 
-    public EmployerDTO(int workerID, String name, Color color, int telephone, List<IJobDTO> iJobList) {
+    public EmployerDTO(int workerID, String name, Color color, String  telephone, List<IJobDTO> iJobList) {
         this.workerID = workerID;
         this.name = name;
         this.color = color;
@@ -81,11 +81,11 @@ public class EmployerDTO implements IEmployerDTO {
         this.color = color;
     }
 
-    public int getTelephone() {
+    public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(int telephone) {
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 
