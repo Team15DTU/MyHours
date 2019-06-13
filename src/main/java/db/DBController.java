@@ -48,6 +48,9 @@ public class DBController implements IDBController {
     ----------------------- Constructor -------------------------
      */
     
+    /**
+     * This constructor is used by REST. So far, it can't take any parameters.
+     */
     public DBController ()
     {
         try
@@ -68,6 +71,32 @@ public class DBController implements IDBController {
             System.err.println("ERROR: DBController constructor Failure - " + e.getMessage());
         }
 
+    }
+    
+    /**
+     * This Constructor is primarily made for testing purposes. It gives
+     * the ability to determine which Connection Pool to use.
+     * @param connPool A Connection Pool that implements the IConnPool interface
+     */
+    public DBController (IConnPool connPool)
+    {
+        try
+        {
+            this.connPool   = connPool;
+        
+            TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
+        
+            iWorkerDAO      = new WorkerDAO(this.connPool);
+            iEmployerDAO    = new EmployerDAO(this.connPool);
+            iJobDAO         = new JobDAO(this.connPool);
+            iActivityDAO    = new ActivityDAO(this.connPool);
+        
+            instance = this;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController constructor Failure - " + e.getMessage());
+        }
     }
     
     /*
