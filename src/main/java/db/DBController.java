@@ -25,6 +25,7 @@ import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -377,10 +378,39 @@ public class DBController implements IDBController
     @Override
     public IWorkerDTO getIWorkerDTO (int id)
     { return null; }
-    
+	
+	/**
+	 * Method get a full list of Workers in the
+	 * database.
+	 * @return List<IWorkerDTO>
+	 */
+	@GET
+	@Path("/getWorkersList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IWorkerDTO> getIWorkerDTOList ()
-    { return null; }
+    {
+    	/*
+    	To indicate to frontend that an error happened, but it
+    	won't crash as the list won't be null.
+    	 */
+    	List<IWorkerDTO> list = new ArrayList<>();
+    	list.add(new WorkerDTO("Failure", "Failure", "Failure"));
+    	try
+		{
+			list = iWorkerDAO.getWorkerList();
+		}
+    	catch ( DALException e )
+		{
+			System.err.println("ERROR: getIWorkerDTOList() DALException - " + e.getMessage());
+		}
+    	catch ( Exception e )
+		{
+			System.err.println("ERROR: Unknown Exception getIWorkerDTOList() - " + e.getMessage());
+		}
+    	
+    	return list;
+    }
     
     @Override
     public List<IWorkerDTO> getIWorkerDTOList (int minID, int maxID)
