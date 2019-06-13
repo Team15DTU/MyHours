@@ -30,6 +30,11 @@ public class MySQL_DB implements IConnPool {
 
     // <editor-folder desc="Properties"
 
+    @Override
+    public String getUser() {
+        return user;
+    }
+
 
     // </editor-folder>
     

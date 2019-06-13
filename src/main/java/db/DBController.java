@@ -1,6 +1,7 @@
 package db;
 
 import dao.DALException;
+import dao.employer.EmployerConstants;
 import dao.job.IJobDAO;
 import dao.job.JobDAO;
 import dao.activity.IActivityDAO;
@@ -10,17 +11,14 @@ import dao.employer.EmployerDAO;
 import dao.worker.IWorkerDAO;
 import dao.worker.WorkerConstants;
 import dao.worker.WorkerDAO;
+import dao.worker.WorkerHiberDAO;
 import db.connectionPools.ConnPoolV1;
 import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
-import dto.worker.WorkerDTO;
+import hibernate.HibernateUtil;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.MediaType;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
@@ -29,16 +27,24 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
-@Path("/Test")
-public class DBController implements IDBController {
+public class DBController implements IDBController  {
 
     /*
     -------------------------- Fields --------------------------
      */
     
     private static DBController instance;
-    
+
+    static {
+        try {
+            instance = new DBController(ConnPoolV1.getInstance());
+        } catch (DALException e) {
+            e.printStackTrace();
+        }
+    }
+
     private IConnPool connPool;
+    private HibernateUtil hibernateUtil;
     private IWorkerDAO iWorkerDAO;
     private IEmployerDAO iEmployerDAO;
     private IJobDAO iJobDAO;
@@ -48,20 +54,20 @@ public class DBController implements IDBController {
     ----------------------- Constructor -------------------------
      */
     
-    public DBController ()
+    private DBController (IConnPool connPool)
     {
         try
         {
-            this.connPool   = ConnPoolV1.getInstance();
+            this.connPool   = connPool;
+            hibernateUtil = new HibernateUtil();
+            hibernateUtil.setup();
     
             TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
     
-            iWorkerDAO      = new WorkerDAO(this.connPool);
+            iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
             iEmployerDAO    = new EmployerDAO(this.connPool);
             iJobDAO         = new JobDAO(this.connPool);
             iActivityDAO    = new ActivityDAO(this.connPool);
-            
-            instance = this;
         }
         catch ( DALException e )
         {
@@ -114,16 +120,32 @@ public class DBController implements IDBController {
     ---------------------- Public Methods -----------------------
      */
     
+    /**
+     * Gives the instance of the DBController. If the DBController doesn't
+     * exist yet, it will create a new, with the given Connection Pool.
+     * @param connPool The Connection Pool to use
+     * @return DBController object
+     */
+	public static DBController getInstance(IConnPool connPool)
+	{
+		if ( instance == null )
+		{
+			instance = new DBController(connPool);
+		}
+		
+		return instance;
+	}
+	
 	/**
      * Gives the instance of the DBController. If the DBController doesn't
      * exist yet, it will create a new.
      * @return DBController object
      */
-    public static DBController getInstance()
+    public static DBController getInstance() throws DALException
     {
         if ( instance == null )
         {
-            instance = new DBController();
+            instance = new DBController(ConnPoolV1.getInstance());
         }
         
         return instance;
@@ -154,16 +176,20 @@ public class DBController implements IDBController {
             // Shit works
 			//TODO: Fix hardcoded Database
             PreparedStatement pStatement = c.prepareStatement(
-                    "SELECT AUTO_INCREMENT FROM information_schema.TABLES where TABLE_SCHEMA = 's185097'" +
+                    "SELECT AUTO_INCREMENT FROM information_schema.TABLES where TABLE_SCHEMA = ?" +
 							" AND TABLE_NAME = ?" )
 					;
-            pStatement.setString(1, tableName);
+            pStatement.setString(1,connPool.getUser());
+            pStatement.setString(2, EmployerConstants.TABLENAME);
 
             ResultSet resultset = pStatement.executeQuery();
 
             resultset.next();
 
+            System.out.println(resultset.getInt(1));
+
             return resultset.getInt(1);
+
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
@@ -193,17 +219,13 @@ public class DBController implements IDBController {
 	 * This method checks if there's a correlation between the
 	 * provided email and password. All exceptions is handled by
      * the method.
+	 * @param email The email
+	 * @param password The password
 	 * @return True if there's a correlation
 	 */
-    @POST
-    @Path("/loginCheck")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Override
-    public boolean loginCheck(WorkerDTO user)
+	@Override
+    public boolean loginCheck(String email, String password)
     {
-        String email = user.getEmail();
-        String password = user.getPassword();
-        
     	// Boolean to return
 		boolean success = false;
     	
