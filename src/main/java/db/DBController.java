@@ -19,10 +19,12 @@ import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 import hibernate.HibernateUtil;
+import org.hibernate.boot.spi.InFlightMetadataCollector;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
 import java.util.Date;
@@ -338,57 +340,69 @@ public class DBController implements IDBController
      * 3) Each of those Jobs contains a list of its Shifts
      * @param email We find the Worker, from its email as it is unique
      * @return A IWorkerDTO
-     * @throws DALException Will throw a DALException.
      */
+    @POST
+	@Path("/getWorkerEmail")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IWorkerDTO getIWorkerDTO (String email) throws DALException
+    public IWorkerDTO getIWorkerDTO (String email)
     {
-        // Get the worker from DB, and make object
-        IWorkerDTO worker = createFullIWorkerDTO(email);
-        
-        if ( worker == null )
-            System.err.println("ERROR: Couldn't create WorkerDTO object");
+    	IWorkerDTO worker = new WorkerDTO("Failure", "Failure", "Failure@failure.com");
+    	try
+		{
+			// Get the worker from DB, and make object
+			worker = createFullIWorkerDTO(email);
+		}
+    	catch ( DALException e )
+		{
+			System.err.println("ERROR: DALException getIWorkerDTO() - " + e.getMessage());
+		}
+    	catch ( Exception e )
+		{
+			System.err.println("ERROR: Unknown exception getIWorkerDTO() - " + e.getMessage());
+		}
         
         return worker;
     }
     
     @Override
-    public IWorkerDTO getIWorkerDTO (int id) throws DALException
+    public IWorkerDTO getIWorkerDTO (int id)
     { return null; }
     
     @Override
-    public List<IWorkerDTO> getIWorkerDTOList () throws DALException
+    public List<IWorkerDTO> getIWorkerDTOList ()
     { return null; }
     
     @Override
-    public List<IWorkerDTO> getIWorkerDTOList (int minID, int maxID) throws DALException
+    public List<IWorkerDTO> getIWorkerDTOList (int minID, int maxID)
     { return null; }
     
     @Override
-    public List<IWorkerDTO> getIWorkerDTOList (String name) throws DALException
+    public List<IWorkerDTO> getIWorkerDTOList (String name)
     { return null; }
     
     //endregion
     
     //region Employer
     @Override
-    public void createEmployer(IEmployerDTO employer) throws DALException
+    public void createEmployer(IEmployerDTO employer)
     { }
     
     @Override
-    public IEmployerDTO getIEmployerDTO(int id) throws DALException
+    public IEmployerDTO getIEmployerDTO(int id)
     { return null; }
     
     @Override
-    public List<IEmployerDTO> getIEmployerList() throws DALException
+    public List<IEmployerDTO> getIEmployerList()
     { return null; }
     
     @Override
-    public List<IEmployerDTO> getIEmployerList(int minID, int maxID) throws DALException
+    public List<IEmployerDTO> getIEmployerList(int minID, int maxID)
     { return null; }
     
     @Override
-    public List<IEmployerDTO> getIEmployerList(String name) throws DALException
+    public List<IEmployerDTO> getIEmployerList(String name)
     { return null; }
     
     //endregion
@@ -396,27 +410,27 @@ public class DBController implements IDBController
     //region Job
     
     @Override
-    public void createJob(IJobDTO job) throws DALException
+    public void createJob(IJobDTO job)
     { }
     
     @Override
-    public IJobDTO getIJobDTO(int id) throws DALException
+    public IJobDTO getIJobDTO(int id)
     { return null; }
     
     @Override
-    public List<IJobDTO> getIJobDTOList() throws DALException
+    public List<IJobDTO> getIJobDTOList()
     { return null; }
     
     @Override
-    public List<IJobDTO> getIJobDTOList(int employerID) throws DALException
+    public List<IJobDTO> getIJobDTOList(int employerID)
     { return null; }
     
     @Override
-    public List<IJobDTO> getIJobDTOList(String name) throws DALException
+    public List<IJobDTO> getIJobDTOList(String name)
     { return null; }
     
     @Override
-    public List<IJobDTO> getIJobDTOList(double minSalary, double maxSalary) throws DALException
+    public List<IJobDTO> getIJobDTOList(double minSalary, double maxSalary)
     { return null; }
     
     //endregion
@@ -424,27 +438,27 @@ public class DBController implements IDBController
     //region Activity
     
     @Override
-    public void createActivity(IActivityDTO activity) throws DALException
+    public void createActivity(IActivityDTO activity)
     { }
     
     @Override
-    public IActivityDTO getIActivity(int id) throws DALException
+    public IActivityDTO getIActivity(int id)
     { return null; }
     
     @Override
-    public List<IActivityDTO> getIActivityList() throws DALException
+    public List<IActivityDTO> getIActivityList()
     { return null; }
     
     @Override
-    public List<IActivityDTO> getIActivityList(int jobID) throws DALException
+    public List<IActivityDTO> getIActivityList(int jobID)
     { return null; }
     
     @Override
-    public List<IActivityDTO> getIActivityList(Date date) throws DALException
+    public List<IActivityDTO> getIActivityList(Date date)
     { return null; }
     
     @Override
-    public List<IActivityDTO> getIActivityList(double minVal, double maxVal) throws DALException
+    public List<IActivityDTO> getIActivityList(double minVal, double maxVal)
     { return null; }
     
     //endregion
