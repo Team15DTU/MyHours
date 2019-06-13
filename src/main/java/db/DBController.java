@@ -17,6 +17,7 @@ import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
+import dto.worker.WorkerDTO;
 import hibernate.HibernateUtil;
 
 import java.sql.*;
@@ -27,21 +28,12 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
-public class DBController implements IDBController  {
+public class DBController implements IDBController
+{
 
     /*
     -------------------------- Fields --------------------------
      */
-    
-    private static DBController instance;
-
-    static {
-        try {
-            instance = new DBController(ConnPoolV1.getInstance());
-        } catch (DALException e) {
-            e.printStackTrace();
-        }
-    }
 
     private IConnPool connPool;
     private HibernateUtil hibernateUtil;
@@ -53,8 +45,38 @@ public class DBController implements IDBController  {
     /*
     ----------------------- Constructor -------------------------
      */
-    
-    private DBController (IConnPool connPool)
+	
+	/**
+	 * This Constructor is used for the REST. As it can't take any
+	 * parameters, and needs to be public atm.
+	 */
+	public DBController ()
+	{
+		try
+		{
+			this.connPool   = ConnPoolV1.getInstance();
+			hibernateUtil 	= new HibernateUtil();
+			hibernateUtil.setup();
+			
+			TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
+			
+			iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
+			iEmployerDAO    = new EmployerDAO(this.connPool);
+			iJobDAO         = new JobDAO(this.connPool);
+			iActivityDAO    = new ActivityDAO(this.connPool);
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: DBController constructor Failure - " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Constructor to use for tests, as you can specify which
+	 * connection pool to use.
+	 * @param connPool A Connection Pool that implements the interface IConnPool
+	 */
+    public DBController (IConnPool connPool)
     {
         try
         {
@@ -119,37 +141,6 @@ public class DBController implements IDBController  {
     /*
     ---------------------- Public Methods -----------------------
      */
-    
-    /**
-     * Gives the instance of the DBController. If the DBController doesn't
-     * exist yet, it will create a new, with the given Connection Pool.
-     * @param connPool The Connection Pool to use
-     * @return DBController object
-     */
-	public static DBController getInstance(IConnPool connPool)
-	{
-		if ( instance == null )
-		{
-			instance = new DBController(connPool);
-		}
-		
-		return instance;
-	}
-	
-	/**
-     * Gives the instance of the DBController. If the DBController doesn't
-     * exist yet, it will create a new.
-     * @return DBController object
-     */
-    public static DBController getInstance() throws DALException
-    {
-        if ( instance == null )
-        {
-            instance = new DBController(ConnPoolV1.getInstance());
-        }
-        
-        return instance;
-    }
     
     //region Utility
     
@@ -219,13 +210,14 @@ public class DBController implements IDBController  {
 	 * This method checks if there's a correlation between the
 	 * provided email and password. All exceptions is handled by
      * the method.
-	 * @param email The email
-	 * @param password The password
 	 * @return True if there's a correlation
 	 */
 	@Override
-    public boolean loginCheck(String email, String password)
+    public boolean loginCheck(WorkerDTO user)
     {
+    	String email 	= user.getEmail();
+    	String password = user.getPassword();
+    	
     	// Boolean to return
 		boolean success = false;
     	
