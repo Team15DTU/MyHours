@@ -371,7 +371,7 @@ public class DBController implements IDBController
 	 * @return Object that implements IWorkerDTO interface
 	 */
 	@GET
-	@Path("/getWorkerID/{id}")
+	@Path("/getWorker/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public IWorkerDTO getIWorkerDTO (@PathParam("id") int id)
@@ -423,7 +423,7 @@ public class DBController implements IDBController
     }
     
     @GET
-	@Path("/getWorkersListName/{name}")
+	@Path("/getWorkersList/{name}")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IWorkerDTO> getIWorkerDTOList (@PathParam("name") String name)
@@ -440,7 +440,7 @@ public class DBController implements IDBController
     { }
     
     @GET
-	@Path("/getEmployerID/{id}")
+	@Path("/getEmployer/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public IEmployerDTO getIEmployerDTO(@PathParam("id") int id)
@@ -458,39 +458,64 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IEmployerDTO> getIEmployerList(@QueryParam("minID") int minID, @QueryParam("maxID") int maxID)
-    { return null; }
+    {
+    	/*
+    	Make sure to check if parameters minID and maxID is given.
+    	 */
+    	return null;
+    }
     
-    
+    @GET
+	@Path("/getEmployerList/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IEmployerDTO> getIEmployerList(String name)
+    public List<IEmployerDTO> getIEmployerList(@PathParam("name") String name)
     { return null; }
     
     //endregion
     
     //region Job
     
+	@POST
+	@Path("/createJob")
+	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createJob(IJobDTO job)
     { }
     
+    @GET
+	@Path("/getJob/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IJobDTO getIJobDTO(int id)
+    public IJobDTO getIJobDTO(@PathParam("id") int id)
     { return null; }
     
+    @GET
+	@Path("/getJobList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IJobDTO> getIJobDTOList()
     { return null; }
     
+    @GET
+	@Path("/getJobList/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IJobDTO> getIJobDTOList(int employerID)
+    public List<IJobDTO> getIJobDTOList(@PathParam("id") int employerID)
     { return null; }
     
+    @GET
+	@Path("/getJobList/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IJobDTO> getIJobDTOList(String name)
+    public List<IJobDTO> getIJobDTOList(@PathParam("name") String name)
     { return null; }
     
+    @GET
+	@Path("/getJobList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IJobDTO> getIJobDTOList(double minSalary, double maxSalary)
+    public List<IJobDTO> getIJobDTOList(@QueryParam("minSalary") double minSalary, @QueryParam("maxSalary")double maxSalary)
     { return null; }
     
     //endregion
