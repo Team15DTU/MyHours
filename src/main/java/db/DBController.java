@@ -18,11 +18,13 @@ import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
+import hibernate.HibernateProperties;
 import hibernate.HibernateUtil;
 
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.TimeZone;
 
 /**
@@ -57,7 +59,7 @@ public class DBController implements IDBController
 		{
 			this.connPool   = ConnPoolV1.getInstance();
 			connectionHelper = new ConnectionHelper(this.connPool);
-			hibernateUtil 	= new HibernateUtil();
+			hibernateUtil 	= new HibernateUtil(new HibernateProperties().getRealDB());
 			hibernateUtil.setup();
 			
 			TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
@@ -78,13 +80,13 @@ public class DBController implements IDBController
 	 * connection pool to use.
 	 * @param connPool A Connection Pool that implements the interface IConnPool
 	 */
-    public DBController (IConnPool connPool)
+    public DBController (IConnPool connPool, Properties hibernateProperties)
     {
         try
         {
             this.connPool   = connPool;
             connectionHelper = new ConnectionHelper(this.connPool);
-            hibernateUtil = new HibernateUtil();
+            hibernateUtil = new HibernateUtil(hibernateProperties);
             hibernateUtil.setup();
     
             TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));

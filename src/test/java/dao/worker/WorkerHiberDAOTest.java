@@ -5,6 +5,7 @@ import db.DBController;
 import db.connectionPools.ConnPoolV1;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerHiberDTO;
+import hibernate.HibernateProperties;
 import hibernate.HibernateUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -73,7 +74,7 @@ public class WorkerHiberDAOTest {
     public void setUp() throws Exception {
 
         //dbController = new DBController();
-        hibernateUtil = new HibernateUtil();
+        hibernateUtil = new HibernateUtil(new HibernateProperties().getTestDB());
         hibernateUtil.setup();
 
         TimeZone.setDefault(TimeZone.getTimeZone(hibernateUtil.getTimeZoneFromDB()));

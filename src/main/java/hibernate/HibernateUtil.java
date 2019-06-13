@@ -2,6 +2,7 @@ package hibernate;
 
 import dao.worker.WorkerConstants;
 import dto.worker.WorkerHiberDTO;
+import org.hibernate.HibernateError;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -36,22 +37,8 @@ public class HibernateUtil {
     ----------------------- Constructor -------------------------
      */
 
-    public HibernateUtil () {
-        properties = new Properties();
-         // Database connection settings
-        properties.put("hibernate.connection.driver_class", driver_class);
-        properties.put("hibernate.connection.url", "jdbc:mysql://"+url+":3306/"+user);
-        properties.put("hibernate.connection.username", user);
-        properties.put("hibernate.connection.password", password);
-
-        // SQL dialect
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-
-        // JDBC connection pool (use the built-in)
-        properties.put("hibernate.connection.pool_size",connectionPoolSize);
-
-        //Echo all executed SQL to stdout
-        properties.put("show_sql", show_sql);
+    public HibernateUtil (Properties properties) {
+        this.properties = properties;
     }
     /*
     ------------------------ Properties -------------------------

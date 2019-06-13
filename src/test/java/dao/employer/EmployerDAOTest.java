@@ -9,6 +9,7 @@ import db.IConnPool;
 import db.TestConnPoolV1;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerHiberDTO;
+import hibernate.HibernateProperties;
 import org.junit.*;
 
 import java.awt.*;
@@ -106,7 +107,7 @@ public class EmployerDAOTest
     {
         test_DB = TestConnPoolV1.getInstance();
     
-        dbController = new DBController(test_DB);
+        dbController = new DBController(test_DB, new HibernateProperties().getTestDB());
     
         iEmployerDAO = dbController.getiEmployerDAO();
         iWorkerDAO  = dbController.getiWorkerDAO();
