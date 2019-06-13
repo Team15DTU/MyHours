@@ -20,6 +20,10 @@ import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 import hibernate.HibernateUtil;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +32,7 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
+@Path("/DBControl")
 public class DBController implements IDBController
 {
 
@@ -212,6 +217,9 @@ public class DBController implements IDBController
      * the method.
 	 * @return True if there's a correlation
 	 */
+	@POST
+	@Path("/loginCheck")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
     public boolean loginCheck(WorkerDTO user)
     {
