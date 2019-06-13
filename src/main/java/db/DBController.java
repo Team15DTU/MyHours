@@ -340,12 +340,11 @@ public class DBController implements IDBController
      * @param email We find the Worker, from its email as it is unique
      * @return A IWorkerDTO
      */
-    @POST
-	@Path("/getWorkerEmail")
-	@Consumes(MediaType.APPLICATION_JSON)
+    @GET
+	@Path("/getWorkerEmail/{email}")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IWorkerDTO getIWorkerDTO (String email)
+    public IWorkerDTO getIWorkerDTO (@PathParam("email") String email)
     {
     	IWorkerDTO worker = new WorkerDTO("Failure", "Failure", "Failure@failure.com");
     	try
@@ -371,12 +370,11 @@ public class DBController implements IDBController
 	 * @param id The unique ID of the Worker
 	 * @return Object that implements IWorkerDTO interface
 	 */
-	@POST
-	@Path("/getWorkerID")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@GET
+	@Path("/getWorkerID/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IWorkerDTO getIWorkerDTO (int id)
+    public IWorkerDTO getIWorkerDTO (@PathParam("id") int id)
     { return null; }
 	
 	/**
@@ -412,6 +410,10 @@ public class DBController implements IDBController
     	return list;
     }
     
+    @POST
+	@Path("/getWorkersListRange")
+	@Consumes(MediaType.)
+	@Produces
     @Override
     public List<IWorkerDTO> getIWorkerDTOList (int minID, int maxID)
     { return null; }
