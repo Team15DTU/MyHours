@@ -158,8 +158,14 @@ public class DBController implements IDBController
     {
         this.connPool = connPool;
     }
-    
-    @Override
+	
+    //TODO: Write documentation!
+	/**
+	 *
+	 * @param tableName
+	 * @return
+	 */
+	@Override
     public int getNextAutoIncremental(String tableName)
     {
 		Connection c = null;
@@ -283,16 +289,15 @@ public class DBController implements IDBController
 			System.err.println("ERROR: SQLException thrown in loginCheck() - " + e.getMessage());
 			return success;
         }
+        catch ( Exception e )
+		{
+			System.err.println("ERROR: Unknown error in loginCheck() - " + e.getMessage());
+			return success;
+		}
         finally
         {
-        	try
-			{
-				connPool.releaseConnection(conn);
-			}
-        	catch ( DALException e )
-			{
-				System.err.println("ERROR: releaseConnection() throwing DAL - " + e.getMessage());
-			}
+        	if ( conn != null )
+        		connPool.releaseConnection(conn);
         }
     }
     
