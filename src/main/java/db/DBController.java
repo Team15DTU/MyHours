@@ -151,7 +151,7 @@ public class DBController implements IDBController
      */
     public void changeConnPool(IConnPool connPool)
     {
-        //TODO: Implement this
+        this.connPool = connPool;
     }
     
     @Override
