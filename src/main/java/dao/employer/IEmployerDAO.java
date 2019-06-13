@@ -15,7 +15,7 @@ public interface IEmployerDAO {
      */
 
     // returns a EmployerDTO from an workplaceID
-    IEmployerDTO getIWorkPlace(int workplaceID) throws DALException;
+    IEmployerDTO getIEmployer(int workplaceID) throws DALException;
 
     // Returns a List of ALL EmployerDTO object.
     List<IEmployerDTO> getIWorkPlaceList() throws DALException;

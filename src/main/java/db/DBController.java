@@ -1,6 +1,7 @@
 package db;
 
 import dao.DALException;
+import dao.employer.EmployerConstants;
 import dao.job.IJobDAO;
 import dao.job.JobDAO;
 import dao.activity.IActivityDAO;
@@ -10,12 +11,21 @@ import dao.employer.EmployerDAO;
 import dao.worker.IWorkerDAO;
 import dao.worker.WorkerConstants;
 import dao.worker.WorkerDAO;
+import dao.worker.WorkerHiberDAO;
+import db.connectionPools.ConnPoolV1;
 import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
+import dto.worker.WorkerDTO;
+import hibernate.HibernateUtil;
+import org.hibernate.boot.spi.InFlightMetadataCollector;
 
+import javax.print.attribute.standard.Media;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -23,15 +33,16 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
-public class DBController implements IDBController {
+@Path("/DBControl")
+public class DBController implements IDBController
+{
 
     /*
     -------------------------- Fields --------------------------
      */
-    
-    private static DBController instance;
-    
+
     private IConnPool connPool;
+    private HibernateUtil hibernateUtil;
     private IWorkerDAO iWorkerDAO;
     private IEmployerDAO iEmployerDAO;
     private IJobDAO iJobDAO;
@@ -40,18 +51,56 @@ public class DBController implements IDBController {
     /*
     ----------------------- Constructor -------------------------
      */
-    
-    private DBController (IConnPool connPool) throws DALException
+	
+	/**
+	 * This Constructor is used for the REST. As it can't take any
+	 * parameters, and needs to be public atm.
+	 */
+	public DBController ()
+	{
+		try
+		{
+			this.connPool   = ConnPoolV1.getInstance();
+			hibernateUtil 	= new HibernateUtil();
+			hibernateUtil.setup();
+			
+			TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
+			
+			iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
+			iEmployerDAO    = new EmployerDAO(this.connPool);
+			iJobDAO         = new JobDAO(this.connPool);
+			iActivityDAO    = new ActivityDAO(this.connPool);
+		}
+		catch ( DALException e )
+		{
+			System.err.println("ERROR: DBController constructor Failure - " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Constructor to use for tests, as you can specify which
+	 * connection pool to use.
+	 * @param connPool A Connection Pool that implements the interface IConnPool
+	 */
+    public DBController (IConnPool connPool)
     {
-
-        this.connPool = connPool;
-
-        TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
-
-        iWorkerDAO      = new WorkerDAO(this.connPool);
-        iEmployerDAO    = new EmployerDAO(this.connPool);
-        iJobDAO         = new JobDAO(this.connPool);
-        iActivityDAO    = new ActivityDAO(this.connPool);
+        try
+        {
+            this.connPool   = connPool;
+            hibernateUtil = new HibernateUtil();
+            hibernateUtil.setup();
+    
+            TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
+    
+            iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
+            iEmployerDAO    = new EmployerDAO(this.connPool);
+            iJobDAO         = new JobDAO(this.connPool);
+            iActivityDAO    = new ActivityDAO(this.connPool);
+        }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: DBController constructor Failure - " + e.getMessage());
+        }
 
     }
     
@@ -99,31 +148,30 @@ public class DBController implements IDBController {
     ---------------------- Public Methods -----------------------
      */
     
-    /**
-     * Gives the instance of the DBController. If the DBController doesn't
-     * exist yet, it will create a new, with the given Connection Pool.
-     * @param connPool The Connection Pool to use
-     * @return DBController object
-     * @throws DALException Data Access Layer Exception
-     */
-	public static DBController getInstance(IConnPool connPool) throws DALException
-	{
-		if ( instance == null )
-		{
-			instance = new DBController(connPool);
-		}
-		
-		return instance;
-	}
-    
     //region Utility
     
-    @Override
-    public int getNextAutoIncremental(String tableName) throws DALException
+    /**
+     * This method changes the Connection pool to the given
+     * Connection Pool.
+     * @param connPool Connection Pool that implements IConnPool interface
+     */
+    public void changeConnPool(IConnPool connPool)
     {
-        Connection c = connPool.getConn();
-
-        try {
+        this.connPool = connPool;
+    }
+	
+    //TODO: Write documentation!
+	/**
+	 *
+	 * @param tableName
+	 * @return
+	 */
+	@Override
+    public int getNextAutoIncremental(String tableName)
+    {
+		Connection c = null;
+		try {
+			c = connPool.getConn();
 
             Statement statement = c.createStatement();
             statement.executeQuery("ANALYZE TABLE " + tableName);
@@ -131,38 +179,59 @@ public class DBController implements IDBController {
             // Shit works
 			//TODO: Fix hardcoded Database
             PreparedStatement pStatement = c.prepareStatement(
-                    "SELECT AUTO_INCREMENT FROM information_schema.TABLES where TABLE_SCHEMA = 's185097'" +
+                    "SELECT AUTO_INCREMENT FROM information_schema.TABLES where TABLE_SCHEMA = ?" +
 							" AND TABLE_NAME = ?" )
 					;
-            pStatement.setString(1, tableName);
+            pStatement.setString(1,connPool.getUser());
+            pStatement.setString(2, EmployerConstants.TABLENAME);
 
             ResultSet resultset = pStatement.executeQuery();
 
             resultset.next();
 
+            System.out.println(resultset.getInt(1));
+
             return resultset.getInt(1);
 
-        } catch (SQLException e) {
-            throw new DALException(e.getMessage());
-        } finally {
-            connPool.releaseConnection(c);
+
+        }
+		catch (Exception e)
+		{
+			System.err.println("ERROR: getNextAutoIncremental() - " + e.getMessage());
+			return -1;
+        }
+		finally
+		{
+			if ( c != null )
+            	connPool.releaseConnection(c);
         }
     }
-    
-    @Override
-    public String setTimeZoneFromSQLServer ()  throws DALException
+	
+	/**
+	 * Gets the time zone of the server.
+	 * @return Time zone as a String e.g. "UTC"
+	 */
+	@Override
+    public String setTimeZoneFromSQLServer ()
     {
-        Connection c = connPool.getConn();
+		Connection c = null;
         try {
-            Statement statement = c.createStatement();
+			c = connPool.getConn();
+			Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT @@system_time_zone");
             resultSet.next();
             return resultSet.getString(1);
             
-        } catch (SQLException e) {
-            throw new DALException(e.getMessage());
-        } finally {
-            connPool.releaseConnection(c);
+        }
+        catch (Exception e)
+		{
+			System.err.println("ERROR: setTimeZoneFromSQLServer() - " + e.getMessage());
+			return "UTC";
+        }
+        finally
+		{
+			if ( c != null )
+            	connPool.releaseConnection(c);
         }
     }
 	
@@ -170,13 +239,17 @@ public class DBController implements IDBController {
 	 * This method checks if there's a correlation between the
 	 * provided email and password. All exceptions is handled by
      * the method.
-	 * @param email The email
-	 * @param password The password
 	 * @return True if there's a correlation
 	 */
+	@POST
+	@Path("/loginCheck")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-    public boolean loginCheck(String email, String password)
+    public boolean loginCheck(WorkerDTO user)
     {
+    	String email 	= user.getEmail();
+    	String password = user.getPassword();
+    	
     	// Boolean to return
 		boolean success = false;
     	
@@ -217,25 +290,46 @@ public class DBController implements IDBController {
 			System.err.println("ERROR: SQLException thrown in loginCheck() - " + e.getMessage());
 			return success;
         }
+        catch ( Exception e )
+		{
+			System.err.println("ERROR: Unknown error in loginCheck() - " + e.getMessage());
+			return success;
+		}
         finally
         {
-        	try
-			{
-				connPool.releaseConnection(conn);
-			}
-        	catch ( DALException e )
-			{
-				System.err.println("ERROR: releaseConnection() throwing DAL - " + e.getMessage());
-			}
+        	if ( conn != null )
+        		connPool.releaseConnection(conn);
         }
     }
     
     //endregion
 
     //region Worker
-    
-    public void createWorker (IWorkerDTO workerDTO) throws DALException
-    { iWorkerDAO.createWorker(workerDTO); }
+	
+	/**
+	 * This method takes an object that implements the IWorkerDTO
+	 * interface, and saves it in the database.
+	 * @param workerDTO Object that implements the IWorkerDTO interface
+	 */
+	@POST
+	@Path("/createWorker")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Override
+    public void createWorker (IWorkerDTO workerDTO)
+    {
+    	try
+		{
+			iWorkerDAO.createWorker(workerDTO);
+		}
+    	catch ( DALException e )
+		{
+			System.err.println("ERROR: createWorker() - " + e.getMessage());
+		}
+    	catch ( Exception e )
+		{
+			System.err.println("ERROR: Unknown error createWorker() - " + e.getMessage());
+		}
+    }
     
     /**
      * This methods returns a FULL IWorkerDTO Object.
@@ -245,85 +339,183 @@ public class DBController implements IDBController {
      * 3) Each of those Jobs contains a list of its Shifts
      * @param email We find the Worker, from its email as it is unique
      * @return A IWorkerDTO
-     * @throws DALException Will throw a DALException.
      */
+    @GET
+	@Path("/getWorkerEmail/{email}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IWorkerDTO getIWorkerDTO (String email) throws DALException
+    public IWorkerDTO getIWorkerDTO (@PathParam("email") String email)
     {
-        // Get the worker from DB, and make object
-        IWorkerDTO worker = createFullIWorkerDTO(email);
-        
-        if ( worker == null )
-            System.err.println("ERROR: Couldn't create WorkerDTO object");
+    	IWorkerDTO worker = new WorkerDTO("Failure", "Failure", "Failure@failure.com");
+    	try
+		{
+			// Get the worker from DB, and make object
+			worker = createFullIWorkerDTO(email);
+		}
+    	catch ( DALException e )
+		{
+			System.err.println("ERROR: DALException getIWorkerDTO() - " + e.getMessage());
+		}
+    	catch ( Exception e )
+		{
+			System.err.println("ERROR: Unknown exception getIWorkerDTO() - " + e.getMessage());
+		}
         
         return worker;
     }
-    
+	
+	/**
+	 * Method finds a Worker from an ID, and returns
+	 * a full IWorkerDTO object.
+	 * @param id The unique ID of the Worker
+	 * @return Object that implements IWorkerDTO interface
+	 */
+	@GET
+	@Path("/getWorker/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IWorkerDTO getIWorkerDTO (int id) throws DALException
+    public IWorkerDTO getIWorkerDTO (@PathParam("id") int id)
     { return null; }
-    
+	
+	/**
+	 * Method get a full list of Workers in the
+	 * database.
+	 * @return List<IWorkerDTO>
+	 */
+	@GET
+	@Path("/getWorkersList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IWorkerDTO> getIWorkerDTOList () throws DALException
-    { return null; }
+    public List<IWorkerDTO> getIWorkerDTOList ()
+    {
+    	/*
+    	To indicate to frontend that an error happened, but it
+    	won't crash as the list won't be null.
+    	 */
+    	List<IWorkerDTO> list = new ArrayList<>();
+    	list.add(new WorkerDTO("Failure", "Failure", "Failure"));
+    	try
+		{
+			list = iWorkerDAO.getWorkerList();
+		}
+    	catch ( DALException e )
+		{
+			System.err.println("ERROR: getIWorkerDTOList() DALException - " + e.getMessage());
+		}
+    	catch ( Exception e )
+		{
+			System.err.println("ERROR: Unknown Exception getIWorkerDTOList() - " + e.getMessage());
+		}
+    	
+    	return list;
+    }
     
+    @GET
+	@Path("/getWorkersListRange")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IWorkerDTO> getIWorkerDTOList (int minID, int maxID) throws DALException
-    { return null; }
+    public List<IWorkerDTO> getIWorkerDTOList (@QueryParam("minID") int minID, @QueryParam("maxID") int maxID)
+    {
+    	/*
+    	Make sure to check if parameters minID and maxID is given.
+    	 */
+    	return null;
+    }
     
+    @GET
+	@Path("/getWorkersList/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IWorkerDTO> getIWorkerDTOList (String name) throws DALException
+    public List<IWorkerDTO> getIWorkerDTOList (@PathParam("name") String name)
     { return null; }
     
     //endregion
     
     //region Employer
+	@POST
+	@Path("/createEmployer")
+	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createEmployer(IEmployerDTO employer) throws DALException
+    public void createEmployer(IEmployerDTO employer)
     { }
     
+    @GET
+	@Path("/getEmployer/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IEmployerDTO getIEmployerDTO(int id) throws DALException
+    public IEmployerDTO getIEmployerDTO(@PathParam("id") int id)
     { return null; }
     
+    @GET
+	@Path("/getEmployerList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IEmployerDTO> getIEmployerList() throws DALException
+    public List<IEmployerDTO> getIEmployerList()
     { return null; }
     
+    @GET
+	@Path("/getEmployerListRange")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IEmployerDTO> getIEmployerList(int minID, int maxID) throws DALException
-    { return null; }
+    public List<IEmployerDTO> getIEmployerList(@QueryParam("minID") int minID, @QueryParam("maxID") int maxID)
+    {
+    	/*
+    	Make sure to check if parameters minID and maxID is given.
+    	 */
+    	return null;
+    }
     
+    @GET
+	@Path("/getEmployerList/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IEmployerDTO> getIEmployerList(String name) throws DALException
+    public List<IEmployerDTO> getIEmployerList(@PathParam("name") String name)
     { return null; }
     
     //endregion
     
     //region Job
     
+	@POST
+	@Path("/createJob")
+	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createJob(IJobDTO job) throws DALException
+    public void createJob(IJobDTO job)
     { }
     
+    @GET
+	@Path("/getJob/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IJobDTO getIJobDTO(int id) throws DALException
+    public IJobDTO getIJobDTO(@PathParam("id") int id)
     { return null; }
     
+    @GET
+	@Path("/getJobList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IJobDTO> getIJobDTOList() throws DALException
+    public List<IJobDTO> getIJobDTOList()
     { return null; }
     
+    @GET
+	@Path("/getJobList/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IJobDTO> getIJobDTOList(int employerID) throws DALException
+    public List<IJobDTO> getIJobDTOList(@PathParam("id") int employerID)
     { return null; }
     
+    @GET
+	@Path("/getJobList/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IJobDTO> getIJobDTOList(String name) throws DALException
+    public List<IJobDTO> getIJobDTOList(@PathParam("name") String name)
     { return null; }
     
+    @GET
+	@Path("/getJobList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IJobDTO> getIJobDTOList(double minSalary, double maxSalary) throws DALException
+    public List<IJobDTO> getIJobDTOList(@QueryParam("minSalary") double minSalary, @QueryParam("maxSalary")double maxSalary)
     { return null; }
     
     //endregion
@@ -331,27 +523,27 @@ public class DBController implements IDBController {
     //region Activity
     
     @Override
-    public void createActivity(IActivityDTO activity) throws DALException
+    public void createActivity(IActivityDTO activity)
     { }
     
     @Override
-    public IActivityDTO getIActivity(int id) throws DALException
+    public IActivityDTO getIActivity(int id)
     { return null; }
     
     @Override
-    public List<IActivityDTO> getIActivityList() throws DALException
+    public List<IActivityDTO> getIActivityList()
     { return null; }
     
     @Override
-    public List<IActivityDTO> getIActivityList(int jobID) throws DALException
+    public List<IActivityDTO> getIActivityList(int jobID)
     { return null; }
     
     @Override
-    public List<IActivityDTO> getIActivityList(Date date) throws DALException
+    public List<IActivityDTO> getIActivityList(Date date)
     { return null; }
     
     @Override
-    public List<IActivityDTO> getIActivityList(double minVal, double maxVal) throws DALException
+    public List<IActivityDTO> getIActivityList(double minVal, double maxVal)
     { return null; }
     
     //endregion

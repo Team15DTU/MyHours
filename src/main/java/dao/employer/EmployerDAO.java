@@ -22,7 +22,6 @@ public class EmployerDAO implements IEmployerDAO {
      */
 
     private IConnPool iConnPool;
-    private final String WORKPLACES_TABLENAME = "Workplaces";
 
     /*
     ----------------------- Constructor -------------------------
@@ -48,23 +47,28 @@ public class EmployerDAO implements IEmployerDAO {
 
 
     @Override
-    public IEmployerDTO getIWorkPlace(int workplaceID)  throws DALException {
+    public IEmployerDTO getIEmployer(int employerID)  throws DALException {
+
         Connection c = iConnPool.getConn();
 
-        IEmployerDTO workPlaceToReturn = new EmployerDTO();
+        IEmployerDTO iEmployerDTOToReturn = new EmployerDTO();
+
+        String getQuery = String.format("SELECT * FROM %s WHERE %s = ?",
+                EmployerConstants.TABLENAME, EmployerConstants.id);
 
         try {
 
-            Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT * FROM " + WORKPLACES_TABLENAME + " WHERE workplaceID = '" + workplaceID + "'");
+            PreparedStatement preparedStatement = c.prepareStatement(getQuery);
+            preparedStatement.setInt(1,employerID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                workPlaceToReturn.setWorkplaceID(resultSet.getInt("workplaceID"));
-                workPlaceToReturn.setWorkerID(resultSet.getInt("workerID"));
-                workPlaceToReturn.setName(resultSet.getString("workplaceName"));
-                workPlaceToReturn.setColor(Color.decode("#"+resultSet.getString("colorHEX")));
-                workPlaceToReturn.setTelephone(resultSet.getInt("telephone"));
+                iEmployerDTOToReturn.setWorkplaceID(resultSet.getInt(EmployerConstants.id));
+                iEmployerDTOToReturn.setWorkerID(resultSet.getInt(EmployerConstants.workerID));
+                iEmployerDTOToReturn.setName(resultSet.getString(EmployerConstants.employerName));
+                iEmployerDTOToReturn.setColor(Color.decode("#"+resultSet.getString(EmployerConstants.color)));
+                iEmployerDTOToReturn.setTelephone(resultSet.getString(EmployerConstants.tlf));
             }
 
         } catch (SQLException e) {
@@ -73,7 +77,7 @@ public class EmployerDAO implements IEmployerDAO {
             iConnPool.releaseConnection(c);
         }
 
-        return workPlaceToReturn;
+        return iEmployerDTOToReturn;
     }
 
     @Override
@@ -85,10 +89,10 @@ public class EmployerDAO implements IEmployerDAO {
         try {
 
             Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT workplaceID FROM " + WORKPLACES_TABLENAME );
+            ResultSet resultSet = statement.executeQuery("SELECT workplaceID FROM " + EmployerConstants.TABLENAME );
 
             while (resultSet.next()) {
-                listToReturn.add(getIWorkPlace(resultSet.getInt("workplaceID")));
+                listToReturn.add(getIEmployer(resultSet.getInt("workplaceID")));
             }
 
         } catch (SQLException e) {
@@ -111,10 +115,10 @@ public class EmployerDAO implements IEmployerDAO {
 
             Statement statement = c.createStatement();
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT workplaceID FROM " + WORKPLACES_TABLENAME + " WHERE workerID = " + workerID);
+                    "SELECT workplaceID FROM " + EmployerConstants.TABLENAME + " WHERE workerID = " + workerID);
 
             while (resultSet.next()) {
-                listToReturn.add(getIWorkPlace(resultSet.getInt("workplaceID")));
+                listToReturn.add(getIEmployer(resultSet.getInt("workplaceID")));
             }
 
         } catch (SQLException e) {
@@ -134,13 +138,13 @@ public class EmployerDAO implements IEmployerDAO {
         try {
 
             PreparedStatement pStatement = c.prepareStatement(
-                    "INSERT INTO " + WORKPLACES_TABLENAME +
-                            "(workerID, workplaceName, colorHEX, telephone) VALUES (?,?,?,?)");
+                    "INSERT INTO " + EmployerConstants.TABLENAME +
+                            "(workerID, employerName, colorHEX, telephone) VALUES (?,?,?,?)");
 
             pStatement.setInt(1, workPlaceDTO.getWorkerID());
             pStatement.setString(2, workPlaceDTO.getName());
             pStatement.setString(3, colorHEXToString(workPlaceDTO.getColor()));
-            pStatement.setInt(4, workPlaceDTO.getTelephone());
+            pStatement.setString(4, workPlaceDTO.getTelephone());
 
             pStatement.executeUpdate();
 
@@ -159,13 +163,13 @@ public class EmployerDAO implements IEmployerDAO {
         try {
 
             PreparedStatement pStatement = c.prepareStatement(
-                    "UPDATE " + WORKPLACES_TABLENAME +
+                    "UPDATE " + EmployerConstants.TABLENAME +
                     " SET workplaceName = ?, colorHEX = ?, telephone = ?" +
                     " WHERE workplaceID = ?");
 
             pStatement.setString(1, workPlaceDTO.getName());
             pStatement.setString(2, colorHEXToString(workPlaceDTO.getColor()));
-            pStatement.setInt(3, workPlaceDTO.getTelephone());
+            pStatement.setString(3, workPlaceDTO.getTelephone());
             pStatement.setInt(4, workPlaceDTO.getWorkplaceID());
 
             pStatement.executeUpdate();
@@ -182,9 +186,12 @@ public class EmployerDAO implements IEmployerDAO {
 
         Connection c = iConnPool.getConn();
 
+        String deleteQuery = String.format("DELETE FROM %s WHERE %s = ?",
+                EmployerConstants.TABLENAME, EmployerConstants.id);
+
         try {
 
-            PreparedStatement pStatement = c.prepareStatement("DELETE FROM " + WORKPLACES_TABLENAME + " WHERE workplaceID = ?");
+            PreparedStatement pStatement = c.prepareStatement(deleteQuery);
             pStatement.setInt(1, workplaceID);
 
             pStatement.executeUpdate();

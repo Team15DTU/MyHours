@@ -58,7 +58,7 @@ public class HibernateUtil {
         }
 
         // Sets the program timezone to the same as the DB.
-        TimeZone.setDefault(TimeZone.getTimeZone(getTimeZoneFromDB()));
+        //TimeZone.setDefault(TimeZone.getTimeZone(getTimeZoneFromDB())); TODO, skal muligvis fjernes!
     }
 
     public void exit() {

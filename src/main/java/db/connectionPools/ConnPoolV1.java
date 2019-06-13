@@ -17,7 +17,7 @@ public class ConnPoolV1 implements IConnPool {
     /*------------------------------------------------------------
     | Fields                                                     |
     -------------------------------------------------------------*/
-    protected static ConnPoolV1 instance;
+    protected static ConnPoolV1 instance ;
     
     //region keepAlive()
     protected int refreshRate 	= 30000; 	// 30 seconds
@@ -57,6 +57,9 @@ public class ConnPoolV1 implements IConnPool {
 		boolean success = true; DALException exception = null;
 		try
 		{
+			// Specify Driver
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
 			for (int i = 0; i < MAXCONNS; i++)
 				freeConnList.add(createConnection());
 		}
@@ -64,6 +67,12 @@ public class ConnPoolV1 implements IConnPool {
 		{
 			System.err.println("ERROR: Creating Connection Pool");
 			exception = e;
+			success = false;
+		}
+		catch ( ClassNotFoundException e )
+		{
+			System.err.println("ERROR: Creating Connection Pool");
+			exception = new DALException(e.getMessage(), e.getCause());
 			success = false;
 		}
 		
@@ -143,14 +152,17 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		this.validTimeout = validTimeout;
 	}
-	
+
+	public String getUser() {
+		return user;
+	}
+
 	/*------------------------------------------------------------
     | Public Methods                                             |
     -------------------------------------------------------------*/
 	/**
 	 * Gives the instance of the Connection Pool.
 	 * @return ConnPoolV1 object
-	 * @throws DALException Data Access Layer Exception
 	 */
 	public synchronized static ConnPoolV1 getInstance() throws DALException
 	{
@@ -164,17 +176,16 @@ public class ConnPoolV1 implements IConnPool {
 		catch (DALException e)
 		{
 			System.err.println("ERROR: Couldn't get ConnPoolV1 instance");
-			throw e;
+			return null;
 		}
 	}
 	
 	/**
 	 * Returns the Connection to the connection pool.
 	 * @param connection The Connection to return
-	 * @throws DALException Data Access Layer Exception
 	 */
 	@Override
-	public synchronized void releaseConnection(Connection connection) throws DALException
+	public synchronized void releaseConnection(Connection connection)
 	{
 		// Make sure connection given back isn't null
 		if ( connection == null )
@@ -188,8 +199,7 @@ public class ConnPoolV1 implements IConnPool {
 		}
 		catch (SQLException e)
 		{
-			System.err.println("ERROR: Release connection and Rollback failure");
-			throw new DALException(e.getMessage());
+			System.err.println("ERROR: Release connection and Rollback failure - " + e.getMessage());
 		}
 		catch (Exception e)
 		{

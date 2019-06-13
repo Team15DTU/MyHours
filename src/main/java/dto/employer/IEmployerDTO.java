@@ -21,8 +21,8 @@ public interface IEmployerDTO {
 	Color getColor();
 	void setColor(Color color);
 
-	int getTelephone();
-	void setTelephone(int telephone);
+	String getTelephone();
+	void setTelephone(String telephone);
 	
 	java.util.List<IJobDTO> getIJobList();
 	void setIJobList(List<IJobDTO> iJobList);
