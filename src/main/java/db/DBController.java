@@ -23,6 +23,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -268,8 +269,36 @@ public class DBController implements IDBController {
     @Path("/createWorker")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createWorker (WorkerDTO workerDTO) throws DALException
-    { iWorkerDAO.createWorker(workerDTO); }
+    public void createWorker (WorkerDTO workerDTO) throws DALException{
+        Connection c = connPool.getConn();
+
+        // The query to make
+        String query =
+                String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
+                        WorkerConstants.TABLENAME, WorkerConstants.firstname, WorkerConstants.surname, WorkerConstants.email,
+                        WorkerConstants.birthday, WorkerConstants.password);
+
+        try {
+
+            PreparedStatement statement = c.prepareStatement(query);
+
+            statement.setString(1, workerDTO.getFirstName());
+            statement.setString(2, workerDTO.getSurName());
+            statement.setString(3, workerDTO.getEmail());
+            statement.setDate(4, java.sql.Date.valueOf(LocalDate.now()));
+            statement.setString(5, workerDTO.getPassword());
+
+            statement.executeUpdate();
+
+        }
+        catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        }
+        finally {
+            // Return the Connection to the Pool
+            connPool.releaseConnection(c);
+        }
+    }
     
     /**
      * This methods returns a FULL IWorkerDTO Object.

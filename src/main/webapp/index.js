@@ -85,7 +85,7 @@ function Signup() {
             console.log("Der skete en fejl")
         }
     });
-
+    console.log(userJson)
 };
 
 
