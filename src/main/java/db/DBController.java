@@ -410,13 +410,17 @@ public class DBController implements IDBController
     	return list;
     }
     
-    @POST
+    @GET
 	@Path("/getWorkersListRange")
-	@Consumes(MediaType.)
-	@Produces
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IWorkerDTO> getIWorkerDTOList (int minID, int maxID)
-    { return null; }
+    public List<IWorkerDTO> getIWorkerDTOList (@QueryParam("minID") int minID, @QueryParam("maxID") int maxID)
+    {
+    	/*
+    	Make sure to check if parameters minID and maxID is given.
+    	 */
+    	return null;
+    }
     
     @Override
     public List<IWorkerDTO> getIWorkerDTOList (String name)
