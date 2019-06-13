@@ -1,0 +1,29 @@
+.info {
+    margin-bottom: 20px;
+}
+.textbox{
+    position: relative;
+    width: calc(400px - 30px);
+    height: calc(300px - 30px);
+    background: white;
+    float: left;
+    margin: 15px;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 20px;
+}
+.content{
+    position: absolute;
+    color: black;
+    top: 5%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 150%;
+}
+.text{
+    font-size: 30px;
+    color: white;
+}

@@ -6,11 +6,152 @@
     <title>NewFrontPage</title>
     <link rel="stylesheet" href="../index.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="About.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="../index.js"></script>
     <title>About</title>
 </head>
 <body>
+<header>
+    <div class="container">
+        <nav>
+            <span></span>
+            <a href="../index.html"><img class ="logo" src="../Images/Logo2.svg" alt="Avatar"></a>
+            <ul>
+                <li><a onclick="showLoginModal()" class="login">Login</a></li>
+                <li><a onclick="showSignupModal()" class="signup">SignUp</a> </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="info">
+    <div class="text">
+        <h3>What can you use our website for?</h3>
+    </div>
+    <div class="textbox">
+        <div class="content">
+            <h3>What?</h3>
+            <p>
+                Our website can help you ceep track of your activities
+            </p>
+        </div>
+    </div>
+    <div class="textbox">
+        <div class="content">
+            <h3>Why?</h3>
+            <p>
+                There aren't anything like this -_-
+            </p>
+        </div>
+    </div>
+    <div class="textbox">
+        <div class="content">
+            <h3>Who are we?</h3>
+            <p>
+                We are a group of 7 talented young people who believes...
+            </p>
+        </div>
+    </div>
+</div>
+<div class="info">
+    <div class="textbox">
+        <div class="content">
+            <h3>How?</h3>
+            <p>
+                Our API uses highly advanced algorithms to calculate and process, your daily activities into useful graphs and datasets for you to enjoy.
+            </p>
+        </div>
+    </div>
+    <div class="textbox">
+        <div class="content">
+            <h3>When?</h3>
+            <p>
+                Why now of course!
+            </p>
+            <p>
+                With just a few clicks you can register an account and start using our software today!!!
+            </p>
+        </div>
+    </div>
+    <div class="textbox">
+        <div class="content">
+            <h3>something</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<!--<editor-fold desc="Logion-modal">-->
+<div id="id01" class="modal">
+  <span onclick="hideModal()"
+        class="close" title="Close Modal">&times;</span>
+    <form class="modal-content animate">
+
+        <div class="containermodalLogin" id="login">
+            <div id="tab-btnLogin">
+                <a href="#" class="login1">Sign In</a>
+                <a href="#" onclick="showSignupModal()" class="register">Sign Up</a>
+            </div>
+
+            <div class="imgcontainer">
+                <img src="../Images/Logo2.svg" alt="Avatar" class="avatar">
+            </div>
+
+
+            <label for="uname"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="uname" id="uname" required autofocus>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+
+            <button type="submit">Login</button>
+            <label>
+                <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label>
+        </div>
+
+        <div class="containermodalLogin" style="background-color:#f1f1f1">
+            <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
+        </div>
+
+        <div class="containermodalSignUp" id="signup">
+            <div id="tab-btnSignUp">
+                <a href="#" onclick="showLoginModal()" class="login1">Sign In</a>
+                <a href="#" class="register">Sign Up</a>
+            </div>
+
+            <div class="imgcontainer">
+                <img src="../Images/Logo2.svg" alt="Avatar" class="avatar">
+            </div>
+
+
+            <label for="unamesign"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="unamesign" id="unamesign" required autofocus >
+
+            <label for="email"><b>Email</b></label>
+            <input type="email" placeholder="Enter Email" name="email" id="email" required>
+
+            <label for="pswsign"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="pswsign" id="pswsign" required>
+
+            <label for="repsw"><b>Repeat Password</b></label>
+            <input type="password" placeholder="Enter Password" name="repsw" id="repsw" required>
+
+            <button type="submit">SignUp</button>
+
+        </div>
+        <div class="containermodalSignUp" style="background-color:#f1f1f1">
+            <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
+        </div>
+    </form>
+    <script type="text/javascript" src="../index.js"></script>
+</div>
+<!--</editor-fold>-->
+
 
 </body>
 
