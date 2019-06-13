@@ -75,8 +75,8 @@ function Signup() {
         url: "/MyHours/Test/createWorker",
         data: userJson,
         contentType: "application/json",
-        success : function (data) {
-            alert(data);
+        success : function () {
+            alert("Succes!");
             console.log("Du er nu oprettet i systemet")
 
         },
@@ -86,7 +86,7 @@ function Signup() {
         }
     });
     console.log(userJson)
-};
+}
 
 
 

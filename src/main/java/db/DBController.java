@@ -274,19 +274,20 @@ public class DBController implements IDBController {
 
         // The query to make
         String query =
-                String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
-                        WorkerConstants.TABLENAME, WorkerConstants.firstname, WorkerConstants.surname, WorkerConstants.email,
+                String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s) VALUES (?,?,?,?,?,?)",
+                        WorkerConstants.TABLENAME, WorkerConstants.id, WorkerConstants.firstname, WorkerConstants.surname, WorkerConstants.email,
                         WorkerConstants.birthday, WorkerConstants.password);
 
         try {
 
             PreparedStatement statement = c.prepareStatement(query);
 
-            statement.setString(1, workerDTO.getFirstName());
-            statement.setString(2, workerDTO.getSurName());
-            statement.setString(3, workerDTO.getEmail());
-            statement.setDate(4, java.sql.Date.valueOf(LocalDate.now()));
-            statement.setString(5, workerDTO.getPassword());
+            statement.setInt(1, 69);
+            statement.setString(2, workerDTO.getFirstName());
+            statement.setString(3, workerDTO.getSurName());
+            statement.setString(4, workerDTO.getEmail());
+            statement.setDate(5, java.sql.Date.valueOf(LocalDate.now()));
+            statement.setString(6, workerDTO.getPassword());
 
             statement.executeUpdate();
 
