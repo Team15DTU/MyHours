@@ -183,10 +183,9 @@ public class ConnPoolV1 implements IConnPool {
 	/**
 	 * Returns the Connection to the connection pool.
 	 * @param connection The Connection to return
-	 * @throws DALException Data Access Layer Exception
 	 */
 	@Override
-	public synchronized void releaseConnection(Connection connection) throws DALException
+	public synchronized void releaseConnection(Connection connection)
 	{
 		// Make sure connection given back isn't null
 		if ( connection == null )
@@ -200,8 +199,7 @@ public class ConnPoolV1 implements IConnPool {
 		}
 		catch (SQLException e)
 		{
-			System.err.println("ERROR: Release connection and Rollback failure");
-			throw new DALException(e.getMessage());
+			System.err.println("ERROR: Release connection and Rollback failure - " + e.getMessage());
 		}
 		catch (Exception e)
 		{
