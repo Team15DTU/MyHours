@@ -21,10 +21,8 @@ import dto.worker.WorkerDTO;
 import hibernate.HibernateUtil;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.print.attribute.standard.Media;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
 import java.util.Date;
@@ -365,7 +363,17 @@ public class DBController implements IDBController
         
         return worker;
     }
-    
+	
+	/**
+	 * Method finds a Worker from an ID, and returns
+	 * a full IWorkerDTO object.
+	 * @param id The unique ID of the Worker
+	 * @return Object that implements IWorkerDTO interface
+	 */
+	@POST
+	@Path("/getWorkerID")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public IWorkerDTO getIWorkerDTO (int id)
     { return null; }
