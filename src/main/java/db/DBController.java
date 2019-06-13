@@ -162,9 +162,9 @@ public class DBController implements IDBController
     @Override
     public int getNextAutoIncremental(String tableName)
     {
-        Connection c = connPool.getConn();
-
-        try {
+		Connection c = null;
+		try {
+			c = connPool.getConn();
 
             Statement statement = c.createStatement();
             statement.executeQuery("ANALYZE TABLE " + tableName);
@@ -187,10 +187,16 @@ public class DBController implements IDBController
             return resultset.getInt(1);
 
 
-        } catch (SQLException e) {
-            throw new DALException(e.getMessage());
-        } finally {
-            connPool.releaseConnection(c);
+        }
+		catch (Exception e)
+		{
+			System.err.println("ERROR: getNextAutoIncremental() - " + e.getMessage());
+			return -1;
+        }
+		finally
+		{
+			if ( c != null )
+            	connPool.releaseConnection(c);
         }
     }
 	
