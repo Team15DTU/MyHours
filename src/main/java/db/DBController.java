@@ -304,9 +304,31 @@ public class DBController implements IDBController
     //endregion
 
     //region Worker
-    
-    public void createWorker (IWorkerDTO workerDTO) throws DALException
-    { iWorkerDAO.createWorker(workerDTO); }
+	
+	/**
+	 * This method takes an object that implements the IWorkerDTO
+	 * interface, and saves it in the database.
+	 * @param workerDTO Object that implements the IWorkerDTO interface
+	 */
+	@POST
+	@Path("/createWorker")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Override
+    public void createWorker (IWorkerDTO workerDTO)
+    {
+    	try
+		{
+			iWorkerDAO.createWorker(workerDTO);
+		}
+    	catch ( DALException e )
+		{
+			System.err.println("ERROR: createWorker() - " + e.getMessage());
+		}
+    	catch ( Exception e )
+		{
+			System.err.println("ERROR: Unknown error createWorker() - " + e.getMessage());
+		}
+    }
     
     /**
      * This methods returns a FULL IWorkerDTO Object.
