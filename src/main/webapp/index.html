@@ -83,12 +83,11 @@
 
 
             <form id="userform" >
-                <label>Brugernavn </label><input type="text" name="email">
-                <label>Password </label><input type="text" name="password">
-                <button type="button" onclick="ajaxTest()" >TEST</button>
+                <label>Email </label><input type="text" placeholder="Enter Email" name="email">
+                <label>Password </label><input type="text" placeholder="Enter Password" name="password">
             </form>
 
-            <button type="submit">Login</button>
+            <button type="submit" onclick="Login()">Login</button>
             <label>
                 <input type="checkbox" checked="checked" name="remember"> Remember me
             </label>
@@ -111,8 +110,7 @@
             </div>
 
 
-            <label for="unamesign"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="unamesign" id="unamesign" required autofocus >
+            <form id="usersign">
 
             <label for="email"><b>Email</b></label>
             <input type="email" placeholder="Enter Email" name="email" id="email" required>
@@ -120,10 +118,9 @@
             <label for="pswsign"><b>Password</b></label>
             <input type="password" placeholder="Enter Password" name="pswsign" id="pswsign" required>
 
-            <label for="repsw"><b>Repeat Password</b></label>
-            <input type="password" placeholder="Enter Password" name="repsw" id="repsw" required>
 
-            <button type="submit">SignUp</button>
+            <button type="submit" onclick="Signup()">SignUp</button>
+            </form>
 
         </div>
         <div class="containermodalSignUp" style="background-color:#f1f1f1">

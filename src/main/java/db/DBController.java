@@ -20,6 +20,7 @@ import dto.worker.WorkerDTO;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
 import java.util.Date;
@@ -263,8 +264,11 @@ public class DBController implements IDBController {
     //endregion
 
     //region Worker
-    
-    public void createWorker (IWorkerDTO workerDTO) throws DALException
+    @POST
+    @Path("/createWorker")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Override
+    public void createWorker (WorkerDTO workerDTO) throws DALException
     { iWorkerDAO.createWorker(workerDTO); }
     
     /**

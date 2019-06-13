@@ -46,7 +46,7 @@ var showSignupModal = function() {
 };
 
 
-function ajaxTest(){
+function Login(){
     event.preventDefault();
     var userJson = $("#userform").serializeJSON();
     $.ajax({
@@ -66,10 +66,32 @@ function ajaxTest(){
     console.log(userJson);
 }
 
+function Signup() {
+    event.preventDefault();
+
+    var userJson = $("#usersign").serializeJSON();
+    $.ajax({
+        method: 'POST',
+        url: "/MyHours/Test/createWorker",
+        data: userJson,
+        contentType: "application/json",
+        success : function (data) {
+            alert(data);
+            console.log("Du er nu oprettet i systemet")
+
+        },
+        error: function (jqXHR, text, error) {
+            alert(jqXHR.status + text + error);
+            console.log("Der skete en fejl")
+        }
+    });
+
+};
+
 
 
 /*
-function ajaxTest(){
+function Login(){
     var userJson = $("#userform").serializeJSON();
     $.ajax({
         method: 'GET',
