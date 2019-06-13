@@ -2,7 +2,6 @@ package dao.employer;
 
 import dao.DALException;
 import dao.worker.IWorkerDAO;
-import dao.worker.WorkerConstants;
 import dto.employer.EmployerDTO;
 import dto.employer.IEmployerDTO;
 import db.DBController;
@@ -131,7 +130,7 @@ public class EmployerDAOTest
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Employers");
 
-        iEmployerDAO.createIWorkPlace(employerNo1);
+        iEmployerDAO.createiEmployer(employerNo1);
 
         IEmployerDTO returnedWorkplaceDTOOfNo1 = iEmployerDAO.getIEmployer(nextAutoIncrementalForWorkplaceNo1);
 
@@ -141,7 +140,7 @@ public class EmployerDAOTest
         assertEquals(returnedWorkplaceDTOOfNo1.getColor(), employerNo1_color);
         assertEquals(returnedWorkplaceDTOOfNo1.getTelephone(), employerNo1_telephone);
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
 
     }
 
@@ -152,24 +151,24 @@ public class EmployerDAOTest
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
 
-        iEmployerDAO.createIWorkPlace(employerNo1);
+        iEmployerDAO.createiEmployer(employerNo1);
 
         // Creates WorkplaceDTO No. 2
 
         int nextAutoIncrementalForWorkplaceNo2 = dbController.getNextAutoIncremental("Workplaces");
 
-        iEmployerDAO.createIWorkPlace(employerNo2);
+        iEmployerDAO.createiEmployer(employerNo2);
 
-        // Test of getIWorkPlaceList()
+        // Test of getiEmployerList()
 
         List<IEmployerDTO> workPlaceDTOList;
 
-        workPlaceDTOList= iEmployerDAO.getIWorkPlaceList();
+        workPlaceDTOList= iEmployerDAO.getiEmployerList();
 
         assertEquals(workPlaceDTOList.size(),2);
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo2);
 
     }
 
@@ -180,24 +179,24 @@ public class EmployerDAOTest
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
 
-        iEmployerDAO.createIWorkPlace(employerNo1);
+        iEmployerDAO.createiEmployer(employerNo1);
 
         // Creates WorkplaceDTO No. 2
 
         int nextAutoIncrementalForWorkplaceNo2 = dbController.getNextAutoIncremental("Workplaces");
 
-        iEmployerDAO.createIWorkPlace(employerNo2);
+        iEmployerDAO.createiEmployer(employerNo2);
 
-        // Test of getIWorkPlaceList(int workerID)
+        // Test of getiEmployerList(int workerID)
 
         List<IEmployerDTO> workPlaceDTOListFromWorkerID;
 
-        workPlaceDTOListFromWorkerID = iEmployerDAO.getIWorkPlaceList(employerNo1_workerID_assigned);
+        workPlaceDTOListFromWorkerID = iEmployerDAO.getiEmployerList(employerNo1_workerID_assigned);
 
         assertEquals(workPlaceDTOListFromWorkerID.size(),1);
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo2);
 
     }
 
@@ -208,7 +207,7 @@ public class EmployerDAOTest
 
         int nextAutoIncrementalForWorkplaceNo2 = dbController.getNextAutoIncremental(EmployerConstants.TABLENAME);
 
-        iEmployerDAO.createIWorkPlace(employerNo2);
+        iEmployerDAO.createiEmployer(employerNo2);
 
         IEmployerDTO returnedWorkplaceDTOOfNo2 = iEmployerDAO.getIEmployer(nextAutoIncrementalForWorkplaceNo2);
 
@@ -218,7 +217,7 @@ public class EmployerDAOTest
         assertEquals(returnedWorkplaceDTOOfNo2.getColor(), employerNo2_color);
         assertEquals(returnedWorkplaceDTOOfNo2.getTelephone(), employerNo2_telephone);
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo2);
 
     }
 
@@ -229,7 +228,7 @@ public class EmployerDAOTest
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
 
-        iEmployerDAO.createIWorkPlace(employerNo1);
+        iEmployerDAO.createiEmployer(employerNo1);
 
         IEmployerDTO workplaceDTOOfNo1ToUpdate = iEmployerDAO.getIEmployer(nextAutoIncrementalForWorkplaceNo1);
 
@@ -242,7 +241,7 @@ public class EmployerDAOTest
 
         // Updates the WorkplaceDTO with the information that is passed into the method
 
-        iEmployerDAO.updateIWorkPlace(workplaceDTOOfNo1ToUpdate);
+        iEmployerDAO.updateiEmployer(workplaceDTOOfNo1ToUpdate);
 
         assertEquals(workplaceDTOOfNo1ToUpdate.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo1);
         assertEquals(workplaceDTOOfNo1ToUpdate.getWorkerID(), employerNo2_workerID_assigned);
@@ -252,7 +251,7 @@ public class EmployerDAOTest
 
         // Deletes the created Workplace
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
 
     }
     
@@ -263,15 +262,15 @@ public class EmployerDAOTest
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental(EmployerConstants.TABLENAME);
 
-        iEmployerDAO.createIWorkPlace(employerNo1);
+        iEmployerDAO.createiEmployer(employerNo1);
 
-        int noOfWorkplacesInTable = iEmployerDAO.getIWorkPlaceList().size();
+        int noOfWorkplacesInTable = iEmployerDAO.getiEmployerList().size();
 
         assertEquals(noOfWorkplacesInTable, 1);
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
 
-        int noOfWorkPlacesInTableAfterDeletion = iEmployerDAO.getIWorkPlaceList().size();
+        int noOfWorkPlacesInTableAfterDeletion = iEmployerDAO.getiEmployerList().size();
 
         assertEquals(noOfWorkPlacesInTableAfterDeletion,0);
 

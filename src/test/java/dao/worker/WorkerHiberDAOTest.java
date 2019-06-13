@@ -1,6 +1,8 @@
 package dao.worker;
 
 import dao.DALException;
+import db.DBController;
+import db.connectionPools.ConnPoolV1;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerHiberDTO;
 import hibernate.HibernateUtil;
@@ -10,6 +12,7 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.TimeZone;
 
 import static org.junit.Assert.*;
 
@@ -18,8 +21,9 @@ import static org.junit.Assert.*;
  */
 public class WorkerHiberDAOTest {
 
-    private HibernateUtil hibernateUtil;
-    private WorkerHiberDAO workerHiberDAO;
+    private DBController dbController;
+    HibernateUtil hibernateUtil;
+    private IWorkerDAO workerHiberDAO;
     private IWorkerDTO testWorker1;
     private IWorkerDTO testWorker2;
 
@@ -67,30 +71,40 @@ public class WorkerHiberDAOTest {
 
     @Before
     public void setUp() throws Exception {
+
+        //dbController = new DBController();
         hibernateUtil = new HibernateUtil();
         hibernateUtil.setup();
-        workerHiberDAO = new WorkerHiberDAO(hibernateUtil);
+
+        TimeZone.setDefault(TimeZone.getTimeZone(hibernateUtil.getTimeZoneFromDB()));
+        workerHiberDAO = new WorkerHiberDAO(hibernateUtil);//dbController.getiWorkerDAO();
 
     }
 
     @After
     public void tearDown() throws Exception {
-        hibernateUtil.exit();
+    hibernateUtil.exit();
     }
 
     //endregion
 
     @Test
     public void createWorker() throws DALException {
+
+        //int idAssignedToCreatedWorker = dbController.getNextAutoIncremental(WorkerConstants.TABLENAME);
+
         workerHiberDAO.createWorker(testWorker1);
 
         IWorkerDTO gettedWorker1 = workerHiberDAO.getWorker(testWorker1.getEmail());
 
+        //assertEquals(idAssignedToCreatedWorker,gettedWorker1.getWorkerID());
         assertEquals(tw1_firstName, gettedWorker1.getFirstName());
         assertEquals(tw1_surName, gettedWorker1.getSurName());
         assertEquals(tw1_email, gettedWorker1.getEmail());
         assertEquals(tw1_pass,gettedWorker1.getPassword());
         assertEquals(tw1_birthday, gettedWorker1.getBirthday());
+
+        workerHiberDAO.deleteWorker(testWorker1.getEmail());
     }
 
     @Test
@@ -104,6 +118,8 @@ public class WorkerHiberDAOTest {
         assertEquals(tw2_email, gettedWorker2.getEmail());
         assertEquals(tw2_pass, gettedWorker2.getPassword());
         assertEquals(tw2_birthday, gettedWorker2.getBirthday());
+
+        workerHiberDAO.deleteWorker(testWorker2.getEmail());
     }
 
     @Test
@@ -131,12 +147,14 @@ public class WorkerHiberDAOTest {
 
         workerHiberDAO.updateWorker(testWorker1);
         IWorkerDTO gettedWorker1 = workerHiberDAO.getWorker(testWorker1.getEmail());
-        assertEquals(1, gettedWorker1.getWorkerID());
+        //assertEquals(1, gettedWorker1.getWorkerID()); TODO: Get assigned id!
         assertEquals(tw2_firstName, gettedWorker1.getFirstName());
         assertEquals(tw2_surName, gettedWorker1.getSurName());
         assertEquals(tw2_email, gettedWorker1.getEmail());
         assertEquals(tw2_pass + "_Changed",gettedWorker1.getPassword());
 
+        // TestWorkerNo1 is created but email is changed to TestWorkerNo2's email, which is then deleted.
+        workerHiberDAO.deleteWorker(tw2_email);
     }
 
     @Test

@@ -1,11 +1,17 @@
 package hibernate;
 
+import dao.worker.WorkerConstants;
+import dto.worker.WorkerHiberDTO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.MySQLDialect;
 
+import java.util.Properties;
 import java.util.TimeZone;
 
 /**
@@ -18,12 +24,35 @@ public class HibernateUtil {
      */
 
     private SessionFactory sessionFactory;
+    private Properties properties;
+    private String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com";
+    private String user = "s160107";
+    private String password = "wOWElNh0bVravE9uGDNzw";
+    private final int connectionPoolSize = 2;
+    private final String driver_class = "com.mysql.jdbc.Driver";
+    private boolean show_sql = true;
 
     /*
     ----------------------- Constructor -------------------------
      */
 
+    public HibernateUtil () {
+        properties = new Properties();
+         // Database connection settings
+        properties.put("hibernate.connection.driver_class", driver_class);
+        properties.put("hibernate.connection.url", "jdbc:mysql://"+url+":3306/"+user);
+        properties.put("hibernate.connection.username", user);
+        properties.put("hibernate.connection.password", password);
 
+        // SQL dialect
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+
+        // JDBC connection pool (use the built-in)
+        properties.put("hibernate.connection.pool_size",connectionPoolSize);
+
+        //Echo all executed SQL to stdout
+        properties.put("show_sql", show_sql);
+    }
     /*
     ------------------------ Properties -------------------------
      */
@@ -38,6 +67,29 @@ public class HibernateUtil {
         this.sessionFactory = sessionFactory;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     // </editor-folder>
 
@@ -46,15 +98,18 @@ public class HibernateUtil {
      */
 
     public void setup() {
+        Configuration configuration = new Configuration().setProperties(properties)
+                .addAnnotatedClass(WorkerHiberDTO.class);
 
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure() // configures settings from dao.cfg.xml
-                .build();
+        //final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+        //        .configure() // configures settings from dao.cfg.xml
+        //        .build();
         try {
-            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+            sessionFactory = configuration.buildSessionFactory();
+            //sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            StandardServiceRegistryBuilder.destroy(registry);
+            //StandardServiceRegistryBuilder.destroy(registry);
         }
 
         // Sets the program timezone to the same as the DB.
@@ -74,13 +129,30 @@ public class HibernateUtil {
     public void closeSession (Session session) {
         session.close();
     }
-    
+
+    public void executeSQLQuery (String query) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.createSQLQuery(query).executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public void executeHQLQuery (String query) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.createQuery(query).executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+    }
+
     /*
     ---------------------- Support Methods ----------------------
      */
 
     // Gets the timezone of the DB.
-    private String getTimeZoneFromDB () {
+    public String getTimeZoneFromDB () {
+
         String hibernateDialect = (String) sessionFactory.getProperties().get("hibernate.dialect");
         Session session = getSession();
 
