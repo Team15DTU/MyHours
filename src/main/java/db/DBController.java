@@ -432,21 +432,34 @@ public class DBController implements IDBController
     //endregion
     
     //region Employer
+	@POST
+	@Path("/createEmployer")
+	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createEmployer(IEmployerDTO employer)
     { }
     
+    @GET
+	@Path("/getEmployerID/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IEmployerDTO getIEmployerDTO(int id)
+    public IEmployerDTO getIEmployerDTO(@PathParam("id") int id)
     { return null; }
     
+    @GET
+	@Path("/getEmployerList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IEmployerDTO> getIEmployerList()
     { return null; }
     
+    @GET
+	@Path("/getEmployerListRange")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IEmployerDTO> getIEmployerList(int minID, int maxID)
+    public List<IEmployerDTO> getIEmployerList(@QueryParam("minID") int minID, @QueryParam("maxID") int maxID)
     { return null; }
+    
     
     @Override
     public List<IEmployerDTO> getIEmployerList(String name)
