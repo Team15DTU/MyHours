@@ -27,7 +27,7 @@ public class HibernateProperties {
     private String test_password = "wOWElNh0bVravE9uGDNzw";
     private final String test_driver_class = "com.mysql.jdbc.Driver";
     private String test_dialect = "org.hibernate.dialect.MySQLDialect";
-    private boolean test_show_sql = true;
+    private String test_show_sql = "true";
 
     // endregion
 
@@ -39,7 +39,7 @@ public class HibernateProperties {
     private String real_password = "qsNAphOJ13ySzlpn1kh6Y";
     private final String real_driver_class = "com.mysql.jdbc.Driver";
     private String real_dialect = "org.hibernate.dialect.MySQLDialect";
-    private boolean real_show_sql = true;
+    private String real_show_sql = "true";
 
     // endregion
 
@@ -51,7 +51,7 @@ public class HibernateProperties {
     private String xampp_password = "test";
     private final String xampp_driver_class = "com.mysql.jdbc.Driver";
     private String xampp_dialect = "org.hibernate.dialect.MySQLDialect";
-    private boolean xampp_show_sql = true;
+    private String xampp_show_sql = "true";
 
     // endregion
 
@@ -64,7 +64,7 @@ public class HibernateProperties {
     private String h2_dialect = "org.hibernate.dialect.H2Dialect";
     private String h2_cacheProvider = "org.hibernate.cache.internal.NoCacheProvider";
     private String h2_hbm2ddl_auto = "create";
-    private boolean h2_show_sql = true;
+    private String h2_show_sql = "true";
 
     // endregion
 
@@ -153,7 +153,7 @@ public class HibernateProperties {
      */
 
     private Properties createStdProperties (String driver_class,String url, String dbName, String user, String password, String dialect,
-                                      int connectionPoolSize, boolean show_sql){
+                                            int connectionPoolSize, String show_sql){
         Properties properties = new Properties();
         // Database connection settings
         properties.put("hibernate.connection.driver_class", driver_class);
@@ -168,13 +168,13 @@ public class HibernateProperties {
         properties.put("hibernate.connection.pool_size", connectionPoolSize);
 
         //Echo all executed SQL to stdout
-        properties.put("show_sql", show_sql);
+        properties.put("hibernate.show_sql", show_sql);
 
         return properties;
     }
 
     private Properties createH2Properties (String driver_class,String full_url, String user, String password, String dialect,
-                                           String cacheProvider, int connectionPoolSize, String hbm2ddl_auto, boolean show_sql){
+                                           String cacheProvider, int connectionPoolSize, String hbm2ddl_auto, String show_sql){
         Properties properties = new Properties();
         // Database connection settings
         properties.put("hibernate.connection.driver_class", driver_class);

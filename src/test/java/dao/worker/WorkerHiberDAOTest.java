@@ -135,6 +135,9 @@ public class WorkerHiberDAOTest {
         assertEquals(2, workerListAfter.size());
         assertEquals(tw2_firstName,workerListAfter.get(1).getFirstName());
         assertEquals(tw1_email, workerListAfter.get(0).getEmail());
+
+        workerHiberDAO.deleteWorker(testWorker1.getEmail());
+        workerHiberDAO.deleteWorker(testWorker2.getEmail());
     }
 
     @Test

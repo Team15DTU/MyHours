@@ -175,27 +175,23 @@ public class DBController implements IDBController
         try {
 
             Statement statement = c.createStatement();
-            statement.executeQuery("ANALYZE TABLE " + tableName);
+            ResultSet analyzeResultSet = statement.executeQuery("ANALYZE TABLE " + tableName);
 
             // Shit works
 			//TODO: Fix hardcoded Database
             PreparedStatement pStatement = c.prepareStatement(
-                    "SELECT AUTO_INCREMENT FROM information_schema.TABLES where TABLE_SCHEMA = ?" +
+                    "SELECT * FROM information_schema.TABLES where TABLE_SCHEMA = ?" +
 							" AND TABLE_NAME = ?" )
 					;
-            pStatement.setString(1, hibernateUtil.getUser());
+
+            pStatement.setString(1, (String) hibernateUtil.getProperties().get("hibernate.connection.username"));
             pStatement.setString(2, EmployerConstants.TABLENAME);
 
             ResultSet resultset = pStatement.executeQuery();
 
-            while (resultset.next()) {
-                System.out.println(resultset.getInt(1));
-            }
             resultset.next();
 
-            System.out.println(resultset.getInt(1));
-
-            return resultset.getInt(1);
+            return resultset.getInt("AUTO_INCREMENT");
 
 
         } catch (SQLException e) {

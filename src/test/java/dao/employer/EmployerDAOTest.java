@@ -2,6 +2,7 @@ package dao.employer;
 
 import dao.DALException;
 import dao.worker.IWorkerDAO;
+import dao.worker.WorkerConstants;
 import dto.employer.EmployerDTO;
 import dto.employer.IEmployerDTO;
 import db.DBController;
@@ -36,7 +37,7 @@ public class EmployerDAOTest
     // region EmployerDTO No. 1
 
     private int employerNo1_workerID_assigned;
-    private String employerNo1_name = "Bilka - Hundige";
+    private String employerNo1_name = "EmployerName1";
     private Color employerNo1_color = Color.decode("#FAEBD7");
     private String employerNo1_telephone = "12345678";
     private int employereNo1_id_assigned;
@@ -48,7 +49,7 @@ public class EmployerDAOTest
     // region EmployerDTO No. 2
 
     private int employerNo2_workerID_assigned;
-    private String employerNo2_name = "DTU - Lyngby";
+    private String employerNo2_name = "EmployerName2";
     private Color employerNo2_color = Color.decode("#55a7e4");
     private String employerNo2_telephone = "87654321";
     int employerNo2_id_assigned;
@@ -65,15 +66,15 @@ public class EmployerDAOTest
     private String tw1_email = "test1@test.dk";
     private String tw1_pass = "test1Password";
     private LocalDate tw1_birthday = LocalDate.now();
-    private IWorkerDTO testWorker1 = new WorkerHiberDTO();
+    private IWorkerDTO testWorker1;
 
     //endregion
 
     public EmployerDAOTest() throws DALException
     {
         // Finds the next id for a new Worker.
-        //tw1_workerID_assigned = dbController.getNextAutoIncremental(WorkerConstants.TABLENAME); TODO: Skal op at køre igen.
-        employerNo1_workerID_assigned = tw1_workerID_assigned=3;
+        tw1_workerID_assigned = dbController.getNextAutoIncremental(WorkerConstants.TABLENAME);
+        employerNo1_workerID_assigned = tw1_workerID_assigned;
         employerNo2_workerID_assigned = tw1_workerID_assigned;
 
         // Setting up testWorker1
@@ -85,16 +86,16 @@ public class EmployerDAOTest
         testWorker1.setBirthday(tw1_birthday);
 
         // Creates a new Worker in the test DB.
-        //iWorkerDAO.createWorker(testWorker1); TODO: Der skal creates og deletes, skal have fikset metoderne.
+        iWorkerDAO.createWorker(testWorker1);
 
         // Setting up employerNo1
-        employerNo1.setWorkerID(employerNo1_workerID_assigned);
+        employerNo1.setWorkerID(testWorker1.getWorkerID());
         employerNo1.setName(employerNo1_name);
         employerNo1.setColor(employerNo1_color);
         employerNo1.setTelephone(employerNo1_telephone);
 
         // Setting up employerNo2
-        employerNo2.setWorkerID(employerNo2_workerID_assigned);
+        employerNo2.setWorkerID(testWorker1.getWorkerID());
         employerNo2.setName(employerNo2_name);
         employerNo2.setColor(employerNo2_color);
         employerNo2.setTelephone(employerNo2_telephone);
@@ -116,8 +117,16 @@ public class EmployerDAOTest
     @AfterClass
     public static void tearDown() throws Exception
     {
+        // Removes all Employers from DB
+        List<IEmployerDTO> employersInDBAfterFinishedTests = iEmployerDAO.getiEmployerList();
+        for (IEmployerDTO employerDTO : employersInDBAfterFinishedTests) {
+            iEmployerDAO.deleteiEmployer(employerDTO.getWorkplaceID());
+        }
+        // Removes the created TestWorker.
+        iWorkerDAO.deleteWorker("test1@test.dk");
+
         test_DB.closePool();
-        //iWorkerDAO.deleteWorker("test1@test.dk");
+
     }
     
     /*
@@ -125,7 +134,7 @@ public class EmployerDAOTest
      */
 
     @Test
-    public void createWorkPlaces() throws DALException {
+    public void createEmployer() throws DALException {
 
         // WorkplaceDTO No. 1
 
@@ -136,7 +145,7 @@ public class EmployerDAOTest
         IEmployerDTO returnedWorkplaceDTOOfNo1 = iEmployerDAO.getIEmployer(nextAutoIncrementalForWorkplaceNo1);
 
         assertEquals(returnedWorkplaceDTOOfNo1.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo1);
-        assertEquals(returnedWorkplaceDTOOfNo1.getWorkerID(), employerNo1_workerID_assigned);
+        assertEquals(returnedWorkplaceDTOOfNo1.getWorkerID(), testWorker1.getWorkerID());
         assertEquals(returnedWorkplaceDTOOfNo1.getName(), employerNo1_name);
         assertEquals(returnedWorkplaceDTOOfNo1.getColor(), employerNo1_color);
         assertEquals(returnedWorkplaceDTOOfNo1.getTelephone(), employerNo1_telephone);
@@ -146,7 +155,7 @@ public class EmployerDAOTest
     }
 
     @Test
-    public void getWorkPlaceList() throws DALException {
+    public void getEmployerList() throws DALException {
 
         // Creates WorkplaceDTO No. 1
 

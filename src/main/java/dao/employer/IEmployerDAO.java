@@ -15,7 +15,7 @@ public interface IEmployerDAO {
      */
 
     // returns a EmployerDTO from an workplaceID
-    IEmployerDTO getIEmployer(int workplaceID) throws DALException;
+    IEmployerDTO getIEmployer(int employerID) throws DALException;
 
     // Returns a List of ALL EmployerDTO object.
     List<IEmployerDTO> getiEmployerList() throws DALException;
@@ -24,12 +24,12 @@ public interface IEmployerDAO {
     List<IEmployerDTO> getiEmployerList(int workerID) throws DALException;
 
     // Inserts the data from a EmployerDTO into DB.
-    void createiEmployer(IEmployerDTO workPlaceDTO) throws DALException;
+    void createiEmployer(IEmployerDTO employerDTO) throws DALException;
 
     // Updates the data on a employer row in the DB.
-    void updateiEmployer(IEmployerDTO workPlaceDTO) throws DALException;
+    void updateiEmployer(IEmployerDTO employerDTO) throws DALException;
 
     // Deletes all information about one employer, from an UserID and employer.Name TODO: Maybe use workPlaceID?.
-    void deleteiEmployer(int workplaceID) throws DALException;
+    void deleteiEmployer(int employerID) throws DALException;
 
 }
