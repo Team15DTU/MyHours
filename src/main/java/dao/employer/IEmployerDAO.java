@@ -29,7 +29,7 @@ public interface IEmployerDAO {
     // Updates the data on a employer row in the DB.
     void updateiEmployer(IEmployerDTO employerDTO) throws DALException;
 
-    // Deletes all information about one employer, from an UserID and employer.Name TODO: Maybe use workPlaceID?.
+    // Deletes all information about one employer.
     void deleteiEmployer(int employerID) throws DALException;
 
 }
