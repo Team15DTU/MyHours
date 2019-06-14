@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NewFrontPage</title>
+    <title>MyHours</title>
+    <link rel="icon" href="Images/favicon.ico">
     <link rel="stylesheet" href="index.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
@@ -17,7 +18,7 @@
     <div class="container">
         <nav>
             <span></span>
-            <a href="PersonalSite/PersonalSite.html"><img class ="logo" src="Images/Logo2.svg" alt="Avatar"></a>
+            <a href="PersonalSite/PersonalSite.html"><img class ="logo" src="Images/MyHours.svg" alt="Avatar"></a>
             <ul>
                 <li><a href="#">About</a></li>
                 <li><a onclick="showLoginModal()" class="login">Login</a></li>
@@ -66,31 +67,17 @@
             </div>
 
             <div class="imgcontainer">
-                <img src="Images/Logo2.svg" alt="Avatar" class="avatar">
+                <img src="Images/MyHours.svg" alt="Avatar" class="avatar">
             </div>
 
-            <form id="allLogin">
-
-                <label for="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" id="uname" required autofocus>
-
-            </form>
-
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="password" id="psw" required>
-
-
-
-
-            <form id="userform" >
-                <label>Email </label><input type="text" placeholder="Enter Email" name="email">
-                <label>Password </label><input type="text" placeholder="Enter Password" name="password">
-            </form>
+            <div id="LoginInfo">
+                <label for="email1" >Email </label><input type="text" placeholder="Enter Email" name="email" id="email1">
+                <label for="password1">Password </label><input type="text" placeholder="Enter Password" name="password" id="password1">
+            </div>
+                <label><input type="checkbox" checked="checked" name="remember">Remember me</label>
 
             <button type="submit" onclick="Login()">Login</button>
-            <label>
-                <input type="checkbox" checked="checked" name="remember"> Remember me
-            </label>
+
         </div>
 
         <div class="containermodalLogin" style="background-color:#f1f1f1">
@@ -106,30 +93,26 @@
             </div>
 
             <div class="imgcontainer">
-                <img src="Images/Logo2.svg" alt="Avatar" class="avatar">
+                <img src="Images/MyHours.svg" alt="Avatar" class="avatar">
             </div>
 
 
-            <form id="usersign">
 
+            <div id="usersign">
                 <label for="firstName"><b>Firstname</b></label>
                 <input type="text" placeholder="Enter Firstname" name="firstName" id="firstName" required>
 
                 <label for="surName"><b>Surname</b></label>
                 <input type="text" placeholder="Enter Surname" name="surName" id="surName" required>
 
-
                 <label for="email"><b>Email</b></label>
-            <input type="email" placeholder="Enter Email" name="email" id="email" required>
+                <input type="email" placeholder="Enter Email" name="email" id="email" required>
 
-
-            <label for="password"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="password" id="password" required>
-
-
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" id="password" required>
+            </div>
 
                 <button type="submit" onclick="Signup()">SignUp</button>
-            </form>
 
         </div>
         <div class="containermodalSignUp" style="background-color:#f1f1f1">

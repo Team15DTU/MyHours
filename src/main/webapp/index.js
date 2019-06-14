@@ -48,7 +48,7 @@ var showSignupModal = function() {
 
 function Login(){
     event.preventDefault();
-    var userJson = $("#userform").serializeJSON();
+    var userJson = $("#LoginInfo input").serializeJSON();
     $.ajax({
         method: 'POST',
         url : "/MyHours/Test/loginCheck",
@@ -56,11 +56,11 @@ function Login(){
         contentType: "application/json",
         success : function(data){
             alert(data);
-            console.log("Eyy det virker jo")
+            console.log("Succes!")
         },
         error: function(jqXHR, text, error){
-            alert(jqXHR.status + text + error + "fdsfdf");
-            console.log("not gooooooooood")
+            alert(jqXHR.status + text + error);
+            console.log("Failed to login!")
         }
     });
     console.log(userJson);
@@ -68,44 +68,21 @@ function Login(){
 
 function Signup() {
     event.preventDefault();
-
-    var userJson = $("#usersign").serializeJSON();
+    var userJson = $("#usersign input").serializeJSON();
     $.ajax({
         method: 'POST',
         url: "/MyHours/Test/createWorker",
         data: userJson,
         contentType: "application/json",
         success : function () {
-            alert("Succes!");
-            console.log("Du er nu oprettet i systemet")
+            alert("User created!");
+            console.log("User created!")
 
         },
         error: function (jqXHR, text, error) {
             alert(jqXHR.status + text + error);
-            console.log("Der skete en fejl")
+            console.log("Failed to create an user!")
         }
     });
     console.log(userJson)
 }
-
-
-
-/*
-function Login(){
-    var userJson = $("#userform").serializeJSON();
-    $.ajax({
-        method: 'GET',
-        url : "/MyHours/Test",
-        data : userJson,
-        contentType: "application/json",
-        success : function(data){
-            alert(data);
-            console.log("Eyy det virker jo")
-        },
-        error: function(jqXHR, text, error){
-            alert(jqXHR.status + text + error + "hey");
-            console.log("not gooooooooood")
-        }
-    });
-console.log(userJson)}
-*/
