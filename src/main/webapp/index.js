@@ -58,7 +58,9 @@ function Login(){
         success : function(data){
             alert(data);
             console.log("Success!");
-            window.location='/PersonalSite/PersonalSite.html';
+            if (data.toString() === "true"){
+                window.location='/PersonalSite/PersonalSite.html';
+            }
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
