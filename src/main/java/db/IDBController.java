@@ -1,9 +1,8 @@
 package db;
 
-import dao.DALException;
-import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
+import dto.job.IJobDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 
@@ -20,7 +19,7 @@ public interface IDBController
 	/*------------------------------------------------------------
 	| Creators                                                   |
 	-------------------------------------------------------------*/
-    void createWorker   (IWorkerDTO workerDTO);
+    boolean createWorker   (IWorkerDTO workerDTO);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -34,6 +33,11 @@ public interface IDBController
     List<IWorkerDTO> getIWorkerDTOList  ();
     List<IWorkerDTO> getIWorkerDTOList  (int minID, int maxID);
 	List<IWorkerDTO> getIWorkerDTOList  (String name);
+	
+	/*------------------------------------------------------------
+    | Update	                                                 |
+    -------------------------------------------------------------*/
+	boolean			updateWorker		(IWorkerDTO workerDTO);
     
     //endregion
     
@@ -42,7 +46,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createEmployer (IEmployerDTO employer);
+    boolean createEmployer (IEmployerDTO employer);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -55,6 +59,11 @@ public interface IDBController
     List<IEmployerDTO> getIEmployerList ();
     List<IEmployerDTO> getIEmployerList (int minID, int maxID);
 	List<IEmployerDTO> getIEmployerList (String name);
+	
+	/*------------------------------------------------------------
+    | Update	                                                 |
+    -------------------------------------------------------------*/
+	boolean			updateEmployer		(IEmployerDTO employerDTO);
     
     //endregion
     
@@ -63,7 +72,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createJob      (IJobDTO job);
+    boolean createJob      (IJobDTO job);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -77,6 +86,11 @@ public interface IDBController
     List<IJobDTO>	getIJobDTOList		(int employerID);
 	List<IJobDTO>	getIJobDTOList		(String name);
 	List<IJobDTO>	getIJobDTOList		(double minSalary, double maxSalary);
+	
+	/*------------------------------------------------------------
+    | Update	                                                 |
+    -------------------------------------------------------------*/
+	boolean			updateJob			(IJobDTO jobDTO);
     
     //endregion
     
@@ -85,7 +99,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createActivity (IActivityDTO activity);
+    boolean createActivity (IActivityDTO activity);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -99,6 +113,11 @@ public interface IDBController
     List<IActivityDTO>  getIActivityList 	(int jobID);
 	List<IActivityDTO>  getIActivityList 	(Date date);
 	List<IActivityDTO>  getIActivityList 	(double minVal, double maxVal);
+	
+	/*------------------------------------------------------------
+    | Update	                                                 |
+    -------------------------------------------------------------*/
+	boolean				updateActivity	(IActivityDTO activityDTO);
     
     //endregion
     
