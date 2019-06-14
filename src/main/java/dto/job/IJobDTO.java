@@ -30,6 +30,10 @@ public interface IJobDTO {
 
     void setHireDate(LocalDate hireDate);
 
+    LocalDate getFinishDate();
+
+    void setFinishDate(LocalDate finishDate);
+
     double getStdSalary();
 
     void setStdSalary(double stdSalary);

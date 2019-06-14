@@ -20,6 +20,7 @@ public class JobDTO implements IJobDTO {
     private int employerID;
     private String jobName;
     private LocalDate hireDate;
+    private LocalDate finishDate;
     private double stdSalary;
     private Address jobAddress;
     private RuleSet ruleSet;
@@ -36,16 +37,18 @@ public class JobDTO implements IJobDTO {
         this.jobName = jobName;
         this.stdSalary = stdSalary;
         hireDate = null;
+        finishDate = null;
         jobAddress = null;
         ruleSet = null;
         iActivityDTOList = null;
     }
 
-    public JobDTO (int employerID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, RuleSet ruleSet, List<IActivityDTO> iActivityDTOList) {
+    public JobDTO (int employerID, String jobName, double stdSalary, LocalDate hireDate, LocalDate finishDate, Address jobAddress, RuleSet ruleSet, List<IActivityDTO> iActivityDTOList) {
         this.employerID = employerID;
         this.jobName = jobName;
         this.stdSalary = stdSalary;
         this.hireDate = hireDate;
+        this.finishDate = finishDate;
         this.jobAddress = jobAddress;
         this.ruleSet = ruleSet;
         this.iActivityDTOList = iActivityDTOList;
@@ -87,6 +90,14 @@ public class JobDTO implements IJobDTO {
 
     public void setHireDate(LocalDate hireDate) {
         this.hireDate = hireDate;
+    }
+
+    public LocalDate getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(LocalDate finishDate) {
+        this.finishDate = finishDate;
     }
 
     public double getStdSalary() {
@@ -134,6 +145,9 @@ public class JobDTO implements IJobDTO {
         toStringBuilder.append("Job Name: \t\t\t" + jobName + "\n");
         if (hireDate != null) {
             toStringBuilder.append("HireDate: \t\t\t" + hireDate.toString() + "//" + hireDate.getDayOfMonth() + "-" + hireDate.getMonthValue() + "-" + hireDate.getYear() + "\n");
+        }
+        if (finishDate != null) {
+            toStringBuilder.append("FinishDate: \t\t\t" + finishDate.toString() + "//" + finishDate.getDayOfMonth() + "-" + finishDate.getMonthValue() + "-" + finishDate.getYear() + "\n");
         }
         toStringBuilder.append("Standard Salary:\t" + stdSalary + "\n");
 
