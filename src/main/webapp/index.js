@@ -47,6 +47,7 @@ var showSignupModal = function() {
 
 
 function Login(){
+
     event.preventDefault();
     var userJson = $("#LoginInfo input").serializeJSON();
     $.ajax({
