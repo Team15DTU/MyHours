@@ -1,26 +1,14 @@
-import DAO.DALException;
-import DAO.worker.WorkerDAO;
-import db.DBController;
-import DTOs.worker.WorkerDTO;
-import db.IConnPool;
-import db.IDBController;
-import db.MySQL_DB;
+import dao.DALException;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.TimeZone;
+import db.DBController;
+import db.IDBController;
+import db.connectionPools.ConnPoolV1;
 
 public class Main {
 
-    public static void main(String[] args) throws DALException {
-
-        // This is the MySQL DB that the program is running on.
-        IConnPool iConnPool = new MySQL_DB();
-
-        // This is the MySQL DB Controller which accesses the DB an executes all actions.
-        IDBController idbController = new DBController(iConnPool);
-
+    public static void main(String[] args) throws DALException
+    {
+        // This is the MySQL DB Controller which accesses the DB and executes all actions.
+        IDBController dbController = DBController.getInstance();
     }
 }

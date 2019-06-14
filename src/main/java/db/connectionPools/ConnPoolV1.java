@@ -1,6 +1,6 @@
 package db.connectionPools;
 
-import DAO.DALException;
+import dao.DALException;
 import db.IConnPool;
 
 import java.sql.Connection;
@@ -24,13 +24,17 @@ public class ConnPoolV1 implements IConnPool {
 	protected int validTimeout	= 2;		// 02 seconds
 	protected boolean stop		= false;
 	//endregion
-    
-    public static final int MAXCONNS = 8;
+ 
+	/*
+	Hibernate uses 3 connections, and this uses 6. This means we have
+	1 connection free to use with Workbench and Datagrip.
+	 */
+    public static final int MAXCONNS = 6;
     
     //region DB Info
-	protected final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
-	protected final String user = "s185097";
-	protected final String password = "qsNAphOJ13ySzlpn1kh6Y";
+	protected static String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
+	protected static String user = "s185097";
+	protected static String password = "qsNAphOJ13ySzlpn1kh6Y";
 	//endregion
     
     protected List<Connection> freeConnList;
@@ -53,6 +57,9 @@ public class ConnPoolV1 implements IConnPool {
 		boolean success = true; DALException exception = null;
 		try
 		{
+			// Specify Driver
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
 			for (int i = 0; i < MAXCONNS; i++)
 				freeConnList.add(createConnection());
 		}
@@ -60,6 +67,12 @@ public class ConnPoolV1 implements IConnPool {
 		{
 			System.err.println("ERROR: Creating Connection Pool");
 			exception = e;
+			success = false;
+		}
+		catch ( ClassNotFoundException e )
+		{
+			System.err.println("ERROR: Creating Connection Pool");
+			exception = new DALException(e.getMessage(), e.getCause());
 			success = false;
 		}
 		
@@ -146,9 +159,8 @@ public class ConnPoolV1 implements IConnPool {
 	/**
 	 * Gives the instance of the Connection Pool.
 	 * @return ConnPoolV1 object
-	 * @throws DALException Data Access Layer Exception
 	 */
-	public synchronized static ConnPoolV1 getInstance() throws DALException
+	public synchronized static ConnPoolV1 getInstance()
 	{
 		try
 		{
@@ -160,7 +172,7 @@ public class ConnPoolV1 implements IConnPool {
 		catch (DALException e)
 		{
 			System.err.println("ERROR: Couldn't get ConnPoolV1 instance");
-			throw e;
+			return null;
 		}
 	}
 	
@@ -238,7 +250,7 @@ public class ConnPoolV1 implements IConnPool {
 					// If connection isClosed then make a new and return
 					if ( connection == null || connection.isClosed() )
 					{
-						connection = DriverManager.getConnection("jdbc:mysql://" + url, user, password);
+						connection = createConnection();
 						
 						usedConnList.add(connection);
 						freeConnList.remove(freeConnList.size() - 1);
@@ -275,6 +287,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * related threads.
 	 * @throws DALException Data Access Layer Exception
 	 */
+	@Override
 	public void closePool() throws DALException
 	{
 		// Make keepAlive thread stop
