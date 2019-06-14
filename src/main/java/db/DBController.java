@@ -284,29 +284,26 @@ public class DBController implements IDBController
 	
 			// Close statement
 			stmt.close();
-            
-            return success;
         }
         catch ( DALException e )
         {
 			System.err.println("ERROR: DALException thrown in loginCheck() - " + e.getMessage());
-			return success;
         }
         catch ( SQLException e )
         {
 			System.err.println("ERROR: SQLException thrown in loginCheck() - " + e.getMessage());
-			return success;
         }
         catch ( Exception e )
 		{
 			System.err.println("ERROR: Unknown error in loginCheck() - " + e.getMessage());
-			return success;
 		}
         finally
         {
         	if ( conn != null )
         		connPool.releaseConnection(conn);
         }
+        
+        return success;
     }
     
     //endregion
