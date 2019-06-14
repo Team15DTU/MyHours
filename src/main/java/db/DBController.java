@@ -319,11 +319,13 @@ public class DBController implements IDBController
 	@Path("/createWorker")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-    public void createWorker (IWorkerDTO workerDTO)
+    public boolean createWorker (IWorkerDTO workerDTO)
     {
+    	boolean success = false;
     	try
 		{
 			iWorkerDAO.createWorker(workerDTO);
+			success = true;
 		}
     	catch ( DALException e )
 		{
@@ -333,6 +335,8 @@ public class DBController implements IDBController
 		{
 			System.err.println("ERROR: Unknown error createWorker() - " + e.getMessage());
 		}
+    	
+    	return success;
     }
     
     /**
@@ -379,7 +383,9 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public IWorkerDTO getIWorkerDTO (@PathParam("id") int id)
-    { return null; }
+    {
+    	return null;
+    }
 	
 	/**
 	 * Method get a full list of Workers in the
@@ -398,6 +404,8 @@ public class DBController implements IDBController
     	 */
     	List<IWorkerDTO> list = new ArrayList<>();
     	list.add(new WorkerDTO("Failure", "Failure", "Failure"));
+    	
+    	// Try to create the list
     	try
 		{
 			list = iWorkerDAO.getWorkerList();
@@ -432,16 +440,36 @@ public class DBController implements IDBController
     @Override
     public List<IWorkerDTO> getIWorkerDTOList (@PathParam("name") String name)
     { return null; }
-    
-    //endregion
+	
+    @PUT
+	@Path("/updateWorker")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Override
+	public boolean updateWorker(IWorkerDTO workerDTO)
+	{ return false; }
+	
+	//endregion
     
     //region Employer
 	@POST
 	@Path("/createEmployer")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createEmployer(IEmployerDTO employer)
-    { }
+    public boolean createEmployer(IEmployerDTO employer)
+    {
+    	boolean success = false;
+    	
+    	try
+		{
+			iEmployerDAO.createiEmployer(employer);
+			success = true;
+		}
+    	catch ( DALException e )
+		{
+			System.err.println("ERROR: DBController createEmployer() - " + e.getMessage());
+		}
+    	return success;
+	}
     
     @GET
 	@Path("/getEmployer/{id}")
@@ -475,8 +503,17 @@ public class DBController implements IDBController
     @Override
     public List<IEmployerDTO> getIEmployerList(@PathParam("name") String name)
     { return null; }
-    
-    //endregion
+	
+    @PUT
+	@Path("/updateEmployer")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Override
+	public boolean updateEmployer(IEmployerDTO employerDTO)
+	{
+		return false;
+	}
+	
+	//endregion
     
     //region Job
     
@@ -484,8 +521,8 @@ public class DBController implements IDBController
 	@Path("/createJob")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createJob(IJobDTO job)
-    { }
+    public boolean createJob(IJobDTO job)
+    { return false; }
     
     @GET
 	@Path("/getJob/{id}")
@@ -521,8 +558,17 @@ public class DBController implements IDBController
     @Override
     public List<IJobDTO> getIJobDTOList(@QueryParam("minSalary") double minSalary, @QueryParam("maxSalary")double maxSalary)
     { return null; }
-    
-    //endregion
+	
+    @PUT
+	@Path("/updateJob")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Override
+	public boolean updateJob(IJobDTO jobDTO)
+	{
+		return false;
+	}
+	
+	//endregion
     
     //region Activity
 	
@@ -535,8 +581,8 @@ public class DBController implements IDBController
 	@Path("/createActivity")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createActivity(IActivityDTO activity)
-    { }
+    public boolean createActivity(IActivityDTO activity)
+    { return false; }
     
     @GET
 	@Path("/getActivity/{id}")
@@ -573,8 +619,17 @@ public class DBController implements IDBController
     @Override
     public List<IActivityDTO> getIActivityList(@QueryParam("minVal") double minVal, @QueryParam("maxVal") double maxVal)
     { return null; }
-    
-    //endregion
+	
+	@PUT
+	@Path("/updateActivity")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Override
+	public boolean updateActivity(IActivityDTO activityDTO)
+	{
+		return false;
+	}
+	
+	//endregion
     
     /*
     ---------------------- Support Methods ----------------------
