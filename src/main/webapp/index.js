@@ -57,7 +57,7 @@ function Login(){
         contentType: "application/json",
         success : function(data){
             alert(data);
-            console.log("Succes!");
+            console.log("Success!");
             window.location='/PersonalSite/PersonalSite.html';
         },
         error: function(jqXHR, text, error){

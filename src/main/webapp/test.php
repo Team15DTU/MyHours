@@ -10,9 +10,9 @@ session_start();
 
 
 $_SESSION["id"];
+$data = $_POST['userJson'];
 
 
 
 session_destroy();
 
-?>
