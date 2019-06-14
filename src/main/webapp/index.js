@@ -52,7 +52,7 @@ function Login(){
     var userJson = $("#LoginInfo input").serializeJSON();
     $.ajax({
         method: 'POST',
-        url : "/MyHours/Test/loginCheck",
+        url : "/MyHours/DBController/loginCheck",
         data : userJson,
         contentType: "application/json",
         success : function(data){
@@ -73,7 +73,7 @@ function Signup() {
     var userJson = $("#usersign input").serializeJSON();
     $.ajax({
         method: 'POST',
-        url: "/MyHours/Test/createWorker",
+        url: "/MyHours/DBController/createWorker",
         data: userJson,
         contentType: "application/json",
         success : function () {
@@ -88,3 +88,4 @@ function Signup() {
     });
     console.log(userJson)
 }
+

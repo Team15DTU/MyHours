@@ -130,3 +130,150 @@ var checkMenu3 = function() {
     $("#myid2").prop("checked", false);
     $("#myid").prop("checked", false);
 };
+
+function addActivity(){
+
+    event.preventDefault();
+    var userJson = $("").serializeJSON();
+    $.ajax({
+        method: 'POST',
+        url : "/MyHours/DBController/createActivity",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to add activity!")
+        }
+    });
+    console.log(userJson);
+}
+
+function addEmployer(){
+
+    event.preventDefault();
+    var userJson = $("").serializeJSON();
+    $.ajax({
+        method: 'POST',
+        url : "/MyHours/DBController/createEmployer",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to add Employer!")
+        }
+    });
+    console.log(userJson);
+}
+
+function addJob(){
+
+    event.preventDefault();
+    var userJson = $("").serializeJSON();
+    $.ajax({
+        method: 'POST',
+        url : "/MyHours/DBController/createJob",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to add Job!")
+        }
+    });
+    console.log(userJson);
+}
+function editActivity(){
+
+    event.preventDefault();
+    var userJson = $("").serializeJSON();
+    $.ajax({
+        method: 'PUT',
+        url : "/MyHours/DBController/editActivity",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to edit activity!")
+        }
+    });
+    console.log(userJson);
+}
+
+function editEmployer(){
+
+    event.preventDefault();
+    var userJson = $("").serializeJSON();
+    $.ajax({
+        method: 'PUT',
+        url : "/MyHours/DBController/editEmployer",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to edit Employer!")
+        }
+    });
+    console.log(userJson);
+}
+
+function editJob(){
+
+    event.preventDefault();
+    var userJson = $("").serializeJSON();
+    $.ajax({
+        method: 'PUT',
+        url : "/MyHours/DBController/editJob",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to edit Job!")
+        }
+    });
+    console.log(userJson);
+}
+
+function editUser(){
+
+    event.preventDefault();
+    var userJson = $("").serializeJSON();
+    $.ajax({
+        method: 'PUT',
+        url : "/MyHours/DBController/editUser",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to edit User!")
+        }
+    });
+    console.log(userJson);
+}
+

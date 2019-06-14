@@ -17,10 +17,7 @@ import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
 import java.time.LocalDate;
@@ -31,7 +28,7 @@ import java.util.TimeZone;
 /**
  * @author Rasmus Sander Larsen
  */
-@Path("/Test")
+@Path("/DBController")
 public class DBController implements IDBController {
 
     /*
@@ -82,6 +79,9 @@ public class DBController implements IDBController {
         return iWorkerDAO;
     }
 
+
+    @PUT
+    @Path("/editUser")
     public void setiWorkerDAO(IWorkerDAO iWorkerDAO) {
         this.iWorkerDAO = iWorkerDAO;
     }
@@ -90,6 +90,9 @@ public class DBController implements IDBController {
         return iEmployerDAO;
     }
 
+
+    @PUT
+    @Path("/editEmployer")
     public void setiEmployerDAO(IEmployerDAO iEmployerDAO) {
         this.iEmployerDAO = iEmployerDAO;
     }
@@ -98,6 +101,9 @@ public class DBController implements IDBController {
         return iJobDAO;
     }
 
+
+    @PUT
+    @Path("/editJob")
     public void setiJobDAO(IJobDAO iJobDAO) {
         this.iJobDAO = iJobDAO;
     }
@@ -106,6 +112,9 @@ public class DBController implements IDBController {
         return iActivityDAO;
     }
 
+
+   @PUT
+   @Path("/editActivity")
     public void setiActivityDAO(IActivityDAO iActivityDAO) {
         this.iActivityDAO = iActivityDAO;
     }
@@ -342,6 +351,9 @@ public class DBController implements IDBController {
     //endregion
     
     //region Employer
+    @POST
+    @Consumes (MediaType.APPLICATION_JSON)
+    @Path("/createEmployer")
     @Override
     public void createEmployer(IEmployerDTO employer) throws DALException
     { }
@@ -365,7 +377,9 @@ public class DBController implements IDBController {
     //endregion
     
     //region Job
-    
+    @POST
+    @Consumes (MediaType.APPLICATION_JSON)
+    @Path("/createJob")
     @Override
     public void createJob(IJobDTO job) throws DALException
     { }
@@ -394,6 +408,9 @@ public class DBController implements IDBController {
     
     //region Activity
     
+    @POST
+    @Consumes (MediaType.APPLICATION_JSON)
+    @Path("/createActivity")
     @Override
     public void createActivity(IActivityDTO activity) throws DALException
     { }
