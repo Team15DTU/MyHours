@@ -1,5 +1,28 @@
 //Dette metoderne til tabellen
 
+function selectShift() {
+
+
+    var selector = document.getElementById('select');
+
+    var allShift = findAllShift();
+
+    for (var i = 0; i < 3; i++) {
+
+        var currentShift = allShift.pop();
+        var name = currentShift[5];
+        var option = document.createElement('option');
+        option.appendChild(document.createTextNode(name));
+        option.value = currentShift[0];
+        option.onclick = shiftEditSubmitChange(currentShift[0]);
+        selector.appendChild(option);
+    }
+}
+
+function shiftEditSubmitChange(value) {
+    return document.getElementById('shift_edit_submit').value = value;
+}
+
 function shifts() {
 
     var table = document.getElementById('left_table');
@@ -105,12 +128,33 @@ function findShift(nr) {
     return '16-20';
 }
 
+function findAllShift(nr) {
+    var allShift = [];
+
+    for (var i = 0; i < 3; i++) {
+        var endDate = new Date();
+        endDate.setDate(endDate.getDate()+i);
+        var startDate = new Date();
+        startDate.setDate(startDate.getDate()-i);
+
+        var shift = [id = i, jobid = 2, start = startDate, end = endDate, breaks = 30, jobname = findWork(i)]
+        allShift.push(shift);
+    }
+
+
+    return allShift;
+
+}
+
+
 function findWork(nr) {
     if (nr == 0) {return 'kvikly'}
     else if (nr == 1) {return 'fakta'}
     else if (nr == 2) {return 'irma'}
     else if (nr == 3) {return '#VektorLife'}
 }
+
+
 
 function findPaycheck(nr) {
     return '444 kr.'
@@ -127,6 +171,9 @@ function hoursOfWork () {
 
     return Math.random()*10;
 }
+
+
+
 
 // Show only one item at a time in the menu
 var checkMenu0 = function() {

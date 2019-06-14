@@ -45,7 +45,7 @@
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Shift</label>
                 <div class="smenu">
                     <a href="#" onclick="document.getElementById('shift_add').style.display='block'">Add</a>
-                    <a href="#">Edit</a>
+                    <a href="#" onclick="document.getElementById('shift_edit').style.display='block'; selectShift()">Edit</a>
                     <a href="#">Delete</a>
                 </div>
             </li>
@@ -104,10 +104,12 @@
 
 <!-- Shift -->
 
+<!-- add -->
+
 <div id="shift_add" class="modal2">
     <div class="modal2-content">
         <span onclick="document.getElementById('shift_add').style.display='none'" class="close2">&times;</span>
-    <form action="/action_page.php">
+    <form action="">
         <div class="form_per">
             <label><b>What job is the shift?</b></label>
             <input  type="text" placeholder="What job is the shift?" name="job_to_shift" required>
@@ -121,11 +123,28 @@
             <label><b>How long break do you have on the shift? (in minutes)</b></label>
             <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="psw" required>
 
-            <button  type="submit" class="submit">Login</button>
+            <button  type="submit" class="submit">Save shift</button>
         </div>
     </form>
     </div>
 </div>
+
+
+<!-- edit -->
+
+<div id="shift_edit" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('shift_edit').style.display='none'" class="close2">&times;</span>
+            <form action="">
+                <center>
+                <select id="select" onchange="shiftEditSubmitChange(value)"></select>
+                </center>
+                <button type="submit" name="jens" value="submit" id="shift_edit_submit" class="submit">Edit shift</button>
+            </form>
+    </div>
+</div>
+
+<!-- delete -->
 
 <!-- job -->
 
