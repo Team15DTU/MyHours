@@ -12,6 +12,7 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="PersonalSite.js"></script>
     <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
 <header>
@@ -43,7 +44,7 @@
 
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Shift</label>
                 <div class="smenu">
-                    <a href="#">Add</a>
+                    <a href="#" onclick="document.getElementById('shift_add').style.display='block'">Add</a>
                     <a href="#">Edit</a>
                     <a href="#">Delete</a>
                 </div>
@@ -54,7 +55,7 @@
 
                 <label for="myid2" class="btn_menu"><i class="fas fa-briefcase"></i>Job</label>
                 <div class="smenu">
-                    <a href="#">Add</a>
+                    <a href="#" onclick="document.getElementById('job_add').style.display='block'">Add</a>
                     <a href="#">Edit</a>
                     <a href="#">Delete</a>
                 </div>
@@ -64,7 +65,7 @@
 
                 <label for="myid3" class="btn_menu"><i class="fas fa-building"></i>Workplace</label>
                 <div class="smenu">
-                    <a href="#">Add</a>
+                    <a href="#" onclick="document.getElementById('workplace_add').style.display='block'">Add</a>
                     <a href="#">Edit</a>
                     <a href="#">Delete</a>
                 </div>
@@ -95,6 +96,89 @@
     </div>
 
 </header>
+
+
+
+
+    <!-- Modalerne -->
+
+<!-- Shift -->
+
+<div id="shift_add" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('shift_add').style.display='none'" class="close2">&times;</span>
+    <form action="/action_page.php">
+        <div class="form_per">
+            <label><b>What job is the shift?</b></label>
+            <input  type="text" placeholder="What job is the shift?" name="job_to_shift" required>
+
+            <label><b>When do you start your shift?</b></label>
+            <input class="w3-input w3-border w3-margin-bottom" type="time" name="shift_start" required>
+
+            <label><b>When does the shift stop?</b></label>
+            <input class="w3-input w3-border w3-margin-bottom" type="time" name="shift_end" required>
+
+            <label><b>How long break do you have on the shift? (in minutes)</b></label>
+            <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="psw" required>
+
+            <button  type="submit" class="submit">Login</button>
+        </div>
+    </form>
+    </div>
+</div>
+
+<!-- job -->
+
+<div id="job_add" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('job_add').style.display='none'" class="close2">&times;</span>
+        <form action="/action_page.php">
+            <div class="form_per">
+                <label><b>What company is the job for?</b></label>
+                <input  type="text" placeholder="What company is the job for?" name="company_to_job" required>
+
+                <label><b>When did you get hired?</b></label>
+                <input class="w3-input w3-border w3-margin-bottom" type="date" name="job_start" required>
+
+                <label><b>How much do you earn a hour?</b></label>
+                <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="psw" required>
+
+                <button  type="submit" class="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- workplace -->
+
+<div id="workplace_add" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('workplace_add').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <div class="form_per">
+                <label><b>What address are you company at?</b></label>
+                <input  type="text" placeholder="Address of your company" name="company_address" required>
+
+                <label><b>What are the phone number?</b></label>
+                <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="phone_number" required>
+
+                <label><b>What is the zip code of the address?</b></label>
+                <input class="w3-input w3-border w3-margin-bottom" placeholder="Company address" type="text" name="shift_end" required>
+
+                <label><b>What town is the company in?</b></label>
+                <input class="w3-input w3-border" type="text" placeholder="Town where company is located" name="psw" required>
+
+                <button  type="submit" class="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
 
 <footer>
     <script type="text/javascript" src="PersonalSite.js"></script>
