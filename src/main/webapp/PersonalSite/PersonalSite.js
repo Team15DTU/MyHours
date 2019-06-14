@@ -277,3 +277,65 @@ function editUser(){
     console.log(userJson);
 }
 
+function deleteActivity(){
+
+    event.preventDefault();
+    var userJson = $("").serializeJSON();
+    $.ajax({
+        method: 'DELETE',
+        url : "/MyHours/DBController/",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to delete activity!")
+        }
+    });
+    console.log(userJson);
+}
+
+function deleteEmployer(){
+
+    event.preventDefault();
+    var userJson = $("").serializeJSON();
+    $.ajax({
+        method: 'DELETE',
+        url : "/MyHours/DBController/",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to delete Employer!")
+        }
+    });
+    console.log(userJson);
+}
+
+function deleteJob(){
+
+    event.preventDefault();
+    var userJson = $("").serializeJSON();
+    $.ajax({
+        method: 'DELETE',
+        url : "/MyHours/DBController/",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to delete Job!")
+        }
+    });
+    console.log(userJson);
+}
