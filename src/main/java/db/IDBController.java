@@ -20,20 +20,20 @@ public interface IDBController
 	/*------------------------------------------------------------
 	| Creators                                                   |
 	-------------------------------------------------------------*/
-    void createWorker   (IWorkerDTO workerDTO) throws DALException;
+    void createWorker   (IWorkerDTO workerDTO);
     
     /*------------------------------------------------------------
     | Get singles                                                |
     -------------------------------------------------------------*/
-    IWorkerDTO      getIWorkerDTO       (String email)          throws DALException;
-    IWorkerDTO      getIWorkerDTO       (int id)                throws DALException;
+    IWorkerDTO      getIWorkerDTO       (String email);
+    IWorkerDTO      getIWorkerDTO       (int id);
     
     /*------------------------------------------------------------
     | Get lists                                                  |
     -------------------------------------------------------------*/
-    List<IWorkerDTO> getIWorkerDTOList  ()                      throws DALException;
-    List<IWorkerDTO> getIWorkerDTOList  (int minID, int maxID)  throws DALException;
-	List<IWorkerDTO> getIWorkerDTOList  (String name)      		throws DALException;
+    List<IWorkerDTO> getIWorkerDTOList  ();
+    List<IWorkerDTO> getIWorkerDTOList  (int minID, int maxID);
+	List<IWorkerDTO> getIWorkerDTOList  (String name);
     
     //endregion
     
@@ -42,19 +42,19 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createEmployer (IEmployerDTO employer)                	throws DALException;
+    void createEmployer (IEmployerDTO employer);
     
     /*------------------------------------------------------------
     | Get singles                                                |
     -------------------------------------------------------------*/
-    IEmployerDTO 	getIEmployerDTO     (int id)                throws DALException;
+    IEmployerDTO 	getIEmployerDTO     (int id);
     
     /*------------------------------------------------------------
     | Get lists                                                  |
     -------------------------------------------------------------*/
-    List<IEmployerDTO> getIEmployerList ()						throws DALException;
-    List<IEmployerDTO> getIEmployerList (int minID, int maxID)	throws DALException;
-	List<IEmployerDTO> getIEmployerList (String name)			throws DALException;
+    List<IEmployerDTO> getIEmployerList ();
+    List<IEmployerDTO> getIEmployerList (int minID, int maxID);
+	List<IEmployerDTO> getIEmployerList (String name);
     
     //endregion
     
@@ -63,20 +63,20 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createJob      (IJobDTO job)                           throws DALException;
+    void createJob      (IJobDTO job);
     
     /*------------------------------------------------------------
     | Get singles                                                |
     -------------------------------------------------------------*/
-    IJobDTO         getIJobDTO          (int id)                throws DALException;
+    IJobDTO         getIJobDTO          (int id);
     
     /*------------------------------------------------------------
     | Get lists                                                  |
     -------------------------------------------------------------*/
-    List<IJobDTO>	getIJobDTOList		()						throws DALException;
-    List<IJobDTO>	getIJobDTOList		(int employerID)		throws DALException;
-	List<IJobDTO>	getIJobDTOList		(String name)			throws DALException;
-	List<IJobDTO>	getIJobDTOList		(double minSalary, double maxSalary) throws DALException;	// FUCK!
+    List<IJobDTO>	getIJobDTOList		();
+    List<IJobDTO>	getIJobDTOList		(int employerID);
+	List<IJobDTO>	getIJobDTOList		(String name);
+	List<IJobDTO>	getIJobDTOList		(double minSalary, double maxSalary);
     
     //endregion
     
@@ -85,27 +85,27 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createActivity (IActivityDTO activity)                 	throws DALException;
+    void createActivity (IActivityDTO activity);
     
     /*------------------------------------------------------------
     | Get singles                                                |
     -------------------------------------------------------------*/
-    IActivityDTO 		getIActivity        (int id)                throws DALException;
+    IActivityDTO 		getIActivity        (int id);
     
     /*------------------------------------------------------------
     | Get lists                                                  |
     -------------------------------------------------------------*/
-    List<IActivityDTO>  getIActivityList 	()						throws DALException;
-    List<IActivityDTO>  getIActivityList 	(int jobID)				throws DALException;
-	List<IActivityDTO>  getIActivityList 	(Date date)				throws DALException;
-	List<IActivityDTO>  getIActivityList 	(double minVal, double maxVal)	throws DALException;	// Again ...
+    List<IActivityDTO>  getIActivityList 	();
+    List<IActivityDTO>  getIActivityList 	(int jobID);
+	List<IActivityDTO>  getIActivityList 	(Date date);
+	List<IActivityDTO>  getIActivityList 	(double minVal, double maxVal);
     
     //endregion
     
     /*------------------------------------------------------------
     | Utilities                                                  |
     -------------------------------------------------------------*/
-    String  setTimeZoneFromSQLServer    ()                              throws DALException;
-	int     getNextAutoIncremental      (String tableName)              throws DALException;
+    String  setTimeZoneFromSQLServer    ();
+	int     getNextAutoIncremental      (String tableName);
 	boolean loginCheck                  (WorkerDTO user);
 }
