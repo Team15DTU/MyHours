@@ -8,6 +8,7 @@ import dto.worker.WorkerDTO;
 import db.DBController;
 import db.IConnPool;
 import db.TestConnPoolV1;
+import hibernate.HibernateProperties;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 
@@ -53,7 +54,7 @@ public class WorkerDAOTest
 	@Test
 	public void createWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance()).getiWorkerDAO();
+		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance(),new HibernateProperties().getTestDB()).getiWorkerDAO();
 		
 		// Try to Create them
 		for (IWorkerDTO worker : testWorkers)
@@ -67,7 +68,7 @@ public class WorkerDAOTest
 	@Test
 	public void getWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance()).getiWorkerDAO();
+		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance(),new HibernateProperties().getTestDB()).getiWorkerDAO();
 
 		
 		// Get Alfred from DB
@@ -85,7 +86,7 @@ public class WorkerDAOTest
 	@Test
 	public void getWorkerList() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance()).getiWorkerDAO();
+		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance(),new HibernateProperties().getTestDB()).getiWorkerDAO();
 		
 		// Create two extra workers - three total
 		for (IWorkerDTO worker : testWorkers)

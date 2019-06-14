@@ -2,7 +2,6 @@ package dao.employer;
 
 import dao.DALException;
 import dao.worker.IWorkerDAO;
-import dao.worker.WorkerConstants;
 import dto.employer.EmployerDTO;
 import dto.employer.IEmployerDTO;
 import db.DBController;
@@ -10,6 +9,7 @@ import db.IConnPool;
 import db.TestConnPoolV1;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerHiberDTO;
+import hibernate.HibernateProperties;
 import org.junit.*;
 
 import java.awt.*;
@@ -35,47 +35,42 @@ public class EmployerDAOTest
 
     // region EmployerDTO No. 1
 
-    private int employerNo1_workerID_assigned;
-    private String employerNo1_name = "Bilka - Hundige";
-    private Color employerNo1_color = Color.decode("#FAEBD7");
-    private String employerNo1_telephone = "12345678";
-    private int employereNo1_id_assigned;
+    private static int employerNo1_workerID_assigned;
+    private static String employerNo1_name = "EmployerName1";
+    private static Color employerNo1_color = Color.decode("#FAEBD7");
+    private static String employerNo1_telephone = "12345678";
+    private static int employereNo1_id_assigned;
 
-    private IEmployerDTO employerNo1 = new EmployerDTO();
+    private static IEmployerDTO employerNo1;
 
     // endregion
 
     // region EmployerDTO No. 2
 
-    private int employerNo2_workerID_assigned;
-    private String employerNo2_name = "DTU - Lyngby";
-    private Color employerNo2_color = Color.decode("#55a7e4");
-    private String employerNo2_telephone = "87654321";
-    int employerNo2_id_assigned;
+    private static int employerNo2_workerID_assigned;
+    private static String employerNo2_name = "EmployerName2";
+    private static Color employerNo2_color = Color.decode("#55a7e4");
+    private static String employerNo2_telephone = "87654321";
+    private static int employerNo2_id_assigned;
 
-    private IEmployerDTO employerNo2 = new EmployerDTO();
+    private static IEmployerDTO employerNo2;
 
     // endregion
 
     //region WorkerDTO No. 1
 
     private int tw1_workerID_assigned;
-    private String tw1_firstName = "FirstName1";
-    private String tw1_surName = "SurName1";
-    private String tw1_email = "test1@test.dk";
-    private String tw1_pass = "test1Password";
-    private LocalDate tw1_birthday = LocalDate.now();
-    private IWorkerDTO testWorker1 = new WorkerHiberDTO();
+    private static String tw1_firstName = "FirstName1";
+    private static String tw1_surName = "SurName1";
+    private static String tw1_email = "test1@test.dk";
+    private static String tw1_pass = "test1Password";
+    private static LocalDate tw1_birthday = LocalDate.now();
+    private static IWorkerDTO testWorker1;
 
     //endregion
 
-    public EmployerDAOTest() throws DALException
+    private static void setupTestData() throws DALException
     {
-        // Finds the next id for a new Worker.
-        //tw1_workerID_assigned = dbController.getNextAutoIncremental(WorkerConstants.TABLENAME); TODO: Skal op at køre igen.
-        employerNo1_workerID_assigned = tw1_workerID_assigned=3;
-        employerNo2_workerID_assigned = tw1_workerID_assigned;
-
         // Setting up testWorker1
         testWorker1 = new WorkerHiberDTO();
         testWorker1.setFirstName(tw1_firstName);
@@ -85,16 +80,18 @@ public class EmployerDAOTest
         testWorker1.setBirthday(tw1_birthday);
 
         // Creates a new Worker in the test DB.
-        //iWorkerDAO.createWorker(testWorker1); TODO: Der skal creates og deletes, skal have fikset metoderne.
+        iWorkerDAO.createWorker(testWorker1);
 
         // Setting up employerNo1
-        employerNo1.setWorkerID(employerNo1_workerID_assigned);
+        employerNo1 = new EmployerDTO();
+        employerNo1.setWorkerID(testWorker1.getWorkerID());
         employerNo1.setName(employerNo1_name);
         employerNo1.setColor(employerNo1_color);
         employerNo1.setTelephone(employerNo1_telephone);
 
         // Setting up employerNo2
-        employerNo2.setWorkerID(employerNo2_workerID_assigned);
+        employerNo2 = new EmployerDTO();
+        employerNo2.setWorkerID(testWorker1.getWorkerID());
         employerNo2.setName(employerNo2_name);
         employerNo2.setColor(employerNo2_color);
         employerNo2.setTelephone(employerNo2_telephone);
@@ -105,19 +102,32 @@ public class EmployerDAOTest
     @BeforeClass
     public static void setUp() throws Exception
     {
+        // Setup DAOs, ConnectionPools and DBControllers.
         test_DB = TestConnPoolV1.getInstance();
-    
-        dbController = new DBController(test_DB);
-    
+        dbController = new DBController(test_DB, new HibernateProperties().getTestDB());
         iEmployerDAO = dbController.getiEmployerDAO();
         iWorkerDAO  = dbController.getiWorkerDAO();
+
+        // Clear both Employers and Workers table.
+        clearBothTestTables();
+
+        // Setup necessary test IWorkerDTO and IEmployer objects.
+        setupTestData();
     }
     
     @AfterClass
     public static void tearDown() throws Exception
     {
+        // Clean both Worker Tables (Employers table should already be cleared by @After method.
+        clearWorkerTestTable();
+
+        // Closes ConnectionPool.
         test_DB.closePool();
-        //iWorkerDAO.deleteWorker("test1@test.dk");
+    }
+
+    @After
+    public void afterTest () throws DALException {
+        clearEmployerTestTable();
     }
     
     /*
@@ -125,51 +135,51 @@ public class EmployerDAOTest
      */
 
     @Test
-    public void createWorkPlaces() throws DALException {
+    public void createEmployer() throws DALException {
 
         // WorkplaceDTO No. 1
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Employers");
 
-        iEmployerDAO.createIWorkPlace(employerNo1);
+        iEmployerDAO.createiEmployer(employerNo1);
 
         IEmployerDTO returnedWorkplaceDTOOfNo1 = iEmployerDAO.getIEmployer(nextAutoIncrementalForWorkplaceNo1);
 
         assertEquals(returnedWorkplaceDTOOfNo1.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo1);
-        assertEquals(returnedWorkplaceDTOOfNo1.getWorkerID(), employerNo1_workerID_assigned);
+        assertEquals(returnedWorkplaceDTOOfNo1.getWorkerID(), testWorker1.getWorkerID());
         assertEquals(returnedWorkplaceDTOOfNo1.getName(), employerNo1_name);
         assertEquals(returnedWorkplaceDTOOfNo1.getColor(), employerNo1_color);
         assertEquals(returnedWorkplaceDTOOfNo1.getTelephone(), employerNo1_telephone);
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
 
     }
 
     @Test
-    public void getWorkPlaceList() throws DALException {
+    public void getEmployerList() throws DALException {
 
         // Creates WorkplaceDTO No. 1
 
         int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
 
-        iEmployerDAO.createIWorkPlace(employerNo1);
+        iEmployerDAO.createiEmployer(employerNo1);
 
         // Creates WorkplaceDTO No. 2
 
         int nextAutoIncrementalForWorkplaceNo2 = dbController.getNextAutoIncremental("Workplaces");
 
-        iEmployerDAO.createIWorkPlace(employerNo2);
+        iEmployerDAO.createiEmployer(employerNo2);
 
-        // Test of getIWorkPlaceList()
+        // Test of getiEmployerList()
 
         List<IEmployerDTO> workPlaceDTOList;
 
-        workPlaceDTOList= iEmployerDAO.getIWorkPlaceList();
+        workPlaceDTOList= iEmployerDAO.getiEmployerList();
 
         assertEquals(workPlaceDTOList.size(),2);
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo2);
 
     }
 
@@ -178,26 +188,26 @@ public class EmployerDAOTest
 
         // Creates WorkplaceDTO No. 1
 
-        int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
+        int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental(EmployerConstants.TABLENAME);
 
-        iEmployerDAO.createIWorkPlace(employerNo1);
+        iEmployerDAO.createiEmployer(employerNo1);
 
         // Creates WorkplaceDTO No. 2
 
-        int nextAutoIncrementalForWorkplaceNo2 = dbController.getNextAutoIncremental("Workplaces");
+        int nextAutoIncrementalForWorkplaceNo2 = dbController.getNextAutoIncremental(EmployerConstants.TABLENAME);
 
-        iEmployerDAO.createIWorkPlace(employerNo2);
+        iEmployerDAO.createiEmployer(employerNo2);
 
-        // Test of getIWorkPlaceList(int workerID)
+        // Test of getiEmployerList(int workerID)
 
         List<IEmployerDTO> workPlaceDTOListFromWorkerID;
 
-        workPlaceDTOListFromWorkerID = iEmployerDAO.getIWorkPlaceList(employerNo1_workerID_assigned);
+        workPlaceDTOListFromWorkerID = iEmployerDAO.getiEmployerList(testWorker1.getWorkerID());
 
-        assertEquals(workPlaceDTOListFromWorkerID.size(),1);
+        assertEquals(2, workPlaceDTOListFromWorkerID.size()); // TODO: Der skal oprettes en ekstra TestWorker
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo2);
 
     }
 
@@ -208,17 +218,17 @@ public class EmployerDAOTest
 
         int nextAutoIncrementalForWorkplaceNo2 = dbController.getNextAutoIncremental(EmployerConstants.TABLENAME);
 
-        iEmployerDAO.createIWorkPlace(employerNo2);
+        iEmployerDAO.createiEmployer(employerNo2);
 
         IEmployerDTO returnedWorkplaceDTOOfNo2 = iEmployerDAO.getIEmployer(nextAutoIncrementalForWorkplaceNo2);
 
         assertEquals(returnedWorkplaceDTOOfNo2.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo2);
-        assertEquals(returnedWorkplaceDTOOfNo2.getWorkerID(), employerNo2_workerID_assigned);
+        assertEquals(returnedWorkplaceDTOOfNo2.getWorkerID(), testWorker1.getWorkerID());
         assertEquals(returnedWorkplaceDTOOfNo2.getName(), employerNo2_name);
         assertEquals(returnedWorkplaceDTOOfNo2.getColor(), employerNo2_color);
         assertEquals(returnedWorkplaceDTOOfNo2.getTelephone(), employerNo2_telephone);
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo2);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo2);
 
     }
 
@@ -227,9 +237,9 @@ public class EmployerDAOTest
 
         // WorkplaceDTO No. 1
 
-        int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental("Workplaces");
+        int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental(EmployerConstants.TABLENAME);
 
-        iEmployerDAO.createIWorkPlace(employerNo1);
+        iEmployerDAO.createiEmployer(employerNo1);
 
         IEmployerDTO workplaceDTOOfNo1ToUpdate = iEmployerDAO.getIEmployer(nextAutoIncrementalForWorkplaceNo1);
 
@@ -242,7 +252,7 @@ public class EmployerDAOTest
 
         // Updates the WorkplaceDTO with the information that is passed into the method
 
-        iEmployerDAO.updateIWorkPlace(workplaceDTOOfNo1ToUpdate);
+        iEmployerDAO.updateiEmployer(workplaceDTOOfNo1ToUpdate);
 
         assertEquals(workplaceDTOOfNo1ToUpdate.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo1);
         assertEquals(workplaceDTOOfNo1ToUpdate.getWorkerID(), employerNo2_workerID_assigned);
@@ -252,7 +262,7 @@ public class EmployerDAOTest
 
         // Deletes the created Workplace
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
 
     }
     
@@ -261,20 +271,51 @@ public class EmployerDAOTest
 
         // WorkplaceDTO No. 1
 
-        int nextAutoIncrementalForWorkplaceNo1 = dbController.getNextAutoIncremental(EmployerConstants.TABLENAME);
+        int nextAutoIncrementalForEmployerNo1 = dbController.getNextAutoIncremental(EmployerConstants.TABLENAME);
 
-        iEmployerDAO.createIWorkPlace(employerNo1);
+        iEmployerDAO.createiEmployer(employerNo1);
 
-        int noOfWorkplacesInTable = iEmployerDAO.getIWorkPlaceList().size();
+        int noOfEmployersInTable = iEmployerDAO.getiEmployerList().size();
 
-        assertEquals(noOfWorkplacesInTable, 1);
+        assertEquals(noOfEmployersInTable, 1);
 
-        iEmployerDAO.deleteIWorkPlace(nextAutoIncrementalForWorkplaceNo1);
+        iEmployerDAO.deleteiEmployer(nextAutoIncrementalForEmployerNo1);
 
-        int noOfWorkPlacesInTableAfterDeletion = iEmployerDAO.getIWorkPlaceList().size();
+        int noOfEmployersInTableAfterDeletion = iEmployerDAO.getiEmployerList().size();
 
-        assertEquals(noOfWorkPlacesInTableAfterDeletion,0);
+        assertEquals(noOfEmployersInTableAfterDeletion,0);
+
+        // The created employer is deleted as part of the test.
 
     }
+
+
+    private static void clearBothTestTables () throws DALException {
+        // Deletes all Employers from DB.
+        for (IEmployerDTO employerDTO : iEmployerDAO.getiEmployerList()){
+            iEmployerDAO.deleteiEmployer(employerDTO.getWorkplaceID());
+        }
+
+        // Deletes all workers from test DB.
+        for (IWorkerDTO workerDTO : iWorkerDAO.getWorkerList()){
+            iWorkerDAO.deleteWorker(workerDTO.getEmail());
+        }
+    }
+
+    private static void clearEmployerTestTable () throws DALException {
+        // Deletes all Employers from DB.
+        for (IEmployerDTO employerDTO : iEmployerDAO.getiEmployerList()){
+            iEmployerDAO.deleteiEmployer(employerDTO.getWorkplaceID());
+        }
+    }
+
+    private static void clearWorkerTestTable () throws DALException {
+        // Deletes all workers from test DB.
+        for (IWorkerDTO workerDTO : iWorkerDAO.getWorkerList()){
+            iWorkerDAO.deleteWorker(workerDTO.getEmail());
+        }
+    }
+
+
 
 }

@@ -7,14 +7,14 @@
 
 
     <session-factory>
-        <!-- Database connection settings // Alfred Diplom portal DB-->
+        <!-- Database connection settings // Noah Diplom portal DB-->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com:3306/s160107</property>
-        <property name="hibernate.connection.username">s160107</property>
-        <property name="hibernate.connection.password">wOWElNh0bVravE9uGDNzw</property>
+        <property name="hibernate.connection.url">jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com:3306/s185084</property>
+        <property name="hibernate.connection.username">s185084</property>
+        <property name="hibernate.connection.password">aCm2PTJl9iixbeeQ7xGgv</property>
 
         <!-- JDBC connection pool (use the built-in) -->
-        <property name="hibernate.connection.pool_size">2</property>
+        <property name="connection.pool_size">2</property>
 
         <!-- SQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
@@ -22,7 +22,7 @@
         <!-- Echo all executed SQL to stdout -->
         <property name="hibernate.show_sql">true</property>
 
-        <!-- <property name="hibernate.hbm2ddl.auto">create</property> -->
+        <property name="hibernate.hbm2ddl.auto">create</property>
 
         <!-- Mapping for dao -->
         <mapping class="dto.worker.WorkerHiberDTO" />

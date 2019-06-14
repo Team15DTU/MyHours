@@ -11,6 +11,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="PersonalSite.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
 </head>
 <body>
 <header>
@@ -28,16 +29,16 @@
         <div class="menu">
 
 
-            <li class="item" id="profile" onclick="changeFunction('none'), checkMenu0()">
+            <li class="item" id="profile" onclick="changeFunction('none'), checkMenu0(), closeInfo()">
                 <input id="myid" type="checkbox">
-              
+
                 <label for="myid" class="btn_menu"><i class="fas fa-user"></i>Profile</label>
                 <div class="smenu">
                     <a href="#">Settings</a>
                 </div>
             </li>
 
-            <li class="item" id="shifts" onclick="changeFunction('shifts'), checkMenu1()">
+            <li class="item" id="shifts" onclick="changeFunction('shifts'), checkMenu1(),openInfo()">
                 <input id="myid1" type="checkbox">
 
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Shift</label>
@@ -48,7 +49,7 @@
                 </div>
             </li>
 
-            <li class="item" id="job" onclick="changeFunction('job'), checkMenu2()">
+            <li class="item" id="job" onclick="changeFunction('job'), checkMenu2(), openInfo()">
                 <input id="myid2" type="checkbox">
 
                 <label for="myid2" class="btn_menu"><i class="fas fa-briefcase"></i>Job</label>
@@ -58,7 +59,7 @@
                     <a href="#">Delete</a>
                 </div>
             </li>
-            <li class="item" id="workplace" onclick="changeFunction('workplace'), checkMenu3()">
+            <li class="item" id="workplace" onclick="changeFunction('workplace'), checkMenu3(), openInfo()">
                 <input id="myid3" type="checkbox">
 
                 <label for="myid3" class="btn_menu"><i class="fas fa-building"></i>Workplace</label>
@@ -75,7 +76,7 @@
     </div>
 
     <div class="popup_mid">
-        <div class="popup_content">
+        <div class="popup_content" id="popup_content" >
 
             <div class="pop_top" id="pop_top2">
                 <center>
@@ -88,9 +89,7 @@
 
                 </table>
             </div>
-            <div class="pop_right">
-
-            </div>
+            <div class="pop_right" id="graph"></div>
 
         </div>
     </div>
@@ -100,6 +99,26 @@
 <footer>
     <script type="text/javascript" src="PersonalSite.js"></script>
     <script>
+        //her er delene som fremkalder content.
+        function openInfo() {
+
+            document.getElementById('popup_content').style.width = '100%';
+            document.getElementById('popup_content').style.height = '80%';
+            hoursOnWorkMounthly();
+
+
+
+
+
+        }
+        function closeInfo() {
+            document.getElementById('popup_content').style.width = '0px';
+            document.getElementById('popup_content').style.height = '0px';
+
+        }
+
+
+        //her er delene som ændre ved content.
         function changeFunction(site) {
             var elem = document.getElementById('content');
             if (site == 'shifts'){
@@ -127,7 +146,7 @@
             } else {
                 document.getElementById('pop_top2').style.backgroundColor = 'rgb(52, 152, 219)';
             }
-            }
+        }
 
 
 
@@ -145,6 +164,83 @@
                 none();
             }
 
+        }
+
+        function hoursOnWorkMounthly(){
+            anychart.onDocumentReady(function() {
+
+
+                var today = new Date();
+                var mounth = String(today.getMonth());
+                var year = today.getFullYear();
+
+                var nrOfDays = daysInMonth(mounth,year);
+
+                // set the data
+                var data = {
+                    header: ["Date", "Hours"]
+                };
+
+                //her finder jeg alle de job som er forbundet med brugeren.
+                var nrOfJobs = new Array();
+                for (var loop = 0; loop < findNrOfCompanys() ;loop++) {
+                    nrOfJobs[loop] = findCompanyId(loop);
+                }
+
+                mounth++;
+
+                //laver dataset
+                var dataSets = new Array();
+
+                for (var l=0;l<findNrOfCompanys();l++) {
+                    var dataSet = anychart.data.set(data);
+                    for (var i = 0; i < nrOfDays; i++) {
+                        var name = 'Den ' + (i + 1) + '. i ' + (mounth) + '.';
+                        dataSet.append([name, hoursOfWork()]);
+                    };
+                    dataSets[l] = dataSet;
+                };
+
+
+
+
+                // create the chart
+                var chart = anychart.column()
+                chart.animation(true);
+
+                var serieSet = new Array();
+
+                //laver dataen til serie sæt.
+
+                for (var r = 0; r<dataSets.length; r++) {
+                    serieSet[r] = dataSets[r].mapAs({'x': 0, 'value': 1})
+                }
+
+                chart.yScale().stackMode('value');
+
+
+
+                // add the data
+                for (var c = 0; c<serieSet.length; c++){
+                    chart.column(serieSet[c]);
+                }
+
+
+                var i=0;
+                // create a loop
+                while (chart.getSeriesAt(i)){
+                    // rename each series
+                    chart.getSeriesAt(i).name(findWork(nrOfJobs[i]));
+                    i++;
+                }
+
+                // set the chart title
+                chart.title("Hours on work");
+
+                // draw
+                chart.container("graph");
+                chart.draw();
+            });
         }
 
 

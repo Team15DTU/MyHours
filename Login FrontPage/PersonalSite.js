@@ -32,9 +32,9 @@ function job() {
     while(table.hasChildNodes()){
         table.removeChild(table.firstChild);
     }
-    var firm = 'Firma';
-    var lastpay = 'Sidste udbetaling';
-    var recivepay = 'Optjent løn';
+    var firm = 'Firm';
+    var lastpay = 'Last salary';
+    var recivepay = 'Estimated salary';
 
 
     var row = table.insertRow(0);
@@ -85,7 +85,7 @@ function findCompany(nr) {
 
 function findNrOfCompanys() {
     return 3;
-}
+}   
 
 function findCompanyId(nr) {
     if (nr == 0){return 1;}
@@ -116,7 +116,6 @@ function findPaycheck(nr) {
     return '444 kr.'
 }
 
-
 //her er graferne
 
 function daysInMonth (month, year) {
@@ -128,30 +127,4 @@ function hoursOfWork () {
     return Math.random()*10;
 }
 
-// Show only one item at a time in the menu
-var checkMenu0 = function() {
-    //$("#myid").attr("checked");
-    $("#myid1").prop("checked", false);
-    $("#myid2").prop("checked", false);
-    $("#myid3").prop("checked", false);
-};
-
-var checkMenu1 = function() {
-    //$("#myid").attr("checked");
-    $("#myid").prop("checked", false);
-    $("#myid2").prop("checked", false);
-    $("#myid3").prop("checked", false);
-};
-var checkMenu2 = function() {
-    //$("#myid").attr("checked");
-    $("#myid1").prop("checked", false);
-    $("#myid").prop("checked", false);
-    $("#myid3").prop("checked", false);
-};
-
-var checkMenu3 = function() {
-    //$("#myid").attr("checked");
-    $("#myid1").prop("checked", false);
-    $("#myid2").prop("checked", false);
-    $("#myid").prop("checked", false);
-};
+// her er de metoder som bliver brugt til at laver graferne, sammen med "chart.

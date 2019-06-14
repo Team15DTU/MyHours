@@ -1,12 +1,11 @@
 package hibernate;
 
+import dto.worker.WorkerHiberDTO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 
-import java.util.TimeZone;
+import java.util.Properties;
 
 /**
  * @author Rasmus Sander Larsen
@@ -18,12 +17,15 @@ public class HibernateUtil {
      */
 
     private SessionFactory sessionFactory;
+    private Properties properties;
 
     /*
     ----------------------- Constructor -------------------------
      */
 
-
+    public HibernateUtil (Properties properties) {
+        this.properties = properties;
+    }
     /*
     ------------------------ Properties -------------------------
      */
@@ -38,6 +40,13 @@ public class HibernateUtil {
         this.sessionFactory = sessionFactory;
     }
 
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 
     // </editor-folder>
 
@@ -46,19 +55,19 @@ public class HibernateUtil {
      */
 
     public void setup() {
+        Configuration configuration = new Configuration().setProperties(properties)
+                .addAnnotatedClass(WorkerHiberDTO.class);
 
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure() // configures settings from dao.cfg.xml
-                .build();
+        //final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+        //        .configure() // configures settings from dao.cfg.xml
+        //        .build();
         try {
-            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+            sessionFactory = configuration.buildSessionFactory();
+            //sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            StandardServiceRegistryBuilder.destroy(registry);
+            //StandardServiceRegistryBuilder.destroy(registry);
         }
-
-        // Sets the program timezone to the same as the DB.
-        //TimeZone.setDefault(TimeZone.getTimeZone(getTimeZoneFromDB())); TODO, skal muligvis fjernes!
     }
 
     public void exit() {
@@ -74,13 +83,30 @@ public class HibernateUtil {
     public void closeSession (Session session) {
         session.close();
     }
-    
+
+    public void executeSQLQuery (String query) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.createSQLQuery(query).executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public void executeHQLQuery (String query) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.createQuery(query).executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+    }
+
     /*
     ---------------------- Support Methods ----------------------
      */
 
     // Gets the timezone of the DB.
-    private String getTimeZoneFromDB () {
+    public String getTimeZoneFromDB () {
+
         String hibernateDialect = (String) sessionFactory.getProperties().get("hibernate.dialect");
         Session session = getSession();
 
