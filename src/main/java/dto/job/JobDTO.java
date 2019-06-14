@@ -3,8 +3,6 @@ package dto.job;
 import dto.ruleSet.RuleSet;
 import dto.address.Address;
 import dto.activity.IActivityDTO;
-import dto.ruleSet.RuleSet;
-import dto.address.Address;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +17,7 @@ public class JobDTO implements IJobDTO {
      */
 
     private int jobID;
-    private int workplaceID;
+    private int employerID;
     private String jobName;
     private LocalDate hireDate;
     private double stdSalary;
@@ -33,8 +31,8 @@ public class JobDTO implements IJobDTO {
     
     public JobDTO () {}
 
-    public JobDTO (int workplaceID, String jobName, double stdSalary) {
-        this.workplaceID = workplaceID;
+    public JobDTO (int employerID, String jobName, double stdSalary) {
+        this.employerID = employerID;
         this.jobName = jobName;
         this.stdSalary = stdSalary;
         hireDate = null;
@@ -43,8 +41,8 @@ public class JobDTO implements IJobDTO {
         iActivityDTOList = null;
     }
 
-    public JobDTO (int workplaceID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, RuleSet ruleSet, List<IActivityDTO> iActivityDTOList) {
-        this.workplaceID = workplaceID;
+    public JobDTO (int employerID, String jobName, double stdSalary, LocalDate hireDate, Address jobAddress, RuleSet ruleSet, List<IActivityDTO> iActivityDTOList) {
+        this.employerID = employerID;
         this.jobName = jobName;
         this.stdSalary = stdSalary;
         this.hireDate = hireDate;
@@ -67,12 +65,12 @@ public class JobDTO implements IJobDTO {
         this.jobID = jobID;
     }
 
-    public int getWorkplaceID() {
-        return workplaceID;
+    public int getEmployerID() {
+        return employerID;
     }
 
-    public void setWorkplaceID(int workplaceID) {
-        this.workplaceID = workplaceID;
+    public void setEmployerID(int employerID) {
+        this.employerID = employerID;
     }
 
     public String getJobName() {
@@ -115,11 +113,11 @@ public class JobDTO implements IJobDTO {
         this.ruleSet = ruleSet;
     }
 
-    public List<IActivityDTO> getIShiftDTOList() {
+    public List<IActivityDTO> getiActivityDTOList() {
         return iActivityDTOList;
     }
 
-    public void setIShiftDTOList(List<IActivityDTO> iActivityDTOList) {
+    public void setiActivityDTOList(List<IActivityDTO> iActivityDTOList) {
         this.iActivityDTOList = iActivityDTOList;
     }
 
@@ -132,7 +130,7 @@ public class JobDTO implements IJobDTO {
     public String toString () {
         StringBuilder toStringBuilder = new StringBuilder();
         toStringBuilder.append("JobID: \t\t\t\t" + jobID + "\n");
-        toStringBuilder.append("WorkplaceID:\t\t" + workplaceID + "\n");
+        toStringBuilder.append("EmployerID:\t\t" + employerID + "\n");
         toStringBuilder.append("Job Name: \t\t\t" + jobName + "\n");
         if (hireDate != null) {
             toStringBuilder.append("HireDate: \t\t\t" + hireDate.toString() + "//" + hireDate.getDayOfMonth() + "-" + hireDate.getMonthValue() + "-" + hireDate.getYear() + "\n");
