@@ -2,9 +2,10 @@
     position: absolute;
     top: 50%;
     transform: translate(30%,-50%);
+    width: 16%;
 }
 .menu {
-    width: 300px;
+    width: 100%;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -81,12 +82,15 @@
 .popup_mid {
     position: absolute;
     top: 18%;
+    width: 60%;
+    height: 80%;
+    right: 45%;
     transform: translate(50%);
     font-size: 14px;
 }
 .popup_content {
-    width: 1000px;
-    height: 600px;
+    width: 0px;
+    height: 0px;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -114,7 +118,6 @@
     width: 65%;
     height: 75%;
     float: right;
-    background: green;
     margin-right: 1%;
 }
 
