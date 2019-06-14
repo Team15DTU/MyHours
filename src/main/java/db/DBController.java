@@ -2,35 +2,30 @@ package db;
 
 import dao.ConnectionHelper;
 import dao.DALException;
+import dao.activity.ActivityDAO;
+import dao.activity.IActivityDAO;
 import dao.employer.EmployerConstants;
+import dao.employer.EmployerDAO;
+import dao.employer.IEmployerDAO;
 import dao.job.IJobDAO;
 import dao.job.JobDAO;
-import dao.activity.IActivityDAO;
-import dao.activity.ActivityDAO;
-import dao.employer.IEmployerDAO;
-import dao.employer.EmployerDAO;
 import dao.worker.IWorkerDAO;
 import dao.worker.WorkerConstants;
 import dao.worker.WorkerHiberDAO;
 import db.connectionPools.ConnPoolV1;
-import dto.job.IJobDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
+import dto.job.IJobDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 import hibernate.HibernateProperties;
 import hibernate.HibernateUtil;
-import org.hibernate.boot.spi.InFlightMetadataCollector;
 
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Properties;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * @author Rasmus Sander Larsen
@@ -92,7 +87,7 @@ public class DBController implements IDBController
         {
             this.connPool   = connPool;
             connectionHelper = new ConnectionHelper(this.connPool);
-            hibernateUtil = new HibernateUtil(hibernateProperties);
+            hibernateUtil 	= new HibernateUtil(hibernateProperties);
             hibernateUtil.setup();
     
             TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
@@ -533,29 +528,53 @@ public class DBController implements IDBController
     //endregion
     
     //region Activity
-    
+	
+	/**
+	 * Takes an object that implements IActivityDTO interface, and
+	 * saving the activity in the database.
+	 * @param activity Object implementing IActivityDTO
+	 */
+	@POST
+	@Path("/createActivity")
+	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createActivity(IActivityDTO activity)
     { }
     
+    @GET
+	@Path("/getActivity/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IActivityDTO getIActivity(int id)
+    public IActivityDTO getIActivity(@PathParam("id") int id)
     { return null; }
     
+    @GET
+	@Path("/getActivityList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IActivityDTO> getIActivityList()
     { return null; }
     
+    @GET
+	@Path("/getActivityList/{jobID}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IActivityDTO> getIActivityList(int jobID)
+    public List<IActivityDTO> getIActivityList(@PathParam("jobID") int jobID)
     { return null; }
     
+    @GET
+	@Path("/getActivityList")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IActivityDTO> getIActivityList(Date date)
     { return null; }
     
+    @GET
+	@Path("/getActivityList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IActivityDTO> getIActivityList(double minVal, double maxVal)
+    public List<IActivityDTO> getIActivityList(@QueryParam("minVal") double minVal, @QueryParam("maxVal") double maxVal)
     { return null; }
     
     //endregion

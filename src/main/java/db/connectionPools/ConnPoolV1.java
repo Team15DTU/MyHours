@@ -344,14 +344,22 @@ public class ConnPoolV1 implements IConnPool {
 	 */
 	protected void closeConnection(Connection c) throws SQLException
 	{
-		// Check if connection is already closed
-		if ( c != null || !c.isClosed() )
+		// Check if connection is null
+		if ( c != null )
 		{
-			// If autocommit == true, then just close
-			if ( c.getAutoCommit() ) { c.close(); }
-			
-			// Otherwise, make sure to make rollback first
-			else { c.rollback(); c.close(); }
+			// Check if connection is already closed
+			if ( !c.isClosed() )
+			{
+				// If autocommit == true, then just close
+				if (c.getAutoCommit()) { c.close(); }
+				
+				// Otherwise, make sure to make rollback first
+				else
+				{
+					c.rollback();
+					c.close();
+				}
+			}
 		}
 	}
 	
@@ -369,7 +377,7 @@ public class ConnPoolV1 implements IConnPool {
 	protected void keepAlive()
 	{
 		// Encapsulate in thread
-		Thread t = new Thread(() ->
+		Thread th = new Thread(() ->
 		{
 			// Start forever loop
 			while (!stop) {
@@ -413,7 +421,7 @@ public class ConnPoolV1 implements IConnPool {
 		});
 		
 		// Set it as daemon thread and start
-		t.setDaemon(true);
-		t.start();
+		th.setDaemon(true);
+		th.start();
 	}
 }
