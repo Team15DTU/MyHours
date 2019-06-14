@@ -53,14 +53,14 @@ public class MySQL_DB implements IConnPool {
     }
 
     @Override
-    public void releaseConnection(Connection connection) throws DALException
+    public void releaseConnection(Connection connection)
     {
         try {
             if (!connection.isClosed())
                 connection.close();
         }
         catch (SQLException e) {
-            throw new DALException(e.getMessage());
+            e.printStackTrace();
         }
     }
     
