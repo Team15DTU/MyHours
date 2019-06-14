@@ -137,7 +137,10 @@
         <span onclick="document.getElementById('shift_edit').style.display='none'" class="close2">&times;</span>
             <form action="">
                 <center>
-                <select id="select" onchange="shiftEditSubmitChange(value)"></select>
+                    <label>Choice a shift you want to edit: </label>
+                <select id="select" onchange="shiftEditSubmitChange(value)">
+                    <option value="Default"></option>
+                </select>
                 </center>
                 <button type="submit" name="jens" value="submit" id="shift_edit_submit" class="submit">Edit shift</button>
             </form>

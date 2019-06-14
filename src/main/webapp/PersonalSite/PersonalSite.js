@@ -10,8 +10,8 @@ function selectShift() {
     for (var i = 0; i < 3; i++) {
 
         var currentShift = allShift.pop();
-        var name = currentShift[5];
         var option = document.createElement('option');
+        var name = currentShift[2].getDate() + '/' + (currentShift[2].getMonth()+1) + ' at ' + currentShift[2].getHours() + ':' + currentShift[2].getMinutes() + ' to ' + currentShift[3].getHours() + ':' + currentShift[3].getMinutes();
         option.appendChild(document.createTextNode(name));
         option.value = currentShift[0];
         option.onclick = shiftEditSubmitChange(currentShift[0]);
@@ -133,9 +133,9 @@ function findAllShift(nr) {
 
     for (var i = 0; i < 3; i++) {
         var endDate = new Date();
-        endDate.setDate(endDate.getDate()+i);
+        endDate.setDate(endDate.getDate());
         var startDate = new Date();
-        startDate.setDate(startDate.getDate()-i);
+        startDate.setDate(startDate.getDate());
 
         var shift = [id = i, jobid = 2, start = startDate, end = endDate, breaks = 30, jobname = findWork(i)]
         allShift.push(shift);
