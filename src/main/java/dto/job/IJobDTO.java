@@ -12,20 +12,15 @@ import java.util.List;
  */
 public interface IJobDTO {
 
-    
-    /*
-    ------------------------ Properties -------------------------
-     */
-
     // <editor-folder desc="Properties"
 
     int getJobID();
 
     void setJobID(int jobID);
 
-    int getWorkplaceID();
+    int getEmployerID();
 
-    void setWorkplaceID(int workplaceID);
+    void setEmployerID(int employerID);
 
     String getJobName();
 
@@ -34,6 +29,10 @@ public interface IJobDTO {
     LocalDate getHireDate();
 
     void setHireDate(LocalDate hireDate);
+
+    LocalDate getFinishDate();
+
+    void setFinishDate(LocalDate finishDate);
 
     double getStdSalary();
 
@@ -47,10 +46,9 @@ public interface IJobDTO {
 
     void setRuleSet(RuleSet ruleSet);
 
-    List<IActivityDTO> getIShiftDTOList();
+    List<IActivityDTO> getiActivityDTOList();
 
-    void setIShiftDTOList(List<IActivityDTO> iActivityDTOList);
-
+    void setiActivityDTOList(List<IActivityDTO> iActivityDTOList);
 
     // </editor-folder>
     

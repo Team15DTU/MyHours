@@ -1,5 +1,6 @@
 package dao.job;
 
+import dao.ConnectionHelper;
 import dao.DALException;
 import dto.job.IJobDTO;
 import dto.job.JobDTO;
@@ -8,35 +9,28 @@ import db.IConnPool;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PropertyResourceBundle;
 
 /**
  * @author Rasmus Sander Larsen
  */
 public class JobDAO implements IJobDAO {
 
-    // Names on columns in the DB table: Jobs
-    public enum JobTableColumns {
-        jobID,
-        workplaceID,
-        jobName,
-        hireDate,
-        stdSalary
-    }
-
     /*
     -------------------------- Fields --------------------------
      */
     
     private IConnPool iConnPool;
-    private final String JOBS_TABLENAME = "Jobs";
+    private ConnectionHelper connectionHelper;
     
     /*
     ----------------------- Constructor -------------------------
      */
 
-    public JobDAO (IConnPool iConnPool) {
+    public JobDAO (IConnPool iConnPool, ConnectionHelper connectionHelper) {
 
         this.iConnPool = iConnPool;
+        this.connectionHelper = connectionHelper;
 
     }
     
@@ -61,31 +55,39 @@ public class JobDAO implements IJobDAO {
 
         IJobDTO jobDTOToReturn = new JobDTO();
 
-        try {
+        String getQuery = String.format("SELECT * FROM %s WHERE %s = ?",
+                JobConstants.TABLENAME,
+                JobConstants.id); // ParameterIndex 1.
 
-            Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM " + JOBS_TABLENAME + " WHERE " + JobTableColumns.jobID + " = " + jobID);
+        try {
+            PreparedStatement preparedStatement = c.prepareStatement(getQuery);
+            preparedStatement.setInt(1, jobID);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             //Gets first row as a result of the query.
-            resultSet.next();
-
-            // Sets JobID.
-            jobDTOToReturn.setJobID(resultSet.getInt(JobTableColumns.jobID.toString()));
-
-            // Sets workplaceID.
-            jobDTOToReturn.setWorkplaceID(resultSet.getInt(JobTableColumns.workplaceID.toString()));
-
-
-            // Sets JobName.
-            jobDTOToReturn.setJobName(resultSet.getString(JobTableColumns.jobName.toString()));
-            // Sets HireDate (LocalDate object). If no date, hireDate is set to null.
-            if (resultSet.getDate(JobTableColumns.hireDate.toString()) != null) {
-                jobDTOToReturn.setHireDate(resultSet.getDate(JobTableColumns.hireDate.name()).toLocalDate());
-            } else {
-                jobDTOToReturn.setHireDate(null);
+            while (resultSet.next()) {
+                // Sets JobID.
+                jobDTOToReturn.setJobID(resultSet.getInt(JobConstants.id));
+                // Sets workplaceID.
+                jobDTOToReturn.setEmployerID(resultSet.getInt(JobConstants.employerID));
+                // Sets JobName.
+                jobDTOToReturn.setJobName(resultSet.getString(JobConstants.jobName));
+                // Sets HireDate (LocalDate object). If no date, hireDate is set to null.
+                if (resultSet.getDate(JobConstants.hireDate) != null) {
+                    jobDTOToReturn.setHireDate(resultSet.getDate(JobConstants.hireDate).toLocalDate());
+                } else {
+                    jobDTOToReturn.setHireDate(null);
+                }
+                // Sets FinishDate (LocalDate object). If no date, FinishDate is set to null.
+                if (resultSet.getDate(JobConstants.finishDate) != null) {
+                    jobDTOToReturn.setFinishDate(resultSet.getDate(JobConstants.finishDate).toLocalDate());
+                } else {
+                    jobDTOToReturn.setFinishDate(null);
+                }
+                // Sets stdSalary.
+                jobDTOToReturn.setStdSalary(resultSet.getDouble(JobConstants.salary));
             }
-            // Sets stdSalary.
-            jobDTOToReturn.setStdSalary(resultSet.getDouble(JobTableColumns.stdSalary.toString()));
 
         } catch (SQLException e) {
             throw new DALException(e.getMessage());
@@ -98,19 +100,20 @@ public class JobDAO implements IJobDAO {
 
     @Override
     public List<IJobDTO> getIJobList() throws DALException {
+        List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
 
         Connection c = iConnPool.getConn();
 
-        List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
-
+        String getAllJobIDsQeury = String.format("SELECT %s FROM %s",
+                JobConstants.id,
+                JobConstants.TABLENAME);
         try {
 
             Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT " + JobTableColumns.jobID + " FROM " + JOBS_TABLENAME );
+            ResultSet resultSet = statement.executeQuery(getAllJobIDsQeury);
 
             while (resultSet.next()) {
-                jobDTOListToReturn.add(getIJob(resultSet.getInt(JobTableColumns.jobID.toString())));
+                jobDTOListToReturn.add(getIJob(resultSet.getInt(JobConstants.id)));
             }
 
         } catch (SQLException e) {
@@ -123,21 +126,24 @@ public class JobDAO implements IJobDAO {
     }
 
     @Override
-    public List<IJobDTO> getIJobList(int workplaceID) throws DALException {
+    public List<IJobDTO> getIJobList(int employerID) throws DALException {
+        List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
 
         Connection c = iConnPool.getConn();
 
-        List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
+        String getEmployersJobIDsQuery = String.format("SELECT %s FROM %s WHERE %s = ?",
+                JobConstants.id,
+                JobConstants.TABLENAME,
+                JobConstants.employerID); // ParameterIndex 1
 
         try {
+            PreparedStatement preparedStatement = c.prepareStatement(getEmployersJobIDsQuery);
+            preparedStatement.setInt(1, employerID);
 
-            Statement statement = c.createStatement();
-            //TODO, nedståend skal laves smartere!
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT " + JobTableColumns.jobID + " FROM " + JOBS_TABLENAME + " WHERE "+ JobTableColumns.workplaceID + " = " + workplaceID );
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                jobDTOListToReturn.add(getIJob(resultSet.getInt(JobTableColumns.jobID.toString())));
+                jobDTOListToReturn.add(getIJob(resultSet.getInt(JobConstants.id)));
             }
 
         } catch (SQLException e) {
@@ -151,19 +157,22 @@ public class JobDAO implements IJobDAO {
 
     @Override
     public List<IJobDTO> getIJobList(String condition) throws DALException {
+        List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
 
         Connection c = iConnPool.getConn();
 
-        List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
+        String getJobIDsWithCondition = String.format("SELECT %s FROM %s WHERE ?",
+                JobConstants.id,
+                JobConstants.TABLENAME);
 
         try {
+            PreparedStatement preparedStatement = c.prepareStatement(getJobIDsWithCondition);
+            preparedStatement.setString(1, condition);
 
-            Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT " + JobTableColumns.jobID + " FROM " + JOBS_TABLENAME + " WHERE " + condition );
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                jobDTOListToReturn.add(getIJob(resultSet.getInt(JobTableColumns.jobID.toString())));
+                jobDTOListToReturn.add(getIJob(resultSet.getInt(JobConstants.id)));
             }
 
         } catch (SQLException e) {
@@ -180,28 +189,43 @@ public class JobDAO implements IJobDAO {
 
         Connection c = iConnPool.getConn();
 
-        String query = String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (?,?,?,?)",
-                JOBS_TABLENAME, JobTableColumns.workplaceID, JobTableColumns.jobName, JobTableColumns.hireDate, JobTableColumns.stdSalary);
+        String createQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
+                JobConstants.TABLENAME,
+                JobConstants.employerID,    // ParameterIndex 1
+                JobConstants.jobName,       // ParameterIndex 2
+                JobConstants.hireDate,      // ParameterIndex 3
+                JobConstants.finishDate,    // ParameterIndex 4
+                JobConstants.salary);       // ParameterIndex 5
 
         try {
+            c.setAutoCommit(false);
 
-            PreparedStatement pStatement = c.prepareStatement(query);
-            pStatement.setInt(1, jobDTO.getWorkplaceID());
+            PreparedStatement pStatement = c.prepareStatement(createQuery);
+            pStatement.setInt(1, jobDTO.getEmployerID());
             pStatement.setString(2, jobDTO.getJobName());
+
+            // TODO: Er det ikke lige meget at tjekke om date er null, fordi hvis den er det, bliver null vel bare returneret?
             // Inserts null if no hire date.
             if (jobDTO.getHireDate() != null ) {
                 pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
             } else {
                 pStatement.setDate(3,null);
             }
-            pStatement.setDouble(4, jobDTO.getStdSalary());
+            // Inserts null if no hire date.
+            if (jobDTO.getFinishDate() != null ) {
+                pStatement.setDate(4, Date.valueOf(jobDTO.getFinishDate()));
+            } else {
+                pStatement.setDate(4,null);
+            }
+            pStatement.setDouble(5, jobDTO.getStdSalary());
 
             pStatement.executeUpdate();
+            c.commit();
 
         } catch (SQLException e) {
-            throw  new DALException(e.getMessage());
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "JobDAO.createIJob");
         } finally {
-            iConnPool.releaseConnection(c);
+            connectionHelper.finallyActionsForConnection(c, "JobDAO.createIJob");
         }
     }
 
@@ -210,30 +234,44 @@ public class JobDAO implements IJobDAO {
 
         Connection c = iConnPool.getConn();
 
-        String query = String.format("UPDATE %s SET %s = ? , %s = ? , %s = ? , %s = ? WHERE %s = ?",
-                JOBS_TABLENAME, JobTableColumns.workplaceID, JobTableColumns.jobName, JobTableColumns.hireDate,
-                JobTableColumns.stdSalary, JobTableColumns.jobID);
+        String query = String.format("UPDATE %s SET %s = ? , %s = ? , %s = ? , %s = ? , %s = ? WHERE %s = ?",
+                JobConstants.TABLENAME,
+                JobConstants.employerID,    // ParameterIndex 1
+                JobConstants.jobName,       // ParameterIndex 2
+                JobConstants.hireDate,      // ParameterIndex 3
+                JobConstants.finishDate,    // ParameterIndex 4
+                JobConstants.salary,        // ParameterIndex 5
+                JobConstants.id);           // ParameterIndex 6
 
         try {
+            c.setAutoCommit(false);
 
             PreparedStatement pStatement = c.prepareStatement(query);
 
-            pStatement.setInt(1, jobDTO.getWorkplaceID());
+            pStatement.setInt(1, jobDTO.getEmployerID());
             pStatement.setString(2, jobDTO.getJobName());
+            // TODO: Tjekket om det er null er muligvis liget meget?
             if (jobDTO.getHireDate() != null) {
                 pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
             } else {
                 pStatement.setDate(3, null);
             }
-            pStatement.setDouble(4, jobDTO.getStdSalary());
-            pStatement.setInt(5, jobDTO.getJobID());
+            if (jobDTO.getFinishDate() != null) {
+                pStatement.setDate(4, Date.valueOf(jobDTO.getFinishDate()));
+            } else {
+                pStatement.setDate(4, null);
+            }
+            pStatement.setDouble(5, jobDTO.getStdSalary());
+            pStatement.setInt(6, jobDTO.getJobID());
 
             pStatement.executeUpdate();
 
+            c.commit();
+
         } catch (SQLException e) {
-            throw new DALException(e.getMessage());
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"JobDAO.updateIJob");
         } finally {
-            iConnPool.releaseConnection(c);
+            connectionHelper.finallyActionsForConnection(c, "JobDAO.updateIJob");
         }
 
         return 0;
@@ -244,16 +282,23 @@ public class JobDAO implements IJobDAO {
 
         Connection c = iConnPool.getConn();
 
-        try {
+        String deleteQuery = String.format("DELETE FROM %s WHERE %s = ?",
+                JobConstants.TABLENAME,
+                JobConstants.id);       // ParameterIndex 1
 
-            Statement statement = c.createStatement();
-            statement.executeQuery(
-                    "DELETE FROM " + JOBS_TABLENAME + " WHERE " + JobTableColumns.jobID + " = '" + jobID + "'");
+        try {
+            c.setAutoCommit(false);
+
+            PreparedStatement preparedStatement = c.prepareStatement(deleteQuery);
+            preparedStatement.setInt(1, jobID);
+
+            preparedStatement.executeQuery();
+            c.commit();
 
         } catch (SQLException e) {
-            throw new DALException(e.getMessage());
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "JobDAO.deleteIJob");
         } finally {
-            iConnPool.releaseConnection(c);
+            connectionHelper.finallyActionsForConnection(c, "JobDAO.deleteIJob");
         }
 
     }
