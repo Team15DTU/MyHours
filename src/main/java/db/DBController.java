@@ -1,5 +1,6 @@
 package db;
 
+import dao.ConnectionHelper;
 import dao.DALException;
 import dao.employer.EmployerConstants;
 import dao.job.IJobDAO;
@@ -10,7 +11,6 @@ import dao.employer.IEmployerDAO;
 import dao.employer.EmployerDAO;
 import dao.worker.IWorkerDAO;
 import dao.worker.WorkerConstants;
-import dao.worker.WorkerDAO;
 import dao.worker.WorkerHiberDAO;
 import db.connectionPools.ConnPoolV1;
 import dto.job.IJobDTO;
@@ -18,6 +18,7 @@ import dto.activity.IActivityDTO;
 import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
+import hibernate.HibernateProperties;
 import hibernate.HibernateUtil;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 
@@ -28,6 +29,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.TimeZone;
 
 /**
@@ -47,6 +49,7 @@ public class DBController implements IDBController
     private IEmployerDAO iEmployerDAO;
     private IJobDAO iJobDAO;
     private IActivityDAO iActivityDAO;
+    private ConnectionHelper connectionHelper;
     
     /*
     ----------------------- Constructor -------------------------
@@ -61,13 +64,14 @@ public class DBController implements IDBController
 		try
 		{
 			this.connPool   = ConnPoolV1.getInstance();
-			hibernateUtil 	= new HibernateUtil();
+			connectionHelper = new ConnectionHelper(this.connPool);
+			hibernateUtil 	= new HibernateUtil(new HibernateProperties().getRealDB());
 			hibernateUtil.setup();
 			
 			TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
 			
 			iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
-			iEmployerDAO    = new EmployerDAO(this.connPool);
+			iEmployerDAO    = new EmployerDAO(this.connPool, this.connectionHelper);
 			iJobDAO         = new JobDAO(this.connPool);
 			iActivityDAO    = new ActivityDAO(this.connPool);
 		}
@@ -82,18 +86,19 @@ public class DBController implements IDBController
 	 * connection pool to use.
 	 * @param connPool A Connection Pool that implements the interface IConnPool
 	 */
-    public DBController (IConnPool connPool)
+    public DBController (IConnPool connPool, Properties hibernateProperties)
     {
         try
         {
             this.connPool   = connPool;
-            hibernateUtil = new HibernateUtil();
+            connectionHelper = new ConnectionHelper(this.connPool);
+            hibernateUtil = new HibernateUtil(hibernateProperties);
             hibernateUtil.setup();
     
             TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
     
             iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
-            iEmployerDAO    = new EmployerDAO(this.connPool);
+            iEmployerDAO    = new EmployerDAO(this.connPool,connectionHelper);
             iJobDAO         = new JobDAO(this.connPool);
             iActivityDAO    = new ActivityDAO(this.connPool);
         }
@@ -141,7 +146,15 @@ public class DBController implements IDBController
     public void setiActivityDAO(IActivityDAO iActivityDAO) {
         this.iActivityDAO = iActivityDAO;
     }
-    
+
+    public HibernateUtil getHibernateUtil() {
+        return hibernateUtil;
+    }
+
+    public void setHibernateUtil(HibernateUtil hibernateUtil) {
+        this.hibernateUtil = hibernateUtil;
+    }
+
     //endregion
     
     /*
@@ -174,24 +187,23 @@ public class DBController implements IDBController
 			c = connPool.getConn();
 
             Statement statement = c.createStatement();
-            statement.executeQuery("ANALYZE TABLE " + tableName);
+            ResultSet analyzeResultSet = statement.executeQuery("ANALYZE TABLE " + tableName);
 
             // Shit works
 			//TODO: Fix hardcoded Database
             PreparedStatement pStatement = c.prepareStatement(
-                    "SELECT AUTO_INCREMENT FROM information_schema.TABLES where TABLE_SCHEMA = ?" +
+                    "SELECT * FROM information_schema.TABLES where TABLE_SCHEMA = ?" +
 							" AND TABLE_NAME = ?" )
 					;
-            pStatement.setString(1,connPool.getUser());
+
+            pStatement.setString(1, (String) hibernateUtil.getProperties().get("hibernate.connection.username"));
             pStatement.setString(2, EmployerConstants.TABLENAME);
 
             ResultSet resultset = pStatement.executeQuery();
 
             resultset.next();
 
-            System.out.println(resultset.getInt(1));
-
-            return resultset.getInt(1);
+            return resultset.getInt("AUTO_INCREMENT");
 
 
         }
@@ -568,7 +580,7 @@ public class DBController implements IDBController
         IWorkerDTO workerDTOToReturn = iWorkerDAO.getWorker(email);
         
         // Sets WorkerDTOs List<IEmployersDTO> employers via EmployerDAO.
-        workerDTOToReturn.setIEmployers(iEmployerDAO.getIWorkPlaceList(workerDTOToReturn.getWorkerID()));
+        workerDTOToReturn.setIEmployers(iEmployerDAO.getiEmployerList(workerDTOToReturn.getWorkerID()));
         
         // Sets EmployerDTOs List<IJobDTO> jobList via JobDAO, for each EmployerDTO in Workers List<EmployerDTO>
         for (IEmployerDTO employerDTO : workerDTOToReturn.getIEmployers()) {
