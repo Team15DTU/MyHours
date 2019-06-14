@@ -157,7 +157,7 @@
         </script>
 
         <script>
-            function hoursOnWorkMounthly(){
+            function dasd(){
                 anychart.onDocumentReady(function() {
 
 
@@ -171,6 +171,13 @@
                     var data = {
                         header: ["Date", "Hours"]
                     };
+
+                    //her finder jeg alle de job som er forbundet med brugeren.
+                    var nrOfJobs = new Array();
+                    for (var loop = 0; loop < findNrOfCompanys() ;loop++) {
+                        nrOfJobs[loop] = findCompanyId();
+                    }
+
 
                     var dataSet = anychart.data.set(data);
                     var i;
@@ -191,7 +198,7 @@
                     // create a loop
                     while (chart.getSeriesAt(i)){
                         // rename each series
-                        chart.getSeriesAt(i).name('Irma');
+                        chart.getSeriesAt(i).name(findWork());
                         i++;
                     }
 
@@ -205,6 +212,84 @@
             }
 
 
+
+
+            function hoursOnWorkMounthly(){
+                anychart.onDocumentReady(function() {
+
+
+                    var today = new Date();
+                    var mounth = String(today.getMonth());
+                    var year = today.getFullYear();
+
+                    var nrOfDays = daysInMonth(mounth,year);
+
+                    // set the data
+                    var data = {
+                        header: ["Date", "Hours"]
+                    };
+
+                    //her finder jeg alle de job som er forbundet med brugeren.
+                    var nrOfJobs = new Array();
+                    for (var loop = 0; loop < findNrOfCompanys() ;loop++) {
+                        nrOfJobs[loop] = findCompanyId(loop);
+                    }
+
+                    mounth++;
+
+                    //laver dataset
+                    var dataSets = new Array();
+
+                    for (var l=0;l<findNrOfCompanys();l++) {
+                        var dataSet = anychart.data.set(data);
+                        for (var i = 0; i < nrOfDays; i++) {
+                            var name = 'Den ' + (i + 1) + '. i ' + (mounth) + '.';
+                            dataSet.append([name, hoursOfWork()]);
+                        };
+                        dataSets[l] = dataSet;
+                    };
+
+
+
+
+                    // create the chart
+                    var chart = anychart.column()
+                    chart.animation(true);
+
+                    var serieSet = new Array();
+
+                    //laver dataen til serie sæt.
+
+                    for (var r = 0; r<dataSets.length; r++) {
+                        serieSet[r] = dataSets[r].mapAs({'x': 0, 'value': 1})
+                    }
+
+                    chart.yScale().stackMode('value');
+
+
+
+                    // add the data
+                    for (var c = 0; c<serieSet.length; c++){
+                        chart.column(serieSet[c]);
+                    }
+
+
+                    var i=0;
+                    // create a loop
+                    while (chart.getSeriesAt(i)){
+                        // rename each series
+                        chart.getSeriesAt(i).name(findWork(nrOfJobs[i]));
+                        i++;
+                    }
+
+                    // set the chart title
+                    chart.title("Hours on work");
+
+                    // draw
+                    chart.container("graph");
+                    chart.draw();
+                });
+            }
 
         </script>
 

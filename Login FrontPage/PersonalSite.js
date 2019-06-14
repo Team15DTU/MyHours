@@ -83,6 +83,16 @@ function findCompany(nr) {
     return 'irma'
 }
 
+function findNrOfCompanys() {
+    return 3;
+}   
+
+function findCompanyId(nr) {
+    if (nr == 0){return 1;}
+    if (nr == 1){return 2;}
+    else {return 3}
+}
+
 function lastPaycheck(nr) {
     return 2500;
 }
@@ -93,12 +103,13 @@ function estimatePaycheck(nr) {
 
 function findShift(nr) {
     return '16-20';
-
 }
 
 function findWork(nr) {
-    return 'irma';
-
+    if (nr == 0) {return 'kvikly'}
+    else if (nr == 1) {return 'fakta'}
+    else if (nr == 2) {return 'irma'}
+    else if (nr == 3) {return '#VektorLife'}
 }
 
 function findPaycheck(nr) {
@@ -112,7 +123,8 @@ function daysInMonth (month, year) {
 }
 
 function hoursOfWork () {
-    return 4;
+
+    return Math.random()*10;
 }
 
 // her er de metoder som bliver brugt til at laver graferne, sammen med "chart.
