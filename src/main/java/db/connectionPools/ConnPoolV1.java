@@ -65,13 +65,13 @@ public class ConnPoolV1 implements IConnPool {
 		}
 		catch (DALException e)
 		{
-			System.err.println("ERROR: Creating Connection Pool");
+			System.err.println("ERROR: Creating Connection Pool - " + e.getMessage());
 			exception = e;
 			success = false;
 		}
 		catch ( ClassNotFoundException e )
 		{
-			System.err.println("ERROR: Creating Connection Pool");
+			System.err.println("ERROR: Creating Connection Pool - " + e.getMessage());
 			exception = new DALException(e.getMessage(), e.getCause());
 			success = false;
 		}
@@ -175,8 +175,9 @@ public class ConnPoolV1 implements IConnPool {
 		}
 		catch (DALException e)
 		{
-			System.err.println("ERROR: Couldn't get ConnPoolV1 instance");
-			return null;
+			System.err.println(String.format("ERROR: Couldn't get ConnPoolV1 instance - %s \n \t Cause: %s",
+												e.getMessage(), e.getCause()));
+			throw e;
 		}
 	}
 	
@@ -304,7 +305,7 @@ public class ConnPoolV1 implements IConnPool {
 		catch ( SQLException e )
 		{
 			System.err.println("ERROR: Error trying to close connection pool - " + e.getMessage());
-			throw new DALException( e.getMessage() );
+			throw new DALException( e.getMessage(), e.getCause() );
 		}
 		finally
 		{
@@ -330,7 +331,7 @@ public class ConnPoolV1 implements IConnPool {
 		}
 		catch (SQLException e)
 		{
-			System.err.println("ERROR: Create Connection Failure!");
+			System.err.println("ERROR: Create Connection Failure! - " + e.getMessage());
 			throw new DALException(e.getMessage(), e.getCause());
 		}
 	}
@@ -344,7 +345,7 @@ public class ConnPoolV1 implements IConnPool {
 	protected void closeConnection(Connection c) throws SQLException
 	{
 		// Check if connection is already closed
-		if ( !c.isClosed() )
+		if ( c != null || !c.isClosed() )
 		{
 			// If autocommit == true, then just close
 			if ( c.getAutoCommit() ) { c.close(); }
@@ -392,9 +393,12 @@ public class ConnPoolV1 implements IConnPool {
 					
 					try
 					{
-						// Check if it's closed or has errors
-						if ( c.isClosed() || !(c.getWarnings() == null) || !c.isValid(validTimeout) )
-							c = createConnection();
+						// Check if it's closed
+						if ( c.isClosed() ) { c = createConnection(); }
+						
+						// Check if it has errors
+						else if ( !(c.getWarnings() == null) || !c.isValid(validTimeout) )
+						{ c.close(); c = createConnection(); }
 					}
 					catch (SQLException e)
 					{
