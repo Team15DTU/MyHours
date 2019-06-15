@@ -1,11 +1,16 @@
 //Dette metoderne til tabellen
 
-function selectShift() {
+function selectShift(name) {
 
 
-    var selector = document.getElementById('select');
+    var selector = document.getElementById(name);
 
     var allShift = findAllShift();
+
+    while(selector.hasChildNodes()){
+        selector.removeChild(selector.firstChild);
+    }
+    selector.appendChild(document.createElement('option'))
 
     for (var i = 0; i < allShift.length; i++) {
 
@@ -14,19 +19,27 @@ function selectShift() {
         var name = currentShift[2].getDate() + '/' + (currentShift[2].getMonth()+1) + ' at ' + currentShift[2].getHours() + ':' + currentShift[2].getMinutes() + ' to ' + currentShift[3].getHours() + ':' + currentShift[3].getMinutes();
         option.appendChild(document.createTextNode(name));
         option.value = currentShift[0];
-        option.onselect = shiftEditSubmitChange(currentShift[0]);
+
         selector.appendChild(option);
     }
 }
 
 
-function shiftEditSubmitChange(value) {
-    return document.getElementById('shift_edit_submit').value = value;
-}
-
 function currentShiftToEdit() {
+
     var mylist = document.getElementById('select');
-    document.getElementById('shift_edit_job2shift').value = mylist.options[mylist.selectedIndex].text
+    var shift = findShift(mylist.options[mylist.selectedIndex].value);
+
+    var shiftEditStart = shift[2].getFullYear() + '-' + (shift[2].getMonth()-1) + '-' + shift[2].getDate() + 'T' + shift[2].getHours + ':' + shift[2].getMinutes;
+
+    document.getElementById('shift_edit_job2shift').value = findWork(shift[1]);
+/*
+    Begge disse 2 variabler skal ændre value til en html "dateTime-local" værdi.
+    document.getElementById('shift_edit_start').value = shiftEditStart;
+    document.getElementById('shift_edit_end').value = shiftEditStart;
+*/
+    document.getElementById('shift_edit_break').value = shift[4];
+
 }
 
 
@@ -34,6 +47,11 @@ function currentShiftToEdit() {
 function selectJobs(userID) {
     var selector = document.getElementById('select2');
     var allJobs = findAllJobs(userID);
+
+    while(selector.hasChildNodes()){
+        selector.removeChild(selector.firstChild);
+    }
+    selector.appendChild(document.createElement('option'))
 
     for (var i = 0; i < findAllJobs().length; i++) {
         var currentJob = allJobs.pop();
@@ -70,7 +88,11 @@ function shifts() {
 
     for (i = 0; i < 3; i++){
         var row2 = table.insertRow(i+1);
-        row2.insertCell(0).innerHTML = findShift(i);
+        /*
+        noget er galt, når jeg køre findshift() køre den kun igennem en gang, skal lige se hvordan det kan fixes
+        var shift = findShift(i);
+        */
+        row2.insertCell(0).innerHTML = 'Midlertidig fylder ';
         row2.insertCell(1).innerHTML = findWork(i);
         row2.insertCell(2).innerHTML = findPaycheck(i);
     }
@@ -152,8 +174,21 @@ function estimatePaycheck(nr) {
     return 1750;
 }
 
-function findShift(nr) {
-    return '16-20';
+function findShift(id) {
+
+
+    if (id == 0) {
+       var shift = [0,4,new Date(), new Date(), 30, 3]
+        return shift;
+    } else if (id == 1){
+        var shift = [1,2,new Date(), new Date(), 30, 3]
+        return shift;
+    } else {
+        var shift = [2,3,new Date(), new Date(), 30, 3]
+        return shift;
+    }
+
+    return 'shift';
 }
 
 function findAllShift(nr) {
@@ -161,9 +196,7 @@ function findAllShift(nr) {
 
     for (var i = 0; i < 3; i++) {
         var endDate = new Date();
-        endDate.setDate(endDate.getDate());
         var startDate = new Date();
-        startDate.setDate(startDate.getDate());
 
         var shift = [id = i, jobid = 2, start = startDate, end = endDate, breaks = 30, jobname = findWork(i)]
         allShift.push(shift);
