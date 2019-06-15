@@ -12,7 +12,7 @@ function selectShift(name) {
     }
     selector.appendChild(document.createElement('option'))
 
-    for (var i = 0; i < allShift.length; i++) {
+    while(allShift.length > 0) {
 
         var currentShift = allShift.pop();
         var option = document.createElement('option');
@@ -30,11 +30,14 @@ function currentShiftToEdit() {
     var mylist = document.getElementById('select');
     var shift = findShift(mylist.options[mylist.selectedIndex].value);
 
+
+
+    document.getElementById('shiftEditInfo').innerHTML = ' i ' + findWorkplace(shift[1]);
+/*
     var shiftEditStart = shift[2].getFullYear() + '-' + (shift[2].getMonth()-1) + '-' + shift[2].getDate() + 'T' + shift[2].getHours + ':' + shift[2].getMinutes;
 
-    document.getElementById('shift_edit_job2shift').value = findWork(shift[1]);
-/*
     Begge disse 2 variabler skal ændre value til en html "dateTime-local" værdi.
+
     document.getElementById('shift_edit_start').value = shiftEditStart;
     document.getElementById('shift_edit_end').value = shiftEditStart;
 */
@@ -42,11 +45,20 @@ function currentShiftToEdit() {
 
 }
 
+function deleteShiftFromHTTP() {
+
+    var mylist = document.getElementById('select3');
+    deleteShift(mylist.options[mylist.selectedIndex].value);
 
 
-function selectJobs(userID) {
-    var selector = document.getElementById('select2');
-    var allJobs = findAllJobs(userID);
+
+}
+
+
+
+function selectJobs(name) {
+    var selector = document.getElementById(name);
+    var allJobs = findAllJobs();
 
     while(selector.hasChildNodes()){
         selector.removeChild(selector.firstChild);
@@ -93,7 +105,7 @@ function shifts() {
         var shift = findShift(i);
         */
         row2.insertCell(0).innerHTML = 'Midlertidig fylder ';
-        row2.insertCell(1).innerHTML = findWork(i);
+        row2.insertCell(1).innerHTML = findWorkplace(i);
         row2.insertCell(2).innerHTML = findPaycheck(i);
     }
 
@@ -178,15 +190,19 @@ function findShift(id) {
 
 
     if (id == 0) {
-       var shift = [0,4,new Date(), new Date(), 30, 3]
+       var shift = [0,1,new Date(), new Date(), 5, 3]
         return shift;
     } else if (id == 1){
-        var shift = [1,2,new Date(), new Date(), 30, 3]
+        var shift = [1,2,new Date(), new Date(), 10, 3]
+        return shift;
+    } else if (id == 2) {
+        var shift = [2,3,new Date(), new Date(), 20, 3]
         return shift;
     } else {
-        var shift = [2,3,new Date(), new Date(), 30, 3]
+        var shift = [3,0,new Date(), new Date(), 25, 3]
         return shift;
     }
+
 
     return 'shift';
 }
@@ -194,11 +210,11 @@ function findShift(id) {
 function findAllShift(nr) {
     var allShift = [];
 
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 5; i++) {
         var endDate = new Date();
         var startDate = new Date();
 
-        var shift = [id = i, jobid = 2, start = startDate, end = endDate, breaks = 30, jobname = findWork(i)]
+        var shift = [i, 0, startDate, endDate, 30, findWorkplace(i)]
         allShift.push(shift);
     }
 
@@ -207,21 +223,30 @@ function findAllShift(nr) {
 
 }
 
+function deleteShift(shiftID) {
 
-function findWork(nr) {
+}
+
+
+function findWorkplace(nr) {
     if (nr == 0) {return 'kvikly'}
     else if (nr == 1) {return 'fakta'}
     else if (nr == 2) {return 'irma'}
-    else if (nr == 3) {return '#VektorLife'}
+    else if (nr == 3) {return 'Vektor'}
 }
 
 function findAllJobs(userID) {
 
     var jobs = [];
-    var irma = [0, 66, 'Irma', 110, new Date(), 'Flaske dreng'];
+    var kvikly = [0, 66, 'Kvikly', 110, new Date(), 'Flaske dreng'];
     var fakta = [1, 66, 'Fakta', 115, new Date(), 'Kasse assistent'];
-    jobs.push(irma);
+    var irma = [2, 66, 'Irma', 110, new Date(), 'service medarbejder'];
+    var studieStarten = [3, 66, 'Studie starten', 115, new Date(), 'Vektor'];
+
+    jobs.push(kvikly);
     jobs.push(fakta);
+    jobs.push(irma);
+    jobs.push(studieStarten);
 
     return jobs;
 }

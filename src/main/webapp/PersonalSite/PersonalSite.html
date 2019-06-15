@@ -44,8 +44,8 @@
 
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Shift</label>
                 <div class="smenu">
-                    <a href="#" onclick="document.getElementById('shift_add').style.display='block'; selectJobs()">Add</a>
-                    <a href="#" onclick="document.getElementById('shift_edit').style.display='block'; selectShift('select')">Edit</a>
+                    <a href="#" onclick="document.getElementById('shift_add').style.display='block'; selectJobs('select2')">Add</a>
+                    <a href="#" onclick="document.getElementById('shift_edit').style.display='block'; selectShift('select'); selectJobs('select4')">Edit</a>
                     <a href="#" onclick="document.getElementById('shift_delete').style.display='block'; selectShift('select3')">Delete</a>
                 </div>
             </li>
@@ -142,13 +142,17 @@
             <select id="select" onchange="currentShiftToEdit()">
                 <option value="Default"></option>
             </select>
+            <b id="shiftEditInfo"></b>
             <br><br>
             <b>Insert the correct details.</b>
             <br><br>
 
 
-            <label><b>What job is the shift?</b></label>
-            <input id="shift_edit_job2shift" type="text" placeholder="What job is the shift?" name="job_to_shift" required>
+            <label><b>What job is the shift?</b></label><br>
+            <select id="select4">
+                <option value="Default"></option>
+            </select>
+            <br><br>
 
             <label><b>When do you start your shift?</b></label>
             <input id="shift_edit_start" class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="shift_start" required>
@@ -173,12 +177,12 @@
 <center>
         <label><b>Choice a shift you want to edit: </b></label><br>
 
-        <select id="select3" onchange="currentShiftToEdit()">
+        <select id="select3">
             <option value="Default"></option>
         </select>
 </center>
         <br><br>
-        <button type="submit" name="EditShift" value="submit" id="shift_delete" class="submit">Delete shift</button>
+        <button type="submit" name="DeleteShift" value="submit" id="shift_delete" class="submit" onclick="deleteShiftFromHTTP()">Delete shift</button>
     </form>
 </div>
 </div>
@@ -370,7 +374,7 @@
                 // create a loop
                 while (chart.getSeriesAt(i)){
                     // rename each series
-                    chart.getSeriesAt(i).name(findWork(nrOfJobs[i]));
+                    chart.getSeriesAt(i).name(findWorkplace(nrOfJobs[i]));
                     i++;
                 }
 
