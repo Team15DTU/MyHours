@@ -110,7 +110,7 @@ public class EmployerDTO implements IEmployerDTO {
 
         toStringBuilder.append("EmployerID: \t" + employerID + "\n");
         toStringBuilder.append("WorkerID: \t" + workerID + "\n");
-        toStringBuilder.append("Workplace Name: \t" + name + "\n");
+        toStringBuilder.append("Employer Name: \t" + name + "\n");
         toStringBuilder.append("Color: \t" + color.toString() + "\n");
         toStringBuilder.append("Telephone: \t" + telephone + "\n");
 
