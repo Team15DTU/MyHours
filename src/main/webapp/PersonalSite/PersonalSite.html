@@ -56,8 +56,8 @@
                 <label for="myid2" class="btn_menu"><i class="fas fa-briefcase"></i>Job</label>
                 <div class="smenu">
                     <a href="#" onclick="document.getElementById('job_add').style.display='block'">Add</a>
-                    <a href="#">Edit</a>
-                    <a href="#">Delete</a>
+                    <a href="#" onclick="document.getElementById('job_edit').style.display='block';selectJobs('select_job_edit')">Edit</a>
+                    <a href="#" onclick="document.getElementById('job_delete').style.display='block';selectJobs('select_job_delete')">Delete</a>
                 </div>
             </li>
             <li class="item" id="workplace" onclick="changeFunction('workplace'), checkMenu3(), openInfo()">
@@ -66,8 +66,8 @@
                 <label for="myid3" class="btn_menu"><i class="fas fa-building"></i>Workplace</label>
                 <div class="smenu">
                     <a href="#" onclick="document.getElementById('workplace_add').style.display='block'">Add</a>
-                    <a href="#">Edit</a>
-                    <a href="#">Delete</a>
+                    <a href="#" onclick="document.getElementById('jobadress_edit').style.display='block';selectJobadress('select_jobadress_edit')">Edit</a>
+                    <a href="#" onclick="document.getElementById('jobadress_delete').style.display='block';selectJobs('select_jobadress_delete')">Delete</a>
                 </div>
             </li>
             <li class="item">
@@ -100,8 +100,7 @@
 
 
 
-    <!-- Modalerne -->
-
+            <!-- Modalerne -->
 <!-- Shift -->
 
 <!-- add -->
@@ -138,7 +137,7 @@
     <div class="modal2-content">
         <span onclick="document.getElementById('shift_edit').style.display='none'" class="close2">&times;</span>
         <form action="">
-            <label><b>Choice a shift you want to edit: </b></label><br>
+            <label><b>Choice a shift you want to edit: </b></label><br><br>
             <select id="select" onchange="currentShiftToEdit()">
                 <option value="Default"></option>
             </select>
@@ -175,24 +174,25 @@
     <span onclick="document.getElementById('shift_delete').style.display='none'" class="close2">&times;</span>
     <form action="">
 <center>
-        <label><b>Choice a shift you want to edit: </b></label><br>
+        <label><b>Choice a shift you want to delete: </b></label><br>
 
         <select id="select3">
             <option value="Default"></option>
         </select>
 </center>
         <br><br>
-        <button type="submit" name="DeleteShift" value="submit" id="shift_delete" class="submit" onclick="deleteShiftFromHTTP()">Delete shift</button>
+        <button type="submit" name="DeleteShift" value="submit" id="shift_delete_button" class="submit" onclick="deleteShiftFromHTTP()">Delete shift</button>
     </form>
 </div>
 </div>
 
-<!-- job -->
+            <!-- job -->
+<!-- Add -->
 
 <div id="job_add" class="modal2">
     <div class="modal2-content">
         <span onclick="document.getElementById('job_add').style.display='none'" class="close2">&times;</span>
-        <form action="/action_page.php">
+        <form action="">
             <div class="form_per">
                 <label><b>What company is the job for?</b></label>
                 <input  type="text" placeholder="What company is the job for?" name="company_to_job" required>
@@ -209,8 +209,59 @@
     </div>
 </div>
 
-<!-- workplace -->
+<!-- Edit -->
 
+<div id="job_edit" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('job_edit').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <label><b>Choice a job you want to edit: </b></label><br><br>
+            <select id="select_job_edit" onchange="">
+                <option value="Default"></option>
+            </select>
+            <b id="jobEditInfo"></b>
+            <br><br>
+            <b>Insert the correct details.</b>
+            <br><br>
+
+
+            <label><b>What company is the job for?</b></label>
+            <input  type="text" placeholder="What company is the job for?" name="company_to_job" required>
+
+            <label><b>When did you get hired?</b></label>
+            <input class="w3-input w3-border w3-margin-bottom" type="date" name="job_start" required>
+
+            <label><b>How much do you earn a hour?</b></label>
+            <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="hourly_income" required>
+
+            <button  type="submit" class="submit">Login</button>
+
+        </form>
+    </div>
+</div>
+
+<!-- Delete -->
+
+<div id="job_delete" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('job_delete').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <center>
+                <label><b>Choice a job you want to Delete: </b></label><br>
+
+                <select id="select_job_delete">a
+                    <option value="Default"></option>
+                </select>
+            </center>
+            <br><br>
+            <button type="submit" name="DeleteJob" value="submit" id="job_delete_button" class="submit" onclick="deleteJobFromHTTP()">Delete job</button>
+        </form>
+    </div>
+</div>
+
+            <!-- jobadresse -->
+
+<!-- add -->
 <div id="workplace_add" class="modal2">
     <div class="modal2-content">
         <span onclick="document.getElementById('workplace_add').style.display='none'" class="close2">&times;</span>
@@ -234,9 +285,57 @@
     </div>
 </div>
 
+<!-- edit -->
 
+<div id="jobadress_edit" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('jobadress_edit').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <label><b>Choice a job you want to edit: </b></label><br><br>
+            <select id="select_jobadress_edit" onchange="">
+                <option value="Default"></option>
+            </select>
+            <b id="jobadressEditInfo"></b>
+            <br><br>
+            <b>Insert the correct details.</b>
+            <br><br>
 
+            <label><b>What address are you company at?</b></label>
+            <input  type="text" placeholder="Address of your company" name="company_address" required>
 
+            <label><b>What are the phone number?</b></label>
+            <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="phone_number" required>
+
+            <label><b>What is the zip code of the address?</b></label>
+            <input class="w3-input w3-border w3-margin-bottom" placeholder="Company address" type="text" name="shift_end" required>
+
+            <label><b>What town is the company in?</b></label>
+            <input class="w3-input w3-border" type="text" placeholder="Town where company is located" name="psw" required>
+
+            <button  type="submit" class="submit">Login</button>
+
+        </form>
+    </div>
+</div>
+
+<!-- delete -->
+
+<div id="jobadress_delete" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('jobadress_delete').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <center>
+                <label><b>Choice a jobadress you want to Delete: </b></label><br>
+
+                <select id="select_jobadress_delete">a
+                    <option value="Default"></option>
+                </select>
+            </center>
+            <br><br>
+            <button type="submit" name="DeleteJob" value="submit" id="jobadress_delete_button" class="submit" onclick="deleteJobFromHTTP()">Delete job</button>
+        </form>
+    </div>
+</div>
 
 
 

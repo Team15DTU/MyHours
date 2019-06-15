@@ -46,12 +46,13 @@ function currentShiftToEdit() {
 }
 
 function deleteShiftFromHTTP() {
-
     var mylist = document.getElementById('select3');
     deleteShift(mylist.options[mylist.selectedIndex].value);
+}
 
-
-
+function deleteJobFromHTTP() {
+    var mylist = document.getElementById('select_job_delete');
+    deleteJob(mylist.options[mylist.selectedIndex].value);
 }
 
 
@@ -68,11 +69,30 @@ function selectJobs(name) {
     for (var i = 0; i < findAllJobs().length; i++) {
         var currentJob = allJobs.pop();
         var option = document.createElement('option');
-        var name = currentJob[5] + ' at ' + currentJob[2];
+        var name = currentJob[2];
         option.appendChild(document.createTextNode(name));
         option.value = currentJob[0];
         selector.appendChild(option);
 
+    }
+}
+
+function selectJobadress(name) {
+    var selector = document.getElementById(name);
+    var allJobadress = findAllJobaddress();
+
+    while(selector.hasChildNodes()){
+        selector.removeChild(selector.firstChild);
+    }
+    selector.appendChild(document.createElement('option'))
+
+    for (var i = 0; i < findAllJobaddress().length; i++) {
+        var currentJobadress = allJobadress.pop();
+        var option = document.createElement('option');
+        var name = findJob(currentJobadress[4])[2];
+        option.appendChild(document.createTextNode(name));
+        option.value = currentJobadress[4];
+        selector.appendChild(option);
     }
 }
 
@@ -223,7 +243,39 @@ function findAllShift(nr) {
 
 }
 
+function findAllJobaddress(nr) {
+    var allCompany = [];
+
+    for (var i = 0; i < 3; i++) {
+        var streetname = 'Elektro vej';
+        var company = [streetname, i, 2800, 'Lyngby', findJob(i)[0]];
+        allCompany.push(company);
+    }
+
+
+    return allCompany;
+}
+
+function findJob(jobid) {
+
+    if (jobid == 0){
+        var job = [0, 66, 'Kvikly', 110, new Date(), 'user'];
+    }
+    else if (jobid == 1) {
+        var job = [1, 66, 'Fakta', 115, new Date(), 'user'];
+    }
+    else {
+        var job = [2, 66, 'Irma', 110, new Date(), 'user'];
+    }
+    return job;
+
+}
+
 function deleteShift(shiftID) {
+
+}
+
+function deleteJob() {
 
 }
 
