@@ -7,21 +7,49 @@ function selectShift() {
 
     var allShift = findAllShift();
 
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < allShift.length; i++) {
 
         var currentShift = allShift.pop();
         var option = document.createElement('option');
         var name = currentShift[2].getDate() + '/' + (currentShift[2].getMonth()+1) + ' at ' + currentShift[2].getHours() + ':' + currentShift[2].getMinutes() + ' to ' + currentShift[3].getHours() + ':' + currentShift[3].getMinutes();
         option.appendChild(document.createTextNode(name));
         option.value = currentShift[0];
-        option.onclick = shiftEditSubmitChange(currentShift[0]);
+        option.onselect = shiftEditSubmitChange(currentShift[0]);
         selector.appendChild(option);
     }
 }
 
+
 function shiftEditSubmitChange(value) {
     return document.getElementById('shift_edit_submit').value = value;
 }
+
+function currentShiftToEdit() {
+    var mylist = document.getElementById('select');
+    document.getElementById('shift_edit_job2shift').value = mylist.options[mylist.selectedIndex].text
+}
+
+
+
+function selectJobs(userID) {
+    var selector = document.getElementById('select2');
+    var allJobs = findAllJobs(userID);
+
+    for (var i = 0; i < findAllJobs().length; i++) {
+        var currentJob = allJobs.pop();
+        var option = document.createElement('option');
+        var name = currentJob[5] + ' at ' + currentJob[2];
+        option.appendChild(document.createTextNode(name));
+        option.value = currentJob[0];
+        selector.appendChild(option);
+
+    }
+}
+
+
+
+
+
 
 function shifts() {
 
@@ -152,6 +180,17 @@ function findWork(nr) {
     else if (nr == 1) {return 'fakta'}
     else if (nr == 2) {return 'irma'}
     else if (nr == 3) {return '#VektorLife'}
+}
+
+function findAllJobs(userID) {
+
+    var jobs = [];
+    var irma = [0, 66, 'Irma', 110, new Date(), 'Flaske dreng'];
+    var fakta = [1, 66, 'Fakta', 115, new Date(), 'Kasse assistent'];
+    jobs.push(irma);
+    jobs.push(fakta);
+
+    return jobs;
 }
 
 

@@ -44,7 +44,7 @@
 
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Shift</label>
                 <div class="smenu">
-                    <a href="#" onclick="document.getElementById('shift_add').style.display='block'">Add</a>
+                    <a href="#" onclick="document.getElementById('shift_add').style.display='block'; selectJobs()">Add</a>
                     <a href="#" onclick="document.getElementById('shift_edit').style.display='block'; selectShift()">Edit</a>
                     <a href="#">Delete</a>
                 </div>
@@ -111,9 +111,11 @@
         <span onclick="document.getElementById('shift_add').style.display='none'" class="close2">&times;</span>
     <form action="">
         <div class="form_per">
-            <label><b>What job is the shift?</b></label>
-            <input  type="text" placeholder="What job is the shift?" name="job_to_shift" required>
-
+            <label><b>What job is the shift?</b></label> <br>
+            <select id="select2">
+                <option value="Default"></option>
+            </select>
+            <br>
             <label><b>When do you start your shift?</b></label>
             <input class="w3-input w3-border w3-margin-bottom" type="time" name="shift_start" required>
 
@@ -123,7 +125,7 @@
             <label><b>How long break do you have on the shift? (in minutes)</b></label>
             <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="psw" required>
 
-            <button  type="submit" class="submit">Save shift</button>
+            <button  type="submit" name="addShift" value="submit" id="shiftadder" class="submit">Save shift</button>
         </div>
     </form>
     </div>
@@ -135,17 +137,32 @@
 <div id="shift_edit" class="modal2">
     <div class="modal2-content">
         <span onclick="document.getElementById('shift_edit').style.display='none'" class="close2">&times;</span>
-            <form action="">
-                <center>
-                    <label>Choice a shift you want to edit: </label>
+        <form action="">
+                <label><b>Choice a shift you want to edit: </b></label><br>
                 <select id="select" onchange="shiftEditSubmitChange(value)">
                     <option value="Default"></option>
                 </select>
-                </center>
-                <button type="submit" name="jens" value="submit" id="shift_edit_submit" class="submit">Edit shift</button>
-            </form>
+            <br><br>
+                <b>Insert the correct details.</b>
+            <br><br>
+
+
+            <label><b>What job is the shift?</b></label>
+            <input id="shift_edit_job2shift" type="text" placeholder="What job is the shift?" name="job_to_shift" required>
+
+            <label><b>When do you start your shift?</b></label>
+            <input id="shift_edit_start" class="w3-input w3-border w3-margin-bottom" type="time" name="shift_start" required>
+
+            <label><b>When does the shift stop?</b></label>
+            <input id="shift_edit_end" class="w3-input w3-border w3-margin-bottom" type="time" name="shift_end" required>
+
+            <label><b>How long break do you have on the shift? (in minutes)</b></label>
+            <input id="shift_edit_break" class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="psw" required>
+            <button type="submit" name="EditShift" value="submit" id="shift_edit_submit" class="submit">Edit shift</button>
+        </form>
     </div>
 </div>
+
 
 <!-- delete -->
 
