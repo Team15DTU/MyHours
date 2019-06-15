@@ -9,7 +9,6 @@ import db.IConnPool;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PropertyResourceBundle;
 
 /**
  * @author Rasmus Sander Larsen
@@ -155,7 +154,7 @@ public class JobDAO implements IJobDAO {
         return jobDTOListToReturn;
     }
 
-    @Override
+    @Override // TODO: Er det her ikke bare dumt? Vi har intet at bruge denne klasse til? Ellers skal den i hvert fald ændres.
     public List<IJobDTO> getIJobList(String condition) throws DALException {
         List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
 
@@ -200,7 +199,7 @@ public class JobDAO implements IJobDAO {
         try {
             c.setAutoCommit(false);
 
-            PreparedStatement pStatement = c.prepareStatement(createQuery);
+            PreparedStatement pStatement = c.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
             pStatement.setInt(1, jobDTO.getEmployerID());
             pStatement.setString(2, jobDTO.getJobName());
 
@@ -220,6 +219,13 @@ public class JobDAO implements IJobDAO {
             pStatement.setDouble(5, jobDTO.getStdSalary());
 
             pStatement.executeUpdate();
+
+            ResultSet generatedKeys = pStatement.getGeneratedKeys();
+
+            if (generatedKeys.next()){
+                jobDTO.setJobID(generatedKeys.getInt(1));
+            }
+
             c.commit();
 
         } catch (SQLException e) {
@@ -292,7 +298,8 @@ public class JobDAO implements IJobDAO {
             PreparedStatement preparedStatement = c.prepareStatement(deleteQuery);
             preparedStatement.setInt(1, jobID);
 
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
+
             c.commit();
 
         } catch (SQLException e) {
@@ -300,7 +307,6 @@ public class JobDAO implements IJobDAO {
         } finally {
             connectionHelper.finallyActionsForConnection(c, "JobDAO.deleteIJob");
         }
-
     }
 
     /*

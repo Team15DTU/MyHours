@@ -162,7 +162,7 @@ public class EmployerDAO implements IEmployerDAO {
         try {
             c.setAutoCommit(false);
 
-            PreparedStatement pStatement = c.prepareStatement(createQuery);
+            PreparedStatement pStatement = c.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
 
             pStatement.setInt(1, employerDTO.getWorkerID());
             pStatement.setString(2, employerDTO.getName());
@@ -170,6 +170,12 @@ public class EmployerDAO implements IEmployerDAO {
             pStatement.setString(4, employerDTO.getTelephone());
 
             pStatement.executeUpdate();
+
+            ResultSet generatedKeys = pStatement.getGeneratedKeys();
+
+            while (generatedKeys.next()) {
+                employerDTO.setEmployerID(generatedKeys.getInt(1));
+            }
 
             c.commit();
 
