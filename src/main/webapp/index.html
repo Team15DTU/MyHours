@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NewFrontPage</title>
+    <title>MyHours</title>
+    <link rel="icon" href="Images/favicon.ico">
     <link rel="stylesheet" href="index.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <script src="jquery.serialize-object.min.js"></script>
     <script type="text/javascript" src="index.js"></script>
 </head>
 <body>
@@ -16,17 +18,18 @@
     <div class="container">
         <nav>
             <span></span>
-            <a href="PersonalSite/PersonalSite.html"><img class ="logo" src="Images/Logo2.svg" alt="Avatar"></a>
+            <a href="PersonalSite/PersonalSite.html"><img class ="logo" src="Images/MyHours.svg" alt="Avatar"></a>
             <ul>
-                <li><a href="#">About</a></li>
+                <li><a href="About/AboutUs.html">About</a></li>
                 <li><a onclick="showLoginModal()" class="login">Login</a></li>
                 <li><a onclick="showSignupModal()" class="signup">SignUp</a> </li>
             </ul>
         </nav>
     </div>
+</header>
     <div class="info">
         <div class="text">
-            <h3>"Your way to timetrack"</h3>
+            <h3>Your way to timetrack</h3>
         </div>
         <div class="box">
             <div class="icon"><i class="fas fa-user"></i></div>
@@ -50,72 +53,70 @@
             </div>
         </div>
     </div>
-</header>
+
     <!-- Login/Signup -->
     <div id="id01" class="modal">
   <span onclick="hideModal()"
         class="close" title="Close Modal">&times;</span>
-        <form class="modal-content animate">
+    <form class="modal-content animate">
 
-            <div class="containermodalLogin" id="login">
-                <div id="tab-btnLogin">
-                    <a href="#" class="login1">Sign In</a>
-                    <a href="#" onclick="showSignupModal()" class="register">Sign Up</a>
-                </div>
-
-                <div class="imgcontainer">
-                    <img src="Images/Logo2.svg" alt="Avatar" class="avatar">
-                </div>
-
-
-                <label for="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" id="uname" required autofocus>
-
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
-
-                <button type="submit">Login</button>
-                <label>
-                    <input type="checkbox" checked="checked" name="remember"> Remember me
-                </label>
+        <div class="containermodalLogin" id="login">
+            <div id="tab-btnLogin">
+                <a href="#" class="login1">Sign In</a>
+                <a href="#" onclick="showSignupModal()" class="register">Sign Up</a>
             </div>
 
-            <div class="containermodalLogin" style="background-color:#f1f1f1">
-                <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
+            <div class="imgcontainer">
+                <img src="Images/MyHours.svg" alt="Avatar" class="avatar">
             </div>
 
-            <div class="containermodalSignUp" id="signup">
-                <div id="tab-btnSignUp">
-                    <a href="#" onclick="showLoginModal()" class="login1">Sign In</a>
-                    <a href="#" class="register">Sign Up</a>
-                </div>
+            <div id="LoginInfo">
+                <label for="email1" >Email </label><input type="text" placeholder="Enter Email" name="email" id="email1">
+                <label for="password1">Password </label><input type="password" placeholder="Enter Password" name="password" id="password1">
+            </div>
+                <label><input type="checkbox" checked="checked" name="remember">Remember me</label>
 
-                <div class="imgcontainer">
-                    <img src="Images/Logo2.svg" alt="Avatar" class="avatar">
-                </div>
+            <button type="submit" onclick="Login()" >Login</button>
 
+        </div>
 
-                <label for="unamesign"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="unamesign" id="unamesign" required autofocus >
+        <div class="containermodalLogin" style="background-color:#f1f1f1">
+            <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
+        </div>
+
+        <div class="containermodalSignUp" id="signup">
+            <div id="tab-btnSignUp">
+                <a href="#" onclick="showLoginModal()" class="login1">Sign In</a>
+                <a href="#" class="register">Sign Up</a>
+            </div>
+
+            <div class="imgcontainer">
+                <img src="Images/MyHours.svg" alt="Avatar" class="avatar">
+            </div>
+
+            <div id="usersign">
+                <label for="firstName"><b>Firstname</b></label>
+                <input type="text" placeholder="Enter Firstname" name="firstName" id="firstName" required>
+
+                <label for="surName"><b>Surname</b></label>
+                <input type="text" placeholder="Enter Surname" name="surName" id="surName" required>
 
                 <label for="email"><b>Email</b></label>
                 <input type="email" placeholder="Enter Email" name="email" id="email" required>
 
-                <label for="pswsign"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="pswsign" id="pswsign" required>
-
-                <label for="repsw"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Enter Password" name="repsw" id="repsw" required>
-
-                <button type="submit">SignUp</button>
-
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" id="password" required>
             </div>
-            <div class="containermodalSignUp" style="background-color:#f1f1f1">
-                <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
-            </div>
-        </form>
+
+                <button type="submit" onclick="Signup()">SignUp</button>
 
         </div>
+        <div class="containermodalSignUp" style="background-color:#f1f1f1">
+            <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
+        </div>
+    </form>
+
+</div>
 <script type="text/javascript" src="index.js"></script>
 </body>
 </html>

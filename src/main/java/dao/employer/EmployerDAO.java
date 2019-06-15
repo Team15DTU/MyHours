@@ -176,7 +176,7 @@ public class EmployerDAO implements IEmployerDAO {
         } catch (SQLException e) {
             connectionHelper.catchSQLExceptionAndDoRollback(c,e,"EmployerDAO.createiEmployer");
         } finally {
-          connectionHelper.finallyActionsForConnection(c, "EmployerDAO.createiEmployer");
+            connectionHelper.finallyActionsForConnection(c, "EmployerDAO.createiEmployer");
         }
     }
 

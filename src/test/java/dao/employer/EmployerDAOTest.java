@@ -98,7 +98,7 @@ public class EmployerDAOTest
     }
 
     // endregion
-    
+
     @BeforeClass
     public static void setUp() throws Exception
     {
@@ -114,7 +114,7 @@ public class EmployerDAOTest
         // Setup necessary test IWorkerDTO and IEmployer objects.
         setupTestData();
     }
-    
+
     @AfterClass
     public static void tearDown() throws Exception
     {
@@ -129,7 +129,7 @@ public class EmployerDAOTest
     public void afterTest () throws DALException {
         clearEmployerTestTable();
     }
-    
+
     /*
     ----------------------------- TESTS -----------------------------
      */
@@ -265,7 +265,7 @@ public class EmployerDAOTest
         iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
 
     }
-    
+
     @Test
     public void deleteWorkPlace() throws DALException {
 

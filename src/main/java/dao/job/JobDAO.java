@@ -19,10 +19,10 @@ public class JobDAO implements IJobDAO {
     /*
     -------------------------- Fields --------------------------
      */
-    
+
     private IConnPool iConnPool;
     private ConnectionHelper connectionHelper;
-    
+
     /*
     ----------------------- Constructor -------------------------
      */
@@ -33,8 +33,8 @@ public class JobDAO implements IJobDAO {
         this.connectionHelper = connectionHelper;
 
     }
-    
-    
+
+
     /*
     ------------------------ Properties -------------------------
      */
@@ -43,7 +43,7 @@ public class JobDAO implements IJobDAO {
 
 
     // </editor-folder>
-    
+
     /*
     ---------------------- Public Methods -----------------------
      */

@@ -5,6 +5,6 @@ import javax.ws.rs.ApplicationPath;
 /**
  * @author Alfred Röttger Rydahl
  */
-@ApplicationPath("/MyHours")
-public class AppConfig extends ResourceConfig
-{ }
+@ApplicationPath("MyHours")
+public class AppConfig extends ResourceConfig {
+}

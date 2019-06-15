@@ -30,7 +30,7 @@ import java.util.*;
 /**
  * @author Rasmus Sander Larsen
  */
-@Path("/DBControl")
+@Path("/DBController")
 public class DBController implements IDBController
 {
 
@@ -256,7 +256,7 @@ public class DBController implements IDBController
     {
     	String email 	= user.getEmail();
     	String password = user.getPassword();
-    	
+
     	// Boolean to return
 		boolean success = false;
     	
@@ -546,14 +546,16 @@ public class DBController implements IDBController
     { return null; }
     
     @GET
-	@Path("/getJobList/{name}")
+	@Path("/getJobListbyName/{name}")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IJobDTO> getIJobDTOList(@PathParam("name") String name)
     { return null; }
-    
+
+
+    //Can replace getIJobDTOList() with no parameters, sine parameters is null when not assigned. (Path has been change to avoid conflicts)
     @GET
-	@Path("/getJobList")
+	@Path("/getJobListSalary")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IJobDTO> getIJobDTOList(@QueryParam("minSalary") double minSalary, @QueryParam("maxSalary")double maxSalary)
@@ -606,15 +608,16 @@ public class DBController implements IDBController
     { return null; }
     
     @GET
-	@Path("/getActivityList")
+	@Path("/getActivityListByDate/{date}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IActivityDTO> getIActivityList(Date date)
+    public List<IActivityDTO> getIActivityList(@PathParam("date") Date date)
     { return null; }
-    
+
+	//Can replace getIActivityList() with no parameters, sine parameters is null when not assigned. (Path has been change to avoid conflicts)
     @GET
-	@Path("/getActivityList")
+	@Path("/getActivityListValue")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IActivityDTO> getIActivityList(@QueryParam("minVal") double minVal, @QueryParam("maxVal") double maxVal)
