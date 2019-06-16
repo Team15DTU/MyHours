@@ -560,16 +560,16 @@ function deleteJob(){
     console.log(userJson);
 }
 
-function generateJobHTML(job){
-    var deleteId = job.id;
+function generateJobHTML(data){
+    var deleteId = data.id;
 
     console.log("job id "+ deleteId);
-    console.log("job id" + job.id);
+    console.log("job id" + data.id);
 
-    return 	'<tr><td>' + job.id + '</td>' +
-        '<td>' + job.name + '</td>' +
-        '<td> data-userid="' + job.id + '"</td>' +
-        '<td> data-userid="' + job.id + '"</td>' +
+    return 	'<tr><td>' + data.id + '</td>' +
+        '<td>' + data.name + '</td>' +
+        '<td> data-userid="' + data.id + '"</td>' +
+        '<td> data-userid="' + data.id + '"</td>' +
         '</tr>';
 }
 

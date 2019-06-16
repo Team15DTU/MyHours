@@ -270,17 +270,17 @@
             <center>
                 <label><b>Choice a job you want to Delete: </b></label><br>
 
-                <select id="select_job_delete">a
+                <select id="select_job_delete" onclick="getJobList();">
                     <option value="Default"></option>
                 </select>
             </center>
             <br><br>
-            <button type="submit" name="DeleteJob" value="submit" id="job_delete_button" class="submit" onclick="deleteJobFromHTTP()">Delete job</button>
+            <button type="submit" name="DeleteJob" value="submit" id="job_delete_button" class="submit" onclick="deleteJobFromHTTP(); deleteJob()">Delete Job</button>
         </form>
     </div>
 </div>
 
-            <!-- Workplace -->
+            <!-- Employer -->
 
 <!-- add -->
 
@@ -305,7 +305,7 @@
                 <label><b>What town is the company in?</b></label>
                 <input class="w3-input w3-border" type="text" placeholder="Town where company is located" name="psw" required>
 
-                <button  type="submit" class="submit">Login</button>
+                <button  type="submit" class="submit" onclick="addEmployer()">Save Employer</button>
             </div>
         </form>
     </div>
@@ -319,8 +319,8 @@
     <div class="modal2-content">
         <span onclick="document.getElementById('jobadress_edit').style.display='none'" class="close2">&times;</span>
         <form id="editEmployer">
-            <label><b>Choice a job you want to edit: </b></label><br><br>
-            <select id="select_jobadress_edit" onchange="">
+            <label><b>Choice an employer you want to edit: </b></label><br><br>
+            <select id="select_jobadress_edit" onclick="getEmployerList();">
                 <option value="Default"></option>
             </select>
             <b id="jobadressEditInfo"></b>
@@ -340,7 +340,7 @@
             <label><b>What town is the company in?</b></label>
             <input class="w3-input w3-border" type="text" placeholder="Town where company is located" name="psw" required>
 
-            <button  type="submit" class="submit">Login</button>
+            <button  type="submit" class="submit" onclick="editEmployer();">Edit Employer</button>
 
         </form>
     </div>
@@ -355,14 +355,14 @@
         <span onclick="document.getElementById('jobadress_delete').style.display='none'" class="close2">&times;</span>
         <form id="deleteEmployer">
             <center>
-                <label><b>Choice a jobadress you want to Delete: </b></label><br>
+                <label><b>Choice an employer you want to delete: </b></label><br>
 
-                <select id="select_jobadress_delete">a
+                <select id="select_jobadress_delete" onclick="getEmployerList();">
                     <option value="Default"></option>
                 </select>
             </center>
             <br><br>
-            <button type="submit" name="DeleteJob" value="submit" id="jobadress_delete_button" class="submit" onclick="deleteJobFromHTTP()">Delete job</button>
+            <button type="submit" name="DeleteJob" value="submit" id="jobadress_delete_button" class="submit" onclick="deleteJobFromHTTP(); deleteEmployer();">Delete Employer</button>
         </form>
     </div>
 </div>
@@ -372,6 +372,8 @@
 <footer>
     <script type="text/javascript" src="PersonalSite.js"></script>
     <script>
+
+        //TODO: Når man klikker uden for modal'en så forsvinder den ikke
         //her er delene som fremkalder content.
         function openInfo() {
 
