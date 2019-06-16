@@ -8,6 +8,7 @@ import db.IConnPool;
 
 import java.sql.*;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,47 @@ public class ActivityDAO implements IActivityDAO {
      */
 
     @Override
+    public void createiActivity(IActivityDTO activity) throws DALException {
+
+        Connection c = iConnPool.getConn();
+
+        String createQuery = String.format("INSERT INTO %s (%s,%s,%s,%s,%s) VALUES (?,?,?,?,?)",
+                ActivityConstants.TABLENAME,
+                ActivityConstants.jobID,                // ParameterIndex 1
+                ActivityConstants.startDateTime,        // ParameterIndex 2
+                ActivityConstants.endDateTime,          // ParameterIndex 3
+                ActivityConstants.pause,                // ParameterIndex 4
+                ActivityConstants.activityValue);       // ParameterIndex 5
+
+        try {
+            c.setAutoCommit(false);
+
+            PreparedStatement preparedStatement = c.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1,activity.getJobID());
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(activity.getStartingDateTime()));
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(activity.getEndingDateTime()));
+            preparedStatement.setLong(4,activity.getPause().toMinutes());
+            preparedStatement.setDouble(5,activity.getActivityValue());
+
+            preparedStatement.executeUpdate();
+
+            // Sets the assigned activityID to the inputted IActivityDTO Object.
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()){
+                activity.setActivityID(generatedKeys.getInt(1));
+            }
+
+            c.commit();
+
+        } catch (SQLException e){
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "ActivityDAO.createiActivity");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c,"ActivityDAO.createiActivity");
+        }
+    }
+
+
+    @Override
     public IActivityDTO getiActivity(int userID, LocalDateTime dateAndTime) {
         return null;
     }
@@ -72,9 +114,8 @@ public class ActivityDAO implements IActivityDAO {
             while (getResultSet.next()){
                 returnedActivity.setActivityID(getResultSet.getInt(ActivityConstants.id));
                 returnedActivity.setJobID(getResultSet.getInt(ActivityConstants.jobID));
-                //TODO: SKal der tages højde for resultset med null kolonner?
-                returnedActivity.setStartingDateTime(getResultSet.getTimestamp(ActivityConstants.startDateTime).toLocalDateTime());
-                returnedActivity.setEndingDateTime(getResultSet.getTimestamp(ActivityConstants.endDateTime).toLocalDateTime());
+                returnedActivity.setStartingDateTime(localDateTimeFromTimestamp(getResultSet.getTimestamp(ActivityConstants.startDateTime)));
+                returnedActivity.setEndingDateTime(localDateTimeFromTimestamp(getResultSet.getTimestamp(ActivityConstants.endDateTime)));
                 returnedActivity.setPause(Duration.ofMinutes(getResultSet.getLong(ActivityConstants.pause)));
                 returnedActivity.setActivityValue(getResultSet.getDouble(ActivityConstants.activityValue));
             }
@@ -143,55 +184,74 @@ public class ActivityDAO implements IActivityDAO {
         return activityListByJobID;
 
     }
+    // TODO: Skal vi også have denne metode uden et jobID?
+    // TODO: Skal denne møde vise alt hvor startDateTime er inde for de to områder, eller skal både Start og End være indefor.
+    @Override //
+    public List<IActivityDTO> getiActivityList(int jobID, LocalDate fromDate, LocalDate toDate) throws DALException {
 
-    @Override
-    public List<IActivityDTO> getiActivityList(int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime) {
-        return null;
-    }
-
-    @Override
-    public void createiActivity(IActivityDTO activity) throws DALException {
+        List<IActivityDTO> activityListBetweenDates = new ArrayList<>();
 
         Connection c = iConnPool.getConn();
 
-        String createQuery = String.format("INSERT INTO %s (%s,%s,%s,%s,%s) VALUES (?,?,?,?,?)",
+        String getActivityIDsQueryBetweenDates = String.format(
+                "SELECT %s FROM %s WHERE %s >= ? AND %s <= ? + INTERVAL 1 DAY AND %s = ?",
+                ActivityConstants.id,
                 ActivityConstants.TABLENAME,
-                ActivityConstants.jobID,                // ParameterIndex 1
-                ActivityConstants.startDateTime,        // ParameterIndex 2
-                ActivityConstants.endDateTime,          // ParameterIndex 3
-                ActivityConstants.pause,                // ParameterIndex 4
-                ActivityConstants.activityValue);       // ParameterIndex 5
+                ActivityConstants.startDateTime,    // ParameterIndex 1
+                ActivityConstants.startDateTime,    // ParameterIndex 2
+                ActivityConstants.jobID);           // ParameterIndex 3
+
+        try {
+            PreparedStatement preparedStatement = c.prepareStatement(getActivityIDsQueryBetweenDates);
+            preparedStatement.setDate(1,Date.valueOf(fromDate));
+            preparedStatement.setDate(2,Date.valueOf(toDate));
+            preparedStatement.setInt(3,jobID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                activityListBetweenDates.add(getiActivity(resultSet.getInt(ActivityConstants.id)));
+            }
+
+        } catch (SQLException e){
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
+        }
+
+        return activityListBetweenDates;
+    }
+
+    @Override
+    public void updateiActivity(IActivityDTO activity) throws DALException {
+        Connection c = iConnPool.getConn();
+
+        String updateQuery = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?",
+                ActivityConstants.TABLENAME,
+                ActivityConstants.startDateTime,        // ParameterIndex 1
+                ActivityConstants.endDateTime,          // ParameterIndex 2
+                ActivityConstants.pause,                // ParameterIndex 3
+                ActivityConstants.activityValue,        // ParameterIndex 4
+                ActivityConstants.id);                  // ParameterIndex 5
 
         try {
             c.setAutoCommit(false);
 
-            PreparedStatement preparedStatement = c.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1,activity.getJobID());
-            preparedStatement.setTimestamp(2, Timestamp.valueOf(activity.getStartingDateTime()));
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(activity.getEndingDateTime()));
-            preparedStatement.setLong(4,activity.getPause().toMinutes());
-            preparedStatement.setDouble(5,activity.getActivityValue());
+            PreparedStatement preparedStatement = c.prepareStatement(updateQuery);
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(activity.getStartingDateTime()));
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(activity.getEndingDateTime()));
+            preparedStatement.setLong(3, activity.getPause().getSeconds());
+            preparedStatement.setDouble(4, activity.getActivityValue());
+            preparedStatement.setInt(5, activity.getActivityID());
 
             preparedStatement.executeUpdate();
 
-            // Sets the assigned activityID to the inputted IActivityDTO Object.
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()){
-                activity.setActivityID(generatedKeys.getInt(1));
-            }
-
             c.commit();
 
-        } catch (SQLException e){
-            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "ActivityDAO.createiActivity");
+        } catch (SQLException e) {
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"ActivityDAO.updateiActivity");
         } finally {
-            connectionHelper.finallyActionsForConnection(c,"ActivityDAO.createiActivity");
+            connectionHelper.finallyActionsForConnection(c,"ActivityDAO.updateiActivity");
         }
-    }
-
-    @Override
-    public void updateiActivity(IActivityDTO activity) {
-
     }
 
     @Override
@@ -229,5 +289,7 @@ public class ActivityDAO implements IActivityDAO {
     ---------------------- Support Methods ----------------------
      */
 
-
+    private LocalDateTime localDateTimeFromTimestamp(Timestamp timestamp){
+        return timestamp.toLocalDateTime().minusNanos(timestamp.getNanos());
+    }
 }

@@ -116,8 +116,8 @@ public class TestDataController {
 
     // region ActivityDTO No. 1
 
-    private static LocalDateTime activityNo1_startingDateTime = LocalDateTime.now().minusMonths(12);
-    private static LocalDateTime activityNo1_endingDateTime = activityNo1_startingDateTime.plusMonths(6);
+    private static LocalDateTime activityNo1_startingDateTime = LocalDateTime.now().minusMonths(6);
+    private static LocalDateTime activityNo1_endingDateTime = activityNo1_startingDateTime.plusMonths(3);
     private static Duration activityNo1_pause = Duration.ofMinutes(30); // break in minutes!
     private static double activityNo1_activityValue = 1500.50;
 
@@ -125,19 +125,19 @@ public class TestDataController {
 
     // region ActivityDTO No. 2
 
-    private static LocalDateTime activityNo2_startingDateTime = LocalDateTime.now().minusMonths(24);
-    private static LocalDateTime activityNo2_endingDateTime = activityNo2_startingDateTime.plusMonths(12);
-    private static Duration activityNo2_pause = Duration.ofMinutes(90); // break in minutes!
+    private static LocalDateTime activityNo2_startingDateTime = LocalDateTime.now().minusMonths(12);
+    private static LocalDateTime activityNo2_endingDateTime = activityNo2_startingDateTime.plusMonths(6);
+    private static Duration activityNo2_pause = Duration.ofMinutes(60); // break in minutes!
     private static double activityNo2_activityValue = 3000.57;
 
     // endregion
 
     // region ActivityDTO No. 3
 
-    private static LocalDateTime activityNo3_startingDateTime = LocalDateTime.now().minusMonths(6);
-    private static LocalDateTime activityNo3_endingDateTime = activityNo3_startingDateTime.plusMonths(3);
+    private static LocalDateTime activityNo3_startingDateTime = LocalDateTime.now().minusMonths(24);
+    private static LocalDateTime activityNo3_endingDateTime = activityNo3_startingDateTime.plusMonths(12);
     private static Duration activityNo3_pause = Duration.ofMinutes(90); // break in minutes!
-    private static double activityNo3_activityValue = 3000.57;
+    private static double activityNo3_activityValue = 5343.98;
 
     // endregion
 
@@ -250,8 +250,8 @@ public class TestDataController {
 
         jobNo2.setEmployerID(belongsToEmployerDTO.getEmployerID());
         jobNo2.setJobName(jobNo2_jobName);
-        jobNo2.setHireDate(jobNo2_hireDate);
-        jobNo2.setFinishDate(jobNo2_finishDate);
+        jobNo2.setHireDate(null);
+        jobNo2.setFinishDate(null);
         jobNo2.setStdSalary(jobNo2_stdSalary);
 
         return jobNo2;

@@ -64,10 +64,10 @@ public class JobDAO implements IJobDAO {
             c.setAutoCommit(false);
 
             PreparedStatement pStatement = c.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
+
             pStatement.setInt(1, jobDTO.getEmployerID());
             pStatement.setString(2, jobDTO.getJobName());
 
-            // TODO: Er det ikke lige meget at tjekke om date er null, fordi hvis den er det, bliver null vel bare returneret?
             // Inserts null if no hire date.
             if (jobDTO.getHireDate() != null ) {
                 pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
@@ -85,7 +85,6 @@ public class JobDAO implements IJobDAO {
             pStatement.executeUpdate();
 
             ResultSet generatedKeys = pStatement.getGeneratedKeys();
-
             if (generatedKeys.next()){
                 jobDTO.setJobID(generatedKeys.getInt(1));
             }
@@ -98,8 +97,6 @@ public class JobDAO implements IJobDAO {
             connectionHelper.finallyActionsForConnection(c, "JobDAO.createIJob");
         }
     }
-
-
 
     @Override
     public IJobDTO getIJob(int jobID) throws DALException {
