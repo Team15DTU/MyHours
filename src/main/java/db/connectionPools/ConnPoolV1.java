@@ -303,6 +303,7 @@ public class ConnPoolV1 implements IConnPool {
 		// Close all connections in both Lists
 		try
 		{
+			//TODO: Correct these two loops, so they aren't dependent on list size
 			for (Connection c : freeConnList) { closeConnection(c); }
 			for (Connection c : usedConnList) { closeConnection(c); }
 		}
@@ -324,6 +325,7 @@ public class ConnPoolV1 implements IConnPool {
     -------------------------------------------------------------*/
 	/**
 	 * Establishes a connection with the Database.
+	 * This is Thread safe.
 	 * @return Connection object
 	 * @throws DALException Data Access Layer Exception
 	 */
@@ -343,6 +345,7 @@ public class ConnPoolV1 implements IConnPool {
 	/**
 	 * Closed the given SQL Connection the correct way. If the connection
 	 * is already closed, then this won't do anything.
+	 * This is Thread safe.
 	 * @param c The SQL Connection to close
 	 * @throws SQLException Handle this
 	 */
@@ -395,6 +398,8 @@ public class ConnPoolV1 implements IConnPool {
 				{
 					System.err.println("ERROR: Couldn't sleep Connection refresh thread - " + e.getMessage());
 				}
+				
+				//TODO: Correct this loop, so they aren't dependent on list size
 				
 				// Loop through all free connections
 				for ( Connection c : freeConnList )
