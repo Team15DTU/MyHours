@@ -152,7 +152,11 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		this.validTimeout = validTimeout;
 	}
-
+	
+	/**
+	 * Gets the SQL DB user.
+	 * @return A String
+	 */
 	public String getUser() {
 		return user;
 	}
@@ -299,12 +303,18 @@ public class ConnPoolV1 implements IConnPool {
 		// Close all connections in both Lists
 		try
 		{
-			for (Connection c : freeConnList) { closeConnection(c); }
-			for (Connection c : usedConnList) { closeConnection(c); }
+			int i;
+			for ( i=0; i < freeConnList.size(); i++ ) { closeConnection(freeConnList.remove(i)); }
+			for ( i=0; i < usedConnList.size(); i++ ) { closeConnection(usedConnList.remove(i)); }
 		}
 		catch ( SQLException e )
 		{
-			System.err.println("ERROR: Error trying to close connection pool - " + e.getMessage());
+			System.err.println( String.format("ERROR: Error trying to close connection pool - %s", e.getMessage()) );
+			throw new DALException( e.getMessage(), e.getCause() );
+		}
+		catch ( Exception e )
+		{
+			System.err.println( String.format("ERROR: Unknown error in closePool() - %s", e.getMessage()) );
 			throw new DALException( e.getMessage(), e.getCause() );
 		}
 		finally
@@ -320,6 +330,7 @@ public class ConnPoolV1 implements IConnPool {
     -------------------------------------------------------------*/
 	/**
 	 * Establishes a connection with the Database.
+	 * This is Thread safe.
 	 * @return Connection object
 	 * @throws DALException Data Access Layer Exception
 	 */
@@ -339,6 +350,7 @@ public class ConnPoolV1 implements IConnPool {
 	/**
 	 * Closed the given SQL Connection the correct way. If the connection
 	 * is already closed, then this won't do anything.
+	 * This is Thread safe.
 	 * @param c The SQL Connection to close
 	 * @throws SQLException Handle this
 	 */
@@ -367,7 +379,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * Keeps all Connections alive in freeConnList. For every "refreshRate" milliseconds
 	 * it runs through the whole List, and checks if there's any problems with any
 	 * of the connections.
-	 * If a problems with a connection is detected, it refreshes the connection by
+	 * If a problem with a connection is detected, it refreshes the connection by
 	 * creating a new one, and makes the same variable point to the newly created
 	 * connection.
 	 * As the method is called, it starts and runs on its own thread, and the main thread
@@ -380,8 +392,8 @@ public class ConnPoolV1 implements IConnPool {
 		Thread th = new Thread(() ->
 		{
 			// Start forever loop
-			while (!stop) {
-				
+			while (!stop)
+			{
 				// Sleep the thread a set amount of time
 				try
 				{
@@ -389,32 +401,34 @@ public class ConnPoolV1 implements IConnPool {
 				}
 				catch (InterruptedException e)
 				{
-					System.err.println("ERROR: Couldn't sleep Connection refresh thread - " + e.getMessage());
+					System.err.println( String.format("ERROR: Couldn't sleep Connection refresh thread - %s", e.getMessage()) );
 				}
 				
 				// Loop through all free connections
-				for ( Connection c : freeConnList )
+				Connection c = null;
+				for ( int i=0; i < freeConnList.size(); i++ )
 				{
 					// Check if GC is closing down
 					if (stop)
 						break;
 					
+					c = freeConnList.get(i);	// Used for all checks and to close
 					try
 					{
 						// Check if it's closed
-						if ( c.isClosed() ) { c = createConnection(); }
+						if ( c.isClosed() ) { freeConnList.set(i, createConnection()); }
 						
 						// Check if it has errors
 						else if ( !(c.getWarnings() == null) || !c.isValid(validTimeout) )
-						{ c.close(); c = createConnection(); }
+						{ c.close(); freeConnList.set(i, createConnection()); }
 					}
 					catch (SQLException e)
 					{
-						System.err.println("ERROR: keepAlive error - " + e.getMessage());
+						System.err.println( String.format("ERROR: keepAlive error - %s", e.getMessage()) );
 					}
 					catch (DALException e)
 					{
-						System.err.println("ERROR: DALException keepAlive error - " + e.getMessage());
+						System.err.println( String.format("ERROR: DALException keepAlive error - %s", e.getMessage()) );
 					}
 				}
 			}
