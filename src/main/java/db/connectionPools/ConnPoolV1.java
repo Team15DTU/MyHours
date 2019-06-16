@@ -303,9 +303,9 @@ public class ConnPoolV1 implements IConnPool {
 		// Close all connections in both Lists
 		try
 		{
-			//TODO: Correct these two loops, so they aren't dependent on list size
-			for (Connection c : freeConnList) { closeConnection(c); }
-			for (Connection c : usedConnList) { closeConnection(c); }
+			int i;
+			for ( i=0; i < freeConnList.size(); i++ ) { closeConnection(freeConnList.remove(i)); }
+			for ( i=0; i < usedConnList.size(); i++ ) { closeConnection(usedConnList.remove(i)); }
 		}
 		catch ( SQLException e )
 		{
