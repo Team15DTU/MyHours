@@ -29,6 +29,10 @@ public class WorkerDAO implements IWorkerDAO {
     {
         this.connPool = connPool;
     }
+
+    public WorkerDAO(){
+
+    }
     
     /*
     ------------------------ Properties -------------------------
@@ -195,6 +199,7 @@ public class WorkerDAO implements IWorkerDAO {
             connPool.releaseConnection(c);
         }
     }
+
 
     /*
     ---------------------- Support Methods ----------------------

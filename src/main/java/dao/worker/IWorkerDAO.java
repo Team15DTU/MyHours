@@ -8,6 +8,9 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
+
+//TODO: getWorker(int id) needs to be implemented
+
 public interface IWorkerDAO {
 
     /*

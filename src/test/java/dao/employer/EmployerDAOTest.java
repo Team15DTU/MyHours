@@ -98,7 +98,7 @@ public class EmployerDAOTest
     }
 
     // endregion
-    
+
     @BeforeClass
     public static void setUp() throws Exception
     {
@@ -114,7 +114,7 @@ public class EmployerDAOTest
         // Setup necessary test IWorkerDTO and IEmployer objects.
         setupTestData();
     }
-    
+
     @AfterClass
     public static void tearDown() throws Exception
     {
@@ -129,7 +129,7 @@ public class EmployerDAOTest
     public void afterTest () throws DALException {
         clearEmployerTestTable();
     }
-    
+
     /*
     ----------------------------- TESTS -----------------------------
      */
@@ -145,7 +145,7 @@ public class EmployerDAOTest
 
         IEmployerDTO returnedWorkplaceDTOOfNo1 = iEmployerDAO.getIEmployer(nextAutoIncrementalForWorkplaceNo1);
 
-        assertEquals(returnedWorkplaceDTOOfNo1.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo1);
+        assertEquals(returnedWorkplaceDTOOfNo1.getEmployerID(), nextAutoIncrementalForWorkplaceNo1);
         assertEquals(returnedWorkplaceDTOOfNo1.getWorkerID(), testWorker1.getWorkerID());
         assertEquals(returnedWorkplaceDTOOfNo1.getName(), employerNo1_name);
         assertEquals(returnedWorkplaceDTOOfNo1.getColor(), employerNo1_color);
@@ -222,7 +222,7 @@ public class EmployerDAOTest
 
         IEmployerDTO returnedWorkplaceDTOOfNo2 = iEmployerDAO.getIEmployer(nextAutoIncrementalForWorkplaceNo2);
 
-        assertEquals(returnedWorkplaceDTOOfNo2.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo2);
+        assertEquals(returnedWorkplaceDTOOfNo2.getEmployerID(), nextAutoIncrementalForWorkplaceNo2);
         assertEquals(returnedWorkplaceDTOOfNo2.getWorkerID(), testWorker1.getWorkerID());
         assertEquals(returnedWorkplaceDTOOfNo2.getName(), employerNo2_name);
         assertEquals(returnedWorkplaceDTOOfNo2.getColor(), employerNo2_color);
@@ -254,7 +254,7 @@ public class EmployerDAOTest
 
         iEmployerDAO.updateiEmployer(workplaceDTOOfNo1ToUpdate);
 
-        assertEquals(workplaceDTOOfNo1ToUpdate.getWorkplaceID(), nextAutoIncrementalForWorkplaceNo1);
+        assertEquals(workplaceDTOOfNo1ToUpdate.getEmployerID(), nextAutoIncrementalForWorkplaceNo1);
         assertEquals(workplaceDTOOfNo1ToUpdate.getWorkerID(), employerNo2_workerID_assigned);
         assertEquals(workplaceDTOOfNo1ToUpdate.getName(), employerNo2_name);
         assertEquals(workplaceDTOOfNo1ToUpdate.getColor(), employerNo2_color);
@@ -265,7 +265,7 @@ public class EmployerDAOTest
         iEmployerDAO.deleteiEmployer(nextAutoIncrementalForWorkplaceNo1);
 
     }
-    
+
     @Test
     public void deleteWorkPlace() throws DALException {
 
@@ -293,7 +293,7 @@ public class EmployerDAOTest
     private static void clearBothTestTables () throws DALException {
         // Deletes all Employers from DB.
         for (IEmployerDTO employerDTO : iEmployerDAO.getiEmployerList()){
-            iEmployerDAO.deleteiEmployer(employerDTO.getWorkplaceID());
+            iEmployerDAO.deleteiEmployer(employerDTO.getEmployerID());
         }
 
         // Deletes all workers from test DB.
@@ -305,7 +305,7 @@ public class EmployerDAOTest
     private static void clearEmployerTestTable () throws DALException {
         // Deletes all Employers from DB.
         for (IEmployerDTO employerDTO : iEmployerDAO.getiEmployerList()){
-            iEmployerDAO.deleteiEmployer(employerDTO.getWorkplaceID());
+            iEmployerDAO.deleteiEmployer(employerDTO.getEmployerID());
         }
     }
 

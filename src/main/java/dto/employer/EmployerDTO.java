@@ -28,14 +28,16 @@ public class EmployerDTO implements IEmployerDTO {
     
     public EmployerDTO() {}
 
-    public EmployerDTO(int workerID, String name) {
+    public EmployerDTO(int workerID, String name)
+    {
         this.workerID = workerID;
         this.name = name;
         color = null;
         iJobList = null;
     }
 
-    public EmployerDTO(int workerID, String name, Color color, String  telephone, List<IJobDTO> iJobList) {
+    public EmployerDTO(int workerID, String name, Color color, String  telephone, List<IJobDTO> iJobList)
+    {
         this.workerID = workerID;
         this.name = name;
         this.color = color;

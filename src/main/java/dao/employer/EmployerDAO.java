@@ -66,7 +66,7 @@ public class EmployerDAO implements IEmployerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                iEmployerDTOToReturn.setWorkplaceID(resultSet.getInt(EmployerConstants.id));
+                iEmployerDTOToReturn.setEmployerID(resultSet.getInt(EmployerConstants.id));
                 iEmployerDTOToReturn.setWorkerID(resultSet.getInt(EmployerConstants.workerID));
                 iEmployerDTOToReturn.setName(resultSet.getString(EmployerConstants.employerName));
                 iEmployerDTOToReturn.setColor(Color.decode("#"+resultSet.getString(EmployerConstants.color)));
@@ -176,7 +176,7 @@ public class EmployerDAO implements IEmployerDAO {
         } catch (SQLException e) {
             connectionHelper.catchSQLExceptionAndDoRollback(c,e,"EmployerDAO.createiEmployer");
         } finally {
-          connectionHelper.finallyActionsForConnection(c, "EmployerDAO.createiEmployer");
+            connectionHelper.finallyActionsForConnection(c, "EmployerDAO.createiEmployer");
         }
     }
 
@@ -200,7 +200,7 @@ public class EmployerDAO implements IEmployerDAO {
             pStatement.setString(1, employerDTO.getName());
             pStatement.setString(2, colorHEXToString(employerDTO.getColor()));
             pStatement.setString(3, employerDTO.getTelephone());
-            pStatement.setInt(4, employerDTO.getWorkplaceID());
+            pStatement.setInt(4, employerDTO.getEmployerID());
 
             pStatement.executeUpdate();
 
