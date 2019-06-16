@@ -62,11 +62,11 @@ public class WorkerDAO implements IWorkerDAO
                     "SELECT * FROM " + WORKERS_TABLENAME + " WHERE " + Columns.email.toString() + " = '" + email + "'");
 
             while (resultSet.next()) {
-                workerToReturn.setWorkerID(resultSet.getInt("workerid"));
-                workerToReturn.setFirstName(resultSet.getString("firstname"));
-                workerToReturn.setSurName(resultSet.getString("surname"));
-                workerToReturn.setEmail(resultSet.getString("email"));
-                workerToReturn.setBirthday(resultSet.getDate("birthday").toLocalDate());
+                workerToReturn.setWorkerID(resultSet.getInt(WorkerConstants.id));
+                workerToReturn.setFirstName(resultSet.getString(WorkerConstants.firstname));
+                workerToReturn.setSurName(resultSet.getString(WorkerConstants.surname));
+                workerToReturn.setEmail(resultSet.getString(WorkerConstants.email));
+                workerToReturn.setBirthday(resultSet.getDate(WorkerConstants.birthday).toLocalDate());
             }
 
         } catch (SQLException e) {
@@ -108,8 +108,8 @@ public class WorkerDAO implements IWorkerDAO
                 worker.setWorkerID( rs.getInt(WorkerConstants.id) );
                 worker.setFirstName( rs.getString(WorkerConstants.firstname) );
                 worker.setSurName( rs.getString(WorkerConstants.surname) );
-                worker.setEmail( rs.getString(WorkerConstants.email) );
                 worker.setBirthday( rs.getDate( WorkerConstants.birthday ).toLocalDate() );
+                worker.setEmail( rs.getString(WorkerConstants.email) );
                 
                 //TODO: Address of the worker needs to be set!
             }

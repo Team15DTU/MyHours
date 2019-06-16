@@ -72,8 +72,7 @@ public class WorkerDAOTest
 	@Test
 	public void getWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance(),new HibernateProperties().getTestDB()).getiWorkerDAO();
-		
+		IWorkerDAO workerDAO = new WorkerDAO(TestConnPoolV1.getInstance());
 		IWorkerDTO worker = TestDataController.getTestWorkerNo1();
 		
 		// Create worker in DB
@@ -82,20 +81,21 @@ public class WorkerDAOTest
 		// Get the worker by Email and test
 		IWorkerDTO eWorker = workerDAO.getWorker( worker.getEmail() );
 		
-		assertEquals(worker.getWorkerID(), eWorker.getWorkerID());
 		assertEquals(worker.getFirstName(), eWorker.getFirstName());
 		assertEquals(worker.getSurName(), eWorker.getSurName());
-		assertTrue(worker.getBirthday().equals(eWorker.getBirthday()));
-		assertEquals(worker.getPassword(), eWorker.getPassword());
+		assertTrue( worker.getBirthday().toString().equals(eWorker.getBirthday().toString()) );
+		
+		/*
+		-----------------------------------------------------------------------------------------
+		 */
 		
 		// Get the worker by ID and test
+		worker.setWorkerID(eWorker.getWorkerID());
 		IWorkerDTO iWorker = workerDAO.getWorker(worker.getWorkerID());
 		
-		assertEquals(worker.getWorkerID(), iWorker.getWorkerID());
 		assertEquals(worker.getFirstName(), iWorker.getFirstName());
 		assertEquals(worker.getSurName(), iWorker.getSurName());
-		assertTrue(worker.getBirthday().equals(iWorker.getBirthday()));
-		assertEquals(worker.getPassword(), iWorker.getPassword());
+		assertTrue( worker.getBirthday().toString().equals(iWorker.getBirthday().toString()) );
 		
 		// Delete worker again
 		workerDAO.deleteWorker( worker.getEmail() );

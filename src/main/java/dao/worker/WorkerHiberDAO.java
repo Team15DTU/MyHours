@@ -99,7 +99,14 @@ public class WorkerHiberDAO implements IWorkerDAO {
 
         return workerDTOToReturn;
     }
-
+    
+    @Override
+    public IWorkerDTO getWorker(int id) throws DALException
+    {
+        //TODO: Implement this!
+        return null;
+    }
+    
     /**
      * This Method returns a List of WorkerDTO objects.
      *
