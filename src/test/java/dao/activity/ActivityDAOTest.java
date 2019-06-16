@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 /**
  * @author Rasmus Sander Larsen
  */
+
 public class ActivityDAOTest {
 
     private final double doubleEqualTolorance = 0.0001; // TODO: Find rigtig værdi
