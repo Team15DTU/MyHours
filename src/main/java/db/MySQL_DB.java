@@ -35,7 +35,6 @@ public class MySQL_DB implements IConnPool {
         return user;
     }
 
-
     // </editor-folder>
     
     /*
