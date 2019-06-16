@@ -1,11 +1,8 @@
 package dao.job;
 
-import dao.ConnectionHelper;
 import dao.DALException;
-import dao.employer.EmployerDAO;
 import dao.employer.IEmployerDAO;
 import dao.worker.IWorkerDAO;
-import dao.worker.WorkerHiberDAO;
 import db.DBController;
 import db.IConnPool;
 import db.TestConnPoolV1;
@@ -13,13 +10,10 @@ import dto.employer.IEmployerDTO;
 import dto.job.IJobDTO;
 import dto.worker.IWorkerDTO;
 import hibernate.HibernateProperties;
-import hibernate.HibernateUtil;
 import org.junit.*;
 import testData.TestDataController;
 
 import java.util.List;
-import java.util.TimeZone;
-import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.*;
 
@@ -31,8 +25,6 @@ public class JobDAOTest {
     private final double stdSalaryDifferenceTolerance = 0.001;
 
     private static IConnPool test_DB;
-    private static ConnectionHelper connectionHelper; // TODO: Burde ConnectionHelper klassen være static?
-    private static HibernateUtil hibernateUtil;
     private static IEmployerDAO iEmployerDAO;
     private static IWorkerDAO iWorkerDAO;
     private static IJobDAO iJobDAO;
@@ -97,16 +89,11 @@ public class JobDAOTest {
 
         // Setup DAOs, ConnectionPools and DBControllers.
         test_DB = TestConnPoolV1.getInstance();
-        connectionHelper = new ConnectionHelper(test_DB);
-        hibernateUtil = new HibernateUtil(new HibernateProperties().getTestDB());
-        hibernateUtil.setup();
+        DBController dbController = new DBController(test_DB,new HibernateProperties().getTestDB());
 
-        // Sets timezone (DBController would do it normally)
-        TimeZone.setDefault(TimeZone.getTimeZone(hibernateUtil.getTimeZoneFromDB()));
-
-        iWorkerDAO  = new WorkerHiberDAO(hibernateUtil);
-        iEmployerDAO = new EmployerDAO(test_DB, connectionHelper);
-        iJobDAO = new JobDAO(test_DB,connectionHelper);
+        iWorkerDAO  = dbController.getiWorkerDAO();
+        iEmployerDAO = dbController.getiEmployerDAO();
+        iJobDAO = dbController.getiJobDAO();
 
         // Clear both Employers and Workers table.
         TestDataController.clearJobTestTable(iJobDAO);

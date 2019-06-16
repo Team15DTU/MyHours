@@ -11,12 +11,13 @@ public class ActivityDTO implements IActivityDTO {
     /*
     -------------------------- Fields --------------------------
      */
-    
+
+    private int activityID;
+    private int jobID;
     private LocalDateTime startingDateTime;
     private LocalDateTime endingDateTime;
-    private int jobID;
     private Duration pause; // break in minutes!
-    private double shiftValue;
+    private double activityValue;
 
     /*
     ----------------------- Constructor -------------------------
@@ -36,7 +37,6 @@ public class ActivityDTO implements IActivityDTO {
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;
         this.pause = pause;
-
     }
 
     /*
@@ -44,6 +44,23 @@ public class ActivityDTO implements IActivityDTO {
      */
 
     // <editor-folder desc="Properties"
+
+
+    public int getActivityID() {
+        return activityID;
+    }
+
+    public void setActivityID(int activityID) {
+        this.activityID = activityID;
+    }
+
+    public int getJobID() {
+        return jobID;
+    }
+
+    public void setJobID(int jobID) {
+        this.jobID = jobID;
+    }
 
     public LocalDateTime getStartingDateTime() {
         return startingDateTime;
@@ -61,14 +78,6 @@ public class ActivityDTO implements IActivityDTO {
         this.endingDateTime = endingDateTime;
     }
 
-    public int getJobID() {
-        return jobID;
-    }
-
-    public void setJobID(int jobID) {
-        this.jobID = jobID;
-    }
-
     public Duration getPause() {
         return pause;
     }
@@ -77,12 +86,12 @@ public class ActivityDTO implements IActivityDTO {
         this.pause = pause;
     }
 
-    public double getShiftValue() {
-        return shiftValue;
+    public double getActivityValue() {
+        return activityValue;
     }
 
-    public void setShiftValue(double shiftValue) {
-        this.shiftValue = shiftValue;
+    public void setActivityValue(double activityValue) {
+        this.activityValue = activityValue;
     }
 
     // </editor-folder>

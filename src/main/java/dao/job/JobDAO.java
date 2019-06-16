@@ -48,6 +48,60 @@ public class JobDAO implements IJobDAO {
      */
 
     @Override
+    public void createIJob(IJobDTO jobDTO) throws DALException {
+
+        Connection c = iConnPool.getConn();
+
+        String createQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
+                JobConstants.TABLENAME,
+                JobConstants.employerID,    // ParameterIndex 1
+                JobConstants.jobName,       // ParameterIndex 2
+                JobConstants.hireDate,      // ParameterIndex 3
+                JobConstants.finishDate,    // ParameterIndex 4
+                JobConstants.salary);       // ParameterIndex 5
+
+        try {
+            c.setAutoCommit(false);
+
+            PreparedStatement pStatement = c.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
+            pStatement.setInt(1, jobDTO.getEmployerID());
+            pStatement.setString(2, jobDTO.getJobName());
+
+            // TODO: Er det ikke lige meget at tjekke om date er null, fordi hvis den er det, bliver null vel bare returneret?
+            // Inserts null if no hire date.
+            if (jobDTO.getHireDate() != null ) {
+                pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
+            } else {
+                pStatement.setDate(3,null);
+            }
+            // Inserts null if no hire date.
+            if (jobDTO.getFinishDate() != null ) {
+                pStatement.setDate(4, Date.valueOf(jobDTO.getFinishDate()));
+            } else {
+                pStatement.setDate(4,null);
+            }
+            pStatement.setDouble(5, jobDTO.getStdSalary());
+
+            pStatement.executeUpdate();
+
+            ResultSet generatedKeys = pStatement.getGeneratedKeys();
+
+            if (generatedKeys.next()){
+                jobDTO.setJobID(generatedKeys.getInt(1));
+            }
+
+            c.commit();
+
+        } catch (SQLException e) {
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "JobDAO.createIJob");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c, "JobDAO.createIJob");
+        }
+    }
+
+
+
+    @Override
     public IJobDTO getIJob(int jobID) throws DALException {
 
         Connection c = iConnPool.getConn();
@@ -183,57 +237,6 @@ public class JobDAO implements IJobDAO {
         return jobDTOListToReturn;
     }
 
-    @Override
-    public void createIJob(IJobDTO jobDTO) throws DALException {
-
-        Connection c = iConnPool.getConn();
-
-        String createQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
-                JobConstants.TABLENAME,
-                JobConstants.employerID,    // ParameterIndex 1
-                JobConstants.jobName,       // ParameterIndex 2
-                JobConstants.hireDate,      // ParameterIndex 3
-                JobConstants.finishDate,    // ParameterIndex 4
-                JobConstants.salary);       // ParameterIndex 5
-
-        try {
-            c.setAutoCommit(false);
-
-            PreparedStatement pStatement = c.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
-            pStatement.setInt(1, jobDTO.getEmployerID());
-            pStatement.setString(2, jobDTO.getJobName());
-
-            // TODO: Er det ikke lige meget at tjekke om date er null, fordi hvis den er det, bliver null vel bare returneret?
-            // Inserts null if no hire date.
-            if (jobDTO.getHireDate() != null ) {
-                pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
-            } else {
-                pStatement.setDate(3,null);
-            }
-            // Inserts null if no hire date.
-            if (jobDTO.getFinishDate() != null ) {
-                pStatement.setDate(4, Date.valueOf(jobDTO.getFinishDate()));
-            } else {
-                pStatement.setDate(4,null);
-            }
-            pStatement.setDouble(5, jobDTO.getStdSalary());
-
-            pStatement.executeUpdate();
-
-            ResultSet generatedKeys = pStatement.getGeneratedKeys();
-
-            if (generatedKeys.next()){
-                jobDTO.setJobID(generatedKeys.getInt(1));
-            }
-
-            c.commit();
-
-        } catch (SQLException e) {
-            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "JobDAO.createIJob");
-        } finally {
-            connectionHelper.finallyActionsForConnection(c, "JobDAO.createIJob");
-        }
-    }
 
     @Override
     public int updateIJob(IJobDTO jobDTO) throws DALException {

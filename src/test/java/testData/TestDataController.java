@@ -1,10 +1,12 @@
 package testData;
 
 import dao.DALException;
+import dao.activity.IActivityDAO;
 import dao.employer.IEmployerDAO;
 import dao.job.IJobDAO;
 import dao.worker.IWorkerDAO;
-import dto.address.Address;
+import dto.activity.ActivityDTO;
+import dto.activity.IActivityDTO;
 import dto.employer.EmployerDTO;
 import dto.employer.IEmployerDTO;
 import dto.job.IJobDTO;
@@ -13,7 +15,9 @@ import dto.worker.IWorkerDTO;
 import dto.worker.WorkerHiberDTO;
 
 import java.awt.*;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -103,6 +107,37 @@ public class TestDataController {
     private static LocalDate jobNo3_hireDate = LocalDate.now().minusMonths(6);
     private static LocalDate jobNo3_finishDate = jobNo1_hireDate.plusMonths(3);
     private static double jobNo3_stdSalary = 300.00;
+
+    // endregion
+
+    // endregion
+
+    // region ActivityDTO Test Data
+
+    // region ActivityDTO No. 1
+
+    private static LocalDateTime activityNo1_startingDateTime = LocalDateTime.now().minusMonths(12);
+    private static LocalDateTime activityNo1_endingDateTime = activityNo1_startingDateTime.plusMonths(6);
+    private static Duration activityNo1_pause = Duration.ofMinutes(30); // break in minutes!
+    private static double activityNo1_activityValue = 1500.50;
+
+    // endregion
+
+    // region ActivityDTO No. 2
+
+    private static LocalDateTime activityNo2_startingDateTime = LocalDateTime.now().minusMonths(24);
+    private static LocalDateTime activityNo2_endingDateTime = activityNo2_startingDateTime.plusMonths(12);
+    private static Duration activityNo2_pause = Duration.ofMinutes(90); // break in minutes!
+    private static double activityNo2_activityValue = 3000.57;
+
+    // endregion
+
+    // region ActivityDTO No. 3
+
+    private static LocalDateTime activityNo3_startingDateTime = LocalDateTime.now().minusMonths(6);
+    private static LocalDateTime activityNo3_endingDateTime = activityNo3_startingDateTime.plusMonths(3);
+    private static Duration activityNo3_pause = Duration.ofMinutes(90); // break in minutes!
+    private static double activityNo3_activityValue = 3000.57;
 
     // endregion
 
@@ -236,6 +271,46 @@ public class TestDataController {
 
     // endregion
 
+    // region Test Activity Objects
+
+    public static IActivityDTO getActivityNo1 (IJobDTO belongsToJObDTO){
+        IActivityDTO activityNo1 = new ActivityDTO();
+
+        activityNo1.setJobID(belongsToJObDTO.getJobID());
+        activityNo1.setStartingDateTime(activityNo1_startingDateTime);
+        activityNo1.setEndingDateTime(activityNo1_endingDateTime);
+        activityNo1.setPause(activityNo1_pause);
+        activityNo1.setActivityValue(activityNo1_activityValue);
+
+        return activityNo1;
+    }
+
+    public static IActivityDTO getActivityNo2(IJobDTO belongsToJObDTO){
+        IActivityDTO activityNo2 = new ActivityDTO();
+
+        activityNo2.setJobID(belongsToJObDTO.getJobID());
+        activityNo2.setStartingDateTime(activityNo2_startingDateTime);
+        activityNo2.setEndingDateTime(activityNo2_endingDateTime);
+        activityNo2.setPause(activityNo2_pause);
+        activityNo2.setActivityValue(activityNo2_activityValue);
+
+        return activityNo2;
+    }
+
+    public static IActivityDTO getActivityNo3 (IJobDTO belongsToJObDTO){
+        IActivityDTO activityNo3 = new ActivityDTO();
+
+        activityNo3.setJobID(belongsToJObDTO.getJobID());
+        activityNo3.setStartingDateTime(activityNo3_startingDateTime);
+        activityNo3.setEndingDateTime(activityNo3_endingDateTime);
+        activityNo3.setPause(activityNo3_pause);
+        activityNo3.setActivityValue(activityNo3_activityValue);
+
+        return activityNo3;
+    }
+
+    // endregion
+
     // region Support Methods for Cleaning of tables
 
     public static void clearWorkerTestTable (IWorkerDAO iWorkerDAO) throws DALException {
@@ -256,6 +331,13 @@ public class TestDataController {
         // Deletes all Jobs from DB.
         for (IJobDTO jobDTO : iJobDAO.getIJobList()){
             iJobDAO.deleteIJob(jobDTO.getJobID());
+        }
+    }
+
+    public static void clearActivityTestTable (IActivityDAO iActivityDAO) throws DALException {
+        // Deletes all Jobs from DB.
+        for (IActivityDTO activityDTO : iActivityDAO.getiActivityList()){
+            iActivityDAO.deleteiActivity(activityDTO.getActivityID());
         }
     }
 

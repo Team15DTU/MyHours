@@ -1,5 +1,6 @@
 package dao.activity;
 
+import dao.DALException;
 import dto.activity.IActivityDTO;
 
 import java.time.LocalDateTime;
@@ -15,26 +16,32 @@ public interface IActivityDAO {
      */
 
     // returns a ActivityDTO from an UserID and a Date and time of the activity TODO: Maybe use ShiftID?.
-    IActivityDTO getIShift (int userID, LocalDateTime dateAndTime);
+    IActivityDTO getiActivity(int userID, LocalDateTime dateAndTime) throws DALException;
+
+    // TODO: Det her er bedre end ovenstående.
+    IActivityDTO getiActivity(int activityID) throws DALException;
 
     // Returns a List of ActivityDTO object.
-    List<IActivityDTO> getIShiftList ();
+    List<IActivityDTO> getiActivityList() throws DALException;
 
     // Returns a List of ActivityDTO object.
-    List<IActivityDTO> getIShiftList (int jobID);
+    List<IActivityDTO> getiActivityList(int jobID) throws DALException;
 
     // Returns a List of ActivityDTO object.
-    List<IActivityDTO> getIShiftList (int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime);
+    List<IActivityDTO> getiActivityList(int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime) throws DALException;
 
     //TODO: LIST som får alle en brugers vagter.
 
     // Inserts the data from a ActivityDTO into DB.
-    void createIShift (IActivityDTO shift);
+    void createiActivity (IActivityDTO activity) throws DALException;
 
     // Updates the data on a Shifts row in the DB.
-    void updateIShift (IActivityDTO shift);
+    void updateiActivity (IActivityDTO activity);
 
     // Deletes all information about one Shift, from an UserID and a Date and time of the activity TODO: Maybe use ShiftID?.
-    void deleteIShift (int userID, LocalDateTime dateAndTime);
+    void deleteiActivity (int userID, LocalDateTime dateAndTime) throws DALException;
+
+    // TODO: Det her giver bedre mening end ovenstående
+    void deleteiActivity (int activityID) throws DALException;
 
 }
