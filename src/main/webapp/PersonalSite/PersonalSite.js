@@ -293,10 +293,6 @@ function deleteShift(shiftID) {
 
 }
 
-function deleteJob() {
-
-}
-
 
 
 function findPaycheck(nr) {
