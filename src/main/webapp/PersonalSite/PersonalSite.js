@@ -32,7 +32,7 @@ function currentShiftToEdit() {
 
 
 
-    document.getElementById('shiftEditInfo').innerHTML = ' i ' + findWorkplace(shift[1]);
+    document.getElementById('shiftEditInfo').innerHTML = ' i ' + findJob(shift[1])[2];
 /*
     var shiftEditStart = shift[2].getFullYear() + '-' + (shift[2].getMonth()-1) + '-' + shift[2].getDate() + 'T' + shift[2].getHours + ':' + shift[2].getMinutes;
 
@@ -96,11 +96,6 @@ function selectJobadress(name) {
     }
 }
 
-
-
-
-
-
 function shifts() {
 
     var table = document.getElementById('left_table');
@@ -120,12 +115,16 @@ function shifts() {
 
     for (i = 0; i < 3; i++){
         var row2 = table.insertRow(i+1);
-        /*
-        noget er galt, når jeg køre findshift() køre den kun igennem en gang, skal lige se hvordan det kan fixes
-        var shift = findShift(i);
-        */
-        row2.insertCell(0).innerHTML = 'Midlertidig fylder ';
-        row2.insertCell(1).innerHTML = findWorkplace(i);
+
+        var shiftStart = findShift(i)[2];
+        var shiftEnd = findShift(i)[3];
+
+
+        var shiftStartString = shiftStart.getDate() + '/' + (shiftStart.getMonth()+1) + ' ' + with_leading_zeros(shiftStart.getHours()) + ':' + with_leading_zeros(shiftStart.getMinutes()) + ' - ' +with_leading_zeros(shiftEnd.getHours()) + ':' + with_leading_zeros(shiftEnd.getMinutes());
+
+
+        row2.insertCell(0).innerHTML = shiftStartString;
+        row2.insertCell(1).innerHTML = findJob(i)[2];
         row2.insertCell(2).innerHTML = findPaycheck(i);
     }
 
@@ -150,7 +149,7 @@ function job() {
 
     for (i = 0; i < 1; i++){
         var row2 = table.insertRow(i+1);
-        row2.insertCell(0).innerHTML = findCompany(i);
+        row2.insertCell(0).innerHTML = findJob(i)[2];
         row2.insertCell(1).innerHTML = lastPaycheck(i)+' Kr.';
         row2.insertCell(2).innerHTML = estimatePaycheck(i)+' Kr.';
     }
@@ -210,10 +209,10 @@ function findShift(id) {
 
 
     if (id == 0) {
-       var shift = [0,1,new Date(), new Date(), 5, 3]
+       var shift = [0,1,new Date('2019-06-27T12:00:00+01:00'), new Date('2019-06-27T16:00:04+01:00'), 5, 3]
         return shift;
     } else if (id == 1){
-        var shift = [1,2,new Date(), new Date(), 10, 3]
+        var shift = [1,2,new Date('2019-06-28T10:00:08+01:00'), new Date('2019-06-28T20:00:16+01:00'), 10, 3]
         return shift;
     } else if (id == 2) {
         var shift = [2,3,new Date(), new Date(), 20, 3]
@@ -234,7 +233,7 @@ function findAllShift(nr) {
         var endDate = new Date();
         var startDate = new Date();
 
-        var shift = [i, 0, startDate, endDate, 30, findWorkplace(i)]
+        var shift = [i, 0, startDate, endDate, 30, findJob(i)[2]]
         allShift.push(shift);
     }
 
@@ -256,16 +255,18 @@ function findAllJobaddress(nr) {
     return allCompany;
 }
 
-function findJob(jobid) {
+function findJob(userid) {
 
-    if (jobid == 0){
+    if (userid == 0){
         var job = [0, 66, 'Kvikly', 110, new Date(), 'user'];
     }
-    else if (jobid == 1) {
+    else if (userid == 1) {
         var job = [1, 66, 'Fakta', 115, new Date(), 'user'];
     }
-    else {
+    else if (userid == 2){
         var job = [2, 66, 'Irma', 110, new Date(), 'user'];
+    } else {
+        var job = [2, 66, 'Studie starten', 10, new Date(), 'user'];
     }
     return job;
 
@@ -320,6 +321,14 @@ function hoursOfWork () {
 
     return Math.random()*10;
 }
+
+//til at få 0 foran tal mindre ind 10
+function with_leading_zeros(dt)
+{
+    return (dt < 10 ? '0' : '') + dt;
+}
+
+
 
 
 
