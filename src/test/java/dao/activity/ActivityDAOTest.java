@@ -15,8 +15,8 @@ import hibernate.HibernateProperties;
 import org.junit.*;
 import testData.TestDataController;
 
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -95,7 +95,7 @@ public class ActivityDAOTest {
         activityNo1 = TestDataController.getActivityNo1(jobNo1);
         //Setting up ActivityNo1 (Belongs to JobNo1)
         activityNo2 = TestDataController.getActivityNo2(jobNo1);
-        //Setting up ActivityNo1 (Belongs to JobNo1)
+        //Setting up ActivityNo1 (Belongs to JobNo2)
         activityNo3 = TestDataController.getActivityNo3(jobNo2);
 
         // endregion
@@ -151,6 +151,7 @@ public class ActivityDAOTest {
         iActivityDAO.createiActivity(activityNo1);
 
         IActivityDTO returnedActivityNo1 = iActivityDAO.getiActivity(activityNo1.getActivityID());
+
         assertEquals(activityNo1.getActivityID(),returnedActivityNo1.getActivityID());
         assertEquals(activityNo1.getJobID(),returnedActivityNo1.getJobID());
         assertEquals(dtf.format(activityNo1.getStartingDateTime()),dtf.format(returnedActivityNo1.getStartingDateTime()));
@@ -164,11 +165,23 @@ public class ActivityDAOTest {
     }
 
     @Test
-    public void getiActivityList() {
+    public void getiActivityList() throws DALException {
+
+        iActivityDAO.createiActivity(activityNo1);
+        assertEquals(1,iActivityDAO.getiActivityList().size());
+        iActivityDAO.createiActivity(activityNo2);
+        assertEquals(2,iActivityDAO.getiActivityList().size());
+        iActivityDAO.createiActivity(activityNo3);
+        assertEquals(3,iActivityDAO.getiActivityList().size());
     }
 
     @Test
-    public void getiActivityList1() {
+    public void getiActivityListByJobID() throws DALException {
+        iActivityDAO.createiActivity(activityNo1);
+        iActivityDAO.createiActivity(activityNo2);
+        iActivityDAO.createiActivity(activityNo3);
+        assertEquals(2,iActivityDAO.getiActivityList(jobNo1.getJobID()).size());
+        assertEquals(1,iActivityDAO.getiActivityList(jobNo2.getJobID()).size());
     }
 
     @Test
@@ -176,7 +189,16 @@ public class ActivityDAOTest {
     }
 
     @Test
-    public void createiActivity() {
+    public void createiActivity() throws DALException {
+        iActivityDAO.createiActivity(activityNo1);
+
+        IActivityDTO returnedActivityNo1 = iActivityDAO.getiActivity(activityNo1.getActivityID());
+        assertEquals(activityNo1.getActivityID(),returnedActivityNo1.getActivityID());
+        assertEquals(activityNo1.getJobID(),returnedActivityNo1.getJobID());
+        assertEquals(dtf.format(activityNo1.getStartingDateTime()),dtf.format(returnedActivityNo1.getStartingDateTime()));
+        assertEquals(dtf.format(activityNo1.getEndingDateTime()),dtf.format(returnedActivityNo1.getEndingDateTime()));
+        assertEquals(activityNo1.getPause(),returnedActivityNo1.getPause());
+        assertEquals(activityNo1.getActivityValue(),returnedActivityNo1.getActivityValue(),doubleEqualTolorance);
     }
 
     @Test
@@ -184,7 +206,20 @@ public class ActivityDAOTest {
     }
 
     @Test
-    public void deleteiActivity() {
+    public void deleteiActivity() throws DALException {
+        iActivityDAO.createiActivity(activityNo1);
+        iActivityDAO.createiActivity(activityNo2);
+
+        List<IActivityDTO> activityList = iActivityDAO.getiActivityList();
+        assertEquals(2, activityList.size());
+        assertEquals(activityNo1.getActivityValue(), activityList.get(0).getActivityValue(),doubleEqualTolorance);
+        assertEquals(activityNo2.getActivityValue(), activityList.get(1).getActivityValue(),doubleEqualTolorance);
+
+        iActivityDAO.deleteiActivity(activityNo2.getActivityID());
+
+        List<IActivityDTO> activityListAfterDeletion = iActivityDAO.getiActivityList();
+        assertEquals(1, activityListAfterDeletion.size());
+        assertEquals(activityNo1.getActivityValue(),activityListAfterDeletion.get(0).getActivityValue(),doubleEqualTolorance);
     }
 
     @Test

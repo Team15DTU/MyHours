@@ -1,5 +1,6 @@
 package dao.activity;
 
+import com.mysql.cj.protocol.Resultset;
 import dao.ConnectionHelper;
 import dao.DALException;
 import dto.activity.ActivityDTO;
@@ -115,8 +116,33 @@ public class ActivityDAO implements IActivityDAO {
     }
 
     @Override
-    public List<IActivityDTO> getiActivityList(int jobID) {
-        return null;
+    public List<IActivityDTO> getiActivityList(int jobID) throws DALException {
+        List<IActivityDTO> activityListByJobID = new ArrayList<>();
+
+        Connection c = iConnPool.getConn();
+
+        String getActivityIDsQueryByJobID = String.format("SELECT %s FROM %s WHERE %s = ?",
+                ActivityConstants.id,
+                ActivityConstants.TABLENAME,
+                ActivityConstants.jobID);           // ParameterIndex 1
+
+        try {
+            PreparedStatement preparedStatement = c.prepareStatement(getActivityIDsQueryByJobID);
+            preparedStatement.setInt(1,jobID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                activityListByJobID.add(getiActivity(resultSet.getInt(ActivityConstants.id)));
+            }
+
+        } catch (SQLException e){
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
+        }
+
+        return activityListByJobID;
+
     }
 
     @Override
