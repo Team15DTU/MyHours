@@ -483,7 +483,29 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IEmployerDTO> getIEmployerList()
-    { return null; }
+    {
+    	/*
+    	To indicate to frontend that an error happened, but it
+    	won't crash as the list won't be null.
+    	 */
+        List<IEmployerDTO> list = new ArrayList<>();
+
+        // Try to create the list
+        try
+        {
+            list = iEmployerDAO.getiEmployerList();
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: getIEmployerList() DALException - " + e.getMessage());
+        }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: Unknown Exception getIEmployerList() - " + e.getMessage());
+        }
+
+        return list;
+    }
     
     @GET
 	@Path("/getEmployerListRange")
@@ -494,6 +516,7 @@ public class DBController implements IDBController
     	/*
     	Make sure to check if parameters minID and maxID is given.
     	 */
+
     	return null;
     }
     
@@ -532,7 +555,7 @@ public class DBController implements IDBController
         }
         catch ( DALException e )
         {
-            System.err.println("ERROR: DBController createEmployer() - " + e.getMessage());
+            System.err.println("ERROR: DBController createJob() - " + e.getMessage());
         }
         return success;
     }
@@ -549,7 +572,29 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IJobDTO> getIJobDTOList()
-    { return null; }
+    {
+    	/*
+    	To indicate to frontend that an error happened, but it
+    	won't crash as the list won't be null.
+    	 */
+        List<IJobDTO> list = new ArrayList<>();
+
+        // Try to create the list
+        try
+        {
+            list = iJobDAO.getIJobList();
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: getIJobList() DALException - " + e.getMessage());
+        }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: Unknown Exception getIJobList() - " + e.getMessage());
+        }
+
+        return list;
+    }
     
     @GET
 	@Path("/getJobList/{id}")
@@ -611,7 +656,24 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IActivityDTO> getIActivityList()
-    { return null; }
+    {
+    	/*
+    	To indicate to frontend that an error happened, but it
+    	won't crash as the list won't be null.
+    	 */
+        List<IActivityDTO> list = new ArrayList<>();
+
+        // Try to create the list
+        try
+        {
+            list = iActivityDAO.getIShiftList();
+        } catch ( Exception e )
+        {
+            System.err.println("ERROR: Unknown Exception getIActivityList() - " + e.getMessage());
+        }
+
+        return list;
+    }
     
     @GET
 	@Path("/getActivityList/{jobID}")
