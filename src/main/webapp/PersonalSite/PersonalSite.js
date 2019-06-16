@@ -150,7 +150,7 @@ function job() {
     for (i = 0; i < 1; i++){
         var row2 = table.insertRow(i+1);
         row2.insertCell(0).innerHTML = findJob(i)[2];
-        row2.insertCell(1).innerHTML = lastPaycheck(i)+' Kr.';
+        row2.insertCell(1).innerHTML = lastPaycheck(findJob(i)[0])+' Kr.';
         row2.insertCell(2).innerHTML = estimatePaycheck(i)+' Kr.';
     }
 }
@@ -169,7 +169,7 @@ function workplace() {
 
     for (i = 0; i < 3; i++){
         var row2 = table.insertRow(i+1);
-        row2.insertCell(0).innerHTML = findCompany(i);
+        row2.insertCell(0).innerHTML = findJob(i)[2];
     }
 }
 
