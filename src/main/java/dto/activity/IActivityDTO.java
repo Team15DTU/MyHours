@@ -14,28 +14,27 @@ public interface IActivityDTO {
 
     // <editor-folder desc="Properties"
 
+    int getActivityID();
+    void setActivityID(int activityID);
+
+    int getJobID();
+    void setJobID(int jobID);
+
     LocalDateTime getStartingDateTime();
     void setStartingDateTime(LocalDateTime startingDateTime);
 
     LocalDateTime getEndingDateTime();
     void setEndingDateTime(LocalDateTime endingDateTime);
 
-    int getJobID();
-    void setJobID(int jobID);
-
     Duration getPause();
     void setPause(Duration pause);
 
-    double getShiftValue();
-    void setShiftValue(double shiftValue);
+    double getActivityValue();
+    void setActivityValue(double activityValue);
 
     // </editor-folder>
     
     /*
     ---------------------- Public Methods -----------------------
      */
-    
-    
-    
-
 }

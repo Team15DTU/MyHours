@@ -11,12 +11,13 @@ public class ActivityDTO implements IActivityDTO {
     /*
     -------------------------- Fields --------------------------
      */
-    
+
+    private int activityID;
+    private int jobID;
     private LocalDateTime startingDateTime;
     private LocalDateTime endingDateTime;
-    private int jobID;
     private Duration pause; // break in minutes!
-    private double shiftValue;
+    private double activityValue;
 
     /*
     ----------------------- Constructor -------------------------
@@ -36,7 +37,6 @@ public class ActivityDTO implements IActivityDTO {
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;
         this.pause = pause;
-
     }
 
     /*
@@ -45,20 +45,13 @@ public class ActivityDTO implements IActivityDTO {
 
     // <editor-folder desc="Properties"
 
-    public LocalDateTime getStartingDateTime() {
-        return startingDateTime;
+
+    public int getActivityID() {
+        return activityID;
     }
 
-    public void setStartingDateTime(LocalDateTime startingDateTime) {
-        this.startingDateTime = startingDateTime;
-    }
-
-    public LocalDateTime getEndingDateTime() {
-        return endingDateTime;
-    }
-
-    public void setEndingDateTime(LocalDateTime endingDateTime) {
-        this.endingDateTime = endingDateTime;
+    public void setActivityID(int activityID) {
+        this.activityID = activityID;
     }
 
     public int getJobID() {
@@ -69,6 +62,22 @@ public class ActivityDTO implements IActivityDTO {
         this.jobID = jobID;
     }
 
+    public LocalDateTime getStartingDateTime() {
+        return startingDateTime.withNano(0);
+    }
+
+    public void setStartingDateTime(LocalDateTime startingDateTime) {
+        this.startingDateTime = startingDateTime.withNano(0);
+    }
+
+    public LocalDateTime getEndingDateTime() {
+        return endingDateTime.withNano(0);
+    }
+
+    public void setEndingDateTime(LocalDateTime endingDateTime) {
+        this.endingDateTime = endingDateTime.withNano(0);
+    }
+
     public Duration getPause() {
         return pause;
     }
@@ -77,12 +86,12 @@ public class ActivityDTO implements IActivityDTO {
         this.pause = pause;
     }
 
-    public double getShiftValue() {
-        return shiftValue;
+    public double getActivityValue() {
+        return activityValue;
     }
 
-    public void setShiftValue(double shiftValue) {
-        this.shiftValue = shiftValue;
+    public void setActivityValue(double activityValue) {
+        this.activityValue = activityValue;
     }
 
     // </editor-folder>
