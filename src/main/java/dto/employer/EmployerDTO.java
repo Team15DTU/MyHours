@@ -15,7 +15,7 @@ public class EmployerDTO implements IEmployerDTO {
     -------------------------- Fields --------------------------
      */
 
-    private int workplaceID;
+    private int employerID;
     private int workerID;
     private String name;
     private Color color;
@@ -28,14 +28,16 @@ public class EmployerDTO implements IEmployerDTO {
     
     public EmployerDTO() {}
 
-    public EmployerDTO(int workerID, String name) {
+    public EmployerDTO(int workerID, String name)
+    {
         this.workerID = workerID;
         this.name = name;
         color = null;
         iJobList = null;
     }
 
-    public EmployerDTO(int workerID, String name, Color color, String  telephone, List<IJobDTO> iJobList) {
+    public EmployerDTO(int workerID, String name, Color color, String  telephone, List<IJobDTO> iJobList)
+    {
         this.workerID = workerID;
         this.name = name;
         this.color = color;
@@ -49,12 +51,12 @@ public class EmployerDTO implements IEmployerDTO {
 
     // <editor-folder desc="Properties"
 
-    public int getWorkplaceID() {
-        return workplaceID;
+    public int getEmployerID() {
+        return employerID;
     }
 
-    public void setWorkplaceID(int workplaceID) {
-        this.workplaceID = workplaceID;
+    public void setEmployerID(int employerID) {
+        this.employerID = employerID;
     }
 
     public int getWorkerID() {
@@ -106,7 +108,7 @@ public class EmployerDTO implements IEmployerDTO {
     public String toString () {
         StringBuilder toStringBuilder = new StringBuilder();
 
-        toStringBuilder.append("WorkplaceID: \t" + workplaceID + "\n");
+        toStringBuilder.append("EmployerID: \t" + employerID + "\n");
         toStringBuilder.append("WorkerID: \t" + workerID + "\n");
         toStringBuilder.append("Workplace Name: \t" + name + "\n");
         toStringBuilder.append("Color: \t" + color.toString() + "\n");

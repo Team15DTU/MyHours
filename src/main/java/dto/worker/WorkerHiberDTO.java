@@ -23,8 +23,9 @@ public class WorkerHiberDTO implements IWorkerDTO {
 
     @Id
     @Column(name = WorkerConstants.id)
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy = "increment")
+    //@GeneratedValue(generator="increment")
+    //@GenericGenerator(name="increment", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int workerID;
 
     @Column(name = WorkerConstants.firstname)

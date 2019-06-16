@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>NewFrontPage</title>
+    <link rel="icon" href="../Images/favicon.ico">
     <link rel="stylesheet" href="../index.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
@@ -11,15 +12,17 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="PersonalSite.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
 <header>
     <div class="container">
         <nav>
             <span></span>
-            <a href="PersonalSite.html"><img class ="logo" src="../Images/Logo2.svg" alt="Avatar"></a>
+            <a href="PersonalSite.html"><img class ="logo" src="../Images/MyHours.svg" alt="Avatar"></a>
             <ul>
-                <li><a href="#">About</a></li>
+                <li><a href="../About/AboutUs.html">About</a></li>
                 <li><a href="#">Help</a> </li>
             </ul>
         </nav>
@@ -28,44 +31,44 @@
         <div class="menu">
 
 
-            <li class="item" id="profile" onclick="changeFunction('none'), checkMenu0()">
-                <input id="myid" type="checkbox">
-              
+            <li class="item" id="profile">
+                <input id="myid" type="checkbox" onclick="changeFunction('none'); checkMenu0(); closeInfo();">
+
                 <label for="myid" class="btn_menu"><i class="fas fa-user"></i>Profile</label>
                 <div class="smenu">
                     <a href="#">Settings</a>
                 </div>
             </li>
 
-            <li class="item" id="shifts" onclick="changeFunction('shifts'), checkMenu1()">
-                <input id="myid1" type="checkbox">
+            <li class="item" id="shifts" >
+                <input id="myid1" type="checkbox" onclick="changeFunction('shifts'); checkMenu1(); openInfo();">
 
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Shift</label>
                 <div class="smenu">
-                    <a href="#">Add</a>
-                    <a href="#">Edit</a>
-                    <a href="#">Delete</a>
+                    <a href="#" onclick="document.getElementById('shift_add').style.display='block'; selectJobs('select2')">Add</a>
+                    <a href="#" onclick="document.getElementById('shift_edit').style.display='block'; selectShift('select'); selectJobs('select4')">Edit</a>
+                    <a href="#" onclick="document.getElementById('shift_delete').style.display='block'; selectShift('select3')">Delete</a>
                 </div>
             </li>
 
-            <li class="item" id="job" onclick="changeFunction('job'), checkMenu2()">
-                <input id="myid2" type="checkbox">
+            <li class="item" id="job" >
+                <input id="myid2" type="checkbox" onclick="changeFunction('job'); checkMenu2(); openInfo();">
 
                 <label for="myid2" class="btn_menu"><i class="fas fa-briefcase"></i>Job</label>
                 <div class="smenu">
-                    <a href="#">Add</a>
-                    <a href="#">Edit</a>
-                    <a href="#">Delete</a>
+                    <a href="#" onclick="document.getElementById('job_add').style.display='block'">Add</a>
+                    <a href="#" onclick="document.getElementById('job_edit').style.display='block';selectJobs('select_job_edit')">Edit</a>
+                    <a href="#" onclick="document.getElementById('job_delete').style.display='block';selectJobs('select_job_delete')">Delete</a>
                 </div>
             </li>
-            <li class="item" id="workplace" onclick="changeFunction('workplace'), checkMenu3()">
-                <input id="myid3" type="checkbox">
+            <li class="item" id="workplace" >
+                <input id="myid3" type="checkbox" onclick="changeFunction('workplace'); checkMenu3(); openInfo();">
 
                 <label for="myid3" class="btn_menu"><i class="fas fa-building"></i>Workplace</label>
                 <div class="smenu">
-                    <a href="#">Add</a>
-                    <a href="#">Edit</a>
-                    <a href="#">Delete</a>
+                    <a href="#" onclick="document.getElementById('workplace_add').style.display='block'">Add</a>
+                    <a href="#" onclick="document.getElementById('jobadress_edit').style.display='block';selectJobadress('select_jobadress_edit')">Edit</a>
+                    <a href="#" onclick="document.getElementById('jobadress_delete').style.display='block';selectJobs('select_jobadress_delete')">Delete</a>
                 </div>
             </li>
             <li class="item">
@@ -75,7 +78,7 @@
     </div>
 
     <div class="popup_mid">
-        <div class="popup_content">
+        <div class="popup_content" id="popup_content" >
 
             <div class="pop_top" id="pop_top2">
                 <center>
@@ -88,63 +91,408 @@
 
                 </table>
             </div>
-            <div class="pop_right">
-
-            </div>
+            <div class="pop_right" id="graph"></div>
 
         </div>
     </div>
 
 </header>
 
+
+
+
+            <!-- Modalerne -->
+<!-- Shift -->
+
+<!-- add -->
+
+<div id="shift_add" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('shift_add').style.display='none'" class="close2">&times;</span>
+    <form action="">
+        <div class="form_per">
+            <label><b>What job is the shift?</b></label> <br>
+            <select id="select2">
+                <option value="Default"></option>
+            </select>
+            <br>
+            <label><b>When do you start your shift?</b></label>
+            <input class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="shift_start" required>
+
+            <label><b>When does the shift stop?</b></label>
+            <input class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="shift_end" required>
+
+            <label><b>How long break do you have on the shift? (in minutes)</b></label>
+            <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="psw" required>
+
+            <button  type="submit" name="addShift" value="submit" id="shiftadder" class="submit">Save shift</button>
+        </div>
+    </form>
+    </div>
+</div>
+
+
+<!-- edit -->
+
+<div id="shift_edit" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('shift_edit').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <label><b>Choice a shift you want to edit: </b></label><br><br>
+            <select id="select" onchange="currentShiftToEdit()">
+                <option value="Default"></option>
+            </select>
+            <b id="shiftEditInfo"></b>
+            <br><br>
+            <b>Insert the correct details.</b>
+            <br><br>
+
+
+            <label><b>What job is the shift?</b></label><br>
+            <select id="select4">
+                <option value="Default"></option>
+            </select>
+            <br><br>
+
+            <label><b>When do you start your shift?</b></label>
+            <input id="shift_edit_start" class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="shift_start" required>
+
+            <label><b>When does the shift stop?</b></label>
+            <input id="shift_edit_end" class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="shift_end" required>
+
+            <label><b>How long break do you have on the shift? (in minutes)</b></label>
+            <input id="shift_edit_break" class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="psw" required>
+            <button type="submit" name="EditShift" value="submit" id="shift_edit_submit" class="submit">Edit shift</button>
+        </form>
+    </div>
+</div>
+
+
+<!-- delete -->
+
+<div id="shift_delete" class="modal2">
+<div class="modal2-content">
+    <span onclick="document.getElementById('shift_delete').style.display='none'" class="close2">&times;</span>
+    <form action="">
+<center>
+        <label><b>Choice a shift you want to delete: </b></label><br>
+
+        <select id="select3">
+            <option value="Default"></option>
+        </select>
+</center>
+        <br><br>
+        <button type="submit" name="DeleteShift" value="submit" id="shift_delete_button" class="submit" onclick="deleteShiftFromHTTP()">Delete shift</button>
+    </form>
+</div>
+</div>
+
+            <!-- job -->
+<!-- Add -->
+
+<div id="job_add" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('job_add').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <div class="form_per">
+                <label><b>What company is the job for?</b></label>
+                <input  type="text" placeholder="What company is the job for?" name="company_to_job" required>
+
+                <label><b>When did you get hired?</b></label>
+                <input class="w3-input w3-border w3-margin-bottom" type="date" name="job_start" required>
+
+                <label><b>How much do you earn a hour?</b></label>
+                <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="psw" required>
+
+                <button  type="submit" class="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit -->
+
+<div id="job_edit" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('job_edit').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <label><b>Choice a job you want to edit: </b></label><br><br>
+            <select id="select_job_edit" onchange="">
+                <option value="Default"></option>
+            </select>
+            <b id="jobEditInfo"></b>
+            <br><br>
+            <b>Insert the correct details.</b>
+            <br><br>
+
+
+            <label><b>What company is the job for?</b></label>
+            <input  type="text" placeholder="What company is the job for?" name="company_to_job" required>
+
+            <label><b>When did you get hired?</b></label>
+            <input class="w3-input w3-border w3-margin-bottom" type="date" name="job_start" required>
+
+            <label><b>How much do you earn a hour?</b></label>
+            <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="hourly_income" required>
+
+            <button  type="submit" class="submit">Login</button>
+
+        </form>
+    </div>
+</div>
+
+<!-- Delete -->
+
+<div id="job_delete" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('job_delete').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <center>
+                <label><b>Choice a job you want to Delete: </b></label><br>
+
+                <select id="select_job_delete">a
+                    <option value="Default"></option>
+                </select>
+            </center>
+            <br><br>
+            <button type="submit" name="DeleteJob" value="submit" id="job_delete_button" class="submit" onclick="deleteJobFromHTTP()">Delete job</button>
+        </form>
+    </div>
+</div>
+
+            <!-- jobadresse -->
+
+<!-- add -->
+<div id="workplace_add" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('workplace_add').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <div class="form_per">
+                <label><b>What address are you company at?</b></label>
+                <input  type="text" placeholder="Address of your company" name="company_address" required>
+
+                <label><b>What are the phone number?</b></label>
+                <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="phone_number" required>
+
+                <label><b>What is the zip code of the address?</b></label>
+                <input class="w3-input w3-border w3-margin-bottom" placeholder="Company address" type="text" name="shift_end" required>
+
+                <label><b>What town is the company in?</b></label>
+                <input class="w3-input w3-border" type="text" placeholder="Town where company is located" name="psw" required>
+
+                <button  type="submit" class="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- edit -->
+
+<div id="jobadress_edit" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('jobadress_edit').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <label><b>Choice a job you want to edit: </b></label><br><br>
+            <select id="select_jobadress_edit" onchange="">
+                <option value="Default"></option>
+            </select>
+            <b id="jobadressEditInfo"></b>
+            <br><br>
+            <b>Insert the correct details.</b>
+            <br><br>
+
+            <label><b>What address are you company at?</b></label>
+            <input  type="text" placeholder="Address of your company" name="company_address" required>
+
+            <label><b>What are the phone number?</b></label>
+            <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="phone_number" required>
+
+            <label><b>What is the zip code of the address?</b></label>
+            <input class="w3-input w3-border w3-margin-bottom" placeholder="Company address" type="text" name="shift_end" required>
+
+            <label><b>What town is the company in?</b></label>
+            <input class="w3-input w3-border" type="text" placeholder="Town where company is located" name="psw" required>
+
+            <button  type="submit" class="submit">Login</button>
+
+        </form>
+    </div>
+</div>
+
+<!-- delete -->
+
+<div id="jobadress_delete" class="modal2">
+    <div class="modal2-content">
+        <span onclick="document.getElementById('jobadress_delete').style.display='none'" class="close2">&times;</span>
+        <form action="">
+            <center>
+                <label><b>Choice a jobadress you want to Delete: </b></label><br>
+
+                <select id="select_jobadress_delete">a
+                    <option value="Default"></option>
+                </select>
+            </center>
+            <br><br>
+            <button type="submit" name="DeleteJob" value="submit" id="jobadress_delete_button" class="submit" onclick="deleteJobFromHTTP()">Delete job</button>
+        </form>
+    </div>
+</div>
+
+
+
 <footer>
     <script type="text/javascript" src="PersonalSite.js"></script>
     <script>
+        //her er delene som fremkalder content.
+        function openInfo() {
+
+            document.getElementById('popup_content').style.width = '100%';
+            document.getElementById('popup_content').style.height = '80%';
+            hoursOnWorkMounthly();
+
+
+
+
+
+        }
+        function closeInfo() {
+            document.getElementById('popup_content').style.width = '0px';
+            document.getElementById('popup_content').style.height = '0px';
+
+        }
+
+
+        //her er delene som ændre ved content.
         function changeFunction(site) {
-            var elem = document.getElementById('content');
-            if (site == 'shifts'){
+            //var elem = document.getElementById('content');
+            if (site === 'shifts' && document.getElementById('myid1').checked){
                 header('Shifts');
                 left('shifts');
-            }
-            if (site == 'job'){
+                //console.log(site);
+            } else if (site === 'job' && document.getElementById('myid2').checked){
                 header('Job');
                 left('job');
-            }
-            if (site == 'workplace') {
+                //console.log(site);
+            } else if (site === 'workplace' && document.getElementById('myid3').checked){
                 header('Workplace');
                 left('workplace');
-            }
-            if (site == 'none'){
+                //console.log(site);
+            } else if(site === 'none' && document.getElementById('myid').checked) {
                 header('');
                 left('none');
+                //console.log(site);
+            }else{
+                //checkMenu0();
+                //closeInfo(); //FIXME Hvis disse 3 bliver aktiveret, vil grafen blive fjernet som forventet, men den klager over rekursion, så har valgt at udkommentere dem for performence skyld (ikke at jeg kunne mærke noget)
+                //changeFunction('none');
+                header('');
+                left('none');
+                //console.log(site+" close");
             }
         }
 
         function header(head) {
             document.getElementById('pop_top_head').innerHTML = head;
-            if (head == ''){
+            if (head === ''){
                 document.getElementById('pop_top2').style.backgroundColor = 'transparent';
             } else {
                 document.getElementById('pop_top2').style.backgroundColor = 'rgb(52, 152, 219)';
             }
-            }
+        }
 
 
 
         function left(type) {
-            if (type == 'shifts') {
+            if (type === 'shifts') {
                 shifts();
             }
-            if (type == 'job'){
+            if (type === 'job'){
                 job();
             }
-            if (type == 'workplace') {
+            if (type === 'workplace') {
                 workplace();
             }
-            if (type == 'none'){
+            if (type === 'none'){
                 none();
             }
 
+        }
+
+        function hoursOnWorkMounthly(){
+            anychart.onDocumentReady(function() {
+
+
+                var today = new Date();
+                var mounth = String(today.getMonth());
+                var year = today.getFullYear();
+
+                var nrOfDays = daysInMonth(mounth,year);
+
+                // set the data
+                var data = {
+                    header: ["Date", "Hours"]
+                };
+
+                //her finder jeg alle de job som er forbundet med brugeren.
+                var nrOfJobs = new Array();
+                for (var loop = 0; loop < findAllJobs().length ;loop++) {
+                    nrOfJobs[loop] = findAllJobs()[loop][0];
+                }
+
+                mounth++;
+
+                //laver dataset
+                var dataSets = new Array();
+
+                for (var l=0;l<nrOfJobs.length;l++) {
+                    var dataSet = anychart.data.set(data);
+                    for (var i = 0; i < nrOfDays; i++) {
+                        var name = 'Den ' + (i + 1) + '. i ' + (mounth) + '.';
+                        dataSet.append([name, hoursOfWork()]);
+                    };
+                    dataSets[l] = dataSet;
+                };
+
+
+
+
+                // create the chart
+                var chart = anychart.column()
+                chart.animation(true);
+
+                var serieSet = new Array();
+
+                //laver dataen til serie sæt.
+
+                for (var r = 0; r<dataSets.length; r++) {
+                    serieSet[r] = dataSets[r].mapAs({'x': 0, 'value': 1})
+                }
+
+                chart.yScale().stackMode('value');
+
+
+
+                // add the data
+                for (var c = 0; c<serieSet.length; c++){
+                    chart.column(serieSet[c]);
+                }
+
+
+                var i=0;
+                // create a loop
+                while (chart.getSeriesAt(i)){
+                    // rename each series
+                    chart.getSeriesAt(i).name(findJob(nrOfJobs[i])[2]);
+                    i++;
+                }
+
+                // set the chart title
+                chart.title("Hours on work");
+
+                // draw
+                chart.container("graph");
+                chart.draw();
+            });
         }
 
 

@@ -9,8 +9,8 @@ public interface IEmployerDTO {
 	
 	// Methods
 
-	int getWorkplaceID();
-	void setWorkplaceID(int workplaceID);
+	int getEmployerID();
+	void setEmployerID(int employerID);
 
 	int getWorkerID();
 	void setWorkerID(int workerID);

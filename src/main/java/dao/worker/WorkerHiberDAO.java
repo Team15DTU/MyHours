@@ -11,6 +11,9 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
+
+//TODO: getWorker(int id) needs implementation!
+
 public class WorkerHiberDAO implements IWorkerDAO {
 
     /*

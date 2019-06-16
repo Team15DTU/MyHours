@@ -44,3 +44,50 @@ var showSignupModal = function() {
     cmLogin.hide();
     cmSignUp.show();
 };
+
+
+function Login(){
+
+    event.preventDefault();
+    var userJson = $("#LoginInfo input").serializeJSON();
+    $.ajax({
+        method: 'POST',
+        url : "MyHours/DBController/loginCheck",
+        data : userJson,
+        contentType: "application/json",
+        success : function(data){
+            alert(data);
+            console.log("Success!");
+            if (data.toString() === "true"){
+                window.location='/PersonalSite/PersonalSite.html';
+            }
+        },
+        error: function(jqXHR, text, error){
+            alert(jqXHR.status + text + error);
+            console.log("Failed to login!")
+        }
+    });
+    console.log(userJson);
+}
+
+function Signup() {
+    event.preventDefault();
+    var userJson = $("#usersign input").serializeJSON();
+    $.ajax({
+        method: 'POST',
+        url: "MyHours/DBController/createWorker",
+        data: userJson,
+        contentType: "application/json",
+        success : function () {
+            alert("User created!");
+            console.log("User created!")
+
+        },
+        error: function (jqXHR, text, error) {
+            alert(jqXHR.status + text + error);
+            console.log("Failed to create an user!")
+        }
+    });
+    console.log(userJson)
+}
+

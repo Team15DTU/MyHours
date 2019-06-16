@@ -1,5 +1,6 @@
 package dao.employer;
 
+import dao.ConnectionHelper;
 import dao.DALException;
 import dto.employer.EmployerDTO;
 import dto.employer.IEmployerDTO;
@@ -22,13 +23,15 @@ public class EmployerDAO implements IEmployerDAO {
      */
 
     private IConnPool iConnPool;
+    private ConnectionHelper connectionHelper;
 
     /*
     ----------------------- Constructor -------------------------
      */
 
-    public EmployerDAO(IConnPool iConnPool) {
+    public EmployerDAO(IConnPool iConnPool, ConnectionHelper connectionHelper) {
         this.iConnPool = iConnPool;
+        this.connectionHelper = connectionHelper;
     }
 
     /*
@@ -44,8 +47,6 @@ public class EmployerDAO implements IEmployerDAO {
     ---------------------- Public Methods -----------------------
      */
 
-
-
     @Override
     public IEmployerDTO getIEmployer(int employerID)  throws DALException {
 
@@ -54,7 +55,8 @@ public class EmployerDAO implements IEmployerDAO {
         IEmployerDTO iEmployerDTOToReturn = new EmployerDTO();
 
         String getQuery = String.format("SELECT * FROM %s WHERE %s = ?",
-                EmployerConstants.TABLENAME, EmployerConstants.id);
+                EmployerConstants.TABLENAME,
+                EmployerConstants.id); // ParameterIndex 1
 
         try {
 
@@ -64,7 +66,7 @@ public class EmployerDAO implements IEmployerDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                iEmployerDTOToReturn.setWorkplaceID(resultSet.getInt(EmployerConstants.id));
+                iEmployerDTOToReturn.setEmployerID(resultSet.getInt(EmployerConstants.id));
                 iEmployerDTOToReturn.setWorkerID(resultSet.getInt(EmployerConstants.workerID));
                 iEmployerDTOToReturn.setName(resultSet.getString(EmployerConstants.employerName));
                 iEmployerDTOToReturn.setColor(Color.decode("#"+resultSet.getString(EmployerConstants.color)));
@@ -81,18 +83,24 @@ public class EmployerDAO implements IEmployerDAO {
     }
 
     @Override
-    public List<IEmployerDTO> getIWorkPlaceList() throws DALException {
+    public List<IEmployerDTO> getiEmployerList() throws DALException {
+        List<IEmployerDTO> listToReturn = new ArrayList<>();
+
         Connection c = iConnPool.getConn();
 
-        List<IEmployerDTO> listToReturn = new ArrayList<>();
+        // Finds all id's in the Employer table.
+        String getAllEmployerIDQuery = String.format("SELECT %s FROM %s",
+                EmployerConstants.id,
+                EmployerConstants.TABLENAME );
 
         try {
 
             Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT workplaceID FROM " + EmployerConstants.TABLENAME );
+            ResultSet resultSet = statement.executeQuery(getAllEmployerIDQuery);
 
+            // Gets and adds Employer objects from the result of the query.
             while (resultSet.next()) {
-                listToReturn.add(getIEmployer(resultSet.getInt("workplaceID")));
+                listToReturn.add(getIEmployer(resultSet.getInt(EmployerConstants.id)));
             }
 
         } catch (SQLException e) {
@@ -105,20 +113,27 @@ public class EmployerDAO implements IEmployerDAO {
     }
 
     @Override
-    public List<IEmployerDTO> getIWorkPlaceList(int workerID) throws DALException {
+    public List<IEmployerDTO> getiEmployerList(int workerID) throws DALException {
+        List<IEmployerDTO> listToReturn = new ArrayList<>();
 
         Connection c = iConnPool.getConn();
 
-        List<IEmployerDTO> listToReturn = new ArrayList<>();
+        // Gets all employer id's that belongs to the inputted workerID.
+        String employerIDsOfWorkerIDQeury = String.format("SELECT %s FROM %s WHERE %s = ?",
+                EmployerConstants.id,
+                EmployerConstants.TABLENAME,
+                EmployerConstants.workerID); // ParameterIndex 1
 
         try {
+            // Sets parameters.
+            PreparedStatement employerID_preparedStatement = c.prepareStatement(employerIDsOfWorkerIDQeury);
+            employerID_preparedStatement.setInt(1,workerID);
 
-            Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT workplaceID FROM " + EmployerConstants.TABLENAME + " WHERE workerID = " + workerID);
+            ResultSet resultSet = employerID_preparedStatement.executeQuery();
 
+            // Gets and add all Employer's that belongs to inputted workerID, to list.
             while (resultSet.next()) {
-                listToReturn.add(getIEmployer(resultSet.getInt("workplaceID")));
+                listToReturn.add(getIEmployer(resultSet.getInt(EmployerConstants.id)));
             }
 
         } catch (SQLException e) {
@@ -127,62 +142,79 @@ public class EmployerDAO implements IEmployerDAO {
             iConnPool.releaseConnection(c);
         }
 
+        // Returns list of iEmployerDTO objects, that all belongs to the inputted workerID.
         return listToReturn;
     }
 
     @Override
-    public void createIWorkPlace(IEmployerDTO workPlaceDTO) throws DALException {
+    public void createiEmployer(IEmployerDTO employerDTO) throws DALException {
 
         Connection c = iConnPool.getConn();
 
+        String createQuery = String.format(
+                "INSERT INTO %s (%s, %s, %s, %s) VALUES (?,?,?,?)",
+                EmployerConstants.TABLENAME,
+                EmployerConstants.workerID, // ParameterIndex 1
+                EmployerConstants.employerName, // ParameterIndex 2
+                EmployerConstants.color, // ParameterIndex 3
+                EmployerConstants.tlf); // ParameterIndex 4
+
         try {
+            c.setAutoCommit(false);
 
-            PreparedStatement pStatement = c.prepareStatement(
-                    "INSERT INTO " + EmployerConstants.TABLENAME +
-                            "(workerID, employerName, colorHEX, telephone) VALUES (?,?,?,?)");
+            PreparedStatement pStatement = c.prepareStatement(createQuery);
 
-            pStatement.setInt(1, workPlaceDTO.getWorkerID());
-            pStatement.setString(2, workPlaceDTO.getName());
-            pStatement.setString(3, colorHEXToString(workPlaceDTO.getColor()));
-            pStatement.setString(4, workPlaceDTO.getTelephone());
+            pStatement.setInt(1, employerDTO.getWorkerID());
+            pStatement.setString(2, employerDTO.getName());
+            pStatement.setString(3, colorHEXToString(employerDTO.getColor()));
+            pStatement.setString(4, employerDTO.getTelephone());
 
             pStatement.executeUpdate();
 
+            c.commit();
+
         } catch (SQLException e) {
-            throw new DALException(e.getMessage());
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"EmployerDAO.createiEmployer");
         } finally {
-            iConnPool.releaseConnection(c);
+            connectionHelper.finallyActionsForConnection(c, "EmployerDAO.createiEmployer");
         }
     }
 
     @Override
-    public void updateIWorkPlace(IEmployerDTO workPlaceDTO) throws DALException {
+    public void updateiEmployer(IEmployerDTO employerDTO) throws DALException {
 
         Connection c = iConnPool.getConn();
 
+        String updateQuery = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ? WHERE %s = ?",
+                EmployerConstants.TABLENAME,
+                EmployerConstants.employerName,
+                EmployerConstants.color,
+                EmployerConstants.tlf,
+                EmployerConstants.id);
+
         try {
+            c.setAutoCommit(false);
 
-            PreparedStatement pStatement = c.prepareStatement(
-                    "UPDATE " + EmployerConstants.TABLENAME +
-                    " SET workplaceName = ?, colorHEX = ?, telephone = ?" +
-                    " WHERE workplaceID = ?");
+            PreparedStatement pStatement = c.prepareStatement(updateQuery);
 
-            pStatement.setString(1, workPlaceDTO.getName());
-            pStatement.setString(2, colorHEXToString(workPlaceDTO.getColor()));
-            pStatement.setString(3, workPlaceDTO.getTelephone());
-            pStatement.setInt(4, workPlaceDTO.getWorkplaceID());
+            pStatement.setString(1, employerDTO.getName());
+            pStatement.setString(2, colorHEXToString(employerDTO.getColor()));
+            pStatement.setString(3, employerDTO.getTelephone());
+            pStatement.setInt(4, employerDTO.getEmployerID());
 
             pStatement.executeUpdate();
 
+            c.commit();
+
         } catch (SQLException e) {
-            throw new DALException(e.getMessage());
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"EmployerDAO.updateiEmployer");
         } finally {
-            iConnPool.releaseConnection(c);
+            connectionHelper.finallyActionsForConnection(c,"EmployerDAO.updateiEmployer");
         }
     }
 
     @Override
-    public void deleteIWorkPlace(int workplaceID) throws DALException {
+    public void deleteiEmployer(int employerID) throws DALException {
 
         Connection c = iConnPool.getConn();
 
@@ -190,16 +222,18 @@ public class EmployerDAO implements IEmployerDAO {
                 EmployerConstants.TABLENAME, EmployerConstants.id);
 
         try {
+            c.setAutoCommit(false);
 
             PreparedStatement pStatement = c.prepareStatement(deleteQuery);
-            pStatement.setInt(1, workplaceID);
+            pStatement.setInt(1, employerID);
 
             pStatement.executeUpdate();
+            c.commit();
 
         } catch (SQLException e ) {
-            throw new DALException(e.getMessage());
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"EmployerDAO.deleteiEmployer");
         } finally {
-            iConnPool.releaseConnection(c);
+            connectionHelper.finallyActionsForConnection(c,"EmployerDAO.deleteiEmployer");
         }
 
     }

@@ -60,15 +60,8 @@ public class ConnPoolV1Test {
 		assertEquals(connSize-1, connPool.getFreeConns());
 		
 		// Put back connection
-		try
-		{
-			connPool.releaseConnection(c);
-		}
-		catch (DALException e)
-		{
-			fail("ERROR: Couldn't release connection back to the pool - " + e.getMessage());
-		}
-		
+		connPool.releaseConnection(c);
+
 		assertEquals(connSize, connPool.getFreeConns());
 	}
 	
@@ -91,14 +84,8 @@ public class ConnPoolV1Test {
 		assertEquals(1, connPool.getUsedConns());
 		
 		// Release connection again
-		try
-		{
-			connPool.releaseConnection(c);
-		}
-		catch ( DALException e )
-		{
-			System.err.println("ERROR: Couldn't release connection - " + e.getMessage());
-		}
+		connPool.releaseConnection(c);
+
 		assertEquals(0, connPool.getUsedConns());
 	}
 	
@@ -163,15 +150,8 @@ public class ConnPoolV1Test {
 		//endregion
 		
 		//region Release first connection and check parameters
-		try
-		{
-			connPool.releaseConnection(c1);
-		}
-		catch ( DALException e )
-		{
-			System.err.println("ERROR: Couldn't release first connection - " + e.getMessage());
-		}
-		
+		connPool.releaseConnection(c1);
+
 		assertEquals(connSize-1, connPool.getFreeConns());
 		assertEquals(1, connPool.getUsedConns());
 		assertEquals(connSize, connPool.getSize());
@@ -179,14 +159,8 @@ public class ConnPoolV1Test {
 		//endregion
 		
 		//region Release second connection and check parameters
-		try
-		{
-			connPool.releaseConnection(c2);
-		}
-		catch ( DALException e )
-		{
-			System.err.println("ERROR: Couldn't release first connection - " + e.getMessage());
-		}
+		connPool.releaseConnection(c2);
+
 		
 		assertEquals(connSize, connPool.getFreeConns());
 		assertEquals(0, connPool.getUsedConns());
@@ -197,15 +171,8 @@ public class ConnPoolV1Test {
 		//region Try to release a connection which is null
 		Connection nullConnection = null;
 		
-		try
-		{
-			connPool.releaseConnection(nullConnection);
-		}
-		catch ( DALException e )
-		{
-			System.err.println("ERROR: Couldn't release a null connection - " + e.getMessage());
-		}
-		
+		connPool.releaseConnection(nullConnection);
+
 		assertEquals(connSize, connPool.getFreeConns());
 		assertEquals(0, connPool.getUsedConns());
 		assertEquals(connSize, connPool.getSize());
