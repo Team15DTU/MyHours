@@ -1,6 +1,5 @@
 package dao.activity;
 
-import com.mysql.cj.protocol.Resultset;
 import dao.ConnectionHelper;
 import dao.DALException;
 import dto.activity.ActivityDTO;
