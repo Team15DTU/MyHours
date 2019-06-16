@@ -309,7 +309,12 @@ public class ConnPoolV1 implements IConnPool {
 		}
 		catch ( SQLException e )
 		{
-			System.err.println("ERROR: Error trying to close connection pool - " + e.getMessage());
+			System.err.println( String.format("ERROR: Error trying to close connection pool - %s", e.getMessage()) );
+			throw new DALException( e.getMessage(), e.getCause() );
+		}
+		catch ( Exception e )
+		{
+			System.err.println( String.format("ERROR: Unknown error in closePool() - %s", e.getMessage()) );
 			throw new DALException( e.getMessage(), e.getCause() );
 		}
 		finally
