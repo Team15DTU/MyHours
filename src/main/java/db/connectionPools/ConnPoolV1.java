@@ -392,8 +392,8 @@ public class ConnPoolV1 implements IConnPool {
 		Thread th = new Thread(() ->
 		{
 			// Start forever loop
-			while (!stop) {
-				
+			while (!stop)
+			{
 				// Sleep the thread a set amount of time
 				try
 				{
@@ -401,34 +401,34 @@ public class ConnPoolV1 implements IConnPool {
 				}
 				catch (InterruptedException e)
 				{
-					System.err.println("ERROR: Couldn't sleep Connection refresh thread - " + e.getMessage());
+					System.err.println( String.format("ERROR: Couldn't sleep Connection refresh thread - %s", e.getMessage()) );
 				}
 				
-				//TODO: Correct this loop, so they aren't dependent on list size
-				
 				// Loop through all free connections
-				for ( Connection c : freeConnList )
+				Connection c = null;
+				for ( int i=0; i < freeConnList.size(); i++ )
 				{
 					// Check if GC is closing down
 					if (stop)
 						break;
 					
+					c = freeConnList.get(i);	// Used for all checks and to close
 					try
 					{
 						// Check if it's closed
-						if ( c.isClosed() ) { c = createConnection(); }
+						if ( c.isClosed() ) { freeConnList.set(i, createConnection()); }
 						
 						// Check if it has errors
 						else if ( !(c.getWarnings() == null) || !c.isValid(validTimeout) )
-						{ c.close(); c = createConnection(); }
+						{ c.close(); freeConnList.set(i, createConnection()); }
 					}
 					catch (SQLException e)
 					{
-						System.err.println("ERROR: keepAlive error - " + e.getMessage());
+						System.err.println( String.format("ERROR: keepAlive error - %s", e.getMessage()) );
 					}
 					catch (DALException e)
 					{
-						System.err.println("ERROR: DALException keepAlive error - " + e.getMessage());
+						System.err.println( String.format("ERROR: DALException keepAlive error - %s", e.getMessage()) );
 					}
 				}
 			}
