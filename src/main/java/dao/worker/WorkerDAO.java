@@ -59,7 +59,7 @@ public class WorkerDAO implements IWorkerDAO
         try {
             Statement stmtWorkers = c.createStatement();    // Stmt to get Worker Resultset
             ResultSet resultSet = stmtWorkers.executeQuery( //TODO: Need to be made preparedstmt
-                    "SELECT * FROM " + WORKERS_TABLENAME + " WHERE " + Columns.email.toString() + " = '" + email + "'");
+                    "SELECT * FROM " + WORKERS_TABLENAME + " WHERE " + WorkerConstants.email + " = '" + email + "'");
 
             while (resultSet.next()) {
                 workerToReturn.setWorkerID(resultSet.getInt(WorkerConstants.id));
@@ -144,10 +144,10 @@ public class WorkerDAO implements IWorkerDAO
         try {
 
             Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT " + Columns.email.toString() + " FROM " + WORKERS_TABLENAME);
+            ResultSet resultSet = statement.executeQuery("SELECT " + WorkerConstants.email + " FROM " + WORKERS_TABLENAME);
 
             while (resultSet.next()) {
-                listToReturn.add(getWorker(resultSet.getString(Columns.email.toString())));
+                listToReturn.add(getWorker(resultSet.getString(WorkerConstants.email)));
             }
 
         } catch (SQLException e) {
@@ -169,8 +169,8 @@ public class WorkerDAO implements IWorkerDAO
         // The query to make
         String query =
                 String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
-                        WORKERS_TABLENAME, Columns.firstname, Columns.surname, Columns.email,
-                        Columns.birthday, Columns.pass);
+                        WORKERS_TABLENAME, WorkerConstants.firstname, WorkerConstants.surname, WorkerConstants.email,
+                        WorkerConstants.birthday, WorkerConstants.password);
                 
         try {
 
@@ -207,8 +207,8 @@ public class WorkerDAO implements IWorkerDAO
         
         // The query to make
         String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = %d",
-                WORKERS_TABLENAME, Columns.firstname, Columns.surname, Columns.email, Columns.birthday,
-                Columns.pass, Columns.workerId, worker.getWorkerID());
+                WORKERS_TABLENAME, WorkerConstants.firstname, WorkerConstants.surname, WorkerConstants.email,
+				WorkerConstants.birthday, WorkerConstants.password, WorkerConstants.id, worker.getWorkerID());
 
         try {
 
@@ -241,7 +241,7 @@ public class WorkerDAO implements IWorkerDAO
         try {
 
             PreparedStatement pStatement =
-                    c.prepareStatement("DELETE FROM " + WORKERS_TABLENAME + " WHERE " + Columns.email + " = ?");
+                    c.prepareStatement("DELETE FROM " + WORKERS_TABLENAME + " WHERE " + WorkerConstants.email + " = ?");
             
             pStatement.setString(1, email);
 
@@ -260,12 +260,4 @@ public class WorkerDAO implements IWorkerDAO
     ---------------------- Support Methods ----------------------
      */
     
-    private enum Columns {
-    	workerId,
-		firstname,
-		surname,
-		email,
-		birthday,
-		pass
-	}
 }
