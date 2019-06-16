@@ -16,6 +16,8 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import testData.TestDataController;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -53,7 +55,25 @@ public class WorkerDAOTest
 	
 	@AfterClass
 	public static void tearDown() throws Exception
-	{ connPool.closePool(); }
+	{
+		Connection conn = null;
+		try
+		{
+			conn = connPool.getConn();
+			
+			Statement stmt = conn.createStatement();
+			
+			stmt.execute( String.format("DELETE FROM %s", WorkerConstants.TABLENAME) );
+			
+			stmt.close();
+		}
+		finally
+		{
+			if ( conn != null )
+				connPool.releaseConnection(conn);
+			connPool.closePool();
+		}
+	}
 	
 	@Test
 	public void createWorker() throws DALException
