@@ -522,7 +522,20 @@ public class DBController implements IDBController
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public boolean createJob(IJobDTO job)
-    { return false; }
+    {
+        boolean success = false;
+
+        try
+        {
+            iJobDAO.createIJob(job);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController createEmployer() - " + e.getMessage());
+        }
+        return success;
+    }
     
     @GET
 	@Path("/getJob/{id}")
