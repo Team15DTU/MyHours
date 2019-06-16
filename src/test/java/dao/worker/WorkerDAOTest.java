@@ -1,16 +1,20 @@
 package dao.worker;
 
 import dao.DALException;
+import db.DBController;
+import db.IConnPool;
+import db.TestConnPoolV1;
 import dto.address.Address;
 import dto.address.IAddress;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
-import db.DBController;
-import db.IConnPool;
-import db.TestConnPoolV1;
 import hibernate.HibernateProperties;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import testData.TestDataController;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -69,18 +73,32 @@ public class WorkerDAOTest
 	public void getWorker() throws DALException
 	{
 		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance(),new HibernateProperties().getTestDB()).getiWorkerDAO();
-
 		
-		// Get Alfred from DB
-		IWorkerDTO worker = workerDAO.getWorker("a.rottger_rydahl@live.dk");
+		IWorkerDTO worker = TestDataController.getTestWorkerNo1();
 		
-		// Validate data
-		assertEquals(worker.getFirstName(), "Alfred");
-		assertEquals(worker.getSurName(), "Rydahl");
-		assertEquals(worker.getEmail(), "a.rottger_rydahl@live.dk");
-		//TODO: Check WorkPlaces
-		//TODO: Check Jobs
-		//TODO: Check Shifts
+		// Create worker in DB
+		workerDAO.createWorker( worker );
+		
+		// Get the worker by Email and test
+		IWorkerDTO eWorker = workerDAO.getWorker( worker.getEmail() );
+		
+		assertEquals(worker.getWorkerID(), eWorker.getWorkerID());
+		assertEquals(worker.getFirstName(), eWorker.getFirstName());
+		assertEquals(worker.getSurName(), eWorker.getSurName());
+		assertTrue(worker.getBirthday().equals(eWorker.getBirthday()));
+		assertEquals(worker.getPassword(), eWorker.getPassword());
+		
+		// Get the worker by ID and test
+		IWorkerDTO iWorker = workerDAO.getWorker(worker.getWorkerID());
+		
+		assertEquals(worker.getWorkerID(), iWorker.getWorkerID());
+		assertEquals(worker.getFirstName(), iWorker.getFirstName());
+		assertEquals(worker.getSurName(), iWorker.getSurName());
+		assertTrue(worker.getBirthday().equals(iWorker.getBirthday()));
+		assertEquals(worker.getPassword(), iWorker.getPassword());
+		
+		// Delete worker again
+		workerDAO.deleteWorker( worker.getEmail() );
 	}
 	
 	@Test
