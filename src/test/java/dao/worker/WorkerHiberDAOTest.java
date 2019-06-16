@@ -4,13 +4,16 @@ import dao.DALException;
 import dto.worker.IWorkerDTO;
 import hibernate.HibernateProperties;
 import hibernate.HibernateUtil;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import testData.TestDataController;
 
 import java.util.List;
 import java.util.TimeZone;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Rasmus Sander Larsen
@@ -89,6 +92,8 @@ public class WorkerHiberDAOTest {
         assertEquals(testWorker2.getEmail(), returnedWorker2.getEmail());
         assertEquals(testWorker2.getPassword(), returnedWorker2.getPassword());
         assertEquals(testWorker2.getBirthday(), returnedWorker2.getBirthday());
+        
+        //TODO: getWorker(int id) needs to be tested!
 
     }
 
