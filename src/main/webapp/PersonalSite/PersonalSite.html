@@ -426,8 +426,8 @@
 
                 //her finder jeg alle de job som er forbundet med brugeren.
                 var nrOfJobs = new Array();
-                for (var loop = 0; loop < findNrOfCompanys() ;loop++) {
-                    nrOfJobs[loop] = findCompanyId(loop);
+                for (var loop = 0; loop < findAllJobs().length ;loop++) {
+                    nrOfJobs[loop] = findAllJobs()[loop][0];
                 }
 
                 mounth++;
@@ -435,7 +435,7 @@
                 //laver dataset
                 var dataSets = new Array();
 
-                for (var l=0;l<findNrOfCompanys();l++) {
+                for (var l=0;l<nrOfJobs.length;l++) {
                     var dataSet = anychart.data.set(data);
                     for (var i = 0; i < nrOfDays; i++) {
                         var name = 'Den ' + (i + 1) + '. i ' + (mounth) + '.';

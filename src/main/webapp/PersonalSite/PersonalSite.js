@@ -183,19 +183,11 @@ function none() {
 
 //her er de metoder til  felterne som skal snakke med serveren
 
-function findCompany(nr) {
-    return 'irma'
-}
 
 function findNrOfCompanys() {
     return 3;
 }
 
-function findCompanyId(nr) {
-    if (nr == 0){return 1;}
-    if (nr == 1){return 2;}
-    else {return 3}
-}
 
 function lastPaycheck(nr) {
     return 2500;
@@ -272,14 +264,6 @@ function findJob(userid) {
 
 }
 
-function deleteShift(shiftID) {
-
-}
-
-function deleteJob() {
-
-}
-
 
 function findWorkplace(nr) {
     if (nr == 0) {return 'kvikly'}
@@ -305,6 +289,15 @@ function findAllJobs(userID) {
 }
 
 
+function deleteShift(shiftID) {
+
+}
+
+function deleteJob() {
+
+}
+
+
 
 function findPaycheck(nr) {
     return '444 kr.'
@@ -313,14 +306,15 @@ function findPaycheck(nr) {
 
 //her er graferne
 
-function daysInMonth (month, year) {
-    return new Date(year, month, 0).getDate();
-}
-
 function hoursOfWork () {
 
     return Math.random()*10;
 }
+
+function daysInMonth (month, year) {
+    return new Date(year, month, 0).getDate();
+}
+
 
 //til at få 0 foran tal mindre ind 10
 function with_leading_zeros(dt)
