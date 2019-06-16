@@ -152,7 +152,11 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		this.validTimeout = validTimeout;
 	}
-
+	
+	/**
+	 * Gets the SQL DB user.
+	 * @return A String
+	 */
 	public String getUser() {
 		return user;
 	}
