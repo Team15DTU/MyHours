@@ -559,3 +559,70 @@ function deleteJob(){
     });
     console.log(userJson);
 }
+
+function generateJobHTML(job){
+    var deleteId = job.id;
+
+    console.log("job id "+ deleteId);
+    console.log("job id" + job.id);
+
+    return 	'<tr><td>' + job.id + '</td>' +
+        '<td>' + job.name + '</td>' +
+        '<td> data-userid="' + job.id + '"</td>' +
+        '<td> data-userid="' + job.id + '"</td>' +
+        '</tr>';
+}
+
+function getJobList() {
+    $("#select2").html(""); //tømmer element
+    $.ajax({
+        method: "GET",
+        url: "/UserService/DBController/getJobList",
+        dataType: "JSON",
+        success: function(response) {
+            $.each(response, function(i, job) {
+                $("#select2").append(generateJobHTML(job));
+
+            });
+        },
+        error: function() {
+            console.log("Error loading jobs");
+        }
+    });
+}
+
+function getActivityList() {
+    $("#select").html(""); //tømmer element
+    $.ajax({
+        method: "GET",
+        url: "/UserService/DBController/getActivityList",
+        dataType: "JSON",
+        success: function(response) {
+            $.each(response, function(i, activity) {
+                $("#select").append(generateJobHTML(activity));
+
+            });
+        },
+        error: function() {
+            console.log("Error loading activities");
+        }
+    });
+}
+
+function getEmployerList() {
+    $("#select").html(""); //tømmer element
+    $.ajax({
+        method: "GET",
+        url: "/UserService/DBController/getEmployerList",
+        dataType: "JSON",
+        success: function(response) {
+            $.each(response, function(i, employer) {
+                $("#select").append(generateJobHTML(employer));
+
+            });
+        },
+        error: function() {
+            console.log("Error loading employers");
+        }
+    });
+}

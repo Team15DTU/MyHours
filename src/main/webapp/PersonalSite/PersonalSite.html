@@ -108,26 +108,29 @@
 
 <!-- Navne er rettet i add -->
 
+<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
+
+
 <div id="shift_add" class="modal2">
     <div class="modal2-content">
         <span onclick="document.getElementById('shift_add').style.display='none'" class="close2">&times;</span>
     <form id="addActivity">
         <div class="form_per">
-            <label><b>What job is the shift?</b></label> <br>
-            <select id="select2">
+            <label><b>What job is the Activity?</b></label> <br>
+            <select id="select2" onclick="getJobList()">
                 <option value="Default" name="jobID"></option>
             </select>
             <br>
-            <label><b>When do you start your shift?</b></label>
+            <label><b>When do you start your Activity?</b></label>
             <input class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="startingDateTime" required>
 
-            <label><b>When does the shift stop?</b></label>
+            <label><b>When does the Activity stop?</b></label>
             <input class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="endingDateTime" required>
 
-            <label><b>How long break do you have on the shift? (in minutes)</b></label>
+            <label><b>How long break do you have on the Activity? (in minutes)</b></label>
             <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="pause" required>
 
-            <button  type="submit" name="addShift" value="submit" id="shiftadder" class="submit">Save shift</button>
+            <button  type="submit" name="addShift" value="submit" id="shiftadder" class="submit" onclick="addActivity()">Save Activity</button>
         </div>
     </form>
     </div>
@@ -136,12 +139,15 @@
 
 <!-- edit -->
 
+<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
+
+
 <div id="shift_edit" class="modal2">
     <div class="modal2-content">
         <span onclick="document.getElementById('shift_edit').style.display='none'" class="close2">&times;</span>
         <form id="editActivity">
             <label><b>Choice a shift you want to edit: </b></label><br><br>
-            <select id="select" onchange="currentShiftToEdit()">
+            <select id="select" onchange="currentShiftToEdit()" onclick="getActivityList()">
                 <option value="Default"></option>
             </select>
             <b id="shiftEditInfo"></b>
@@ -151,26 +157,28 @@
 
 
             <label><b>What job is the shift?</b></label><br>
-            <select id="select4">
+            <select id="select4" onclick="getJobList()">
                 <option value="Default"></option>
             </select>
             <br><br>
 
             <label><b>When do you start your shift?</b></label>
-            <input id="shift_edit_start" class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="shift_start" required>
+            <input id="shift_edit_start" class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="startingDateTime" required>
 
             <label><b>When does the shift stop?</b></label>
-            <input id="shift_edit_end" class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="shift_end" required>
+            <input id="shift_edit_end" class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="endingDateTime" required>
 
             <label><b>How long break do you have on the shift? (in minutes)</b></label>
-            <input id="shift_edit_break" class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="psw" required>
-            <button type="submit" name="EditShift" value="submit" id="shift_edit_submit" class="submit">Edit shift</button>
+            <input id="shift_edit_break" class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="pause" required>
+            <button type="submit" name="EditShift" value="submit" id="shift_edit_submit" class="submit" onclick="editActivity()">Edit Activity</button>
         </form>
     </div>
 </div>
 
 
 <!-- delete -->
+
+<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 
 <div id="shift_delete" class="modal2">
 <div class="modal2-content">
@@ -179,12 +187,12 @@
 <center>
         <label><b>Choice a shift you want to delete: </b></label><br>
 
-        <select id="select3">
+        <select id="select3" onclick="getActivityList()">
             <option value="Default"></option>
         </select>
 </center>
         <br><br>
-        <button type="submit" name="DeleteShift" value="submit" id="shift_delete_button" class="submit" onclick="deleteShiftFromHTTP()">Delete shift</button>
+        <button type="submit" name="DeleteShift" value="submit" id="shift_delete_button" class="submit" onclick="deleteShiftFromHTTP(); deleteActivity();">Delete Activity</button>
     </form>
 </div>
 </div>
@@ -193,6 +201,9 @@
 <!-- Add -->
 
 <!-- Navne er rettet i add -->
+
+<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
+
 <div id="job_add" class="modal2">
     <div class="modal2-content">
         <span onclick="document.getElementById('job_add').style.display='none'" class="close2">&times;</span>
@@ -207,7 +218,7 @@
                 <label><b>How much do you earn a hour?</b></label>
                 <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="stdSalary" required>
 
-                <button  type="submit" class="submit">Login</button>
+                <button  type="submit" class="submit" onclick="addJob();">Save Job</button>
             </div>
         </form>
     </div>
@@ -215,12 +226,14 @@
 
 <!-- Edit -->
 
+<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
+
 <div id="job_edit" class="modal2">
     <div class="modal2-content">
         <span onclick="document.getElementById('job_edit').style.display='none'" class="close2">&times;</span>
         <form id="editJob">
             <label><b>Choice a job you want to edit: </b></label><br><br>
-            <select id="select_job_edit" onchange="">
+            <select id="select_job_edit" onclick="getJobList();">
                 <option value="Default"></option>
             </select>
             <b id="jobEditInfo"></b>
@@ -230,21 +243,25 @@
 
 
             <label><b>What company is the job for?</b></label>
-            <input  type="text" placeholder="What company is the job for?" name="company_to_job" required>
+            <select id="company_job_edit" onclick="getEmployerList();">
+                <option value="Default"></option>
+            </select>
 
             <label><b>When did you get hired?</b></label>
-            <input class="w3-input w3-border w3-margin-bottom" type="date" name="job_start" required>
+            <input class="w3-input w3-border w3-margin-bottom" type="date" name="hireDate" required>
 
             <label><b>How much do you earn a hour?</b></label>
-            <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="hourly_income" required>
+            <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="stdSalary" required>
 
-            <button  type="submit" class="submit">Login</button>
+            <button  type="submit" class="submit" onclick="editJob();">Edit Job</button>
 
         </form>
     </div>
 </div>
 
 <!-- Delete -->
+
+<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 
 <div id="job_delete" class="modal2">
     <div class="modal2-content">
@@ -266,6 +283,8 @@
             <!-- Workplace -->
 
 <!-- add -->
+
+<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 
 
 <div id="workplace_add" class="modal2">
@@ -293,6 +312,8 @@
 </div>
 
 <!-- edit -->
+
+<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 
 <div id="jobadress_edit" class="modal2">
     <div class="modal2-content">
@@ -326,6 +347,8 @@
 </div>
 
 <!-- delete -->
+
+<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 
 <div id="jobadress_delete" class="modal2">
     <div class="modal2-content">
