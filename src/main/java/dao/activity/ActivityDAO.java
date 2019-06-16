@@ -88,12 +88,6 @@ public class ActivityDAO implements IActivityDAO {
         }
     }
 
-
-    @Override
-    public IActivityDTO getiActivity(int userID, LocalDateTime dateAndTime) {
-        return null;
-    }
-
     @Override
     public IActivityDTO getiActivity(int activityID) throws DALException {
         IActivityDTO returnedActivity = new ActivityDTO();
@@ -184,10 +178,9 @@ public class ActivityDAO implements IActivityDAO {
         return activityListByJobID;
 
     }
-    // TODO: Skal vi også have denne metode uden et jobID?
-    // TODO: Skal denne møde vise alt hvor startDateTime er inde for de to områder, eller skal både Start og End være indefor.
-    @Override //
-    public List<IActivityDTO> getiActivityList(int jobID, LocalDate fromDate, LocalDate toDate) throws DALException {
+
+    @Override
+    public List<IActivityDTO> getiActivityList(int jobID, LocalDate fromStartDate, LocalDate toStartDate) throws DALException {
 
         List<IActivityDTO> activityListBetweenDates = new ArrayList<>();
 
@@ -203,9 +196,41 @@ public class ActivityDAO implements IActivityDAO {
 
         try {
             PreparedStatement preparedStatement = c.prepareStatement(getActivityIDsQueryBetweenDates);
-            preparedStatement.setDate(1,Date.valueOf(fromDate));
-            preparedStatement.setDate(2,Date.valueOf(toDate));
+            preparedStatement.setDate(1,Date.valueOf(fromStartDate));
+            preparedStatement.setDate(2,Date.valueOf(toStartDate));
             preparedStatement.setInt(3,jobID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                activityListBetweenDates.add(getiActivity(resultSet.getInt(ActivityConstants.id)));
+            }
+
+        } catch (SQLException e){
+            throw new DALException(e.getMessage());
+        } finally {
+            iConnPool.releaseConnection(c);
+        }
+
+        return activityListBetweenDates;
+    }
+
+    @Override
+    public List<IActivityDTO> getiActivityList(LocalDate fromStartDate, LocalDate toStartDate) throws DALException {
+        List<IActivityDTO> activityListBetweenDates = new ArrayList<>();
+
+        Connection c = iConnPool.getConn();
+
+        String getActivityIDsQueryBetweenDates = String.format(
+                "SELECT %s FROM %s WHERE %s >= ? AND %s <= ? + INTERVAL 1 DAY ",
+                ActivityConstants.id,
+                ActivityConstants.TABLENAME,
+                ActivityConstants.startDateTime,    // ParameterIndex 1
+                ActivityConstants.startDateTime);   // ParameterIndex 2
+
+        try {
+            PreparedStatement preparedStatement = c.prepareStatement(getActivityIDsQueryBetweenDates);
+            preparedStatement.setDate(1,Date.valueOf(fromStartDate));
+            preparedStatement.setDate(2,Date.valueOf(toStartDate));
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -239,7 +264,7 @@ public class ActivityDAO implements IActivityDAO {
             PreparedStatement preparedStatement = c.prepareStatement(updateQuery);
             preparedStatement.setTimestamp(1, Timestamp.valueOf(activity.getStartingDateTime()));
             preparedStatement.setTimestamp(2, Timestamp.valueOf(activity.getEndingDateTime()));
-            preparedStatement.setLong(3, activity.getPause().getSeconds());
+            preparedStatement.setLong(3, activity.getPause().toMinutes());
             preparedStatement.setDouble(4, activity.getActivityValue());
             preparedStatement.setInt(5, activity.getActivityID());
 
@@ -252,12 +277,6 @@ public class ActivityDAO implements IActivityDAO {
         } finally {
             connectionHelper.finallyActionsForConnection(c,"ActivityDAO.updateiActivity");
         }
-    }
-
-    @Override
-    public void deleteiActivity(int userID, LocalDateTime dateAndTime) throws DALException {
-
-
     }
 
     @Override

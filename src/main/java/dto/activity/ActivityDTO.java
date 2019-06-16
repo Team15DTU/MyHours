@@ -63,19 +63,19 @@ public class ActivityDTO implements IActivityDTO {
     }
 
     public LocalDateTime getStartingDateTime() {
-        return startingDateTime;
+        return startingDateTime.withNano(0);
     }
 
     public void setStartingDateTime(LocalDateTime startingDateTime) {
-        this.startingDateTime = startingDateTime;
+        this.startingDateTime = startingDateTime.withNano(0);
     }
 
     public LocalDateTime getEndingDateTime() {
-        return endingDateTime;
+        return endingDateTime.withNano(0);
     }
 
     public void setEndingDateTime(LocalDateTime endingDateTime) {
-        this.endingDateTime = endingDateTime;
+        this.endingDateTime = endingDateTime.withNano(0);
     }
 
     public Duration getPause() {

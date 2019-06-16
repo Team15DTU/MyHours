@@ -16,7 +16,6 @@ import org.junit.*;
 import testData.TestDataController;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -27,7 +26,6 @@ import static org.junit.Assert.*;
 public class ActivityDAOTest {
 
     private final double doubleEqualTolorance = 0.0001; // TODO: Find rigtig værdi
-    private final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private static IConnPool test_DB;
     private static IEmployerDAO iEmployerDAO;
@@ -148,6 +146,19 @@ public class ActivityDAOTest {
     // endregion
 
     @Test
+    public void createiActivity() throws DALException {
+        iActivityDAO.createiActivity(activityNo1);
+
+        IActivityDTO returnedActivityNo1 = iActivityDAO.getiActivity(activityNo1.getActivityID());
+        assertEquals(activityNo1.getActivityID(),returnedActivityNo1.getActivityID());
+        assertEquals(activityNo1.getJobID(),returnedActivityNo1.getJobID());
+        assertEquals(activityNo1.getStartingDateTime(),returnedActivityNo1.getStartingDateTime());
+        assertEquals(activityNo1.getEndingDateTime(), returnedActivityNo1.getEndingDateTime());
+        assertEquals(activityNo1.getPause(),returnedActivityNo1.getPause());
+        assertEquals(activityNo1.getActivityValue(),returnedActivityNo1.getActivityValue(),doubleEqualTolorance);
+    }
+
+    @Test
     public void getiActivity() throws DALException {
         iActivityDAO.createiActivity(activityNo1);
 
@@ -155,14 +166,10 @@ public class ActivityDAOTest {
 
         assertEquals(activityNo1.getActivityID(),returnedActivityNo1.getActivityID());
         assertEquals(activityNo1.getJobID(),returnedActivityNo1.getJobID());
-        assertEquals(dtf.format(activityNo1.getStartingDateTime()),dtf.format(returnedActivityNo1.getStartingDateTime()));
-        assertEquals(dtf.format(activityNo1.getEndingDateTime()),dtf.format(returnedActivityNo1.getEndingDateTime()));
+        assertEquals(activityNo1.getStartingDateTime(),returnedActivityNo1.getStartingDateTime());
+        assertEquals(activityNo1.getEndingDateTime(),returnedActivityNo1.getEndingDateTime());
         assertEquals(activityNo1.getPause(),returnedActivityNo1.getPause());
         assertEquals(activityNo1.getActivityValue(),returnedActivityNo1.getActivityValue(),doubleEqualTolorance);
-    }
-
-    @Test
-    public void getiActivity1() {
     }
 
     @Test
@@ -186,7 +193,7 @@ public class ActivityDAOTest {
     }
 
     @Test
-    public void getiActivityListBetweenDates() throws DALException {
+    public void getiActivityListBetweenDatesWithJobID() throws DALException {
         iActivityDAO.createiActivity(activityNo1);
         iActivityDAO.createiActivity(activityNo2);
         iActivityDAO.createiActivity(activityNo3);
@@ -205,16 +212,30 @@ public class ActivityDAOTest {
     }
 
     @Test
-    public void createiActivity() throws DALException {
+    public void getiActivityListBetweenDates() throws DALException {
         iActivityDAO.createiActivity(activityNo1);
+        iActivityDAO.createiActivity(activityNo2);
+        iActivityDAO.createiActivity(activityNo3);
 
-        IActivityDTO returnedActivityNo1 = iActivityDAO.getiActivity(activityNo1.getActivityID());
-        assertEquals(activityNo1.getActivityID(),returnedActivityNo1.getActivityID());
-        assertEquals(activityNo1.getJobID(),returnedActivityNo1.getJobID());
-        assertEquals(dtf.format(activityNo1.getStartingDateTime()),dtf.format(returnedActivityNo1.getStartingDateTime()));
-        assertEquals(dtf.format(activityNo1.getEndingDateTime()),dtf.format(returnedActivityNo1.getEndingDateTime()));
-        assertEquals(activityNo1.getPause(),returnedActivityNo1.getPause());
-        assertEquals(activityNo1.getActivityValue(),returnedActivityNo1.getActivityValue(),doubleEqualTolorance);
+        List<IActivityDTO> activityListJobNo1BetweenNo1 = iActivityDAO
+                .getiActivityList(LocalDate.now().minusMonths(6),LocalDate.now().minusMonths(6));
+        List<IActivityDTO> activityListJobNo1BetweenNo2 = iActivityDAO
+                .getiActivityList(LocalDate.now().minusMonths(12),LocalDate.now().minusMonths(6));
+        List<IActivityDTO> activityListJobNo1BetweenNo3 = iActivityDAO
+                .getiActivityList(LocalDate.now().minusMonths(24),LocalDate.now().minusMonths(6));
+        List<IActivityDTO> activityListJobNo1BetweenNo4 = iActivityDAO
+                .getiActivityList(LocalDate.now().minusMonths(24),LocalDate.now().minusMonths(12));
+        List<IActivityDTO> activityListJobNo1BetweenNo5 = iActivityDAO
+                .getiActivityList(LocalDate.now().minusMonths(32),LocalDate.now().minusMonths(25));
+        List<IActivityDTO> activityListJobNo1BetweenNo6 = iActivityDAO
+                .getiActivityList(LocalDate.now().minusMonths(6).plusDays(1),LocalDate.now().minusMonths(6).plusDays(1));
+
+        assertEquals(1,activityListJobNo1BetweenNo1.size());
+        assertEquals(2,activityListJobNo1BetweenNo2.size());
+        assertEquals(3,activityListJobNo1BetweenNo3.size());
+        assertEquals(2,activityListJobNo1BetweenNo4.size());
+        assertEquals(0,activityListJobNo1BetweenNo5.size());
+        assertEquals(0,activityListJobNo1BetweenNo6.size());
     }
 
     @Test
@@ -230,10 +251,10 @@ public class ActivityDAOTest {
         iActivityDAO.updateiActivity(updatedActivityNo2);
 
         IActivityDTO returnedUpdatedActivityNo2 = iActivityDAO.getiActivity(updatedActivityNo2.getActivityID());
-        assertEquals(dtf.format(activityNo2.getStartingDateTime()),dtf.format(returnedUpdatedActivityNo2.getStartingDateTime()));
-        assertEquals(dtf.format(activityNo2.getEndingDateTime()), dtf.format(returnedUpdatedActivityNo2.getEndingDateTime()));
-        assertEquals(activityNo2.getPause(),returnedUpdatedActivityNo2.getPause());
-        assertEquals(activityNo2.getActivityValue(),returnedUpdatedActivityNo2.getActivityValue(),doubleEqualTolorance);
+        assertEquals(activityNo3.getStartingDateTime(),returnedUpdatedActivityNo2.getStartingDateTime());
+        assertEquals(activityNo3.getEndingDateTime(), returnedUpdatedActivityNo2.getEndingDateTime());
+        assertEquals(activityNo3.getPause(),returnedUpdatedActivityNo2.getPause());
+        assertEquals(activityNo3.getActivityValue(),returnedUpdatedActivityNo2.getActivityValue(),doubleEqualTolorance);
     }
 
     @Test
@@ -251,22 +272,5 @@ public class ActivityDAOTest {
         List<IActivityDTO> activityListAfterDeletion = iActivityDAO.getiActivityList();
         assertEquals(1, activityListAfterDeletion.size());
         assertEquals(activityNo1.getActivityValue(),activityListAfterDeletion.get(0).getActivityValue(),doubleEqualTolorance);
-    }
-
-    @Test
-    public void deleteiActivity1() throws DALException {
-        iActivityDAO.createiActivity(activityNo1);
-        iActivityDAO.createiActivity(activityNo2);
-
-        List<IActivityDTO> activityList = iActivityDAO.getiActivityList();
-        assertEquals(2,activityList.size());
-        assertEquals(activityNo1.getActivityValue(),activityList.get(0).getActivityValue(),doubleEqualTolorance);
-        assertEquals(activityNo2.getActivityValue(),activityList.get(1).getActivityValue(),doubleEqualTolorance);
-
-        iActivityDAO.deleteiActivity(activityNo2.getActivityID());
-
-        List<IActivityDTO> activityAfterDeletionList = iActivityDAO.getiActivityList();
-        assertEquals(1, activityAfterDeletionList.size());
-        assertEquals(activityNo1.getActivityValue(),activityAfterDeletionList.get(0).getActivityValue(),doubleEqualTolorance);
     }
 }

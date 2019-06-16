@@ -18,7 +18,6 @@ import java.awt.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author Rasmus Sander Larsen
@@ -114,9 +113,11 @@ public class TestDataController {
 
     // region ActivityDTO Test Data
 
+    private static LocalDateTime activityLocalDateTimeNow = LocalDateTime.now();
+
     // region ActivityDTO No. 1
 
-    private static LocalDateTime activityNo1_startingDateTime = LocalDateTime.now().minusMonths(6);
+    private static LocalDateTime activityNo1_startingDateTime = activityLocalDateTimeNow.minusMonths(6);
     private static LocalDateTime activityNo1_endingDateTime = activityNo1_startingDateTime.plusMonths(3);
     private static Duration activityNo1_pause = Duration.ofMinutes(30); // break in minutes!
     private static double activityNo1_activityValue = 1500.50;
@@ -125,7 +126,7 @@ public class TestDataController {
 
     // region ActivityDTO No. 2
 
-    private static LocalDateTime activityNo2_startingDateTime = LocalDateTime.now().minusMonths(12);
+    private static LocalDateTime activityNo2_startingDateTime = activityLocalDateTimeNow.minusMonths(12);
     private static LocalDateTime activityNo2_endingDateTime = activityNo2_startingDateTime.plusMonths(6);
     private static Duration activityNo2_pause = Duration.ofMinutes(60); // break in minutes!
     private static double activityNo2_activityValue = 3000.57;
@@ -134,7 +135,7 @@ public class TestDataController {
 
     // region ActivityDTO No. 3
 
-    private static LocalDateTime activityNo3_startingDateTime = LocalDateTime.now().minusMonths(24);
+    private static LocalDateTime activityNo3_startingDateTime = activityLocalDateTimeNow.minusMonths(24);
     private static LocalDateTime activityNo3_endingDateTime = activityNo3_startingDateTime.plusMonths(12);
     private static Duration activityNo3_pause = Duration.ofMinutes(90); // break in minutes!
     private static double activityNo3_activityValue = 5343.98;
