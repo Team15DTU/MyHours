@@ -1,9 +1,10 @@
 package dao.worker;
 
+import dao.ConnectionHelper;
 import dao.DALException;
+import db.IConnPool;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
-import db.IConnPool;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,14 +13,14 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
-public class WorkerDAO implements IWorkerDAO {
-
+public class WorkerDAO implements IWorkerDAO
+{
     /*
     -------------------------- Fields --------------------------
      */
     
     private IConnPool connPool;
-    private final String WORKERS_TABLENAME = "Workers";
+    private final String WORKERS_TABLENAME = WorkerConstants.TABLENAME;
     
     /*
     ----------------------- Constructor -------------------------
@@ -77,7 +78,61 @@ public class WorkerDAO implements IWorkerDAO {
 
         return workerToReturn;
     }
-
+    
+    @Override
+    public IWorkerDTO getWorker(int id) throws DALException
+    {
+        String methodName = "getWorker(int id)";
+        IWorkerDTO worker = new WorkerDTO("Failure", "Failure", "Failure@Fail.com");
+        
+        // Get a connection from the pool
+        Connection conn = connPool.getConn();
+        
+        // Get a connection helper object
+        ConnectionHelper connHelper = new ConnectionHelper(connPool);
+        
+        try
+        {
+            // Create and make the Prepared Statement
+            PreparedStatement stmt = conn.prepareStatement( String.format("SELECT * FROM %s WHERE %s = ?",
+                    WorkerConstants.TABLENAME, WorkerConstants.id) );
+            stmt.setInt(1, id);
+            
+            // Execute the query
+            ResultSet rs = stmt.executeQuery();
+            
+            // Make the worker out of the result set
+            if ( rs.next() )
+            {
+                // Set simple worker information
+                worker.setWorkerID( rs.getInt(WorkerConstants.id) );
+                worker.setFirstName( rs.getString(WorkerConstants.firstname) );
+                worker.setSurName( rs.getString(WorkerConstants.surname) );
+                worker.setEmail( rs.getString(WorkerConstants.email) );
+                worker.setBirthday( rs.getDate( WorkerConstants.birthday ).toLocalDate() );
+                
+                //TODO: Address of the worker needs to be set!
+            }
+        }
+        catch ( SQLException e )
+        {
+            connHelper.catchSQLExceptionAndDoRollback(conn, e, methodName);
+        }
+        catch ( Exception e )
+        {
+            throw new DALException(e.getMessage(), e.getCause());
+        }
+        finally
+        {
+            // Make sure to release connection
+            if ( conn != null )
+                connHelper.finallyActionsForConnection(conn, methodName);
+        }
+        
+        // Return the created worker or failed worker
+        return worker;
+    }
+    
     @Override
     public List<IWorkerDTO> getWorkerList() throws DALException
     {
