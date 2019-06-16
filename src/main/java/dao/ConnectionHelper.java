@@ -40,7 +40,7 @@ public class ConnectionHelper {
 
     public void finallyActionsForConnection (Connection c, String methodName) throws DALException {
         try {
-            c.setAutoCommit(true);
+        	c.setAutoCommit(true);
         } catch (SQLException e) {
             System.out.println("SQLException in finally in "+ methodName + " :");
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class ConnectionHelper {
         }
 
         System.out.println("Standard SQLException in " + methodName + ":");
-        throw  new DALException(e.getMessage());
+        throw  new DALException(e.getMessage(), e.getCause());
     }
     
     /*

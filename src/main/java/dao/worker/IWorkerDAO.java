@@ -9,8 +9,6 @@ import java.util.List;
  * @author Rasmus Sander Larsen
  */
 
-//TODO: getWorker(int id) needs to be implemented
-
 public interface IWorkerDAO {
 
     /*
@@ -24,6 +22,15 @@ public interface IWorkerDAO {
 	 * @exception DALException Will throw a DALException.
      */
     IWorkerDTO getWorker (String email) throws DALException;
+	
+	/**
+	 * This Methods should return an object that implements the IWorkerDTO interface,
+	 * and containing all the details matching the inputted id.
+	 * @param id Desired Workers ID.
+	 * @return An object implementing the IWorkerDTO interface.
+	 * @throws DALException Will throw a DALException.
+	 */
+	IWorkerDTO getWorker (int id)		throws DALException;
 
     /**
      * This Method returns a List of WorkerDTO objects.
