@@ -379,7 +379,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * Keeps all Connections alive in freeConnList. For every "refreshRate" milliseconds
 	 * it runs through the whole List, and checks if there's any problems with any
 	 * of the connections.
-	 * If a problems with a connection is detected, it refreshes the connection by
+	 * If a problem with a connection is detected, it refreshes the connection by
 	 * creating a new one, and makes the same variable point to the newly created
 	 * connection.
 	 * As the method is called, it starts and runs on its own thread, and the main thread
