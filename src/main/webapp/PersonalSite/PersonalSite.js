@@ -568,7 +568,6 @@ function generateJobHTML(data){
 }
 
 function getJobList() {
-    $("#select2").html(""); //tømmer element
     $.ajax({
         method: "GET",
         url: "/UserService/DBController/getJobList",
@@ -586,7 +585,6 @@ function getJobList() {
 }
 
 function getActivityList() {
-    $("#select").html(""); //tømmer element
     $.ajax({
         method: "GET",
         url: "/UserService/DBController/getActivityList",
@@ -604,7 +602,6 @@ function getActivityList() {
 }
 
 function getEmployerList() {
-    $("#select").html(""); //tømmer element
     $.ajax({
         method: "GET",
         url: "/UserService/DBController/getEmployerList",
