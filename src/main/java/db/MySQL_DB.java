@@ -14,9 +14,9 @@ public class MySQL_DB implements IConnPool {
     -------------------------- Fields --------------------------
      */
 
-    private final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
-    private final String user = "s185097";
-    private final String password = "qsNAphOJ13ySzlpn1kh6Y";
+    private final String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s160107?";
+    private final String user = "s160107";
+    private final String password = "wOWElNh0bVravE9uGDNzw";
 
     /*
     ----------------------- Constructor -------------------------
@@ -34,7 +34,6 @@ public class MySQL_DB implements IConnPool {
     public String getUser() {
         return user;
     }
-
 
     // </editor-folder>
     

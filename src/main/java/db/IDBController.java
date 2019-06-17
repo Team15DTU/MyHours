@@ -38,7 +38,12 @@ public interface IDBController
     | Update	                                                 |
     -------------------------------------------------------------*/
 	boolean			updateWorker		(IWorkerDTO workerDTO);
-    
+
+    /*------------------------------------------------------------
+    | Delete	                                                 |
+    -------------------------------------------------------------*/
+    boolean			deleteWorker		(String email);
+
     //endregion
     
     //region Employer
@@ -64,6 +69,11 @@ public interface IDBController
     | Update	                                                 |
     -------------------------------------------------------------*/
 	boolean			updateEmployer		(IEmployerDTO employerDTO);
+
+    /*------------------------------------------------------------
+    | Delete                                                   |
+    -------------------------------------------------------------*/
+    boolean         deleteEmployer (int employerID);
     
     //endregion
     
@@ -91,6 +101,11 @@ public interface IDBController
     | Update	                                                 |
     -------------------------------------------------------------*/
 	boolean			updateJob			(IJobDTO jobDTO);
+
+    /*------------------------------------------------------------
+    | Delete                                                   |
+    -------------------------------------------------------------*/
+    boolean         deleteJob (int jobID);
     
     //endregion
     
@@ -118,7 +133,12 @@ public interface IDBController
     | Update	                                                 |
     -------------------------------------------------------------*/
 	boolean				updateActivity	(IActivityDTO activityDTO);
-    
+
+	/*------------------------------------------------------------
+    | Delete                                                   |
+    -------------------------------------------------------------*/
+    boolean             deleteActivity (int activityID);
+
     //endregion
     
     /*------------------------------------------------------------

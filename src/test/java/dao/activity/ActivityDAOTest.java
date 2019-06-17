@@ -137,7 +137,6 @@ public class ActivityDAOTest {
 
         // Closes ConnectionPool
         test_DB.closePool();
-
         dbController.getHibernateUtil().exit();
     }
 

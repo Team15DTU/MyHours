@@ -114,7 +114,6 @@ public class JobDAOTest {
 
         // Closes ConnectionPool
         test_DB.closePool();
-
         dbController.getHibernateUtil().exit();
     }
 

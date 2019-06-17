@@ -303,6 +303,7 @@ public class ConnPoolV1 implements IConnPool
 		// Close all connections in both Lists
 		try
 		{
+
 			int i; int freeConns = freeConnList.size(); int usedConns = usedConnList.size();
 			for ( i=0; i < freeConns; i++ ) { closeConnection(freeConnList.get(i)); }
 			for ( i=0; i < usedConns; i++ ) { closeConnection(usedConnList.get(i)); }
