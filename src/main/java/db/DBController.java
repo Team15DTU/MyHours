@@ -70,7 +70,7 @@ public class DBController implements IDBController
 			iJobDAO         = new JobDAO(this.connPool, this.connectionHelper);
 			iActivityDAO    = new ActivityDAO(this.connPool,connectionHelper);
 		}
-		catch ( DALException e )
+		catch ( Exception e )
 		{
 			System.err.println("ERROR: DBController constructor Failure - " + e.getMessage());
 		}

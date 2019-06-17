@@ -45,9 +45,8 @@ public class ConnPoolV1 implements IConnPool
     -------------------------------------------------------------*/
 	/**
 	 * Creates the ConnPoolV1 object, and initializing everything.
-	 * @throws DALException Data Access Layer Exception
 	 */
-	protected ConnPoolV1() throws DALException
+	protected ConnPoolV1()
 	{
 		// Instantiating Lists
 		freeConnList = new ArrayList<>(MAXCONNS);
@@ -78,10 +77,6 @@ public class ConnPoolV1 implements IConnPool
 		
 		//Start thread to keep connections alive
 		keepAlive();
-		
-		// Make sure to throw exception
-		if ( !success )
-			throw exception;
 	}
 	
     /*------------------------------------------------------------
@@ -168,7 +163,7 @@ public class ConnPoolV1 implements IConnPool
 	 * Gives the instance of the Connection Pool.
 	 * @return ConnPoolV1 object
 	 */
-	public synchronized static ConnPoolV1 getInstance() throws DALException
+	public synchronized static ConnPoolV1 getInstance()
 	{
 		try
 		{
@@ -177,7 +172,7 @@ public class ConnPoolV1 implements IConnPool
 			
 			return instance;
 		}
-		catch (DALException e)
+		catch (Exception e)
 		{
 			System.err.println( String.format("ERROR: Couldn't get ConnPoolV1 instance - %s \n \t Cause: %s",
 												e.getMessage(), e.getCause()) );
