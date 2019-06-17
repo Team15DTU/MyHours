@@ -58,10 +58,10 @@ public class DBController implements IDBController
 	{
 		try
 		{
-			this.connPool   = ConnPoolV1.getInstance();
-			connectionHelper = new ConnectionHelper(this.connPool);
 			hibernateUtil 	= new HibernateUtil(new HibernateProperties().getRealDB());
 			hibernateUtil.setup();
+			this.connPool   = ConnPoolV1.getInstance();
+			connectionHelper = new ConnectionHelper(this.connPool);
 			
 			TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
 			
