@@ -12,34 +12,34 @@ import java.util.List;
 /**
  * @author Alfred Röttger Rydahl
  */
-public class ConnPoolV1 implements IConnPool {
-	
-    /*------------------------------------------------------------
+public class ConnPoolV1 implements IConnPool
+{
+	/*------------------------------------------------------------
     | Fields                                                     |
     -------------------------------------------------------------*/
-    protected static ConnPoolV1 instance ;
-    
-    //region keepAlive()
-    protected int refreshRate 	= 30000; 	// 30 seconds
+	protected static ConnPoolV1 instance ;
+
+	//region keepAlive()
+	protected int refreshRate 	= 30000; 	// 30 seconds
 	protected int validTimeout	= 2;		// 02 seconds
 	protected boolean stop		= false;
 	//endregion
- 
+
 	/*
 	Hibernate uses 3 connections, and this uses 6. This means we have
 	1 connection free to use with Workbench and Datagrip.
 	 */
-    public static final int MAXCONNS = 6;
-    
-    //region DB Info
+	public static final int MAXCONNS = 2;
+
+	//region DB Info
 	protected static String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
 	protected static String user = "s185097";
 	protected static String password = "qsNAphOJ13ySzlpn1kh6Y";
 	//endregion
-    
-    protected List<Connection> freeConnList;
-    protected List<Connection> usedConnList;
-    
+
+	protected List<Connection> freeConnList;
+	protected List<Connection> usedConnList;
+
     /*------------------------------------------------------------
     | Constructors                                               |
     -------------------------------------------------------------*/
@@ -52,14 +52,14 @@ public class ConnPoolV1 implements IConnPool {
 		// Instantiating Lists
 		freeConnList = new ArrayList<>(MAXCONNS);
 		usedConnList = new ArrayList<>(MAXCONNS);
-		
+
 		// Create all Connections
 		boolean success = true; DALException exception = null;
 		try
 		{
 			// Specify Driver
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			
+
 			for (int i = 0; i < MAXCONNS; i++)
 				freeConnList.add(createConnection());
 		}
@@ -75,15 +75,15 @@ public class ConnPoolV1 implements IConnPool {
 			exception = new DALException(e.getMessage(), e.getCause());
 			success = false;
 		}
-		
+
 		//Start thread to keep connections alive
 		keepAlive();
-		
+
 		// Make sure to throw exception
 		if ( !success )
 			throw exception;
 	}
-	
+
     /*------------------------------------------------------------
     | Properties                                                 |
     -------------------------------------------------------------*/
@@ -96,7 +96,7 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		return freeConnList.size() + usedConnList.size();
 	}
-	
+
 	/**
 	 * Gets the total amount of available connections in the connection
 	 * pool.
@@ -106,7 +106,7 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		return freeConnList.size();
 	}
-	
+
 	/**
 	 * Gets the total amount of connections in use.
 	 * @return Amount of connections in use
@@ -115,7 +115,7 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		return usedConnList.size();
 	}
-	
+
 	/**
 	 * Gets the current refresh rate of every connection update.
 	 * @return Rate in milliseconds as int
@@ -124,7 +124,7 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		return refreshRate;
 	}
-	
+
 	/**
 	 * Sets the refresh rate of the connection update.
 	 * @param millis The time to wait in milliseconds
@@ -133,7 +133,7 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		this.refreshRate = millis;
 	}
-	
+
 	/**
 	 * Gets the time which is used to determine how long to wait for a
 	 * connection to return valid.
@@ -143,7 +143,7 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		return validTimeout;
 	}
-	
+
 	/**
 	 * Sets the time to wait for a connection to be determined alive.
 	 * @param validTimeout Time in seconds
@@ -153,6 +153,10 @@ public class ConnPoolV1 implements IConnPool {
 		this.validTimeout = validTimeout;
 	}
 
+	/**
+	 * Gets the SQL DB user.
+	 * @return A String
+	 */
 	public String getUser() {
 		return user;
 	}
@@ -170,17 +174,17 @@ public class ConnPoolV1 implements IConnPool {
 		{
 			if (instance == null)
 				instance = new ConnPoolV1();
-			
+
 			return instance;
 		}
 		catch (DALException e)
 		{
-			System.err.println(String.format("ERROR: Couldn't get ConnPoolV1 instance - %s \n \t Cause: %s",
-												e.getMessage(), e.getCause()));
+			System.err.println( String.format("ERROR: Couldn't get ConnPoolV1 instance - %s \n \t Cause: %s",
+					e.getMessage(), e.getCause()) );
 			throw e;
 		}
 	}
-	
+
 	/**
 	 * Returns the Connection to the connection pool.
 	 * @param connection The Connection to return
@@ -191,7 +195,7 @@ public class ConnPoolV1 implements IConnPool {
 		// Make sure connection given back isn't null
 		if ( connection == null )
 			return;
-		
+
 		try
 		{
 			// Roll back unfinished transactions
@@ -213,7 +217,7 @@ public class ConnPoolV1 implements IConnPool {
 			freeConnList.add(connection);
 		}
 	}
-	
+
 	/**
 	 * Gives a live Connection to the Database, which needs to be returned after
 	 * use.
@@ -242,31 +246,31 @@ public class ConnPoolV1 implements IConnPool {
 					throw new DALException(e.getMessage());
 				}
 			}
-			
+
 			else
 			{
 				try
 				{
 					// Get the first connection
 					connection = freeConnList.get(freeConnList.size() - 1);
-					
+
 					// If connection isClosed then make a new and return
 					if ( connection == null || connection.isClosed() )
 					{
 						connection = createConnection();
-						
+
 						usedConnList.add(connection);
 						freeConnList.remove(freeConnList.size() - 1);
-						
+
 						return connection;
 					}
-					
+
 					// Otherwise, return connection normally
 					else
 					{
 						usedConnList.add(connection);
 						freeConnList.remove(connection);
-						
+
 						return connection;
 					}
 				}
@@ -283,7 +287,7 @@ public class ConnPoolV1 implements IConnPool {
 			}
 		}
 	}
-	
+
 	/**
 	 * This method is shutting down the connection pool. Making sure
 	 * that every connection is closed correctly, and stops all
@@ -295,16 +299,22 @@ public class ConnPoolV1 implements IConnPool {
 	{
 		// Make keepAlive thread stop
 		stop = true;
-		
+
 		// Close all connections in both Lists
 		try
 		{
-			for (Connection c : freeConnList) { closeConnection(c); }
-			for (Connection c : usedConnList) { closeConnection(c); }
+			int i; int freeConns = freeConnList.size(); int usedConns = usedConnList.size();
+			for ( i=0; i < freeConns; i++ ) { closeConnection(freeConnList.get(i)); }
+			for ( i=0; i < usedConns; i++ ) { closeConnection(usedConnList.get(i)); }
 		}
 		catch ( SQLException e )
 		{
-			System.err.println("ERROR: Error trying to close connection pool - " + e.getMessage());
+			System.err.println( String.format("ERROR: Error trying to close connection pool - %s", e.getMessage()) );
+			throw new DALException( e.getMessage(), e.getCause() );
+		}
+		catch ( Exception e )
+		{
+			System.err.println( String.format("ERROR: Unknown error in closePool() - %s", e.getMessage()) );
 			throw new DALException( e.getMessage(), e.getCause() );
 		}
 		finally
@@ -314,12 +324,13 @@ public class ConnPoolV1 implements IConnPool {
 			System.gc();
 		}
 	}
-	
+
     /*------------------------------------------------------------
     | Protected Methods                                            |
     -------------------------------------------------------------*/
 	/**
 	 * Establishes a connection with the Database.
+	 * This is Thread safe.
 	 * @return Connection object
 	 * @throws DALException Data Access Layer Exception
 	 */
@@ -335,10 +346,11 @@ public class ConnPoolV1 implements IConnPool {
 			throw new DALException(e.getMessage(), e.getCause());
 		}
 	}
-	
+
 	/**
 	 * Closed the given SQL Connection the correct way. If the connection
 	 * is already closed, then this won't do anything.
+	 * This is Thread safe.
 	 * @param c The SQL Connection to close
 	 * @throws SQLException Handle this
 	 */
@@ -352,7 +364,7 @@ public class ConnPoolV1 implements IConnPool {
 			{
 				// If autocommit == true, then just close
 				if (c.getAutoCommit()) { c.close(); }
-				
+
 				// Otherwise, make sure to make rollback first
 				else
 				{
@@ -362,12 +374,12 @@ public class ConnPoolV1 implements IConnPool {
 			}
 		}
 	}
-	
+
 	/**
 	 * Keeps all Connections alive in freeConnList. For every "refreshRate" milliseconds
 	 * it runs through the whole List, and checks if there's any problems with any
 	 * of the connections.
-	 * If a problems with a connection is detected, it refreshes the connection by
+	 * If a problem with a connection is detected, it refreshes the connection by
 	 * creating a new one, and makes the same variable point to the newly created
 	 * connection.
 	 * As the method is called, it starts and runs on its own thread, and the main thread
@@ -380,8 +392,8 @@ public class ConnPoolV1 implements IConnPool {
 		Thread th = new Thread(() ->
 		{
 			// Start forever loop
-			while (!stop) {
-				
+			while (!stop)
+			{
 				// Sleep the thread a set amount of time
 				try
 				{
@@ -389,37 +401,39 @@ public class ConnPoolV1 implements IConnPool {
 				}
 				catch (InterruptedException e)
 				{
-					System.err.println("ERROR: Couldn't sleep Connection refresh thread - " + e.getMessage());
+					System.err.println( String.format("ERROR: Couldn't sleep Connection refresh thread - %s", e.getMessage()) );
 				}
-				
+
 				// Loop through all free connections
-				for ( Connection c : freeConnList )
+				Connection c = null;
+				for ( int i=0; i < freeConnList.size(); i++ )
 				{
 					// Check if GC is closing down
 					if (stop)
 						break;
-					
+
+					c = freeConnList.get(i);	// Used for all checks and to close
 					try
 					{
 						// Check if it's closed
-						if ( c.isClosed() ) { c = createConnection(); }
-						
+						if ( c.isClosed() ) { freeConnList.set(i, createConnection()); }
+
 						// Check if it has errors
 						else if ( !(c.getWarnings() == null) || !c.isValid(validTimeout) )
-						{ c.close(); c = createConnection(); }
+						{ c.close(); freeConnList.set(i, createConnection()); }
 					}
 					catch (SQLException e)
 					{
-						System.err.println("ERROR: keepAlive error - " + e.getMessage());
+						System.err.println( String.format("ERROR: keepAlive error - %s", e.getMessage()) );
 					}
 					catch (DALException e)
 					{
-						System.err.println("ERROR: DALException keepAlive error - " + e.getMessage());
+						System.err.println( String.format("ERROR: DALException keepAlive error - %s", e.getMessage()) );
 					}
 				}
 			}
 		});
-		
+
 		// Set it as daemon thread and start
 		th.setDaemon(true);
 		th.start();

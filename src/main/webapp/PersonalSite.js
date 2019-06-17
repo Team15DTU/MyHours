@@ -1,5 +1,7 @@
-//Dette metoderne til tabellen
+// Check session if session is active
+$(window).on('load', checkSession);
 
+//Dette er metoderne til tabellen
 function selectShift(name) {
 
 
@@ -562,4 +564,34 @@ function deleteJob(){
         }
     });
     console.log(userJson);
+}
+function checkSession() {
+    $.ajax({
+        method: 'POST',
+        url: "MyHours/DBController/isSessionActive",
+        contentType: "application/json",
+        success : function (data) {
+            if (data.toString() === "false") {
+                window.location = "../index.html"
+            }
+        },
+        error: function (jqXHR, text, error) {
+            alert(jqXHR.status + text + error);
+            console.log("Failed to check session!")
+        }
+    });
+}
+
+function logOut() {
+    $.ajax({
+        method: 'POST',
+        url: "MyHours/DBController/Logout",
+        contentType: "application/json",
+        success : function () {
+                window.location = "../index.html"
+        },
+        error: function (jqXHR, text, error) {
+            alert(jqXHR.status + text + error);
+        }
+    });
 }

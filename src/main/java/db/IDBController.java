@@ -6,6 +6,8 @@ import dto.job.IJobDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 import java.util.Date;
 import java.util.List;
 
@@ -126,5 +128,8 @@ public interface IDBController
     -------------------------------------------------------------*/
     String  setTimeZoneFromSQLServer    ();
 	int     getNextAutoIncremental      (String tableName);
-	boolean loginCheck                  (WorkerDTO user);
+
+    void logOut                         (HttpServletRequest request);
+    boolean isSessionActive             (HttpServletRequest request);
+	boolean loginCheck                  (WorkerDTO user, HttpServletRequest request);
 }

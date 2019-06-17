@@ -22,10 +22,15 @@ import hibernate.HibernateProperties;
 import hibernate.HibernateUtil;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 
 /**
  * @author Rasmus Sander Larsen
@@ -241,7 +246,27 @@ public class DBController implements IDBController
             	connPool.releaseConnection(c);
         }
     }
-	
+
+
+	@POST
+	@Path("/Logout")
+	@Override
+	public void logOut(@Context HttpServletRequest request){
+			HttpSession session = request.getSession();
+			session.invalidate();
+	}
+
+    @POST
+	@Path("/isSessionActive")
+    @Override
+    public boolean isSessionActive(@Context HttpServletRequest request){
+		boolean sessionStatus=false;
+		if (request.getSession(false) != null){
+			sessionStatus=true;
+		}
+		return sessionStatus;
+	}
+
 	/**
 	 * This method checks if there's a correlation between the
 	 * provided email and password. All exceptions is handled by
@@ -252,7 +277,7 @@ public class DBController implements IDBController
 	@Path("/loginCheck")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-    public boolean loginCheck(WorkerDTO user)
+    public boolean loginCheck(WorkerDTO user, @Context HttpServletRequest request)
     {
     	String email 	= user.getEmail();
     	String password = user.getPassword();
@@ -274,14 +299,29 @@ public class DBController implements IDBController
             // Create preparedStatement
             stmt = conn.prepareStatement(query);
             stmt.setString(1, email); stmt.setString(2, password);
-            
+
             // Execute
             ResultSet rs = stmt.executeQuery();
             
             // Check if there was a match
             if ( rs.next() )
                 success = true;
-	
+
+            if (success) {
+                HttpSession oldSession = request.getSession();
+                if (oldSession != null) {
+                    oldSession.invalidate();
+                }
+
+                HttpSession session = request.getSession(true);
+
+                // Store users email in session
+                session.setAttribute("userEmail",email);
+
+                // Set the the time before the session expires to 10 minutes
+                session.setMaxInactiveInterval(10*60);
+            }
+
 			// Close statement
 			stmt.close();
         }

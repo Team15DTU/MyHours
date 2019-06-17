@@ -21,16 +21,15 @@ var hideModal = function(){
 };
 
 var showLoginModal = function() {
-    if (!(login.hasClass("active"))){
-        login.addClass("active");
-        if (register.hasClass("active")) {
-            register.removeClass("active");
+        if (!(login.hasClass("active"))){
+            login.addClass("active");
+            if (register.hasClass("active")) {
+                register.removeClass("active");
+            }
         }
-    }
-    $("#id01").show();
-    cmSignUp.hide();
-    cmLogin.show();
-
+        $("#id01").show();
+        cmSignUp.hide();
+        cmLogin.show();
 };
 
 var showSignupModal = function() {
@@ -47,7 +46,6 @@ var showSignupModal = function() {
 
 
 function Login(){
-
     event.preventDefault();
     var userJson = $("#LoginInfo input").serializeJSON();
     $.ajax({
@@ -59,7 +57,7 @@ function Login(){
             alert(data);
             console.log("Success!");
             if (data.toString() === "true"){
-                window.location='/PersonalSite/PersonalSite.html';
+                window.location='PersonalSite.html';
             }
         },
         error: function(jqXHR, text, error){
@@ -90,4 +88,3 @@ function Signup() {
     });
     console.log(userJson)
 }
-
