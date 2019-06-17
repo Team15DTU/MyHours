@@ -464,7 +464,18 @@ public class DBController implements IDBController
     @Path("/deleteWorker")
     @Override
     public boolean deleteWorker(String email){
-	    return false;
+        boolean success = false;
+
+        try
+        {
+            iWorkerDAO.deleteWorker(email);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController deleteWorker() - " + e.getMessage());
+        }
+        return success;
     }
 	
 	//endregion
@@ -569,7 +580,18 @@ public class DBController implements IDBController
     @Path("/deleteEmployer")
     @Override
     public boolean deleteEmployer(int employerID){
-        return false;
+        boolean success = false;
+
+        try
+        {
+            iEmployerDAO.deleteiEmployer(employerID);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController deleteEmployer() - " + e.getMessage());
+        }
+        return success;
     }
 	
 	//endregion
@@ -678,7 +700,18 @@ public class DBController implements IDBController
     @Path("/deleteJob")
     @Override
     public boolean deleteJob(int jobID){
-        return false;
+        boolean success = false;
+
+        try
+        {
+            iJobDAO.deleteIJob(jobID);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController deleteJob() - " + e.getMessage());
+        }
+        return success;
     }
 	
 	//endregion
@@ -786,7 +819,18 @@ public class DBController implements IDBController
     @Path("/deleteActivity")
     @Override
     public boolean deleteActivity(int activityID){
-        return false;
+        boolean success = false;
+
+        try
+        {
+            iActivityDAO.deleteiActivity(activityID);
+            success = true;
+        }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: DBController deleteActivity() - " + e.getMessage());
+        }
+        return success;
     }
 	
 	//endregion
