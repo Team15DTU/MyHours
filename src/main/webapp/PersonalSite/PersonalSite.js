@@ -561,16 +561,10 @@ function deleteJob(){
 }
 
 function generateJobHTML(data){
-    var deleteId = data.id;
 
-    console.log("job id "+ deleteId);
-    console.log("job id" + data.id);
+    console.log("job id" + data.name);
 
-    return 	'<tr><td>' + data.id + '</td>' +
-        '<td>' + data.name + '</td>' +
-        '<td> data-userid="' + data.id + '"</td>' +
-        '<td> data-userid="' + data.id + '"</td>' +
-        '</tr>';
+    return 	'<tr>' + '<td>' + data.name + '</td>' + '</tr>';
 }
 
 function getJobList() {
