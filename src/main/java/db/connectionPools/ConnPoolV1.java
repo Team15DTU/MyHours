@@ -304,8 +304,8 @@ public class ConnPoolV1 implements IConnPool
 		try
 		{
 			int i; int freeConns = freeConnList.size(); int usedConns = usedConnList.size();
-			for ( i=0; i < freeConns; i++ ) { closeConnection(freeConnList.remove(i)); }
-			for ( i=0; i < usedConns; i++ ) { closeConnection(usedConnList.remove(i)); }
+			for ( i=0; i < freeConns; i++ ) { closeConnection(freeConnList.get(i)); }
+			for ( i=0; i < usedConns; i++ ) { closeConnection(usedConnList.get(i)); }
 		}
 		catch ( SQLException e )
 		{
