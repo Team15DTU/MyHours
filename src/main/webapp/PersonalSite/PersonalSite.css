@@ -101,7 +101,17 @@
     margin: auto;
     padding-top: 0.8%;
     border-radius: 25px;
+    font-size: 30px;
+    color: white;
+    text-align: center;
 }
+
+.pop_top h3 {
+    margin: 0 0 10px;
+    padding: 0;
+    font-size: 30px;
+}
+
 
 .pop_left {
     border-radius: 8px;
