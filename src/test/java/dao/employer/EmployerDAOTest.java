@@ -80,6 +80,9 @@ public class EmployerDAOTest
 
         // Closes ConnectionPool.
         test_DB.closePool();
+
+        // Closes hibernateUtil.
+        dbController.getHibernateUtil().exit();
     }
 
     @After
