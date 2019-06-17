@@ -301,18 +301,15 @@
         <span onclick="document.getElementById('workplace_add').style.display='none'" class="close2">&times;</span>
         <form id="addEmployer">
             <div class="form_per">
-                <!-- HVAD GØR VI HER? addresse er ikke en del af EmployerDTO -->
-                <label><b>What address are you company at?</b></label>
-                <input  type="text" placeholder="Address of your company" name="company_address" required>
+                <!-- WorkerID skal fjernes -->
+                <label><b>WorkerID</b></label>
+                <input  type="text" placeholder="WorkerID" name="workerID" required>
+
+                <label><b>What is the name of your Employer?</b></label>
+                <input  type="text" placeholder="Address of your company" name="name" required>
 
                 <label><b>What are the phone number?</b></label>
                 <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="telephone" required>
-
-                <label><b>What is the zip code of the address?</b></label>
-                <input class="w3-input w3-border w3-margin-bottom" placeholder="Company address" type="text" name="shift_end" required>
-
-                <label><b>What town is the company in?</b></label>
-                <input class="w3-input w3-border" type="text" placeholder="Town where company is located" name="psw" required>
 
                 <button  type="submit" class="submit" onclick="addEmployer()">Save Employer</button>
             </div>
