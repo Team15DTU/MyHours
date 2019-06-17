@@ -443,7 +443,6 @@ public class DBController implements IDBController
 	
     @PUT
 	@Path("/updateWorker")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateWorker(IWorkerDTO workerDTO)
     {
@@ -459,6 +458,13 @@ public class DBController implements IDBController
             System.err.println("ERROR: DBController updateWorker() - " + e.getMessage());
         }
         return success;
+    }
+
+    @DELETE
+    @Path("/deleteWorker")
+    @Override
+    public boolean deleteWorker(String email){
+	    return false;
     }
 	
 	//endregion
@@ -542,7 +548,6 @@ public class DBController implements IDBController
 	
     @PUT
 	@Path("/updateEmployer")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateEmployer(IEmployerDTO employerDTO)
     {
@@ -558,6 +563,13 @@ public class DBController implements IDBController
             System.err.println("ERROR: DBController updateEmployer() - " + e.getMessage());
         }
         return success;
+    }
+
+    @DELETE
+    @Path("/deleteEmployer")
+    @Override
+    public boolean deleteEmployer(int employerID){
+        return false;
     }
 	
 	//endregion
@@ -645,7 +657,6 @@ public class DBController implements IDBController
 	
     @PUT
 	@Path("/updateJob")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateJob(IJobDTO jobDTO)
     {
@@ -661,6 +672,13 @@ public class DBController implements IDBController
             System.err.println("ERROR: DBController updateJob() - " + e.getMessage());
         }
         return success;
+    }
+
+    @DELETE
+    @Path("/deleteJob")
+    @Override
+    public boolean deleteJob(int jobID){
+        return false;
     }
 	
 	//endregion
@@ -747,7 +765,6 @@ public class DBController implements IDBController
 	
 	@PUT
 	@Path("/updateActivity")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateActivity(IActivityDTO activityDTO)
     {
@@ -763,6 +780,13 @@ public class DBController implements IDBController
             System.err.println("ERROR: DBController updateActivity() - " + e.getMessage());
         }
         return success;
+    }
+
+    @DELETE
+    @Path("/deleteActivity")
+    @Override
+    public boolean deleteActivity(int activityID){
+        return false;
     }
 	
 	//endregion
