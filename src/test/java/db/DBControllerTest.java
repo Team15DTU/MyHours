@@ -18,13 +18,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import testData.TestDataController;
 
+import java.sql.Connection;
+
 public class DBControllerTest
 {
+	
+	private IConnPool connPool;
 	
 	@BeforeClass
 	public void setUp() throws Exception
 	{
-		IConnPool connPool 		 = TestConnPoolV1.getInstance();
+		connPool 		 = TestConnPoolV1.getInstance();
 		ConnectionHelper help 	 = new ConnectionHelper(connPool);
 		IWorkerDAO workerDAO 	 = new WorkerDAO(connPool);
 		IEmployerDAO employerDAO = new EmployerDAO(connPool, help);
@@ -51,13 +55,15 @@ public class DBControllerTest
 		
 		activityDAO.createiActivity(activity1);
 		activityDAO.createiActivity(activity2);
-		
 	}
 	
 	@AfterClass
 	public void tearDown() throws Exception
 	{
-	
+		Connection conn = connPool.getConn();
+		
+		// Delete everything in all tables
+		
 	}
 	
 	@Test
