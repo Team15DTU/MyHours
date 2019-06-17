@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * @author Alfred Röttger Rydahl
  */
-public class ConnPoolV1 implements IConnPool {
-	
+public class ConnPoolV1 implements IConnPool
+{
     /*------------------------------------------------------------
     | Fields                                                     |
     -------------------------------------------------------------*/
@@ -303,9 +303,9 @@ public class ConnPoolV1 implements IConnPool {
 		// Close all connections in both Lists
 		try
 		{
-			int i;
-			for ( i=0; i < freeConnList.size(); i++ ) { closeConnection(freeConnList.remove(i)); }
-			for ( i=0; i < usedConnList.size(); i++ ) { closeConnection(usedConnList.remove(i)); }
+			int i; int freeConns = freeConnList.size(); int usedConns = usedConnList.size();
+			for ( i=0; i < freeConns; i++ ) { closeConnection(freeConnList.remove(i)); }
+			for ( i=0; i < usedConns; i++ ) { closeConnection(usedConnList.remove(i)); }
 		}
 		catch ( SQLException e )
 		{
