@@ -63,19 +63,19 @@ public class DBController implements IDBController
 	{
 		try
 		{
-			this.connPool   = ConnPoolV1.getInstance();
-			connectionHelper = new ConnectionHelper(this.connPool);
 			hibernateUtil 	= new HibernateUtil(new HibernateProperties().getRealDB());
 			hibernateUtil.setup();
+			this.connPool   = ConnPoolV1.getInstance();
+			connectionHelper = new ConnectionHelper(this.connPool);
 			
 			TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
 			
 			iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
 			iEmployerDAO    = new EmployerDAO(this.connPool, this.connectionHelper);
 			iJobDAO         = new JobDAO(this.connPool, this.connectionHelper);
-			iActivityDAO    = new ActivityDAO(this.connPool);
+			iActivityDAO    = new ActivityDAO(this.connPool,connectionHelper);
 		}
-		catch ( DALException e )
+		catch ( Exception e )
 		{
 			System.err.println("ERROR: DBController constructor Failure - " + e.getMessage());
 		}
@@ -100,7 +100,7 @@ public class DBController implements IDBController
             iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
             iEmployerDAO    = new EmployerDAO(this.connPool,connectionHelper);
             iJobDAO         = new JobDAO(this.connPool, this.connectionHelper);
-            iActivityDAO    = new ActivityDAO(this.connPool);
+            iActivityDAO    = new ActivityDAO(this.connPool, connectionHelper);
         }
         catch ( Exception e )
         {
@@ -483,10 +483,40 @@ public class DBController implements IDBController
 	
     @PUT
 	@Path("/updateWorker")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateWorker(IWorkerDTO workerDTO)
-	{ return false; }
+    {
+        boolean success = false;
+
+        try
+        {
+            iWorkerDAO.updateWorker(workerDTO);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController updateWorker() - " + e.getMessage());
+        }
+        return success;
+    }
+
+    @DELETE
+    @Path("/deleteWorker")
+    @Override
+    public boolean deleteWorker(String email){
+        boolean success = false;
+
+        try
+        {
+            iWorkerDAO.deleteWorker(email);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController deleteWorker() - " + e.getMessage());
+        }
+        return success;
+    }
 	
 	//endregion
     
@@ -523,7 +553,29 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IEmployerDTO> getIEmployerList()
-    { return null; }
+    {
+    	/*
+    	To indicate to frontend that an error happened, but it
+    	won't crash as the list won't be null.
+    	 */
+        List<IEmployerDTO> list = new ArrayList<>();
+
+        // Try to create the list
+        try
+        {
+            list = iEmployerDAO.getiEmployerList();
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: getIEmployerList() DALException - " + e.getMessage());
+        }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: Unknown Exception getIEmployerList() - " + e.getMessage());
+        }
+
+        return list;
+    }
     
     @GET
 	@Path("/getEmployerListRange")
@@ -534,6 +586,7 @@ public class DBController implements IDBController
     	/*
     	Make sure to check if parameters minID and maxID is given.
     	 */
+
     	return null;
     }
     
@@ -546,12 +599,40 @@ public class DBController implements IDBController
 	
     @PUT
 	@Path("/updateEmployer")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateEmployer(IEmployerDTO employerDTO)
-	{
-		return false;
-	}
+    {
+        boolean success = false;
+
+        try
+        {
+            iEmployerDAO.updateiEmployer(employerDTO);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController updateEmployer() - " + e.getMessage());
+        }
+        return success;
+    }
+
+    @DELETE
+    @Path("/deleteEmployer")
+    @Override
+    public boolean deleteEmployer(int employerID){
+        boolean success = false;
+
+        try
+        {
+            iEmployerDAO.deleteiEmployer(employerID);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController deleteEmployer() - " + e.getMessage());
+        }
+        return success;
+    }
 	
 	//endregion
     
@@ -562,7 +643,20 @@ public class DBController implements IDBController
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public boolean createJob(IJobDTO job)
-    { return false; }
+    {
+        boolean success = false;
+
+        try
+        {
+            iJobDAO.createIJob(job);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController createJob() - " + e.getMessage());
+        }
+        return success;
+    }
     
     @GET
 	@Path("/getJob/{id}")
@@ -576,7 +670,29 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IJobDTO> getIJobDTOList()
-    { return null; }
+    {
+    	/*
+    	To indicate to frontend that an error happened, but it
+    	won't crash as the list won't be null.
+    	 */
+        List<IJobDTO> list = new ArrayList<>();
+
+        // Try to create the list
+        try
+        {
+            list = iJobDAO.getIJobList();
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: getIJobList() DALException - " + e.getMessage());
+        }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: Unknown Exception getIJobList() - " + e.getMessage());
+        }
+
+        return list;
+    }
     
     @GET
 	@Path("/getJobList/{id}")
@@ -603,12 +719,40 @@ public class DBController implements IDBController
 	
     @PUT
 	@Path("/updateJob")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateJob(IJobDTO jobDTO)
-	{
-		return false;
-	}
+    {
+        boolean success = false;
+
+        try
+        {
+            iJobDAO.updateIJob(jobDTO);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController updateJob() - " + e.getMessage());
+        }
+        return success;
+    }
+
+    @DELETE
+    @Path("/deleteJob")
+    @Override
+    public boolean deleteJob(int jobID){
+        boolean success = false;
+
+        try
+        {
+            iJobDAO.deleteIJob(jobID);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController deleteJob() - " + e.getMessage());
+        }
+        return success;
+    }
 	
 	//endregion
     
@@ -624,7 +768,19 @@ public class DBController implements IDBController
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public boolean createActivity(IActivityDTO activity)
-    { return false; }
+    {
+        boolean success = false;
+
+        try {
+            iActivityDAO.createiActivity(activity);
+            success = true;
+        }catch (Exception e){
+            System.err.println("ERROR: DBController createActivity - " + e.getMessage());
+        }
+
+
+        return success;
+    }
     
     @GET
 	@Path("/getActivity/{id}")
@@ -638,7 +794,24 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IActivityDTO> getIActivityList()
-    { return null; }
+    {
+    	/*
+    	To indicate to frontend that an error happened, but it
+    	won't crash as the list won't be null.
+    	 */
+        List<IActivityDTO> list = new ArrayList<>();
+
+        // Try to create the list
+        try
+        {
+            list = iActivityDAO.getiActivityList();
+        } catch ( Exception e )
+        {
+            System.err.println("ERROR: Unknown Exception getIActivityList() - " + e.getMessage());
+        }
+
+        return list;
+    }
     
     @GET
 	@Path("/getActivityList/{jobID}")
@@ -665,12 +838,40 @@ public class DBController implements IDBController
 	
 	@PUT
 	@Path("/updateActivity")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateActivity(IActivityDTO activityDTO)
-	{
-		return false;
-	}
+    {
+        boolean success = false;
+
+        try
+        {
+            iActivityDAO.updateiActivity(activityDTO);
+            success = true;
+        }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: DBController updateActivity() - " + e.getMessage());
+        }
+        return success;
+    }
+
+    @DELETE
+    @Path("/deleteActivity")
+    @Override
+    public boolean deleteActivity(int activityID){
+        boolean success = false;
+
+        try
+        {
+            iActivityDAO.deleteiActivity(activityID);
+            success = true;
+        }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: DBController deleteActivity() - " + e.getMessage());
+        }
+        return success;
+    }
 	
 	//endregion
     
@@ -704,7 +905,7 @@ public class DBController implements IDBController
         // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IEmployerDTO in Workers List<EmployerDTO>
         for (IEmployerDTO employerDTO : workerDTOToReturn.getIEmployers()) {
             for (IJobDTO iJobDTO : employerDTO.getIJobList()) {
-                List<IActivityDTO> iActivityDTOList = iActivityDAO.getIShiftList(iJobDTO.getJobID());
+                List<IActivityDTO> iActivityDTOList = iActivityDAO.getiActivityList(iJobDTO.getJobID());
                 iJobDTO.setiActivityDTOList(iActivityDTOList);
             }
         }

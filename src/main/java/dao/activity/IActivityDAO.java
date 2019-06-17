@@ -1,7 +1,9 @@
 package dao.activity;
 
+import dao.DALException;
 import dto.activity.IActivityDTO;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,27 +16,27 @@ public interface IActivityDAO {
     ---------------------- Public Methods -----------------------
      */
 
-    // returns a ActivityDTO from an UserID and a Date and time of the activity TODO: Maybe use ShiftID?.
-    IActivityDTO getIShift (int userID, LocalDateTime dateAndTime);
+    IActivityDTO getiActivity(int activityID) throws DALException;
 
     // Returns a List of ActivityDTO object.
-    List<IActivityDTO> getIShiftList ();
+    List<IActivityDTO> getiActivityList() throws DALException;
 
     // Returns a List of ActivityDTO object.
-    List<IActivityDTO> getIShiftList (int jobID);
+    List<IActivityDTO> getiActivityList(int jobID) throws DALException;
 
-    // Returns a List of ActivityDTO object.
-    List<IActivityDTO> getIShiftList (int jobID, LocalDateTime fromDateTime, LocalDateTime toDateTime);
+    // Returns a List of ActivityDTO object matching imputted JobID, and startDAte between fromDate and toDate.
+    List<IActivityDTO> getiActivityList(int jobID, LocalDate fromStartDate, LocalDate toStartDate) throws DALException;
 
-    //TODO: LIST som får alle en brugers vagter.
+    // Returns a List of ActivityDTO object where startDate is between fromDate and toDate.
+    List<IActivityDTO> getiActivityList(LocalDate fromStartDate, LocalDate toStartDate) throws DALException;
 
     // Inserts the data from a ActivityDTO into DB.
-    void createIShift (IActivityDTO shift);
+    void createiActivity (IActivityDTO activity) throws DALException;
 
     // Updates the data on a Shifts row in the DB.
-    void updateIShift (IActivityDTO shift);
+    void updateiActivity (IActivityDTO activity) throws DALException;
 
-    // Deletes all information about one Shift, from an UserID and a Date and time of the activity TODO: Maybe use ShiftID?.
-    void deleteIShift (int userID, LocalDateTime dateAndTime);
+
+    void deleteiActivity (int activityID) throws DALException;
 
 }

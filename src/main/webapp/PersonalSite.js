@@ -295,10 +295,6 @@ function deleteShift(shiftID) {
 
 }
 
-function deleteJob() {
-
-}
-
 
 
 function findPaycheck(nr) {
@@ -360,7 +356,7 @@ var checkMenu3 = function() {
 function addActivity(){
 
     event.preventDefault();
-    var userJson = $("").serializeJSON();
+    var userJson = $("#addActivity").serializeJSON();
     $.ajax({
         method: 'POST',
         url : "/MyHours/DBController/createActivity",
@@ -381,7 +377,7 @@ function addActivity(){
 function addEmployer(){
 
     event.preventDefault();
-    var userJson = $("").serializeJSON();
+    var userJson = $("#addEmployer").serializeJSON();
     $.ajax({
         method: 'POST',
         url : "/MyHours/DBController/createEmployer",
@@ -402,7 +398,7 @@ function addEmployer(){
 function addJob(){
 
     event.preventDefault();
-    var userJson = $("").serializeJSON();
+    var userJson = $("#addJob").serializeJSON();
     $.ajax({
         method: 'POST',
         url : "/MyHours/DBController/createJob",
@@ -422,7 +418,7 @@ function addJob(){
 function editActivity(){
 
     event.preventDefault();
-    var userJson = $("").serializeJSON();
+    var userJson = $("#editActivity").serializeJSON();
     $.ajax({
         method: 'PUT',
         url : "/MyHours/DBController/editActivity",
@@ -443,7 +439,7 @@ function editActivity(){
 function editEmployer(){
 
     event.preventDefault();
-    var userJson = $("").serializeJSON();
+    var userJson = $("#editEmployer").serializeJSON();
     $.ajax({
         method: 'PUT',
         url : "/MyHours/DBController/editEmployer",
@@ -464,7 +460,7 @@ function editEmployer(){
 function editJob(){
 
     event.preventDefault();
-    var userJson = $("").serializeJSON();
+    var userJson = $("#editJob").serializeJSON();
     $.ajax({
         method: 'PUT',
         url : "/MyHours/DBController/editJob",
@@ -506,7 +502,7 @@ function editUser(){
 function deleteActivity(){
 
     event.preventDefault();
-    var userJson = $("").serializeJSON();
+    var userJson = $("#deleteActivity").serializeJSON();
     $.ajax({
         method: 'DELETE',
         url : "/MyHours/DBController/",
@@ -527,7 +523,7 @@ function deleteActivity(){
 function deleteEmployer(){
 
     event.preventDefault();
-    var userJson = $("").serializeJSON();
+    var userJson = $("#deleteEmployer").serializeJSON();
     $.ajax({
         method: 'DELETE',
         url : "/MyHours/DBController/",
@@ -548,7 +544,7 @@ function deleteEmployer(){
 function deleteJob(){
 
     event.preventDefault();
-    var userJson = $("").serializeJSON();
+    var userJson = $("#deleteJob").serializeJSON();
     $.ajax({
         method: 'DELETE',
         url : "/MyHours/DBController/",
@@ -582,13 +578,70 @@ function checkSession() {
     });
 }
 
+function generateJobHTML(data){
+
+    console.log("job id" + data.name);
+
+    return 	'<tr>' + '<td>' + data.name + '</td>' + '</tr>';
+}
+
+function getJobList() {
+    $.ajax({
+        method: "GET",
+        url: "/UserService/DBController/getJobList",
+        dataType: "JSON",
+        success: function(response) {
+            $.each(response, function(i, job) {
+                $("#select2").append(generateJobHTML(job));
+
+            });
+        },
+        error: function() {
+            console.log("Error loading jobs");
+        }
+    });
+}
+
+function getActivityList() {
+    $.ajax({
+        method: "GET",
+        url: "/UserService/DBController/getActivityList",
+        dataType: "JSON",
+        success: function(response) {
+            $.each(response, function(i, activity) {
+                $("#select").append(generateJobHTML(activity));
+
+            });
+        },
+        error: function() {
+            console.log("Error loading activities");
+        }
+    });
+}
+
+function getEmployerList() {
+    $.ajax({
+        method: "GET",
+        url: "/UserService/DBController/getEmployerList",
+        dataType: "JSON",
+        success: function(response) {
+            $.each(response, function(i, employer) {
+                $("#select").append(generateJobHTML(employer));
+
+            });
+        },
+        error: function() {
+            console.log("Error loading employers");
+        }
+    });
+}
 function logOut() {
     $.ajax({
         method: 'POST',
         url: "MyHours/DBController/Logout",
         contentType: "application/json",
         success : function () {
-                window.location = "../index.html"
+            window.location = "../index.html"
         },
         error: function (jqXHR, text, error) {
             alert(jqXHR.status + text + error);

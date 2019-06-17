@@ -25,7 +25,7 @@ public class HibernateProperties {
     private String test_dbName = "s160107";
     private String test_user = "s160107";
     private String test_password = "wOWElNh0bVravE9uGDNzw";
-    private final String test_driver_class = "com.mysql.jdbc.Driver";
+    private final String test_driver_class = "com.mysql.cj.jdbc.Driver";
     private String test_dialect = "org.hibernate.dialect.MySQLDialect";
     private String test_show_sql = "true";
 
@@ -37,7 +37,7 @@ public class HibernateProperties {
     private String real_dbName = "s185097";
     private String real_user = "s185097";
     private String real_password = "qsNAphOJ13ySzlpn1kh6Y";
-    private final String real_driver_class = "com.mysql.jdbc.Driver";
+    private final String real_driver_class = "com.mysql.cj.jdbc.Driver";
     private String real_dialect = "org.hibernate.dialect.MySQLDialect";
     private String real_show_sql = "true";
 
@@ -46,10 +46,10 @@ public class HibernateProperties {
     // region Settings for XamppRSL_DB (XAMPP Rasmus Local DB)
 
     private String xampp_full_url = "127.0.0.1";
-    private String xampp_dbName = "Myhours";
+    private String xampp_dbName = "myhours";
     private String xampp_user = "root";
     private String xampp_password = "test";
-    private final String xampp_driver_class = "com.mysql.jdbc.Driver";
+    private final String xampp_driver_class = "com.mysql.cj.jdbc.Driver";
     private String xampp_dialect = "org.hibernate.dialect.MySQLDialect";
     private String xampp_show_sql = "true";
 

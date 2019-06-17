@@ -1,17 +1,23 @@
 package dao.worker;
 
 import dao.DALException;
+import db.DBController;
+import db.IConnPool;
+import db.TestConnPoolV1;
 import dto.address.Address;
 import dto.address.IAddress;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
-import db.DBController;
-import db.IConnPool;
-import db.TestConnPoolV1;
 import hibernate.HibernateProperties;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
+import testData.TestDataController;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -49,12 +55,30 @@ public class WorkerDAOTest
 	
 	@AfterClass
 	public static void tearDown() throws Exception
-	{ connPool.closePool(); }
+	{
+		Connection conn = null;
+		try
+		{
+			conn = connPool.getConn();
+			
+			Statement stmt = conn.createStatement();
+			
+			stmt.execute( String.format("DELETE FROM %s", WorkerConstants.TABLENAME) );
+			
+			stmt.close();
+		}
+		finally
+		{
+			if ( conn != null )
+				connPool.releaseConnection(conn);
+			connPool.closePool();
+		}
+	}
 	
 	@Test
 	public void createWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance(),new HibernateProperties().getTestDB()).getiWorkerDAO();
+		IWorkerDAO workerDAO = new WorkerDAO(connPool);
 		
 		// Try to Create them
 		for (IWorkerDTO worker : testWorkers)
@@ -68,25 +92,37 @@ public class WorkerDAOTest
 	@Test
 	public void getWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance(),new HibernateProperties().getTestDB()).getiWorkerDAO();
-
+		IWorkerDAO workerDAO = new WorkerDAO(TestConnPoolV1.getInstance());
+		IWorkerDTO worker = TestDataController.getTestWorkerNo1();
 		
-		// Get Alfred from DB
-		IWorkerDTO worker = workerDAO.getWorker("a.rottger_rydahl@live.dk");
+		// Create worker in DB
+		workerDAO.createWorker( worker );
 		
-		// Validate data
-		assertEquals(worker.getFirstName(), "Alfred");
-		assertEquals(worker.getSurName(), "Rydahl");
-		assertEquals(worker.getEmail(), "a.rottger_rydahl@live.dk");
-		//TODO: Check WorkPlaces
-		//TODO: Check Jobs
-		//TODO: Check Shifts
+		// Get the worker by Email and test
+		IWorkerDTO eWorker = workerDAO.getWorker( worker.getEmail() );
+		
+		assertEquals(worker.getFirstName(), eWorker.getFirstName());
+		assertEquals(worker.getSurName(), eWorker.getSurName());
+		
+		/*
+		-----------------------------------------------------------------------------------------
+		 */
+		
+		// Get the worker by ID and test
+		worker.setWorkerID(eWorker.getWorkerID());
+		IWorkerDTO iWorker = workerDAO.getWorker(worker.getWorkerID());
+		
+		assertEquals(worker.getFirstName(), iWorker.getFirstName());
+		assertEquals(worker.getSurName(), iWorker.getSurName());
+		
+		// Delete worker again
+		workerDAO.deleteWorker( worker.getEmail() );
 	}
 	
 	@Test
 	public void getWorkerList() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance(),new HibernateProperties().getTestDB()).getiWorkerDAO();
+		IWorkerDAO workerDAO = new WorkerDAO(connPool);
 		
 		// Create two extra workers - three total
 		for (IWorkerDTO worker : testWorkers)

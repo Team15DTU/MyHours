@@ -2,6 +2,7 @@ package dao.worker;
 
 import dao.DALException;
 import dto.worker.IWorkerDTO;
+import dto.worker.WorkerDTO;
 import hibernate.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -99,7 +100,49 @@ public class WorkerHiberDAO implements IWorkerDAO {
 
         return workerDTOToReturn;
     }
-
+    
+    /**
+     * This Methods should return an object that implements the IWorkerDTO interface,
+     * and containing all the details matching the inputted id.
+     * @param id Desired Workers ID.
+     * @return An object implementing the IWorkerDTO interface.
+     * @throws DALException If any errors happens with Hibernate or DB, then it will
+     * throw a DALException.
+     */
+    @Override
+    public IWorkerDTO getWorker(int id) throws DALException
+    {
+        IWorkerDTO workerDTO = new WorkerDTO("Failure", "Failure", "Failure@fail.com");
+        Session session = null;
+        
+        try
+        {
+            // now lets pull events from the database and list them
+            session = hibernateUtil.getSession();
+    
+            // Query for getting WorkerHiberDTO by email
+            Query getQuery = session.createQuery("from WorkerHiberDTO where workerID = :id");
+            getQuery.setParameter("id", id);
+    
+            // IWorkerDTO retrieved.
+            workerDTO = (IWorkerDTO) getQuery.uniqueResult();
+        }
+        catch ( Exception e )
+        {
+            System.err.println( String.format("ERROR: getWorker(int id) - %s", e.getMessage()) );
+            throw new DALException(e.getMessage(), e.getCause());
+        }
+        finally
+        {
+            // Close Session - Could be done with "session.close"
+            if ( session != null )
+                hibernateUtil.closeSession(session);
+        }
+        
+        // Return the good or bad workerDTO object
+        return workerDTO;
+    }
+    
     /**
      * This Method returns a List of WorkerDTO objects.
      *
