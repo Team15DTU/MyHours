@@ -446,7 +446,20 @@ public class DBController implements IDBController
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateWorker(IWorkerDTO workerDTO)
-	{ return false; }
+    {
+        boolean success = false;
+
+        try
+        {
+            iWorkerDAO.updateWorker(workerDTO);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController updateWorker() - " + e.getMessage());
+        }
+        return success;
+    }
 	
 	//endregion
     
@@ -532,9 +545,20 @@ public class DBController implements IDBController
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateEmployer(IEmployerDTO employerDTO)
-	{
-		return false;
-	}
+    {
+        boolean success = false;
+
+        try
+        {
+            iEmployerDAO.updateiEmployer(employerDTO);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController updateEmployer() - " + e.getMessage());
+        }
+        return success;
+    }
 	
 	//endregion
     
@@ -624,9 +648,20 @@ public class DBController implements IDBController
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateJob(IJobDTO jobDTO)
-	{
-		return false;
-	}
+    {
+        boolean success = false;
+
+        try
+        {
+            iJobDAO.updateIJob(jobDTO);
+            success = true;
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController updateJob() - " + e.getMessage());
+        }
+        return success;
+    }
 	
 	//endregion
     
@@ -642,7 +677,19 @@ public class DBController implements IDBController
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public boolean createActivity(IActivityDTO activity)
-    { return false; }
+    {
+        boolean success = false;
+
+        try {
+            iActivityDAO.createIShift(activity);
+            success = true;
+        }catch (Exception e){
+            System.err.println("ERROR: DBController createActivity - " + e.getMessage());
+        }
+
+
+        return success;
+    }
     
     @GET
 	@Path("/getActivity/{id}")
@@ -703,9 +750,20 @@ public class DBController implements IDBController
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateActivity(IActivityDTO activityDTO)
-	{
-		return false;
-	}
+    {
+        boolean success = false;
+
+        try
+        {
+            iActivityDAO.updateIShift(activityDTO);
+            success = true;
+        }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: DBController updateActivity() - " + e.getMessage());
+        }
+        return success;
+    }
 	
 	//endregion
     
