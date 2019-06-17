@@ -53,7 +53,6 @@ public class ConnPoolV1 implements IConnPool
 		usedConnList = new ArrayList<>(MAXCONNS);
 		
 		// Create all Connections
-		boolean success = true; DALException exception = null;
 		try
 		{
 			// Specify Driver
@@ -65,14 +64,10 @@ public class ConnPoolV1 implements IConnPool
 		catch (DALException e)
 		{
 			System.err.println("ERROR: Creating Connection Pool - " + e.getMessage());
-			exception = e;
-			success = false;
 		}
 		catch ( ClassNotFoundException e )
 		{
-			System.err.println("ERROR: Creating Connection Pool - " + e.getMessage());
-			exception = new DALException(e.getMessage(), e.getCause());
-			success = false;
+			System.err.println("ERROR: Creating Connection Pool, Can't find class - " + e.getMessage());
 		}
 		
 		//Start thread to keep connections alive
