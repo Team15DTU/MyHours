@@ -26,10 +26,10 @@ public class ConnPoolV1 implements IConnPool
 	//endregion
  
 	/*
-	Hibernate uses 3 connections, and this uses 6. This means we have
+	Hibernate uses 2 connections, and this uses 2. This means we have
 	1 connection free to use with Workbench and Datagrip.
 	 */
-    public static final int MAXCONNS = 6;
+    public static final int MAXCONNS = 2;
     
     //region DB Info
 	protected static String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
