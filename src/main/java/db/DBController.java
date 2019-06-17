@@ -681,7 +681,7 @@ public class DBController implements IDBController
         boolean success = false;
 
         try {
-            iActivityDAO.createIShift(activity);
+            iActivityDAO.createiActivity(activity);
             success = true;
         }catch (Exception e){
             System.err.println("ERROR: DBController createActivity - " + e.getMessage());
@@ -713,7 +713,7 @@ public class DBController implements IDBController
         // Try to create the list
         try
         {
-            list = iActivityDAO.getIShiftList();
+            list = iActivityDAO.getiActivityList();
         } catch ( Exception e )
         {
             System.err.println("ERROR: Unknown Exception getIActivityList() - " + e.getMessage());
@@ -755,7 +755,7 @@ public class DBController implements IDBController
 
         try
         {
-            iActivityDAO.updateIShift(activityDTO);
+            iActivityDAO.updateiActivity(activityDTO);
             success = true;
         }
         catch ( Exception e )
