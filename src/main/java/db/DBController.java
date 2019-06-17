@@ -68,7 +68,7 @@ public class DBController implements IDBController
 			iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
 			iEmployerDAO    = new EmployerDAO(this.connPool, this.connectionHelper);
 			iJobDAO         = new JobDAO(this.connPool, this.connectionHelper);
-			iActivityDAO    = new ActivityDAO(this.connPool);
+			iActivityDAO    = new ActivityDAO(this.connPool,connectionHelper);
 		}
 		catch ( DALException e )
 		{
@@ -95,7 +95,7 @@ public class DBController implements IDBController
             iWorkerDAO      = new WorkerHiberDAO(hibernateUtil);
             iEmployerDAO    = new EmployerDAO(this.connPool,connectionHelper);
             iJobDAO         = new JobDAO(this.connPool, this.connectionHelper);
-            iActivityDAO    = new ActivityDAO(this.connPool);
+            iActivityDAO    = new ActivityDAO(this.connPool, connectionHelper);
         }
         catch ( Exception e )
         {
@@ -797,7 +797,7 @@ public class DBController implements IDBController
         // Sets JobDTOs List<IActivityDTO> shiftList via ActivityDAO, for each IJobDTO in each IEmployerDTO in Workers List<EmployerDTO>
         for (IEmployerDTO employerDTO : workerDTOToReturn.getIEmployers()) {
             for (IJobDTO iJobDTO : employerDTO.getIJobList()) {
-                List<IActivityDTO> iActivityDTOList = iActivityDAO.getIShiftList(iJobDTO.getJobID());
+                List<IActivityDTO> iActivityDTOList = iActivityDAO.getiActivityList(iJobDTO.getJobID());
                 iJobDTO.setiActivityDTOList(iActivityDTOList);
             }
         }

@@ -179,8 +179,8 @@ public class ConnPoolV1 implements IConnPool {
 		}
 		catch (DALException e)
 		{
-			System.err.println(String.format("ERROR: Couldn't get ConnPoolV1 instance - %s \n \t Cause: %s",
-												e.getMessage(), e.getCause()));
+			System.err.println( String.format("ERROR: Couldn't get ConnPoolV1 instance - %s \n \t Cause: %s",
+												e.getMessage(), e.getCause()) );
 			throw e;
 		}
 	}
