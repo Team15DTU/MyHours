@@ -130,6 +130,16 @@ public class ArrayDBControllerTest
 	@Test
 	public void deleteWorker()
 	{
+		// First check that there's two workers
+		assertEquals(testData.size(), controller.getIWorkerDTOList().size());
+		
+		// Remove all workers
+		int size = testData.size();
+		for ( int i=0; i < size; i++ )
+			controller.deleteWorker(controller.getWorkerList().get(0).getEmail());
+		
+		// Check if all is removed
+		assertEquals(0, controller.getIWorkerDTOList().size());
 	}
 	
 	@Test
