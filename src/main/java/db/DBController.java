@@ -985,26 +985,19 @@ public class DBController implements IDBController
     @DELETE
     @Path("/deleteActivity")
     @Override
-    public void deleteActivity(ActivityDTO activityDTO) throws DALException {
+    public boolean deleteActivity(int activityID) {
+        boolean success = false;
 
-        Connection c = connPool.getConn();
-
-        String deleteQuery = String.format("DELETE FROM %s WHERE %s = ?",
-                ActivityConstants.TABLENAME,
-                ActivityConstants.id);
-
-        try {
-
-            PreparedStatement preparedStatement = c.prepareStatement(deleteQuery);
-            preparedStatement.setInt(1, activityDTO.getActivityID());
-
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"DBController.deleteiActivity");
-        } finally {
-            connectionHelper.finallyActionsForConnection(c,"DBController.deleteiActivity");
+        try
+        {
+            iActivityDAO.deleteiActivity(activityID);
+            success = true;
         }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DBController deleteEmployer() - " + e.getMessage());
+        }
+        return success;
     }
 	
 	//endregion

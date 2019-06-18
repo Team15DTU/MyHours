@@ -143,7 +143,7 @@ public interface IDBController
 	/*------------------------------------------------------------
     | Delete                                                   |
     -------------------------------------------------------------*/
-    void             deleteActivity (ActivityDTO activityDTO) throws DALException;
+    boolean             deleteActivity (int activityID);
 
     //endregion
     
