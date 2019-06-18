@@ -6,6 +6,8 @@ import org.junit.runners.MethodSorters;
 import testData.TestDataController;
 
 import java.awt.image.AreaAveragingScaleFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -13,11 +15,21 @@ import static org.junit.Assert.*;
 public class ArrayDBControllerTest
 {
 	private static ArrayDBController controller;
+	private static ArrayList<IWorkerDTO> testData;
 	
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
 		controller = new ArrayDBController();
+	}
+	
+	@Before
+	public void setUP()
+	{
+		testData = new ArrayList<>(2);
+		testData.add(TestDataController.getTestWorkerNo1());
+		testData.add(TestDataController.getTestWorkerNo2());
+		controller.setWorkerList(testData);
 	}
 	
 	@AfterClass
@@ -28,6 +40,9 @@ public class ArrayDBControllerTest
 	@Test
 	public void createWorker() throws Exception
 	{
+		// Change the arraylist in the DBController
+		controller.setWorkerList(new ArrayList<>());
+		
 		// Create two workers
 		controller.createWorker(TestDataController.getTestWorkerNo1());
 		controller.createWorker(TestDataController.getTestWorkerNo2());
@@ -91,6 +106,25 @@ public class ArrayDBControllerTest
 	@Test
 	public void updateWorker()
 	{
+		// Get the worker to update
+		IWorkerDTO xWorker = controller.getWorkerList().get(0);
+		
+		// Change data
+		xWorker.setFirstName("Alfred");
+		xWorker.setSurName("Rydahl");
+		xWorker.setEmail("Alfred@Rydahl.com");
+		
+		// Try the update
+		controller.updateWorker(xWorker);
+		
+		// Get the updated worker
+		IWorkerDTO yWorker = controller.getIWorkerDTO(xWorker.getWorkerID());
+		
+		// Check the data
+		assertEquals(xWorker.getWorkerID(), yWorker.getWorkerID());
+		assertEquals(xWorker.getFirstName(), yWorker.getFirstName());
+		assertEquals(xWorker.getSurName(), yWorker.getSurName());
+		assertEquals(xWorker.getEmail(), yWorker.getEmail());
 	}
 	
 	@Test
