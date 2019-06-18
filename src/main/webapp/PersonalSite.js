@@ -664,19 +664,23 @@ function checkSession() {
 
 function generateJobHTML(data){
 
-    console.log("job id" + data.name);
+    console.log(data.name);
 
-    return 	'<tr>' + '<td>' + data.name + '</td>' + '</tr>';
+    return 	data.name
 }
 
 function getJobList() {
+    console.log("Test");
     $.ajax({
         method: "GET",
-        url: "/UserService/DBController/getJobList",
+        url: "/MyHours/DBController/getJobList",
         dataType: "JSON",
         success: function(response) {
             $.each(response, function(i, job) {
-                $("#select2").append(generateJobHTML(job));
+                var test = $("#joblist").append(generateJobHTML(job));
+
+                console.log(test);
+                console.log("Du er inde")
 
             });
         },
@@ -689,7 +693,7 @@ function getJobList() {
 function getActivityList() {
     $.ajax({
         method: "GET",
-        url: "/UserService/DBController/getActivityList",
+        url: "/MyHours/DBController/getActivityList",
         dataType: "JSON",
         success: function(response) {
             $.each(response, function(i, activity) {
@@ -706,7 +710,7 @@ function getActivityList() {
 function getEmployerList() {
     $.ajax({
         method: "GET",
-        url: "/UserService/DBController/getEmployerList",
+        url: "/MyHours/DBController/getEmployerList",
         dataType: "JSON",
         success: function(response) {
             $.each(response, function(i, employer) {

@@ -118,12 +118,12 @@
     <form id="addActivity">
         <div class="form_per">
             <label><b>What job is the Activity? (ID)</b></label> <br>
-            <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobID" required>
             <!--
-            <select id="select2" onclick="getJobList()">
-                <option value="Default" name="jobID"></option>
-            </select>
+            <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobID" required>
             -->
+            <select onclick="getJobList()">
+                <option id="joblist"></option>
+            </select>
 
             <br>
 

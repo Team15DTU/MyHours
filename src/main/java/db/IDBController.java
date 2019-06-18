@@ -74,7 +74,7 @@ public interface IDBController
 	/*------------------------------------------------------------
     | Update	                                                 |
     -------------------------------------------------------------*/
-	void			updateEmployer		(IEmployerDTO employerDTO) throws DALException;
+	void			updateEmployer		(EmployerDTO employerDTO) throws DALException;
 
     /*------------------------------------------------------------
     | Delete                                                   |

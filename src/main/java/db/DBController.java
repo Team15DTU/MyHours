@@ -629,7 +629,7 @@ public class DBController implements IDBController
     @PUT
 	@Path("/updateEmployer")
 	@Override
-	public void updateEmployer(IEmployerDTO employerDTO) throws DALException {
+	public void updateEmployer(EmployerDTO employerDTO) throws DALException {
 
         Connection c = connPool.getConn();
 
