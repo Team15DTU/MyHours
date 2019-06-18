@@ -1,6 +1,56 @@
 // Check session if session is active
 $(window).on('load', checkSession);
 
+
+//region modal
+var modalid = ["#shift_add","#shift_edit","#shift_delete","#job_add","#job_edit","#job_delete","#employer_add","#employer_edit","#employer_delete"];
+
+
+$(window).on("click", function(e) {
+    for (i=0;i<modalid.length;i++) {
+        if (e.target===$(modalid[i])[0]) {
+            hideModal();
+        }
+    }
+});
+var hideModal = function(){
+   for (i=0;i<modalid.length;i++) {
+       $(modalid[i]).hide();
+   }
+};
+
+
+var showactivity_add = function() {
+    $("#shift_add").show();
+}
+var showactivity_edit = function() {
+    $("#shift_edit").show();
+}
+var showactivity_delete = function() {
+    $("#shift_delete").show();
+}
+var showjob_add = function() {
+    $("#job_add").show();
+}
+var showjob_edit = function() {
+    $("#job_edit").show();
+}
+var showjob_delete = function() {
+    $("#job_delete").show();
+}
+var showemployer_add = function() {
+    $("#employer_add").show();
+}
+var showemployer_edit = function() {
+    $("#employer_edit").show();
+}
+var showemployer_delete = function() {
+    $("#employer_delete").show();
+}
+
+
+//endregion
+
 //Dette er metoderne til tabellen
 function selectShift(name) {
 

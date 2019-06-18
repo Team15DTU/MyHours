@@ -1,3 +1,48 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+html {
+    font-size: 10px;
+    font-family: "Roboto", sans-serif;
+}
+a {
+    text-decoration: none;
+    color: #eeeeee;
+}
+header{
+    /*
+    Problemet med fixed top bar ligger her, fordi hvis man fjerne position fixed, så kan man scrolle og vores topbar forbliver fixed.
+    */
+
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(255,255,255,.5), rgba(0,0,0,.5)), url("Images/fitness-tracker-future-futuristic-9051.jpg") center no-repeat;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+}
+.container {
+    width: 100%;
+    margin: 0 auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.container nav{
+    padding-right: 9rem;
+    padding-top: 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    padding-bottom: 2rem;
+}
+
+
 .middle_menu{
     position: absolute;
     top: 50%;
