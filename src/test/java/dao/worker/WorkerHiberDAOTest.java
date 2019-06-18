@@ -38,8 +38,7 @@ public class WorkerHiberDAOTest {
     @BeforeClass
     public static void setUp() throws Exception {
 
-        hibernateUtil = new HibernateUtil(new HibernateProperties().getTestDB());
-        hibernateUtil.setup();
+        hibernateUtil = HibernateUtil.getInstance(new HibernateProperties().getTestDB());
 
         TimeZone.setDefault(TimeZone.getTimeZone(hibernateUtil.getTimeZoneFromDB()));
         iWorkerDAO = new WorkerHiberDAO(hibernateUtil);
