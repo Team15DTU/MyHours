@@ -54,7 +54,6 @@ function Login(){
         data : userJson,
         contentType: "application/json",
         success : function(data){
-            alert(data);
             console.log("Success!");
             if (data.toString() === "true"){
                 window.location='PersonalSite.html';

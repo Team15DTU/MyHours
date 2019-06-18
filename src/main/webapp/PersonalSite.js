@@ -22,31 +22,32 @@ var hideModal = function(){
 
 var showactivity_add = function() {
     $("#shift_add").show();
-}
+    getJobList().delay(100);
+};
 var showactivity_edit = function() {
     $("#shift_edit").show();
-}
+};
 var showactivity_delete = function() {
     $("#shift_delete").show();
-}
+};
 var showjob_add = function() {
     $("#job_add").show();
-}
+};
 var showjob_edit = function() {
     $("#job_edit").show();
-}
+};
 var showjob_delete = function() {
     $("#job_delete").show();
-}
+};
 var showemployer_add = function() {
     $("#employer_add").show();
-}
+};
 var showemployer_edit = function() {
     $("#employer_edit").show();
-}
+};
 var showemployer_delete = function() {
     $("#employer_delete").show();
-}
+};
 
 
 //endregion
@@ -62,14 +63,14 @@ function selectShift(name) {
     while(selector.hasChildNodes()){
         selector.removeChild(selector.firstChild);
     }
-    selector.appendChild(document.createElement('option'))
+    selector.appendChild(document.createElement('option'));
 
     while(allShift.length > 0) {
 
         var currentShift = allShift.pop();
         var option = document.createElement('option');
-        var name = currentShift[2].getDate() + '/' + (currentShift[2].getMonth()+1) + ' at ' + currentShift[2].getHours() + ':' + currentShift[2].getMinutes() + ' to ' + currentShift[3].getHours() + ':' + currentShift[3].getMinutes();
-        option.appendChild(document.createTextNode(name));
+        var name1 = currentShift[2].getDate() + '/' + (currentShift[2].getMonth()+1) + ' at ' + currentShift[2].getHours() + ':' + currentShift[2].getMinutes() + ' to ' + currentShift[3].getHours() + ':' + currentShift[3].getMinutes();
+        option.appendChild(document.createTextNode(name1));
         option.value = currentShift[0];
 
         selector.appendChild(option);
@@ -116,17 +117,18 @@ function selectJobs(name) {
     while(selector.hasChildNodes()){
         selector.removeChild(selector.firstChild);
     }
-    selector.appendChild(document.createElement('option'))
+    selector.appendChild(document.createElement('option'));
 
     for (var i = 0; i < findAllJobs().length; i++) {
         var currentJob = allJobs.pop();
         var option = document.createElement('option');
-        var name = currentJob[2];
-        option.appendChild(document.createTextNode(name));
+        var name1 = currentJob[2];
+        option.appendChild(document.createTextNode(name1));
         option.value = currentJob[0];
         selector.appendChild(option);
 
     }
+    getJobList();
 }
 
 function selectJobadress(name) {
@@ -141,8 +143,8 @@ function selectJobadress(name) {
     for (var i = 0; i < findAllJobaddress().length; i++) {
         var currentJobadress = allJobadress.pop();
         var option = document.createElement('option');
-        var name = findJob(currentJobadress[4])[2];
-        option.appendChild(document.createTextNode(name));
+        var name1 = findJob(currentJobadress[4])[2];
+        option.appendChild(document.createTextNode(name1));
         option.value = currentJobadress[4];
         selector.appendChild(option);
     }
@@ -683,18 +685,15 @@ function getJobList() {
         success: function(response) {
             var option = '';
             $.each(response, function(i, job) {
-                console.log(response[i]);
+               /* console.log(response[i]);
                 console.log("jobID: " + response[i]['jobID']);
                 console.log("employerID: " + response[i]['employerID']);
                 console.log("jobName: " + response[i]['jobName']);
                 console.log("stdSalary: " + response[i]['stdSalary']);
-
-
+*/
 
                 option += '<option>' + response[i]['jobName'] +
                     '</option>';
-
-
 
             });
             $('#joblist').html(option);
@@ -749,5 +748,159 @@ function logOut() {
         error: function (jqXHR, text, error) {
             alert(jqXHR.status + text + error);
         }
+    });
+}
+
+//alternativ luk modal, med style.display
+/*var modal = document.getElementById('shift_add')
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}*/
+
+//her er delene som fremkalder content.
+function openInfo() {
+
+    document.getElementById('popup_content').style.width = '100%';
+    document.getElementById('popup_content').style.height = '80%';
+    hoursOnWorkMounthly();
+}
+function closeInfo() {
+    document.getElementById('popup_content').style.width = '0px';
+    document.getElementById('popup_content').style.height = '0px';
+}
+
+
+//her er delene som ændre ved content.
+function changeFunction(site) {
+    //var elem = document.getElementById('content');
+    if (site === 'shifts' && document.getElementById('myid1').checked){
+        header('Shifts');
+        left('shifts');
+        //console.log(site);
+    } else if (site === 'job' && document.getElementById('myid2').checked){
+        header('Job');
+        left('job');
+        //console.log(site);
+    } else if (site === 'workplace' && document.getElementById('myid3').checked){
+        header('Workplace');
+        left('workplace');
+        //console.log(site);
+    } else if(site === 'none' && document.getElementById('myid').checked) {
+        header('');
+        left('none');
+        //console.log(site);
+    }else{
+        //checkMenu0();
+        //closeInfo(); //FIXME Hvis disse 3 bliver aktiveret, vil grafen blive fjernet som forventet, men den klager over rekursion, så har valgt at udkommentere dem for performence skyld (ikke at jeg kunne mærke noget)
+        //changeFunction('none');
+        header('');
+        left('none');
+        //console.log(site+" close");
+    }
+}
+
+function header(head) {
+    document.getElementById('pop_top_head').innerHTML = head;
+    if (head === ''){
+        document.getElementById('pop_top2').style.backgroundColor = 'transparent';
+    } else {
+        document.getElementById('pop_top2').style.backgroundColor = 'rgb(52, 152, 219)';
+    }
+}
+
+
+
+function left(type) {
+    if (type === 'shifts') {
+        shifts();
+    }
+    if (type === 'job'){
+        job();
+    }
+    if (type === 'workplace') {
+        workplace();
+    }
+    if (type === 'none'){
+        none();
+    }
+
+}
+
+function hoursOnWorkMounthly(){
+    anychart.onDocumentReady(function() {
+
+
+        var today = new Date();
+        var mounth = String(today.getMonth());
+        var year = today.getFullYear();
+
+        var nrOfDays = daysInMonth(mounth,year);
+
+        // set the data
+        var data = {
+            header: ["Date", "Hours"]
+        };
+
+        //her finder jeg alle de job som er forbundet med brugeren.
+        var nrOfJobs = [];
+        for (var loop = 0; loop < findAllJobs().length ;loop++) {
+            nrOfJobs[loop] = findAllJobs()[loop][0];
+        }
+
+        mounth++;
+
+        //laver dataset
+        var dataSets = [];
+
+        for (var l=0;l<nrOfJobs.length;l++) {
+            var dataSet = anychart.data.set(data);
+            for (i = 0; i < nrOfDays; i++) {
+                var name = 'Den ' + (i + 1) + '. i ' + (mounth) + '.';
+                dataSet.append([name, hoursOfWork()]);
+            }
+            dataSets[l] = dataSet;
+        }
+
+
+
+
+        // create the chart
+        var chart = anychart.column();
+        chart.animation(true);
+
+        var serieSet = [];
+
+        //laver dataen til serie sæt.
+
+        for (var r = 0; r<dataSets.length; r++) {
+            serieSet[r] = dataSets[r].mapAs({'x': 0, 'value': 1})
+        }
+
+        chart.yScale().stackMode('value');
+
+
+
+        // add the data
+        for (var c = 0; c<serieSet.length; c++){
+            chart.column(serieSet[c]);
+        }
+
+
+        var i=0;
+        // create a loop
+        while (chart.getSeriesAt(i)){
+            // rename each series
+            chart.getSeriesAt(i).name(findJob(nrOfJobs[i])[2]);
+            i++;
+        }
+
+        // set the chart title
+        chart.title("Hours on work");
+
+        // draw
+        chart.container("graph");
+        chart.draw();
     });
 }
