@@ -503,6 +503,7 @@ public class DBController implements IDBController
     {
         boolean success = false;
 
+
         try
         {
             iWorkerDAO.updateWorker(workerDTO);
