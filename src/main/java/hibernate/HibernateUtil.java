@@ -16,7 +16,7 @@ public class HibernateUtil {
     -------------------------- Fields --------------------------
      */
     
-    private HibernateUtil instance;
+    private static HibernateUtil instance;
     private SessionFactory sessionFactory;
     private Properties properties;
 
@@ -64,7 +64,7 @@ public class HibernateUtil {
      * @param properties Properties object - Specifying which DB to use.
      * @return A HibernateUtil object.
      */
-    public HibernateUtil getInstance (Properties properties)
+    public static HibernateUtil getInstance (Properties properties)
     {
         try
         {
