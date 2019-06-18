@@ -28,6 +28,7 @@ public class ActivityDAOTest {
     private final double doubleEqualTolorance = 0.0001; // TODO: Find rigtig værdi
 
     private static IConnPool test_DB;
+    private static DBController dbController;
     private static IEmployerDAO iEmployerDAO;
     private static IWorkerDAO iWorkerDAO;
     private static IJobDAO iJobDAO;
@@ -109,7 +110,7 @@ public class ActivityDAOTest {
 
         // Setup DAOs, ConnectionPools and DBControllers.
         test_DB = TestConnPoolV1.getInstance();
-        DBController dbController = new DBController(test_DB, new HibernateProperties().getTestDB());
+        dbController = new DBController(test_DB, new HibernateProperties().getTestDB());
 
         iWorkerDAO  = dbController.getiWorkerDAO();
         iEmployerDAO = dbController.getiEmployerDAO();
@@ -136,6 +137,7 @@ public class ActivityDAOTest {
 
         // Closes ConnectionPool
         test_DB.closePool();
+        dbController.getHibernateUtil().exit();
     }
 
     @After

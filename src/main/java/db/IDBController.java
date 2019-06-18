@@ -6,6 +6,8 @@ import dto.job.IJobDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +40,12 @@ public interface IDBController
     | Update	                                                 |
     -------------------------------------------------------------*/
 	boolean			updateWorker		(IWorkerDTO workerDTO);
-    
+
+    /*------------------------------------------------------------
+    | Delete	                                                 |
+    -------------------------------------------------------------*/
+    boolean			deleteWorker		(String email);
+
     //endregion
     
     //region Employer
@@ -64,6 +71,11 @@ public interface IDBController
     | Update	                                                 |
     -------------------------------------------------------------*/
 	boolean			updateEmployer		(IEmployerDTO employerDTO);
+
+    /*------------------------------------------------------------
+    | Delete                                                   |
+    -------------------------------------------------------------*/
+    boolean         deleteEmployer (int employerID);
     
     //endregion
     
@@ -91,6 +103,11 @@ public interface IDBController
     | Update	                                                 |
     -------------------------------------------------------------*/
 	boolean			updateJob			(IJobDTO jobDTO);
+
+    /*------------------------------------------------------------
+    | Delete                                                   |
+    -------------------------------------------------------------*/
+    boolean         deleteJob (int jobID);
     
     //endregion
     
@@ -118,7 +135,12 @@ public interface IDBController
     | Update	                                                 |
     -------------------------------------------------------------*/
 	boolean				updateActivity	(IActivityDTO activityDTO);
-    
+
+	/*------------------------------------------------------------
+    | Delete                                                   |
+    -------------------------------------------------------------*/
+    boolean             deleteActivity (int activityID);
+
     //endregion
     
     /*------------------------------------------------------------
@@ -126,5 +148,8 @@ public interface IDBController
     -------------------------------------------------------------*/
     String  setTimeZoneFromSQLServer    ();
 	int     getNextAutoIncremental      (String tableName);
-	boolean loginCheck                  (WorkerDTO user);
+
+    void logOut                         (HttpServletRequest request);
+    boolean isSessionActive             (HttpServletRequest request);
+	boolean loginCheck                  (WorkerDTO user, HttpServletRequest request);
 }

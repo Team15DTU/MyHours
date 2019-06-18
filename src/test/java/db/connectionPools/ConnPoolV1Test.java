@@ -1,6 +1,7 @@
 package db.connectionPools;
 
 import dao.DALException;
+import db.TestConnPoolV1;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class ConnPoolV1Test {
 	@Before
 	public void setUp() throws Exception
 	{
-		connPool = ConnPoolV1.getInstance();
+		connPool = TestConnPoolV1.getInstance();
 		connSize = connPool.getSize();
 	}
 	

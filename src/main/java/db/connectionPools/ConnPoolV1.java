@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * @author Alfred Röttger Rydahl
  */
-public class ConnPoolV1 implements IConnPool {
-	
+public class ConnPoolV1 implements IConnPool
+{
     /*------------------------------------------------------------
     | Fields                                                     |
     -------------------------------------------------------------*/
@@ -26,10 +26,10 @@ public class ConnPoolV1 implements IConnPool {
 	//endregion
  
 	/*
-	Hibernate uses 3 connections, and this uses 6. This means we have
+	Hibernate uses 2 connections, and this uses 2. This means we have
 	1 connection free to use with Workbench and Datagrip.
 	 */
-    public static final int MAXCONNS = 6;
+    public static final int MAXCONNS = 2;
     
     //region DB Info
 	protected static String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
@@ -45,16 +45,14 @@ public class ConnPoolV1 implements IConnPool {
     -------------------------------------------------------------*/
 	/**
 	 * Creates the ConnPoolV1 object, and initializing everything.
-	 * @throws DALException Data Access Layer Exception
 	 */
-	protected ConnPoolV1() throws DALException
+	protected ConnPoolV1()
 	{
 		// Instantiating Lists
 		freeConnList = new ArrayList<>(MAXCONNS);
 		usedConnList = new ArrayList<>(MAXCONNS);
 		
 		// Create all Connections
-		boolean success = true; DALException exception = null;
 		try
 		{
 			// Specify Driver
@@ -66,22 +64,14 @@ public class ConnPoolV1 implements IConnPool {
 		catch (DALException e)
 		{
 			System.err.println("ERROR: Creating Connection Pool - " + e.getMessage());
-			exception = e;
-			success = false;
 		}
 		catch ( ClassNotFoundException e )
 		{
-			System.err.println("ERROR: Creating Connection Pool - " + e.getMessage());
-			exception = new DALException(e.getMessage(), e.getCause());
-			success = false;
+			System.err.println("ERROR: Creating Connection Pool, Can't find class - " + e.getMessage());
 		}
 		
 		//Start thread to keep connections alive
 		keepAlive();
-		
-		// Make sure to throw exception
-		if ( !success )
-			throw exception;
 	}
 	
     /*------------------------------------------------------------
@@ -168,7 +158,7 @@ public class ConnPoolV1 implements IConnPool {
 	 * Gives the instance of the Connection Pool.
 	 * @return ConnPoolV1 object
 	 */
-	public synchronized static ConnPoolV1 getInstance() throws DALException
+	public synchronized static ConnPoolV1 getInstance()
 	{
 		try
 		{
@@ -177,7 +167,7 @@ public class ConnPoolV1 implements IConnPool {
 			
 			return instance;
 		}
-		catch (DALException e)
+		catch (Exception e)
 		{
 			System.err.println( String.format("ERROR: Couldn't get ConnPoolV1 instance - %s \n \t Cause: %s",
 												e.getMessage(), e.getCause()) );
@@ -303,9 +293,10 @@ public class ConnPoolV1 implements IConnPool {
 		// Close all connections in both Lists
 		try
 		{
-			int i;
-			for ( i=0; i < freeConnList.size(); i++ ) { closeConnection(freeConnList.remove(i)); }
-			for ( i=0; i < usedConnList.size(); i++ ) { closeConnection(usedConnList.remove(i)); }
+
+			int i; int freeConns = freeConnList.size(); int usedConns = usedConnList.size();
+			for ( i=0; i < freeConns; i++ ) { closeConnection(freeConnList.get(i)); }
+			for ( i=0; i < usedConns; i++ ) { closeConnection(usedConnList.get(i)); }
 		}
 		catch ( SQLException e )
 		{

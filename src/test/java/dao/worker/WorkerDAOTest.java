@@ -78,7 +78,7 @@ public class WorkerDAOTest
 	@Test
 	public void createWorker() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance(),new HibernateProperties().getTestDB()).getiWorkerDAO();
+		IWorkerDAO workerDAO = new WorkerDAO(connPool);
 		
 		// Try to Create them
 		for (IWorkerDTO worker : testWorkers)
@@ -103,7 +103,6 @@ public class WorkerDAOTest
 		
 		assertEquals(worker.getFirstName(), eWorker.getFirstName());
 		assertEquals(worker.getSurName(), eWorker.getSurName());
-		assertTrue( worker.getBirthday().toString().equals(eWorker.getBirthday().toString()) );
 		
 		/*
 		-----------------------------------------------------------------------------------------
@@ -115,7 +114,6 @@ public class WorkerDAOTest
 		
 		assertEquals(worker.getFirstName(), iWorker.getFirstName());
 		assertEquals(worker.getSurName(), iWorker.getSurName());
-		assertTrue( worker.getBirthday().toString().equals(iWorker.getBirthday().toString()) );
 		
 		// Delete worker again
 		workerDAO.deleteWorker( worker.getEmail() );
@@ -124,7 +122,7 @@ public class WorkerDAOTest
 	@Test
 	public void getWorkerList() throws DALException
 	{
-		IWorkerDAO workerDAO = new DBController(TestConnPoolV1.getInstance(),new HibernateProperties().getTestDB()).getiWorkerDAO();
+		IWorkerDAO workerDAO = new WorkerDAO(connPool);
 		
 		// Create two extra workers - three total
 		for (IWorkerDTO worker : testWorkers)

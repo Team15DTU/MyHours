@@ -11,9 +11,8 @@ public class TestConnPoolV1 extends ConnPoolV1 implements IConnPool
     /**
      * Only purpose is to make it possible to use this constructor,
      * as it isn't possible to use superclass constructor otherwise.
-     * @throws DALException Data Access Layer Exception
      */
-    private TestConnPoolV1() throws DALException { super(); }
+    private TestConnPoolV1() { super(); }
     
     /**
      * Gives the instance of the Test Connection Pool, which is using
@@ -34,7 +33,7 @@ public class TestConnPoolV1 extends ConnPoolV1 implements IConnPool
             
             return instance;
         }
-        catch (DALException e)
+        catch (Exception e)
         {
             System.err.println("ERROR: Couldn't get ConnPoolV1 instance - " + e.getMessage());
             return null;
