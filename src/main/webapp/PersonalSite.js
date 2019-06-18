@@ -549,14 +549,27 @@ function editUser(){
     console.log(userJson);
 }
 
-function deleteActivity(){
+function deleteActivity() {
+    event.preventDefault();
+
+    //get
+    var activityID = $("#deleteActivityID").val();
+
+    //set
+    $("#deleteActivityID").val(activityID);
+    console.log(activityID);
+
+    deleteActivityByID(activityID);
+}
+
+function deleteActivityByID(activityID){
 
     event.preventDefault();
-    var userJson = $("#deleteActivity").serializeJSON();
+    var json = JSON.stringify(activityID);
     $.ajax({
         method: 'DELETE',
         url : "/MyHours/DBController/deleteActivity",
-        data : userJson,
+        data : json,
         contentType: "application/json",
         success : function(){
             alert("Deleted Activity");
@@ -567,17 +580,28 @@ function deleteActivity(){
             console.log("Failed to delete activity!")
         }
     });
-    console.log(userJson);
+    console.log(json);
 }
 
-function deleteEmployer(){
+function deleteEmployer() {
+    event.preventDefault();
+
+    var employerID = $("#deleteEmployerID").val();
+
+    $("#deleteEmployerID").val(employerID);
+    console.log(employerID);
+
+    deleteEmployerByID(employerID);
+}
+
+function deleteEmployerByID(employerID){
 
     event.preventDefault();
-    var userJson = $("#deleteEmployer").serializeJSON();
+    var json = JSON.stringify(employerID);
     $.ajax({
         method: 'DELETE',
         url : "/MyHours/DBController/deleteEmployer",
-        data : userJson,
+        data : json,
         contentType: "application/json",
         success : function(){
             alert("Deleted Employer");
@@ -588,20 +612,22 @@ function deleteEmployer(){
             console.log("Failed to delete Employer!")
         }
     });
-    console.log(userJson);
+    console.log(json);
 }
 
 function deleteJob() {
     event.preventDefault();
 
-    var jobID = $("#deleteJob").val();
+    var jobID = $("#deleteJobID").val();
+
+    $("#deleteJobID").val(jobID);
+    console.log(jobID);
 
     deleteJobByID(jobID);
 }
 
 function deleteJobByID(jobID){
-    var dto =  { id: jobID };
-    var json = JSON.stringify(dto);
+    var json = JSON.stringify(jobID);
 
     $.ajax({
         method: 'DELETE',
