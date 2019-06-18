@@ -1,5 +1,6 @@
 package db;
 
+import dto.worker.IWorkerDTO;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 import testData.TestDataController;
@@ -47,23 +48,29 @@ public class ArrayDBControllerTest
 	}
 	
 	@Test
-	public void getWorkerList()
-	{
-	}
-	
-	@Test
-	public void setWorkerList()
-	{
-	}
-	
-	@Test
 	public void getIWorkerDTO()
 	{
+		IWorkerDTO realWorker 	= TestDataController.getTestWorkerNo1();
+		IWorkerDTO worker		= controller.getIWorkerDTO(realWorker.getWorkerID());
+		
+		// Check data is correct
+		assertEquals(realWorker.getFirstName(), worker.getFirstName());
+		assertEquals(realWorker.getSurName(), worker.getSurName());
+		assertEquals(realWorker.getEmail(), worker.getEmail());
+		assertEquals(realWorker.getPassword(), worker.getPassword());
 	}
 	
 	@Test
 	public void getIWorkerDTO1()
 	{
+		IWorkerDTO realWorker 	= TestDataController.getTestWorkerNo2();
+		IWorkerDTO worker		= controller.getIWorkerDTO(realWorker.getEmail());
+		
+		// Check data is correct
+		assertEquals(realWorker.getFirstName(), worker.getFirstName());
+		assertEquals(realWorker.getSurName(), worker.getSurName());
+		assertEquals(realWorker.getEmail(), worker.getEmail());
+		assertEquals(realWorker.getPassword(), worker.getPassword());
 	}
 	
 	@Test
