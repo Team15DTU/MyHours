@@ -2,20 +2,25 @@ package db;
 
 import dao.ConnectionHelper;
 import dao.DALException;
+import dao.activity.ActivityConstants;
 import dao.activity.ActivityDAO;
 import dao.activity.IActivityDAO;
 import dao.employer.EmployerConstants;
 import dao.employer.EmployerDAO;
 import dao.employer.IEmployerDAO;
 import dao.job.IJobDAO;
+import dao.job.JobConstants;
 import dao.job.JobDAO;
 import dao.worker.IWorkerDAO;
 import dao.worker.WorkerConstants;
 import dao.worker.WorkerHiberDAO;
 import db.connectionPools.ConnPoolV1;
+import dto.activity.ActivityDTO;
 import dto.activity.IActivityDTO;
+import dto.employer.EmployerDTO;
 import dto.employer.IEmployerDTO;
 import dto.job.IJobDTO;
+import dto.job.JobDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 import hibernate.HibernateProperties;
@@ -25,6 +30,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.*;
 
@@ -63,8 +69,7 @@ public class DBController implements IDBController
 	{
 		try
 		{
-			hibernateUtil 	= new HibernateUtil(new HibernateProperties().getRealDB());
-			hibernateUtil.setup();
+			hibernateUtil 	= HibernateUtil.getInstance(new HibernateProperties().getRealDB());
 			this.connPool   = ConnPoolV1.getInstance();
 			connectionHelper = new ConnectionHelper(this.connPool);
 			
@@ -92,8 +97,7 @@ public class DBController implements IDBController
         {
             this.connPool   = connPool;
             connectionHelper = new ConnectionHelper(this.connPool);
-            hibernateUtil 	= new HibernateUtil(hibernateProperties);
-            hibernateUtil.setup();
+            hibernateUtil 	= HibernateUtil.getInstance(hibernateProperties);
     
             TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
     
@@ -355,28 +359,39 @@ public class DBController implements IDBController
 	 * interface, and saves it in the database.
 	 * @param workerDTO Object that implements the IWorkerDTO interface
 	 */
-	@POST
-	@Path("/createWorker")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Override
-    public boolean createWorker (IWorkerDTO workerDTO)
-    {
-    	boolean success = false;
-    	try
-		{
-			iWorkerDAO.createWorker(workerDTO);
-			success = true;
-		}
-    	catch ( DALException e )
-		{
-			System.err.println("ERROR: createWorker() - " + e.getMessage());
-		}
-    	catch ( Exception e )
-		{
-			System.err.println("ERROR: Unknown error createWorker() - " + e.getMessage());
-		}
-    	
-    	return success;
+    @POST
+    @Path("/createWorker")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Override
+    public void createWorker (WorkerDTO workerDTO) throws DALException{
+        Connection c = connPool.getConn();
+
+        // The query to make
+        String query =
+                String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
+                        WorkerConstants.TABLENAME, WorkerConstants.firstname, WorkerConstants.surname, WorkerConstants.email,
+                        WorkerConstants.birthday, WorkerConstants.password);
+
+        try {
+
+            PreparedStatement statement = c.prepareStatement(query);
+
+            statement.setString(1, workerDTO.getFirstName());
+            statement.setString(2, workerDTO.getSurName());
+            statement.setString(3, workerDTO.getEmail());
+            statement.setDate(4, java.sql.Date.valueOf(LocalDate.now()));
+            statement.setString(5, workerDTO.getPassword());
+
+            statement.executeUpdate();
+
+        }
+        catch (SQLException e) {
+            throw new DALException(e.getMessage());
+        }
+        finally {
+            // Return the Connection to the Pool
+            connPool.releaseConnection(c);
+        }
     }
     
     /**
@@ -525,21 +540,35 @@ public class DBController implements IDBController
 	@Path("/createEmployer")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public boolean createEmployer(IEmployerDTO employer)
-    {
-    	boolean success = false;
-    	
-    	try
-		{
-			iEmployerDAO.createiEmployer(employer);
-			success = true;
-		}
-    	catch ( DALException e )
-		{
-			System.err.println("ERROR: DBController createEmployer() - " + e.getMessage());
-		}
-    	return success;
-	}
+    public void createEmployer(EmployerDTO employer) throws DALException {
+        Connection c = connPool.getConn();
+
+        String createQuery = String.format(
+                "INSERT INTO %s (%s, %s, %s, %s) VALUES (?,?,?,?)",
+                EmployerConstants.TABLENAME,
+                EmployerConstants.workerID, // ParameterIndex 1
+                EmployerConstants.employerName, // ParameterIndex 2
+                EmployerConstants.color, // ParameterIndex 3
+                EmployerConstants.tlf); // ParameterIndex 4
+
+        try {
+
+            PreparedStatement pStatement = c.prepareStatement(createQuery);
+
+            pStatement.setInt(1, employer.getWorkerID());
+            pStatement.setString(2, employer.getName());
+            pStatement.setString(3, null);
+            pStatement.setString(4, employer.getTelephone());
+
+            pStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            connectionHelper.catchSQLExceptionAndDoRollback(c, e, "DBController.createEmployer");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c, "DBController.createEmployer");
+        }
+    }
+
     
     @GET
 	@Path("/getEmployer/{id}")
@@ -642,20 +671,47 @@ public class DBController implements IDBController
 	@Path("/createJob")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public boolean createJob(IJobDTO job)
-    {
-        boolean success = false;
+    public void createJob(JobDTO job) throws DALException {
 
-        try
-        {
-            iJobDAO.createIJob(job);
-            success = true;
+        Connection c = connPool.getConn();
+
+        String createQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
+                JobConstants.TABLENAME,
+                JobConstants.employerID,    // ParameterIndex 1
+                JobConstants.jobName,       // ParameterIndex 2
+                JobConstants.hireDate,      // ParameterIndex 3
+                JobConstants.finishDate,    // ParameterIndex 4
+                JobConstants.salary);       // ParameterIndex 5
+
+        try {
+
+            PreparedStatement pStatement = c.prepareStatement(createQuery);
+
+            pStatement.setInt(1, job.getEmployerID());
+            pStatement.setString(2, job.getJobName());
+
+            // Inserts null if no hire date.
+            if (job.getHireDate() != null ) {
+                pStatement.setDate(3, java.sql.Date.valueOf(job.getHireDate()));
+            } else {
+                pStatement.setDate(3,null);
+            }
+            // Inserts null if no hire date.
+            if (job.getFinishDate() != null ) {
+                pStatement.setDate(4, java.sql.Date.valueOf(job.getFinishDate()));
+            } else {
+                pStatement.setDate(4,null);
+            }
+            pStatement.setDouble(5, job.getStdSalary());
+
+            pStatement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "DBController.createJob");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c, "DBController.createIJob");
         }
-        catch ( DALException e )
-        {
-            System.err.println("ERROR: DBController createJob() - " + e.getMessage());
-        }
-        return success;
     }
     
     @GET
@@ -767,19 +823,35 @@ public class DBController implements IDBController
 	@Path("/createActivity")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public boolean createActivity(IActivityDTO activity)
-    {
-        boolean success = false;
+    public void createActivity(ActivityDTO activity) throws DALException {
+        System.out.println(activity);
+        Connection c = connPool.getConn();
+
+        String createQuery = String.format("INSERT INTO %s (%s,%s,%s,%s,%s) VALUES (?,?,?,?,?)",
+                ActivityConstants.TABLENAME,
+                ActivityConstants.jobID,                // ParameterIndex 1
+                ActivityConstants.startDateTime,        // ParameterIndex 2
+                ActivityConstants.endDateTime,          // ParameterIndex 3
+                ActivityConstants.pause,                // ParameterIndex 4
+                ActivityConstants.activityValue);       // ParameterIndex 5
 
         try {
-            iActivityDAO.createiActivity(activity);
-            success = true;
-        }catch (Exception e){
-            System.err.println("ERROR: DBController createActivity - " + e.getMessage());
+
+            PreparedStatement preparedStatement = c.prepareStatement(createQuery);
+            preparedStatement.setInt(1,activity.getJobID());
+            preparedStatement.setTimestamp(2, java.sql.Timestamp.valueOf(activity.getStartingDateTime().toString()));
+            preparedStatement.setTimestamp(3, java.sql.Timestamp.valueOf(activity.getEndingDateTime().toString()));
+            preparedStatement.setLong(4,0);
+            preparedStatement.setDouble(5,activity.getActivityValue());
+
+            preparedStatement.executeUpdate();
+
+
+        } catch (SQLException e){
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "DBController.createiActivity");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c,"DBController.createiActivity");
         }
-
-
-        return success;
     }
     
     @GET
@@ -858,19 +930,26 @@ public class DBController implements IDBController
     @DELETE
     @Path("/deleteActivity")
     @Override
-    public boolean deleteActivity(int activityID){
-        boolean success = false;
+    public void deleteActivity(ActivityDTO activityDTO) throws DALException {
 
-        try
-        {
-            iActivityDAO.deleteiActivity(activityID);
-            success = true;
+        Connection c = connPool.getConn();
+
+        String deleteQuery = String.format("DELETE FROM %s WHERE %s = ?",
+                ActivityConstants.TABLENAME,
+                ActivityConstants.id);
+
+        try {
+
+            PreparedStatement preparedStatement = c.prepareStatement(deleteQuery);
+            preparedStatement.setInt(1, activityDTO.getActivityID());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"DBController.deleteiActivity");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c,"DBController.deleteiActivity");
         }
-        catch ( Exception e )
-        {
-            System.err.println("ERROR: DBController deleteActivity() - " + e.getMessage());
-        }
-        return success;
     }
 	
 	//endregion

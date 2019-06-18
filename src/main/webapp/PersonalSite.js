@@ -412,8 +412,8 @@ function addActivity(){
         url : "/MyHours/DBController/createActivity",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Created Activity");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -427,14 +427,14 @@ function addActivity(){
 function addEmployer(){
 
     event.preventDefault();
-    var userJson = $("#addEmployer").serializeJSON();
+    var userJson = $("#addEmployer input").serializeJSON();
     $.ajax({
         method: 'POST',
         url : "/MyHours/DBController/createEmployer",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Created Employer");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -454,8 +454,8 @@ function addJob(){
         url : "/MyHours/DBController/createJob",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Created Job");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -495,8 +495,8 @@ function editEmployer(){
         url : "/MyHours/DBController/editEmployer",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Edited Employer");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -516,8 +516,8 @@ function editJob(){
         url : "/MyHours/DBController/editJob",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Edited Job");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -555,11 +555,11 @@ function deleteActivity(){
     var userJson = $("#deleteActivity").serializeJSON();
     $.ajax({
         method: 'DELETE',
-        url : "/MyHours/DBController/",
+        url : "/MyHours/DBController/deleteActivity",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Deleted Activity");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -576,11 +576,11 @@ function deleteEmployer(){
     var userJson = $("#deleteEmployer").serializeJSON();
     $.ajax({
         method: 'DELETE',
-        url : "/MyHours/DBController/",
+        url : "/MyHours/DBController/deleteEmployer",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Deleted Employer");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -597,11 +597,11 @@ function deleteJob(){
     var userJson = $("#deleteJob").serializeJSON();
     $.ajax({
         method: 'DELETE',
-        url : "/MyHours/DBController/",
+        url : "/MyHours/DBController/deleteJob",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Deleted Job");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){

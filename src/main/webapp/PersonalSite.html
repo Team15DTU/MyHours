@@ -13,6 +13,7 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="PersonalSite.js"></script>
     <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+    <script src="../jquery.serialize-object.min.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
@@ -116,19 +117,24 @@
         <span onclick="hideModal()" class="close2">&times;</span>
     <form id="addActivity">
         <div class="form_per">
-            <label><b>What job is the Activity?</b></label> <br>
+            <label><b>What job is the Activity? (ID)</b></label> <br>
+            <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobID" required>
+            <!--
             <select id="select2" onclick="getJobList()">
                 <option value="Default" name="jobID"></option>
             </select>
+            -->
+
             <br>
-            <label><b>When do you start your Activity?</b></label>
+
+            <label><b>Start (ID)</b></label> <br>
             <input class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="startingDateTime" required>
 
-            <label><b>When does the Activity stop?</b></label>
+            <label><b>End(ID)</b></label> <br>
             <input class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="endingDateTime" required>
 
-            <label><b>How long break do you have on the Activity? (in minutes)</b></label>
-            <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="pause" required>
+            <label><b>Earnings</b></label>
+            <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="activityValue" required>
 
             <button  type="submit" name="addShift" value="submit" id="shiftadder" class="submit" onclick="addActivity()">Save Activity</button>
         </div>
@@ -147,29 +153,29 @@
         <span onclick="hideModal()" class="close2">&times;</span>
         <form id="editActivity">
             <label><b>Choice a shift you want to edit: </b></label><br><br>
+            <input class="w3-input w3-border w3-margin-bottom" type="text" name="activityID" required>
+            <!--
             <select id="select" onchange="currentShiftToEdit()" onclick="getActivityList()">
                 <option value="Default"></option>
             </select>
+            -->
             <b id="shiftEditInfo"></b>
             <br><br>
             <b>Insert the correct details.</b>
             <br><br>
 
-
-            <label><b>What job is the shift?</b></label><br>
-            <select id="select4" onclick="getJobList()">
-                <option value="Default"></option>
+            <label><b>What job is the Activity? (ID)</b></label> <br>
+            <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobID" required>
+            <!--
+            <select id="select2" onclick="getJobList()">
+                <option value="Default" name="jobID"></option>
             </select>
-            <br><br>
+            -->
 
-            <label><b>When do you start your shift?</b></label>
-            <input id="shift_edit_start" class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="startingDateTime" required>
+            <br>
 
-            <label><b>When does the shift stop?</b></label>
-            <input id="shift_edit_end" class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="endingDateTime" required>
-
-            <label><b>How long break do you have on the shift? (in minutes)</b></label>
-            <input id="shift_edit_break" class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="pause" required>
+            <label><b>Earnings</b></label>
+            <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="activityValue" required>
             <button type="submit" name="EditShift" value="submit" id="shift_edit_submit" class="submit" onclick="editActivity()">Edit Activity</button>
         </form>
     </div>
@@ -186,13 +192,15 @@
     <form id="deleteActivity">
 <center>
         <label><b>Choice a shift you want to delete: </b></label><br>
-
+    <input class="w3-input w3-border w3-margin-bottom" type="text" name="activityID" required>
+        <!--
         <select id="select3" onclick="getActivityList()">
             <option value="Default"></option>
         </select>
+        -->
 </center>
         <br><br>
-        <button type="submit" name="DeleteShift" value="submit" id="shift_delete_button" class="submit" onclick="deleteShiftFromHTTP(); deleteActivity();">Delete Activity</button>
+        <button type="submit" name="DeleteShift" value="submit" id="shift_delete_button" class="submit" onclick="deleteActivity();">Delete Activity</button>
     </form>
 </div>
 </div>
@@ -211,15 +219,15 @@
             <div class="form_per">
 
                 <label><b>What company is the job for?</b></label>
+                <input class="w3-input w3-border w3-margin-bottom" type="text" name="employerID" required>
+                <!--
                 <select id="company_job" onclick="getEmployerList();">
                     <option value="Default"></option>
                 </select>
+                -->
 
                 <label><b>What is the job's name</b></label>
-                <input class="w3-input w3-border w3-margin-bottom" type="date" name="jobName" required>
-
-                <label><b>When did you get hired?</b></label>
-                <input class="w3-input w3-border w3-margin-bottom" type="date" name="hireDate" required>
+                <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobName" required>
 
                 <label><b>How much do you earn a hour?</b></label>
                 <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="stdSalary" required>
@@ -239,9 +247,12 @@
         <span onclick="hideModal()" class="close2">&times;</span>
         <form id="editJob">
             <label><b>Choice a job you want to edit: </b></label><br><br>
+            <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobID" required>
+            <!--
             <select id="select_job_edit" onclick="getJobList();">
                 <option value="Default"></option>
             </select>
+            -->
             <b id="jobEditInfo"></b>
             <br><br>
             <b>Insert the correct details.</b>
@@ -249,18 +260,19 @@
 
 
             <label><b>What company is the job for?</b></label>
-            <select id="company_job_edit" onclick="getEmployerList();">
+            <input class="w3-input w3-border w3-margin-bottom" type="text" name="employerID" required>
+            <!--
+            <select id="company_job" onclick="getEmployerList();">
                 <option value="Default"></option>
             </select>
+            -->
 
             <label><b>What is the job's name</b></label>
-            <input class="w3-input w3-border w3-margin-bottom" type="date" name="jobName" required>
-
-            <label><b>When did you get hired?</b></label>
-            <input class="w3-input w3-border w3-margin-bottom" type="date" name="hireDate" required>
+            <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobName" required>
 
             <label><b>How much do you earn a hour?</b></label>
             <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="stdSalary" required>
+
 
             <button  type="submit" class="submit" onclick="editJob();">Edit Job</button>
 
@@ -278,10 +290,12 @@
         <form id="deleteJob">
             <center>
                 <label><b>Choice a job you want to Delete: </b></label><br>
-
+                <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobID" required>
+                <!--
                 <select id="select_job_delete" onclick="getJobList();">
                     <option value="Default"></option>
                 </select>
+                -->
             </center>
             <br><br>
             <button type="submit" name="DeleteJob" value="submit" id="job_delete_button" class="submit" onclick="deleteJobFromHTTP(); deleteJob()">Delete Job</button>
@@ -299,8 +313,8 @@
 <div id="employer_add" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
-        <form id="addEmployer">
-            <div class="form_per">
+        <form>
+            <div class="form_per" id="addEmployer">
                 <!-- WorkerID skal fjernes -->
                 <label><b>WorkerID</b></label>
                 <input  type="text" placeholder="WorkerID" name="workerID" required>
@@ -325,26 +339,26 @@
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
         <form id="editEmployer">
-            <label><b>Choice an employer you want to edit: </b></label><br><br>
+            <label><b>Choice an employer you want to edit: (ID) </b></label><br><br>
+            <input  type="text" placeholder="ID" name="employerID" required>
+            <!--
             <select id="select_jobadress_edit" onclick="getEmployerList();">
                 <option value="Default"></option>
             </select>
+            -->
             <b id="jobadressEditInfo"></b>
             <br><br>
             <b>Insert the correct details.</b>
             <br><br>
 
-            <label><b>What address are you company at?</b></label>
-            <input  type="text" placeholder="Address of your company" name="company_address" required>
+            <label><b>WorkerID</b></label>
+            <input  type="text" placeholder="WorkerID" name="workerID" required>
+
+            <label><b>What is the name of your Employer?</b></label>
+            <input  type="text" placeholder="Address of your company" name="name" required>
 
             <label><b>What are the phone number?</b></label>
-            <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="phone_number" required>
-
-            <label><b>What is the zip code of the address?</b></label>
-            <input class="w3-input w3-border w3-margin-bottom" placeholder="Company address" type="text" name="shift_end" required>
-
-            <label><b>What town is the company in?</b></label>
-            <input class="w3-input w3-border" type="text" placeholder="Town where company is located" name="psw" required>
+            <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="telephone" required>
 
             <button  type="submit" class="submit" onclick="editEmployer();">Edit Employer</button>
 
@@ -362,10 +376,12 @@
         <form id="deleteEmployer">
             <center>
                 <label><b>Choice an employer you want to delete: </b></label><br>
-
+                <input class="w3-input w3-border w3-margin-bottom" type="text" name="employerID" required>
+                <!--
                 <select id="select_jobadress_delete" onclick="getEmployerList();">
                     <option value="Default"></option>
                 </select>
+                -->
             </center>
             <br><br>
             <button type="submit" name="DeleteJob" value="submit" id="jobadress_delete_button" class="submit" onclick="deleteJobFromHTTP(); deleteEmployer();">Delete Employer</button>
