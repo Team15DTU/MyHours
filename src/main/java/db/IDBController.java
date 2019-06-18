@@ -1,8 +1,12 @@
 package db;
 
+import dao.DALException;
+import dto.activity.ActivityDTO;
 import dto.activity.IActivityDTO;
+import dto.employer.EmployerDTO;
 import dto.employer.IEmployerDTO;
 import dto.job.IJobDTO;
+import dto.job.JobDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 
@@ -21,7 +25,7 @@ public interface IDBController
 	/*------------------------------------------------------------
 	| Creators                                                   |
 	-------------------------------------------------------------*/
-    boolean createWorker   (IWorkerDTO workerDTO);
+    void createWorker   (WorkerDTO workerDTO) throws DALException;
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -53,7 +57,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    boolean createEmployer (IEmployerDTO employer);
+    void createEmployer (EmployerDTO employer) throws DALException;
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -84,7 +88,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    boolean createJob      (IJobDTO job);
+    void createJob      (JobDTO job) throws DALException;
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -116,7 +120,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    boolean createActivity (IActivityDTO activity);
+    void createActivity (ActivityDTO activity) throws DALException;
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -139,7 +143,7 @@ public interface IDBController
 	/*------------------------------------------------------------
     | Delete                                                   |
     -------------------------------------------------------------*/
-    boolean             deleteActivity (int activityID);
+    void             deleteActivity (ActivityDTO activityDTO) throws DALException;
 
     //endregion
     
