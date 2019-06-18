@@ -15,7 +15,8 @@ public class HibernateUtil {
     /*
     -------------------------- Fields --------------------------
      */
-
+    
+    private HibernateUtil instance;
     private SessionFactory sessionFactory;
     private Properties properties;
 
@@ -23,7 +24,7 @@ public class HibernateUtil {
     ----------------------- Constructor -------------------------
      */
 
-    public HibernateUtil (Properties properties) {
+    private HibernateUtil (Properties properties) {
         this.properties = properties;
     }
     /*
@@ -53,6 +54,30 @@ public class HibernateUtil {
     /*
     ---------------------- Public Methods -----------------------
      */
+    
+    /**
+     * Gives the running instance of the HibernateUtil object.
+     * This either creates an the instance if it isn't running, or
+     * just returning the instance if it's already running. If the
+     * object is already running, then it ignores the properties
+     * parameter.
+     * @param properties Properties object - Specifying which DB to use.
+     * @return A HibernateUtil object.
+     */
+    public HibernateUtil getInstance (Properties properties)
+    {
+        try
+        {
+            if ( instance == null )
+                instance = new HibernateUtil(properties);
+        }
+        catch ( Exception e )
+        {
+            System.err.println( String.format("ERROR: HibernateUtil getInstance() - %s", e.getMessage()) );
+        }
+        
+        return instance;
+    }
 
     public void setup() {
         Configuration configuration = new Configuration().setProperties(properties)
