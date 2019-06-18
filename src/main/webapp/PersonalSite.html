@@ -112,17 +112,16 @@
 <!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 
 
-<div id="shift_add" class="modal2">
+<div id="shift_add" class="modal2" onclick="getJobList()">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
     <form id="addActivity">
         <div class="form_per">
-            <label><b>What job is the Activity? (ID)</b></label> <br>
+            <label><b>Which job contains the Activity? )</b></label> <br>
             <!--
             <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobID" required>
             -->
-            <select onclick="getJobList()">
-                <option id="joblist"></option>
+            <select id="joblist">
             </select>
 
             <br>

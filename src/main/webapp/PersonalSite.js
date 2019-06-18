@@ -662,11 +662,16 @@ function checkSession() {
     });
 }
 
-function generateJobHTML(data){
+function generateUserHTML(job){
+    var deleteId = job.id;
 
-    console.log(data.name);
+    console.log(job.id);
 
-    return 	data.name
+  //  console.log("user id "+deleteId);
+    //console.log("user id" + user.id);
+
+    return 	'<option>' +  +
+        '</option>';
 }
 
 function getJobList() {
@@ -676,13 +681,23 @@ function getJobList() {
         url: "/MyHours/DBController/getJobList",
         dataType: "JSON",
         success: function(response) {
+            var option = '';
             $.each(response, function(i, job) {
-                var test = $("#joblist").append(generateJobHTML(job));
+                console.log(response[i]);
+                console.log("jobID: " + response[i]['jobID']);
+                console.log("employerID: " + response[i]['employerID']);
+                console.log("jobName: " + response[i]['jobName']);
+                console.log("stdSalary: " + response[i]['stdSalary']);
 
-                console.log(test);
-                console.log("Du er inde")
+
+
+                option += '<option>' + response[i]['jobName'] +
+                    '</option>';
+
+
 
             });
+            $('#joblist').html(option);
         },
         error: function() {
             console.log("Error loading jobs");
