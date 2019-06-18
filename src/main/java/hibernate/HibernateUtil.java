@@ -69,7 +69,10 @@ public class HibernateUtil {
         try
         {
             if ( instance == null )
-                instance = new HibernateUtil(properties);
+            {
+				instance = new HibernateUtil(properties);
+				instance.setup();
+			}
         }
         catch ( Exception e )
         {
