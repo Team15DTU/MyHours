@@ -74,7 +74,7 @@ public interface IDBController
 	/*------------------------------------------------------------
     | Update	                                                 |
     -------------------------------------------------------------*/
-	boolean			updateEmployer		(IEmployerDTO employerDTO);
+	void			updateEmployer		(IEmployerDTO employerDTO) throws DALException;
 
     /*------------------------------------------------------------
     | Delete                                                   |
@@ -106,7 +106,7 @@ public interface IDBController
 	/*------------------------------------------------------------
     | Update	                                                 |
     -------------------------------------------------------------*/
-	boolean			updateJob			(IJobDTO jobDTO);
+	void			updateJob			(IJobDTO jobDTO) throws DALException;
 
     /*------------------------------------------------------------
     | Delete                                                   |
@@ -138,7 +138,7 @@ public interface IDBController
 	/*------------------------------------------------------------
     | Update	                                                 |
     -------------------------------------------------------------*/
-	boolean				updateActivity	(IActivityDTO activityDTO);
+	void				updateActivity	(IActivityDTO activityDTO) throws DALException;
 
 	/*------------------------------------------------------------
     | Delete                                                   |

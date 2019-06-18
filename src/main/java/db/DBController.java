@@ -503,7 +503,6 @@ public class DBController implements IDBController
     {
         boolean success = false;
 
-
         try
         {
             iWorkerDAO.updateWorker(workerDTO);
@@ -630,20 +629,33 @@ public class DBController implements IDBController
     @PUT
 	@Path("/updateEmployer")
 	@Override
-	public boolean updateEmployer(IEmployerDTO employerDTO)
-    {
-        boolean success = false;
+	public void updateEmployer(IEmployerDTO employerDTO) throws DALException {
 
-        try
-        {
-            iEmployerDAO.updateiEmployer(employerDTO);
-            success = true;
+        Connection c = connPool.getConn();
+
+        String updateQuery = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ? WHERE %s = ?",
+                EmployerConstants.TABLENAME,
+                EmployerConstants.employerName,
+                EmployerConstants.color,
+                EmployerConstants.tlf,
+                EmployerConstants.id);
+
+        try {
+            PreparedStatement pStatement = c.prepareStatement(updateQuery);
+
+            pStatement.setString(1, employerDTO.getName());
+            pStatement.setString(2, null);
+            pStatement.setString(3, employerDTO.getTelephone());
+            pStatement.setInt(4, employerDTO.getEmployerID());
+
+            pStatement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"DBController.updateiEmployer");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c,"DBController.updateiEmployer");
         }
-        catch ( DALException e )
-        {
-            System.err.println("ERROR: DBController updateEmployer() - " + e.getMessage());
-        }
-        return success;
     }
 
     @DELETE
@@ -777,20 +789,49 @@ public class DBController implements IDBController
     @PUT
 	@Path("/updateJob")
 	@Override
-	public boolean updateJob(IJobDTO jobDTO)
-    {
-        boolean success = false;
+	public void updateJob(IJobDTO jobDTO) throws DALException {
 
-        try
-        {
-            iJobDAO.updateIJob(jobDTO);
-            success = true;
+        Connection c = connPool.getConn();
+
+        String query = String.format("UPDATE %s SET %s = ? , %s = ? , %s = ? , %s = ? , %s = ? WHERE %s = ?",
+                JobConstants.TABLENAME,
+                JobConstants.employerID,    // ParameterIndex 1
+                JobConstants.jobName,       // ParameterIndex 2
+                JobConstants.hireDate,      // ParameterIndex 3
+                JobConstants.finishDate,    // ParameterIndex 4
+                JobConstants.salary,        // ParameterIndex 5
+                JobConstants.id);           // ParameterIndex 6
+
+        try {
+
+            PreparedStatement pStatement = c.prepareStatement(query);
+
+
+            pStatement.setInt(1, jobDTO.getEmployerID());
+            pStatement.setString(2, jobDTO.getJobName());
+
+            // Inserts null if no hire date.
+            if (jobDTO.getHireDate() != null ) {
+                pStatement.setDate(3, java.sql.Date.valueOf(jobDTO.getHireDate()));
+            } else {
+                pStatement.setDate(3,null);
+            }
+            // Inserts null if no hire date.
+            if (jobDTO.getFinishDate() != null ) {
+                pStatement.setDate(4, java.sql.Date.valueOf(jobDTO.getFinishDate()));
+            } else {
+                pStatement.setDate(4,null);
+            }
+            pStatement.setDouble(5, jobDTO.getStdSalary());
+
+            pStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"DBController.updateIJob");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c, "DBController.updateIJob");
         }
-        catch ( DALException e )
-        {
-            System.err.println("ERROR: DBController updateJob() - " + e.getMessage());
-        }
-        return success;
+
     }
 
     @DELETE
@@ -912,20 +953,33 @@ public class DBController implements IDBController
 	@PUT
 	@Path("/updateActivity")
 	@Override
-	public boolean updateActivity(IActivityDTO activityDTO)
-    {
-        boolean success = false;
+	public void updateActivity(IActivityDTO activityDTO) throws DALException {
+        Connection c = connPool.getConn();
 
-        try
-        {
-            iActivityDAO.updateiActivity(activityDTO);
-            success = true;
+        String updateQuery = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?",
+                ActivityConstants.TABLENAME,
+                ActivityConstants.startDateTime,        // ParameterIndex 1
+                ActivityConstants.endDateTime,          // ParameterIndex 2
+                ActivityConstants.pause,                // ParameterIndex 3
+                ActivityConstants.activityValue,        // ParameterIndex 4
+                ActivityConstants.id);                  // ParameterIndex 5
+
+        try {
+
+            PreparedStatement preparedStatement = c.prepareStatement(updateQuery);
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(activityDTO.getStartingDateTime()));
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(activityDTO.getEndingDateTime()));
+            preparedStatement.setLong(3, activityDTO.getPause().toMinutes());
+            preparedStatement.setDouble(4, activityDTO.getActivityValue());
+            preparedStatement.setInt(5, activityDTO.getActivityID());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"ActivityDAO.updateiActivity");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c,"ActivityDAO.updateiActivity");
         }
-        catch ( Exception e )
-        {
-            System.err.println("ERROR: DBController updateActivity() - " + e.getMessage());
-        }
-        return success;
     }
 
     @DELETE

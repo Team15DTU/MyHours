@@ -591,14 +591,22 @@ function deleteEmployer(){
     console.log(userJson);
 }
 
-function deleteJob(){
-
+function deleteJob() {
     event.preventDefault();
-    var userJson = $("#deleteJob").serializeJSON();
+
+    var jobID = $("#deleteJob").val();
+
+    deleteJobByID(jobID);
+}
+
+function deleteJobByID(jobID){
+    var dto =  { id: jobID };
+    var json = JSON.stringify(dto);
+
     $.ajax({
         method: 'DELETE',
         url : "/MyHours/DBController/deleteJob",
-        data : userJson,
+        data : json,
         contentType: "application/json",
         success : function(){
             alert("Deleted Job");
@@ -609,7 +617,7 @@ function deleteJob(){
             console.log("Failed to delete Job!")
         }
     });
-    console.log(userJson);
+    console.log(json);
 }
 function checkSession() {
     $.ajax({
