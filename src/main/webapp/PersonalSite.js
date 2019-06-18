@@ -698,3 +698,123 @@ function logOut() {
         }
     });
 }
+//her er delene som fremkalder content.
+function openInfo() {
+    $('#popup_content').show();
+    hoursOnWorkMounthly();
+}
+
+function closeInfo() {
+    $('#popup_content').hide();
+}
+
+
+//her er delene som ændre ved content.
+function changeFunction(site) {
+    if (site === 'shifts' && $('#myid1').prop('checked')) {
+        header('Shifts');
+        shifts();
+        checkMenu1();
+        openInfo();
+        //console.log(site);
+    } else if (site === 'job' && $('#myid2').prop('checked')) {
+        header('Job');
+        job();
+        checkMenu2();
+        openInfo();
+        //console.log(site);
+    } else if (site === 'workplace' && $('#myid3').prop('checked')) {
+        header('Workplace');
+        workplace();
+        checkMenu3();
+        openInfo();
+        //console.log(site);
+    } else if (site === 'none' && $('#myid').prop('checked')) {
+        header('');
+        none();
+        checkMenu0();
+        closeInfo();
+        //console.log(site);
+    } else {
+        header('');
+        none();
+        checkMenu0();
+        closeInfo();
+        //console.log(site+" close");
+    }
+}
+
+function header(head) {
+    $('#pop_top_head')[0].innerHTML = head;
+    if (head === '') {
+        $('#pop_top2').hide();
+    } else {
+        $('#pop_top2').show();
+    }
+}
+
+function hoursOnWorkMounthly() {
+    anychart.onDocumentReady(function () {
+        var today = new Date();
+        var month = String(today.getMonth());
+        var year = today.getFullYear();
+        var nrOfDays = daysInMonth(month, year);
+
+        // set the data
+        var data = {header: ["Date", "Hours"]};
+
+        //her finder jeg alle de job som er forbundet med brugeren.
+        var nrOfJobs = new Array();
+        for (var loop = 0; loop < findAllJobs().length; loop++) {
+            nrOfJobs[loop] = findAllJobs()[loop][0];
+        }
+        month++;
+
+        //laver dataset
+        var dataSets = new Array();
+        for (var l = 0; l < nrOfJobs.length; l++) {
+            var dataSet = anychart.data.set(data);
+            for (i = 0; i < nrOfDays; i++) {
+                var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
+                dataSet.append([name, hoursOfWork()]);
+            }
+            ;
+            dataSets[l] = dataSet;
+        }
+        ;
+
+        // create the chart
+        var chart = anychart.column();
+        chart.animation(true);
+        var serieSet = new Array();
+
+        //laver dataen til serie sæt.
+        for (var r = 0; r < dataSets.length; r++) {
+            serieSet[r] = dataSets[r].mapAs({'x': 0, 'value': 1})
+        }
+
+        chart.yScale().stackMode('value');
+
+
+        // add the data
+        for (var c = 0; c < serieSet.length; c++) {
+            chart.column(serieSet[c]);
+        }
+
+
+        var i = 0;
+        // create a loop
+        while (chart.getSeriesAt(i)) {
+            // rename each series
+            chart.getSeriesAt(i).name(findJob(nrOfJobs[i])[2]);
+            i++;
+        }
+
+        // set the chart title
+        chart.title("Hours on work");
+
+        // draw
+        chart.container("graph");
+        chart.draw();
+    });
+}
