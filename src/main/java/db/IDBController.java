@@ -25,7 +25,7 @@ public interface IDBController
 	/*------------------------------------------------------------
 	| Creators                                                   |
 	-------------------------------------------------------------*/
-    void createWorker   (WorkerDTO workerDTO) throws DALException;
+    void createWorker   (IWorkerDTO workerDTO) throws DALException;
     
     /*------------------------------------------------------------
     | Get singles                                                |

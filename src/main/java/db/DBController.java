@@ -23,6 +23,7 @@ import dto.job.IJobDTO;
 import dto.job.JobDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
+import dto.worker.WorkerHiberDTO;
 import hibernate.HibernateProperties;
 import hibernate.HibernateUtil;
 
@@ -179,7 +180,7 @@ public class DBController implements IDBController
         this.connPool = connPool;
     }
 	
-    //TODO: Write documentation!
+    //TODO: Jeg tror godt vi kan smide den her metode ud. Bruger den ingen steder.
 	/**
 	 *
 	 * @param tableName
@@ -285,7 +286,7 @@ public class DBController implements IDBController
 	@Override
     public boolean loginCheck(WorkerDTO user, @Context HttpServletRequest request)
     {
-    	String email 	= user.getEmail();
+    	String email 	= user.getEmail(); // TODO: Er det ikke spild at lave nye variable til det i stedet for getters?
     	String password = user.getPassword();
 
     	// Boolean to return
@@ -365,7 +366,7 @@ public class DBController implements IDBController
     @Path("/createWorker")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createWorker (WorkerDTO workerDTO) throws DALException{
+    public void createWorker (IWorkerDTO workerDTO) throws DALException{
         Connection c = connPool.getConn();
 
         // The query to make
@@ -441,7 +442,22 @@ public class DBController implements IDBController
     @Override
     public IWorkerDTO getIWorkerDTO (@PathParam("id") int id)
     {
-    	return null;
+        IWorkerDTO worker = new WorkerHiberDTO();
+        try
+        {
+            // Get the worker from DB, and make object
+            worker = createFullIWorkerDTO("DetHerSkalFikses"); // TODO: Vi skal have lavet en fullworker på ID.
+        }
+        catch ( DALException e )
+        {
+            System.err.println("ERROR: DALException getIWorkerDTO() - " + e.getMessage());
+        }
+        catch ( Exception e )
+        {
+            System.err.println("ERROR: Unknown exception getIWorkerDTO() - " + e.getMessage());
+        }
+
+        return worker;
     }
 	
 	/**
@@ -485,6 +501,7 @@ public class DBController implements IDBController
     @Override
     public List<IWorkerDTO> getIWorkerDTOList (@QueryParam("minID") int minID, @QueryParam("maxID") int maxID)
     {
+        //TODO: Der er ikke lavet en DAO metode til det her?
     	/*
     	Make sure to check if parameters minID and maxID is given.
     	 */
@@ -496,7 +513,9 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IWorkerDTO> getIWorkerDTOList (@PathParam("name") String name)
-    { return null; }
+    {
+        //TODO: Der er ikke lavet en metode til det her? Og hvad skal det overhovedet bruges til?
+        return null; }
 	
     @PUT
 	@Path("/updateWorker")
@@ -577,7 +596,16 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public IEmployerDTO getIEmployerDTO(@PathParam("id") int id)
-    { return null; }
+    {
+        IEmployerDTO employer = new EmployerDTO();
+
+        try {
+            employer = iEmployerDAO.getIEmployer(id);
+        } catch (DALException e) {
+            System.err.println("ERROR: DBController getIEmployerDTO() - " + e.getMessage());
+        }
+        return employer;
+    }
     
     @GET
 	@Path("/getEmployerList")
@@ -598,10 +626,12 @@ public class DBController implements IDBController
         }
         catch ( DALException e )
         {
+            list.add(new EmployerDTO(-1,"Failure")); // TODO: Er det her dumt?
             System.err.println("ERROR: getIEmployerList() DALException - " + e.getMessage());
         }
         catch ( Exception e )
         {
+            list.add(new EmployerDTO(-1,"Failure")); // TODO: Er det her dumt?
             System.err.println("ERROR: Unknown Exception getIEmployerList() - " + e.getMessage());
         }
 
@@ -618,6 +648,7 @@ public class DBController implements IDBController
     	Make sure to check if parameters minID and maxID is given.
     	 */
 
+    	// TODO: Den her metode findes ikke i DAO? Og hvad skal den overhovedet bruges til?
     	return null;
     }
     
@@ -626,7 +657,9 @@ public class DBController implements IDBController
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IEmployerDTO> getIEmployerList(@PathParam("name") String name)
-    { return null; }
+    {
+        // TODO: Det her findes ikke? og kan ikke se hvad det skal bruges til?
+        return null; }
 	
     @PUT
 	@Path("/updateEmployer")
