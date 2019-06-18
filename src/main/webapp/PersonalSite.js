@@ -22,31 +22,38 @@ var hideModal = function(){
 
 var showactivity_add = function() {
     $("#shift_add").show();
-    getJobList().delay(100);
+    getJobList(joblist);
 };
 var showactivity_edit = function() {
     $("#shift_edit").show();
+    getJobList(activity_edit_joblist);
 };
 var showactivity_delete = function() {
     $("#shift_delete").show();
+    getActivityList(activitylist_delete);
 };
 var showjob_add = function() {
     $("#job_add").show();
+    getEmployerList(company_job_add);
 };
 var showjob_edit = function() {
     $("#job_edit").show();
+    getJobList(select_job_edit);
 };
 var showjob_delete = function() {
     $("#job_delete").show();
+    getJobList(select_job_delete);
 };
 var showemployer_add = function() {
     $("#employer_add").show();
 };
 var showemployer_edit = function() {
     $("#employer_edit").show();
+    getEmployerList(company_employer_edit);
 };
 var showemployer_delete = function() {
     $("#employer_delete").show();
+    getEmployerList(company_employer_delete)
 };
 
 
@@ -59,7 +66,7 @@ function selectShift(name) {
     var selector = document.getElementById(name);
 
     var allShift = findAllShift();
-
+if (selector!=null){
     while(selector.hasChildNodes()){
         selector.removeChild(selector.firstChild);
     }
@@ -75,6 +82,8 @@ function selectShift(name) {
 
         selector.appendChild(option);
     }
+}
+
 }
 
 
@@ -114,10 +123,11 @@ function selectJobs(name) {
     var selector = document.getElementById(name);
     var allJobs = findAllJobs();
 
-    while(selector.hasChildNodes()){
-        selector.removeChild(selector.firstChild);
-    }
-    selector.appendChild(document.createElement('option'));
+    if (selector!=null){
+        while(selector.hasChildNodes()){
+            selector.removeChild(selector.firstChild);
+        }
+        selector.appendChild(document.createElement('option'));
 
     for (var i = 0; i < findAllJobs().length; i++) {
         var currentJob = allJobs.pop();
@@ -126,15 +136,15 @@ function selectJobs(name) {
         option.appendChild(document.createTextNode(name1));
         option.value = currentJob[0];
         selector.appendChild(option);
-
+        }
     }
-    getJobList();
 }
 
 function selectJobadress(name) {
     var selector = document.getElementById(name);
     var allJobadress = findAllJobaddress();
 
+    if (selector!=null) {
     while(selector.hasChildNodes()){
         selector.removeChild(selector.firstChild);
     }
@@ -148,6 +158,7 @@ function selectJobadress(name) {
         option.value = currentJobadress[4];
         selector.appendChild(option);
     }
+}
 }
 
 function shifts() {
@@ -676,15 +687,14 @@ function generateUserHTML(job){
         '</option>';
 }
 
-function getJobList() {
-    console.log("Test");
+function getJobList(input) {
     $.ajax({
         method: "GET",
         url: "/MyHours/DBController/getJobList",
         dataType: "JSON",
         success: function(response) {
             var option = '';
-            $.each(response, function(i, job) {
+            $.each(response, function(i) {
                /* console.log(response[i]);
                 console.log("jobID: " + response[i]['jobID']);
                 console.log("employerID: " + response[i]['employerID']);
@@ -696,7 +706,26 @@ function getJobList() {
                     '</option>';
 
             });
-            $('#joblist').html(option);
+            switch (input) {
+                case joblist:
+                    $('#joblist').html(option);
+                    break;
+
+                case select_job_edit:
+                    $('#select_job_edit').html(option);
+                    getEmployerList(company_job_edit)
+                    break;
+
+                case activity_edit_joblist:
+                    $('#activity_edit_joblist').html(option);
+                    getActivityList(activitylist_edit);
+                    break;
+
+                case select_job_delete:
+                    $('#select_job_delete').html(option);
+                    break;
+            }
+
         },
         error: function() {
             console.log("Error loading jobs");
@@ -704,16 +733,30 @@ function getJobList() {
     });
 }
 
-function getActivityList() {
+function getActivityList(input) {
     $.ajax({
         method: "GET",
         url: "/MyHours/DBController/getActivityList",
         dataType: "JSON",
         success: function(response) {
-            $.each(response, function(i, activity) {
-                $("#select").append(generateJobHTML(activity));
+            var option = '';
+            $.each(response, function(i) {
+
+                var start = response[i]['startingDateTime'];
+                var end = response[i]['endingDateTime'];
+
+                option += '<option>' + start + end + response[i]['activityValue'] +'</option>';
 
             });
+            switch (input) {
+                case activitylist_edit:
+                    $('#activitylist_edit').html(option);
+                    break;
+
+                case activitylist_delete:
+                    $('#activitylist_delete').html(option);
+                    break;
+        }
         },
         error: function() {
             console.log("Error loading activities");
@@ -721,16 +764,37 @@ function getActivityList() {
     });
 }
 
-function getEmployerList() {
+//TODO Ser ikke ud til at den virker
+function getEmployerList(input) {
     $.ajax({
         method: "GET",
         url: "/MyHours/DBController/getEmployerList",
         dataType: "JSON",
         success: function(response) {
-            $.each(response, function(i, employer) {
-                $("#select").append(generateJobHTML(employer));
+            var option = '';
+            $.each(response, function(i) {
+
+                option += '<option>' + response[i]['name'] +
+                    '</option>';
 
             });
+            switch (input) {
+                case company_job_add:
+                    $('#company_job_add').html(option);
+                    break;
+
+                case company_job_edit:
+                    $('#company_job_edit').html(option);
+                    break;
+
+                case company_employer_edit:
+                    $('#company_employer_edit').html(option);
+                    break;
+
+                case company_employer_delete:
+                    $('#company_employer_delete').html(option);
+                    break;
+            }
         },
         error: function() {
             console.log("Error loading employers");
