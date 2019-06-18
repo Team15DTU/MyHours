@@ -25,7 +25,7 @@ public class ArrayDBController implements IDBController {
     -------------------------- Fields --------------------------
      */
     
-    public ArrayList<IWorkerDTO> workerList;
+    private static ArrayList<IWorkerDTO> workerList;
     
     /*
     ----------------------- Constructor -------------------------
@@ -222,37 +222,75 @@ public class ArrayDBController implements IDBController {
 
     @Override
     public void createJob(JobDTO job) throws DALException {
-
+        for (IWorkerDTO workerDTO : workerList) {
+            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){
+                if (job.getEmployerID() == employerDTO.getEmployerID()) {
+                    employerDTO.getIJobList().add(job);
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     public IJobDTO getIJobDTO(int id) {
-        return null;
+        IJobDTO jobDTOToReturn = new JobDTO();
+        for (IWorkerDTO workerDTO : workerList) {
+            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){
+                for (IJobDTO jobDTO : employerDTO.getIJobList()) {
+                    if (jobDTO.getJobID() == id) {
+                        jobDTOToReturn = jobDTO;
+                        break;
+                    }
+                }
+            }
+        }
+        return jobDTOToReturn;
     }
 
     @Override
     public List<IJobDTO> getIJobDTOList() {
-        return null;
+        List<IJobDTO> fullJobList = new ArrayList<>();
+        for (IWorkerDTO workerDTO : workerList) {
+            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
+                fullJobList.containsAll(employerDTO.getIJobList());
+            }
+        }
+        return fullJobList;
     }
 
     @Override
     public List<IJobDTO> getIJobDTOList(int employerID) {
-        return null;
-    }
+        List<IJobDTO> listToReturn = new ArrayList<>();
+        for (IWorkerDTO workerDTO : workerList) {
+            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){
+                if (employerDTO.getEmployerID() == employerID) {
+                    listToReturn = employerDTO.getIJobList();
+                }
+            }
+        }
+        return listToReturn;
+     }
 
-    @Override
+    @Override // TODO: Der her kan jeg ikke se hvad skal bruges til? Hvilket navn er det? Employer? Job? Worker?
     public List<IJobDTO> getIJobDTOList(String name) {
         return null;
     }
 
-    @Override
+    @Override // TODO: Det her giver ikke mening?
     public List<IJobDTO> getIJobDTOList(double minSalary, double maxSalary) {
         return null;
     }
 
     @Override
     public boolean updateJob(IJobDTO jobDTO) {
-        return false;
+        boolean success = false;
+        for (IWorkerDTO workerDTO : workerList) {
+
+        }
+
+
+        return success;
     }
 
     @Override
