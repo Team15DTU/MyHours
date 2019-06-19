@@ -115,11 +115,11 @@
         <span onclick="hideModal()" class="close2">&times;</span>
     <form id="addActivity">
         <div class="form_per">
-            <label><b>Which job contains the Activity? )</b></label> <br>
+            <label><b>Which job contains the Activity?</b></label> <br>
             <!--
             <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobID" required>
             -->
-            <select id="joblist">
+            <select id="joblist" required>
             </select>
 
             <br>
@@ -130,8 +130,12 @@
             <label><b>End(ID)</b></label> <br>
             <input class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="endingDateTime" required>
 
+            <label><b>Pause</b></label>
+            <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="break">
+
+
             <label><b>Earnings</b></label>
-            <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="activityValue" required>
+            <input class="w3-input w3-border" type="number" placeholder="Enter your ernings" name="activityValue" required>
 
             <button  type="submit" name="addShift" value="submit" id="shiftadder" class="submit" onclick="addActivity();getJobList(joblist);">Save Activity</button>
         </div>

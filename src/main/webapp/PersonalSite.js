@@ -214,21 +214,25 @@ var checkMenu3 = function() {
 function addActivity(){
 
     event.preventDefault();
-    var userJson = $("#addActivity").serializeJSON();
-    var parsedString = userJson.replace(/@\{(\w+)\}/g, function(match, group) {
+    /*var activity = $("#joblist").val();
+    $("#joblist").val(activity);
+    var userJson =  JSON.parse(JSON.stringify(activity)+" "+$("#addActivity").serializeJSON());
+    /*var parsedString = userJson.replace(/@\{(\w+)\}/g, function(match, group) {
         if (group === 'startingDateTime') {
             return new Date();
         }
         else if (group === 'endingDateTime') {
             return new Date();
         } //and so on
-    });
-    console.log(parsedString);
+    });*/
+
+    let userJson = {jobID:1,startingDateTime:"2019-06-19T22:34",endingDateTime:"2019-06-19T22:38",pause:0,activityValue:555};
+    console.log(userJson);
 
     $.ajax({
         method: 'POST',
         url : "/MyHours/DBController/createActivity",
-        data : parsedString,
+        data : userJson,
         contentType: "application/json",
         success : function(){
             alert("Created Activity");
