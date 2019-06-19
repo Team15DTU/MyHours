@@ -61,13 +61,12 @@ public class TestDataController {
     private static Color employerNo1_color = Color.decode("#FAEBD7");
     private static String employerNo1_telephone = "12345678";
 
-
     // endregion
 
     // region EmployerDTO No. 2
     private static String employerNo2_name = "EmployerName2";
-    private static Color employerNo2_color = Color.decode("#55a7e4");
-    private static String employerNo2_telephone = "87654321";
+    private static Color employerNo2_color = null;
+    private static String employerNo2_telephone = null;
 
     // endregion
 

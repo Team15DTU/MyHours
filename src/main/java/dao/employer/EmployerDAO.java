@@ -69,7 +69,13 @@ public class EmployerDAO implements IEmployerDAO {
                 iEmployerDTOToReturn.setEmployerID(resultSet.getInt(EmployerConstants.id));
                 iEmployerDTOToReturn.setWorkerID(resultSet.getInt(EmployerConstants.workerID));
                 iEmployerDTOToReturn.setName(resultSet.getString(EmployerConstants.employerName));
-                iEmployerDTOToReturn.setColor(Color.decode("#"+resultSet.getString(EmployerConstants.color)));
+
+                if (resultSet.getString(EmployerConstants.color) != null) {
+                    iEmployerDTOToReturn.setColor(Color.decode("#"+resultSet.getString(EmployerConstants.color)));
+                } else {
+                    iEmployerDTOToReturn.setColor(null);
+                }
+
                 iEmployerDTOToReturn.setTelephone(resultSet.getString(EmployerConstants.tlf));
             }
 
@@ -166,8 +172,16 @@ public class EmployerDAO implements IEmployerDAO {
 
             pStatement.setInt(1, employerDTO.getWorkerID());
             pStatement.setString(2, employerDTO.getName());
-            pStatement.setString(3, colorHEXToString(employerDTO.getColor()));
-            pStatement.setString(4, employerDTO.getTelephone());
+            if (employerDTO.getColor() != null) {
+                pStatement.setString(3, colorHEXToString(employerDTO.getColor()));
+            } else {
+                pStatement.setString(3, null);
+            }
+            if (employerDTO.getTelephone() != null){
+                pStatement.setString(4, employerDTO.getTelephone());
+            } else {
+                pStatement.setString(4, null);
+            }
 
             pStatement.executeUpdate();
 
@@ -204,8 +218,18 @@ public class EmployerDAO implements IEmployerDAO {
             PreparedStatement pStatement = c.prepareStatement(updateQuery);
 
             pStatement.setString(1, employerDTO.getName());
-            pStatement.setString(2, colorHEXToString(employerDTO.getColor()));
-            pStatement.setString(3, employerDTO.getTelephone());
+
+            if (employerDTO.getColor() != null){
+                pStatement.setString(2, colorHEXToString(employerDTO.getColor()));
+            } else {
+                pStatement.setString(2, null);
+            }
+            if (employerDTO.getTelephone() != null){
+                pStatement.setString(3, employerDTO.getTelephone());
+            } else {
+                pStatement.setString(3, null);
+            }
+
             pStatement.setInt(4, employerDTO.getEmployerID());
 
             pStatement.executeUpdate();
@@ -249,10 +273,13 @@ public class EmployerDAO implements IEmployerDAO {
      */
 
     private String colorHEXToString (Color colour) {
+
         String hexColour = Integer.toHexString(colour.getRGB() & 0xffffff);
-        if (hexColour.length() < 6) {
-            hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
-        }
+            if (hexColour.length() < 6) {
+                hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+            }
+
         return hexColour;
+
     }
 }
