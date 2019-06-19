@@ -1,7 +1,6 @@
 // Check session if session is active
 $(window).on('load', checkSession);
 
-
 //region modal
 var modalid = ["#shift_add","#shift_edit","#shift_delete","#job_add","#job_edit","#job_delete","#employer_add","#employer_edit","#employer_delete"];
 
@@ -59,184 +58,51 @@ var showemployer_delete = function() {
 
 //endregion
 
-//Dette er metoderne til tabellen
-function selectShift(name) {
-
-
-    var selector = document.getElementById(name);
-
-    var allShift = findAllShift();
-if (selector!=null){
-    while(selector.hasChildNodes()){
-        selector.removeChild(selector.firstChild);
-    }
-    selector.appendChild(document.createElement('option'));
-
-    while(allShift.length > 0) {
-
-        var currentShift = allShift.pop();
-        var option = document.createElement('option');
-        var name1 = currentShift[2].getDate() + '/' + (currentShift[2].getMonth()+1) + ' at ' + currentShift[2].getHours() + ':' + currentShift[2].getMinutes() + ' to ' + currentShift[3].getHours() + ':' + currentShift[3].getMinutes();
-        option.appendChild(document.createTextNode(name1));
-        option.value = currentShift[0];
-
-        selector.appendChild(option);
-    }
-}
-
-}
-
-
-function currentShiftToEdit() {
-
-    var mylist = document.getElementById('select');
-    var shift = findShift(mylist.options[mylist.selectedIndex].value);
-
-
-
-    document.getElementById('shiftEditInfo').innerHTML = ' i ' + findJob(shift[1])[2];
 /*
-    var shiftEditStart = shift[2].getFullYear() + '-' + (shift[2].getMonth()-1) + '-' + shift[2].getDate() + 'T' + shift[2].getHours + ':' + shift[2].getMinutes;
-
-    Begge disse 2 variabler skal ændre value til en html "dateTime-local" værdi.
-
-    document.getElementById('shift_edit_start').value = shiftEditStart;
-    document.getElementById('shift_edit_end').value = shiftEditStart;
-*/
-    document.getElementById('shift_edit_break').value = shift[4];
-
-}
-
-function deleteShiftFromHTTP() {
-    var mylist = document.getElementById('select3');
-    deleteShift(mylist.options[mylist.selectedIndex].value);
-}
-
-function deleteJobFromHTTP() {
-    var mylist = document.getElementById('select_job_delete');
-    deleteJob(mylist.options[mylist.selectedIndex].value);
-}
-
-
-
 function selectJobs(name) {
     var selector = document.getElementById(name);
-    var allJobs = findAllJobs();
+    $.ajax({
+        method: "GET",
+        url:"/MyHours/DBController/getJobList",
+        dataType: "JSON",
+        success: function (result) {
+            anychart.onDocumentReady(function() {
 
-    if (selector!=null){
-        while(selector.hasChildNodes()){
-            selector.removeChild(selector.firstChild);
+                var today = new Date();
+                var month = String(today.getMonth());
+                var year = today.getFullYear();
+
+                var nrOfDays = daysInMonth(month,year);
+
+                var allJobs = [];
+
+                $.each(result, function(i) {
+
+                    var jobDetails = [result[i]['jobID'], result[i]['employerID'], result[i]['jobName'], result[i]['stdSalary'], new Date(), 'Insert activity name'];
+                    allJobs.push(jobDetails);
+                });
+
+                if (selector!=null){
+                    while(selector.hasChildNodes()){
+                        selector.removeChild(selector.firstChild);
+                    }
+                    selector.appendChild(document.createElement('option'));
+
+                    for (var i = 0; i < findJobArray.length; i++) {
+                        var currentJob = allJobs.pop();
+                        var option = document.createElement('option');
+                        var name1 = currentJob[2];
+                        option.appendChild(document.createTextNode(name1));
+                        option.value = currentJob[0];
+                        selector.appendChild(option);
+                    }
+                }
+
+            });
         }
-        selector.appendChild(document.createElement('option'));
-
-    for (var i = 0; i < findAllJobs().length; i++) {
-        var currentJob = allJobs.pop();
-        var option = document.createElement('option');
-        var name1 = currentJob[2];
-        option.appendChild(document.createTextNode(name1));
-        option.value = currentJob[0];
-        selector.appendChild(option);
-        }
-    }
+    });
 }
-
-function selectJobadress(name) {
-    var selector = document.getElementById(name);
-    var allJobadress = findAllJobaddress();
-
-    if (selector!=null) {
-    while(selector.hasChildNodes()){
-        selector.removeChild(selector.firstChild);
-    }
-    selector.appendChild(document.createElement('option'))
-
-    for (var i = 0; i < findAllJobaddress().length; i++) {
-        var currentJobadress = allJobadress.pop();
-        var option = document.createElement('option');
-        var name1 = findJob(currentJobadress[4])[2];
-        option.appendChild(document.createTextNode(name1));
-        option.value = currentJobadress[4];
-        selector.appendChild(option);
-    }
-}
-}
-
-function shifts() {
-
-    var table = document.getElementById('left_table');
-    while(table.hasChildNodes()){
-        table.removeChild(table.firstChild);
-    }
-
-    var vagt = 'Vagt';
-    var job = 'Job';
-    var salary = 'Løn';
-
-    var row = table.insertRow(0);
-    row.insertCell(0).innerHTML = vagt.bold();
-    row.insertCell(1).innerHTML = job.bold();
-    row.insertCell(2).innerHTML = salary.bold();
-    var i;
-
-    for (i = 0; i < 3; i++){
-        var row2 = table.insertRow(i+1);
-
-        var shiftStart = findShift(i)[2];
-        var shiftEnd = findShift(i)[3];
-
-
-        var shiftStartString = shiftStart.getDate() + '/' + (shiftStart.getMonth()+1) + ' ' + with_leading_zeros(shiftStart.getHours()) + ':' + with_leading_zeros(shiftStart.getMinutes()) + ' - ' +with_leading_zeros(shiftEnd.getHours()) + ':' + with_leading_zeros(shiftEnd.getMinutes());
-
-
-        row2.insertCell(0).innerHTML = shiftStartString;
-        row2.insertCell(1).innerHTML = findJob(i)[2];
-        row2.insertCell(2).innerHTML = findPaycheck(i);
-    }
-
-}
-
-function job() {
-
-    var table = document.getElementById('left_table');
-    while(table.hasChildNodes()){
-        table.removeChild(table.firstChild);
-    }
-    var firm = 'Firma';
-    var lastpay = 'Sidste udbetaling';
-    var recivepay = 'Optjent løn';
-
-
-    var row = table.insertRow(0);
-    row.insertCell(0).innerHTML = firm.bold();
-    row.insertCell(1).innerHTML = lastpay.bold();
-    row.insertCell(2).innerHTML = recivepay.bold();
-    var i;
-
-    for (i = 0; i < 1; i++){
-        var row2 = table.insertRow(i+1);
-        row2.insertCell(0).innerHTML = findJob(i)[2];
-        row2.insertCell(1).innerHTML = lastPaycheck(findJob(i)[0])+' Kr.';
-        row2.insertCell(2).innerHTML = estimatePaycheck(i)+' Kr.';
-    }
-}
-
-function workplace() {
-    var table = document.getElementById('left_table');
-    while(table.hasChildNodes()){
-        table.removeChild(table.firstChild);
-    }
-
-    var firm = 'Firma';
-
-    var row = table.insertRow(0);
-    row.insertCell(0).innerHTML = firm.bold();
-    var i;
-
-    for (i = 0; i < 3; i++){
-        var row2 = table.insertRow(i+1);
-        row2.insertCell(0).innerHTML = findJob(i)[2];
-    }
-}
+*/
 
 function none() {
     var table = document.getElementById('left_table');
@@ -247,12 +113,6 @@ function none() {
 
 
 //her er de metoder til  felterne som skal snakke med serveren
-
-
-function findNrOfCompanys() {
-    return 3;
-}
-
 
 function lastPaycheck(nr) {
     return 2500;
@@ -283,35 +143,6 @@ function findShift(id) {
     return 'shift';
 }
 
-function findAllShift(nr) {
-    var allShift = [];
-
-    for (var i = 0; i < 5; i++) {
-        var endDate = new Date();
-        var startDate = new Date();
-
-        var shift = [i, 0, startDate, endDate, 30, findJob(i)[2]]
-        allShift.push(shift);
-    }
-
-
-    return allShift;
-
-}
-
-function findAllJobaddress(nr) {
-    var allCompany = [];
-
-    for (var i = 0; i < 3; i++) {
-        var streetname = 'Elektro vej';
-        var company = [streetname, i, 2800, 'Lyngby', findJob(i)[0]];
-        allCompany.push(company);
-    }
-
-
-    return allCompany;
-}
-
 function findJob(userid) {
 
     if (userid == 0){
@@ -329,41 +160,9 @@ function findJob(userid) {
 
 }
 
-
-function findWorkplace(nr) {
-    if (nr == 0) {return 'kvikly'}
-    else if (nr == 1) {return 'fakta'}
-    else if (nr == 2) {return 'irma'}
-    else if (nr == 3) {return 'Vektor'}
-}
-
-function findAllJobs(userID) {
-
-    var jobs = [];
-    var kvikly = [0, 66, 'Kvikly', 110, new Date(), 'Flaske dreng'];
-    var fakta = [1, 66, 'Fakta', 115, new Date(), 'Kasse assistent'];
-    var irma = [2, 66, 'Irma', 110, new Date(), 'service medarbejder'];
-    var studieStarten = [3, 66, 'Studie starten', 115, new Date(), 'Vektor'];
-
-    jobs.push(kvikly);
-    jobs.push(fakta);
-    jobs.push(irma);
-    jobs.push(studieStarten);
-
-    return jobs;
-}
-
-
-function deleteShift(shiftID) {
-
-}
-
-
-
 function findPaycheck(nr) {
     return '444 kr.'
 }
-
 
 //her er graferne
 
@@ -382,10 +181,6 @@ function with_leading_zeros(dt)
 {
     return (dt < 10 ? '0' : '') + dt;
 }
-
-
-
-
 
 
 // Show only one item at a time in the menu
@@ -551,27 +346,6 @@ function editJob(){
     console.log(userJson);
 }
 
-function editUser(){
-
-    event.preventDefault();
-    var userJson = $("").serializeJSON();
-    $.ajax({
-        method: 'PUT',
-        url : "/MyHours/DBController/editUser",
-        data : userJson,
-        contentType: "application/json",
-        success : function(data){
-            alert(data);
-            console.log("Success!");
-        },
-        error: function(jqXHR, text, error){
-            alert(jqXHR.status + text + error);
-            console.log("Failed to edit User!")
-        }
-    });
-    console.log(userJson);
-}
-
 function deleteActivity() {
     event.preventDefault();
 
@@ -688,6 +462,172 @@ function checkSession() {
     });
 }
 
+function updateGraf(choice){
+    $.ajax({
+        method: "GET",
+        url:"/MyHours/DBController/getJobList",
+        dataType: "JSON",
+        success: function (result) {
+            anychart.onDocumentReady(function() {
+
+                var today = new Date();
+                var month = String(today.getMonth());
+                var year = today.getFullYear();
+
+                var nrOfDays = daysInMonth(month,year);
+
+                var findJobArray = [];
+
+                $.each(result, function(i) {
+                    var jobDetails = [result[i]['jobID'], result[i]['employerID'], result[i]['jobName'], result[i]['stdSalary'], new Date(), 'Insert activity name'];
+                    findJobArray.push(jobDetails);
+                });
+
+                // set the data
+                var data = {
+                    header: ["Date", "Hours"]
+                };
+
+                //her finder jeg alle de job som er forbundet med brugeren.
+                var nrOfJobs = [];
+                //TODO: Her skal vi erstatte vores data. findAllJobs finder alle jobs og den resterende funktion laver grafen
+                for (var loop = 0; loop < findJobArray.length ;loop++) {
+                    nrOfJobs[loop] = findJobArray[loop][0];
+                }
+
+                month++;
+
+                //laver dataset
+                var dataSets = [];
+
+                for (var l=0;l<nrOfJobs.length;l++) {
+                    var dataSet = anychart.data.set(data);
+                    for (i = 0; i < nrOfDays; i++) {
+                        var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
+                        dataSet.append([name, hoursOfWork()]);
+                    }
+                    dataSets[l] = dataSet;
+                }
+
+                // create the chart
+                var chart = anychart.column();
+                chart.animation(true);
+
+                var serieSet = [];
+
+                //laver dataen til serie sæt.
+
+                for (var r = 0; r<dataSets.length; r++) {
+                    serieSet[r] = dataSets[r].mapAs({'x': 0, 'value': 1})
+                }
+
+                chart.yScale().stackMode('value');
+
+                // add the data
+                for (var c = 0; c<serieSet.length; c++){
+                    chart.column(serieSet[c]);
+                }
+
+
+                var i=0;
+                // create a loop
+                while (chart.getSeriesAt(i)){
+                    // rename each series
+                    chart.getSeriesAt(i).name(findJob(nrOfJobs[i])[2]);
+                    i++;
+                }
+
+                // set the chart title
+                chart.title("Hours of activities");
+
+                // draw
+                chart.container("graph");
+                chart.draw();
+            });
+
+            //TODO THIS IS FOR SHIFT
+
+            switch (choice) {
+                case "shiftInfo":
+                    var table = document.getElementById('left_table');
+                    while(table.hasChildNodes()){
+                        table.removeChild(table.firstChild);
+                    }
+
+                    var vagt = 'Time';
+                    var job = 'Job';
+                    var salary = 'Salary';
+
+                    var row = table.insertRow(0);
+                    row.insertCell(0).innerHTML = vagt.bold();
+                    row.insertCell(1).innerHTML = job.bold();
+                    row.insertCell(2).innerHTML = salary.bold();
+                    var i;
+
+                    for (i = 0; i < 3; i++){
+                        var row2 = table.insertRow(i+1);
+
+                        var shiftStart = findShift(i)[2];
+                        var shiftEnd = findShift(i)[3];
+
+
+                        var shiftStartString = shiftStart.getDate() + '/' + (shiftStart.getMonth()+1) + ' ' + with_leading_zeros(shiftStart.getHours()) + ':' + with_leading_zeros(shiftStart.getMinutes()) + ' - ' +with_leading_zeros(shiftEnd.getHours()) + ':' + with_leading_zeros(shiftEnd.getMinutes());
+
+
+                        row2.insertCell(0).innerHTML = shiftStartString;
+                        row2.insertCell(1).innerHTML = findJob(i)[2];
+                        row2.insertCell(2).innerHTML = findPaycheck(i);
+                    }
+                    break;
+
+                case "jobInfo":
+                    var table = document.getElementById('left_table');
+                    while(table.hasChildNodes()){
+                        table.removeChild(table.firstChild);
+                    }
+                    var firm = 'Employer';
+                    var lastpay = 'Last payout';
+                    var recivepay = 'Total earnings';
+
+
+                    var row = table.insertRow(0);
+                    row.insertCell(0).innerHTML = firm.bold();
+                    row.insertCell(1).innerHTML = lastpay.bold();
+                    row.insertCell(2).innerHTML = recivepay.bold();
+                    var i;
+
+                    for (i = 0; i < 1; i++){
+                        var row2 = table.insertRow(i+1);
+                        row2.insertCell(0).innerHTML = findJob(i)[2];
+                        row2.insertCell(1).innerHTML = lastPaycheck(findJob(i)[0])+' Kr.';
+                        row2.insertCell(2).innerHTML = estimatePaycheck(i)+' Kr.';
+                    }
+                    break;
+
+                case "employerInfo":
+
+                    var table = document.getElementById('left_table');
+                    while(table.hasChildNodes()){
+                        table.removeChild(table.firstChild);
+                    }
+
+                    var firm = 'Employer';
+
+                    var row = table.insertRow(0);
+                    row.insertCell(0).innerHTML = firm.bold();
+                    var i;
+
+                    for (i = 0; i < 3; i++){
+                        var row2 = table.insertRow(i+1);
+                        row2.insertCell(0).innerHTML = findJob(i)[2];
+                    }
+                    break;
+            }
+        }
+    });
+}
+
+
 function getJobList(input) {
     $.ajax({
         method: "GET",
@@ -696,13 +636,13 @@ function getJobList(input) {
         success: function(response) {
             var option = '';
             $.each(response, function(i) {
-               /* console.log(response[i]);
-                console.log("jobID: " + response[i]['jobID']);
-                console.log("employerID: " + response[i]['employerID']);
-                console.log("jobName: " + response[i]['jobName']);
-                console.log("stdSalary: " + response[i]['stdSalary']);
-*/
-
+                /*
+                console.log(response[i]);
+                console.log(response[i]['jobID']);
+                console.log(response[i]['employerID']);
+                console.log(response[i]['jobName']);
+                console.log(response[i]['stdSalary']);
+                */
                 option += '<option>' + response[i]['jobName'] +
                     '</option>';
 
@@ -819,9 +759,9 @@ function logOut() {
 
 
 //her er delene som fremkalder content.
-function openInfo() {
+function openInfo(openBox) {
     $('#popup_content').show();
-    hoursOnWorkMounthly();
+    updateGraf(openBox);
 }
 
 function closeInfo() {
@@ -833,21 +773,18 @@ function closeInfo() {
 function changeFunction(site) {
     if (site === 'shifts' && $('#myid1').prop('checked')) {
         header('Shifts');
-        shifts();
         checkMenu1();
-        openInfo();
+        openInfo('shiftInfo');
         //console.log(site);
     } else if (site === 'job' && $('#myid2').prop('checked')) {
         header('Job');
-        job();
         checkMenu2();
-        openInfo();
+        openInfo('jobInfo');
         //console.log(site);
     } else if (site === 'workplace' && $('#myid3').prop('checked')) {
         header('Workplace');
-        workplace();
         checkMenu3();
-        openInfo();
+        openInfo('employerInfo');
         //console.log(site);
     } else if (site === 'none' && $('#myid').prop('checked')) {
         header('');
@@ -873,80 +810,4 @@ function header(head) {
     }
 }
 
-function hoursOnWorkMounthly(){
-    anychart.onDocumentReady(function() {
 
-
-        var today = new Date();
-        var month = String(today.getMonth());
-        var year = today.getFullYear();
-
-        var nrOfDays = daysInMonth(month,year);
-
-        // set the data
-        var data = {
-            header: ["Date", "Hours"]
-        };
-
-        //her finder jeg alle de job som er forbundet med brugeren.
-        var nrOfJobs = [];
-        //TODO: Her skal vi erstatte vores data. findAllJobs finder alle jobs og den resterende funktion laver grafen
-        for (var loop = 0; loop < findAllJobs().length ;loop++) {
-            nrOfJobs[loop] = findAllJobs()[loop][0];
-        }
-
-        month++;
-
-        //laver dataset
-        var dataSets = [];
-
-        for (var l=0;l<nrOfJobs.length;l++) {
-            var dataSet = anychart.data.set(data);
-            for (i = 0; i < nrOfDays; i++) {
-                var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
-                dataSet.append([name, hoursOfWork()]);
-            }
-            dataSets[l] = dataSet;
-        }
-
-
-
-
-        // create the chart
-        var chart = anychart.column();
-        chart.animation(true);
-
-        var serieSet = [];
-
-        //laver dataen til serie sæt.
-
-        for (var r = 0; r<dataSets.length; r++) {
-            serieSet[r] = dataSets[r].mapAs({'x': 0, 'value': 1})
-        }
-
-        chart.yScale().stackMode('value');
-
-
-
-        // add the data
-        for (var c = 0; c<serieSet.length; c++){
-            chart.column(serieSet[c]);
-        }
-
-
-        var i=0;
-        // create a loop
-        while (chart.getSeriesAt(i)){
-            // rename each series
-            chart.getSeriesAt(i).name(findJob(nrOfJobs[i])[2]);
-            i++;
-        }
-
-        // set the chart title
-        chart.title("Hours of activities");
-
-        // draw
-        chart.container("graph");
-        chart.draw();
-    });
-}
