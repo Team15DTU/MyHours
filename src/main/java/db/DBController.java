@@ -593,7 +593,12 @@ public class DBController implements IDBController
 
             pStatement.executeUpdate();
 
-        } catch (SQLException e) {
+        }
+		catch ( DALException e )
+		{
+			System.err.println( String.format("ERROR: createEmployer() - %s", e.getMessage()) );
+		}
+		catch (SQLException e) {
             connectionHelper.catchSQLExceptionAndDoRollback(c, e, "DBController.createEmployer");
         }
 		finally
@@ -719,20 +724,21 @@ public class DBController implements IDBController
 	@Path("/createJob")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createJob(JobDTO job) throws DALException {
-
-        Connection c = connPool.getConn();
-
-        String createQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
+    public void createJob(IJobDTO job) {
+		
+		
+		String createQuery = String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
                 JobConstants.TABLENAME,
                 JobConstants.employerID,    // ParameterIndex 1
                 JobConstants.jobName,       // ParameterIndex 2
                 JobConstants.hireDate,      // ParameterIndex 3
                 JobConstants.finishDate,    // ParameterIndex 4
                 JobConstants.salary);       // ParameterIndex 5
-
-        try {
-
+		
+		Connection c = null;
+		try {
+			c = connPool.getConn();
+			
             PreparedStatement pStatement = c.prepareStatement(createQuery);
 
             pStatement.setInt(1, job.getEmployerID());
@@ -755,7 +761,10 @@ public class DBController implements IDBController
             pStatement.executeUpdate();
 
 
-        } catch (SQLException e) {
+        }
+		catch ( DALException e ) {
+			System.err.println( String.format("ERROR: createJob() - %s" , e.getMessage()) );
+		} catch (SQLException e) {
             connectionHelper.catchSQLExceptionAndDoRollback(c,e, "DBController.createJob");
         } finally {
             connectionHelper.finallyActionsForConnection(c, "DBController.createIJob");
@@ -871,19 +880,19 @@ public class DBController implements IDBController
 	@Path("/createActivity")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createActivity(ActivityDTO activity) throws DALException {
-        System.out.println(activity);
-        Connection c = connPool.getConn();
-
-        String createQuery = String.format("INSERT INTO %s (%s,%s,%s,%s,%s) VALUES (?,?,?,?,?)",
+    public void createActivity(IActivityDTO activity) {
+		
+		String createQuery = String.format("INSERT INTO %s (%s,%s,%s,%s,%s) VALUES (?,?,?,?,?)",
                 ActivityConstants.TABLENAME,
                 ActivityConstants.jobID,                // ParameterIndex 1
                 ActivityConstants.startDateTime,        // ParameterIndex 2
                 ActivityConstants.endDateTime,          // ParameterIndex 3
                 ActivityConstants.pause,                // ParameterIndex 4
                 ActivityConstants.activityValue);       // ParameterIndex 5
-
-        try {
+		
+		Connection c = null;
+		try {
+			c = connPool.getConn();
 
             PreparedStatement preparedStatement = c.prepareStatement(createQuery);
             preparedStatement.setInt(1,activity.getJobID());
@@ -895,10 +904,16 @@ public class DBController implements IDBController
             preparedStatement.executeUpdate();
 
 
-        } catch (SQLException e){
+        }
+		catch ( DALException e )
+		{
+			System.err.println( String.format("ERROR: createActivity() - %s", e.getMessage()) );
+		}
+		catch ( SQLException e ) {
             connectionHelper.catchSQLExceptionAndDoRollback(c,e, "DBController.createiActivity");
         } finally {
-            connectionHelper.finallyActionsForConnection(c,"DBController.createiActivity");
+			if ( c != null )
+            	connectionHelper.finallyActionsForConnection(c,"DBController.createiActivity");
         }
     }
     
