@@ -173,6 +173,18 @@ public class ArrayDBControllerTest
 		assertTrue(worker1.getIEmployers().contains(employerDTO13));
 		assertTrue(worker2.getIEmployers().contains(employerDTO21));
 		
+		// Check that they doesn't have the same ID
+		List<IEmployerDTO> list = controller.getIEmployerList();
+		int size = list.size(); IEmployerDTO employer;
+		for ( int i=0; i<size; i++ )
+		{
+			employer = list.get(i);
+			for ( int j=i+1; j<size; j++ )
+			{
+				assertTrue(employer.getEmployerID() != list.get(j).getEmployerID());
+			}
+		}
+		
 	}
 	
 	@Test
