@@ -1,5 +1,7 @@
 package dto.activity;
 
+import dto.job.IJobDTO;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -100,7 +102,13 @@ public class ActivityDTO implements IActivityDTO {
     ---------------------- Public Methods -----------------------
      */
     
-    
+    public void calculateActivityValue(IJobDTO jobDTO) {
+        double stdSalaryPrMin = jobDTO.getStdSalary()/(double)60;
+
+        long payedMinutesOnShift = Duration.between(startingDateTime,endingDateTime).minus(pause).toMinutes();
+
+        activityValue = payedMinutesOnShift*stdSalaryPrMin;
+    }
     
     /*
     ---------------------- Support Methods ----------------------
