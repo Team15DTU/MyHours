@@ -126,16 +126,16 @@ function findShift(id) {
 
 
     if (id == 0) {
-       var shift = [0,1,new Date('2019-06-27T12:00:00+01:00'), new Date('2019-06-27T16:00:04+01:00'), 5, 3]
+       var shift = [0,1,new Date('2019-06-27T12:00:00+01:00'), new Date('2019-06-27T16:00:04+01:00'), 5, 3];
         return shift;
     } else if (id == 1){
-        var shift = [1,2,new Date('2019-06-28T10:00:08+01:00'), new Date('2019-06-28T20:00:16+01:00'), 10, 3]
+        var shift = [1,2,new Date('2019-06-28T10:00:08+01:00'), new Date('2019-06-28T20:00:16+01:00'), 10, 3];
         return shift;
     } else if (id == 2) {
-        var shift = [2,3,new Date(), new Date(), 20, 3]
+        var shift = [2,3,new Date(), new Date(), 20, 3];
         return shift;
     } else {
-        var shift = [3,0,new Date(), new Date(), 25, 3]
+        var shift = [3,0,new Date(), new Date(), 25, 3];
         return shift;
     }
 
@@ -545,8 +545,6 @@ function updateGraf(choice){
                 chart.draw();
             });
 
-            //TODO THIS IS FOR SHIFT
-
             switch (choice) {
                 case "shiftInfo":
                     var table = document.getElementById('left_table');
@@ -564,6 +562,7 @@ function updateGraf(choice){
                     row.insertCell(2).innerHTML = salary.bold();
                     var i;
 
+                    //TODO INSERT REAL ACTIVITY INFORMATION
                     for (i = 0; i < 3; i++){
                         var row2 = table.insertRow(i+1);
 
@@ -596,12 +595,15 @@ function updateGraf(choice){
                     row.insertCell(2).innerHTML = recivepay.bold();
                     var i;
 
-                    for (i = 0; i < 1; i++){
-                        var row2 = table.insertRow(i+1);
-                        row2.insertCell(0).innerHTML = findJob(i)[2];
-                        row2.insertCell(1).innerHTML = lastPaycheck(findJob(i)[0])+' Kr.';
-                        row2.insertCell(2).innerHTML = estimatePaycheck(i)+' Kr.';
-                    }
+                    $.each(result, function(k) {
+                        //new Date();
+                        //'Insert activity name';
+                        var row2 = table.insertRow(k+1);
+                        row2.insertCell(0).innerHTML = result[k]['jobName'];//findJob(i)[2];
+                        row2.insertCell(1).innerHTML = result[k]['stdSalary']; //lastPaycheck(findJob(k)[0])+' Kr.';
+                        row2.insertCell(2).innerHTML = estimatePaycheck(k)+' Kr.';
+                    });
+
                     break;
 
                 case "employerInfo":
