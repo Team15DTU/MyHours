@@ -678,9 +678,9 @@ public class DBController implements IDBController
             c.commit();
 
         } catch (SQLException e ) {
-            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"EmployerDAO.deleteiEmployer");
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"DBController.deleteiEmployer");
         } finally {
-            connectionHelper.finallyActionsForConnection(c,"EmployerDAO.deleteiEmployer");
+            connectionHelper.finallyActionsForConnection(c,"DBController.deleteiEmployer");
         }
 
     }
@@ -855,19 +855,17 @@ public class DBController implements IDBController
                 JobConstants.jobName);       // ParameterIndex 1
 
         try {
-            c.setAutoCommit(false);
 
             PreparedStatement preparedStatement = c.prepareStatement(deleteQuery);
             preparedStatement.setString(1, name);
 
             preparedStatement.executeUpdate();
 
-            c.commit();
 
         } catch (SQLException e) {
-            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "JobDAO.deleteIJob");
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "DBController.deleteIJob");
         } finally {
-            connectionHelper.finallyActionsForConnection(c, "JobDAO.deleteIJob");
+            connectionHelper.finallyActionsForConnection(c, "DBController.deleteIJob");
         }
     }
 	
@@ -995,9 +993,9 @@ public class DBController implements IDBController
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"ActivityDAO.updateiActivity");
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"DBController.updateiActivity");
         } finally {
-            connectionHelper.finallyActionsForConnection(c,"ActivityDAO.updateiActivity");
+            connectionHelper.finallyActionsForConnection(c,"DBController.updateiActivity");
         }
     }
 

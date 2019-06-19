@@ -566,12 +566,13 @@ function deleteActivity() {
     event.preventDefault();
 
     //get
-    var activityID = $("#activitylist_delete").attr('name');
+    var activityID = $("#activitylist_delete").val();
 
-    console.log(activityID);
+
 
     //set
     $("#activitylist_delete").val(activityID);
+
     console.log(activityID);
 
     deleteActivityByID(activityID);
@@ -677,18 +678,6 @@ function checkSession() {
     });
 }
 
-function generateUserHTML(job){
-    var deleteId = job.id;
-
-    console.log(job.id);
-
-  //  console.log("user id "+deleteId);
-    //console.log("user id" + user.id);
-
-    return 	'<option>' +  +
-        '</option>';
-}
-
 function getJobList(input) {
     $.ajax({
         method: "GET",
@@ -773,11 +762,18 @@ function getEmployerList(input) {
         url: "/MyHours/DBController/getEmployerList",
         dataType: "JSON",
         success: function(response) {
+            console.log("Ude for loopet");
+            console.log(response);
             var option = '';
+            //TODO: Fejlen ligger  at den ikke går ind i loopet fordi der ikke er noget i response
             $.each(response, function(i) {
+
+                console.log("Inde i loopet");
 
                 option += '<option>' + response[i]['name'] +
                     '</option>';
+                console.log(option);
+                console.log(response[i]['name']);
 
             });
             switch (input) {
@@ -802,6 +798,7 @@ function getEmployerList(input) {
             console.log("Error loading employers");
         }
     });
+    console.log("Du er færdig");
 }
 function logOut() {
     $.ajax({
@@ -817,13 +814,6 @@ function logOut() {
     });
 }
 
-//alternativ luk modal, med style.display
-/*var modal = document.getElementById('shift_add')
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}*/
 
 //her er delene som fremkalder content.
 function openInfo() {
@@ -911,6 +901,7 @@ function hoursOnWorkMounthly(){
 
         //her finder jeg alle de job som er forbundet med brugeren.
         var nrOfJobs = [];
+        //TODO: Her skal vi erstatte vores data. findAllJobs finder alle jobs og den resterende funktion laver grafen
         for (var loop = 0; loop < findAllJobs().length ;loop++) {
             nrOfJobs[loop] = findAllJobs()[loop][0];
         }
@@ -963,7 +954,7 @@ function hoursOnWorkMounthly(){
         }
 
         // set the chart title
-        chart.title("Hours on work");
+        chart.title("Hours of activities");
 
         // draw
         chart.container("graph");
