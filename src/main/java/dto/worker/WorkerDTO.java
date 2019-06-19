@@ -4,6 +4,7 @@ import dto.address.IAddress;
 import dto.employer.IEmployerDTO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,16 +29,19 @@ public class WorkerDTO implements IWorkerDTO {
     ----------------------- Constructor -------------------------
      */
     
-    public WorkerDTO () {}
+    public WorkerDTO ()
+    {
+        employers = new ArrayList<>();
+    }
 
     public WorkerDTO (String firstName, String surName, String email)
     {
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
+        employers = new ArrayList<>();
         birthday = null;
         homeAddress = null;
-        employers = null;
     }
     
     /**
