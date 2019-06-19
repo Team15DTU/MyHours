@@ -61,6 +61,9 @@ public class ArrayDBControllerTest
 		assertEquals(TestDataController.getTestWorkerNo2().getSurName(), controller.getWorkerList().get(1).getSurName());
 		assertEquals(TestDataController.getTestWorkerNo2().getEmail(), controller.getWorkerList().get(1).getEmail());
 		assertEquals(TestDataController.getTestWorkerNo2().getPassword(), controller.getWorkerList().get(1).getPassword());
+		
+		// Check that nobody has the same ID
+		assertFalse(controller.getWorkerList().get(0).getWorkerID() == controller.getWorkerList().get(1).getWorkerID());
 	}
 	
 	@Test
