@@ -420,10 +420,20 @@ function addActivity(){
 
     event.preventDefault();
     var userJson = $("#addActivity").serializeJSON();
+    var parsedString = userJson.replace(/@\{(\w+)\}/g, function(match, group) {
+        if (group === 'startingDateTime') {
+            return new Date();
+        }
+        else if (group === 'endingDateTime') {
+            return new Date();
+        } //and so on
+    });
+    console.log(parsedString);
+
     $.ajax({
         method: 'POST',
         url : "/MyHours/DBController/createActivity",
-        data : userJson,
+        data : parsedString,
         contentType: "application/json",
         success : function(){
             alert("Created Activity");
