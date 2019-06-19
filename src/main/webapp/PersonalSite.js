@@ -352,8 +352,6 @@ function deleteActivity() {
     //get
     var activityID = $("#activitylist_delete").val();
 
-
-
     //set
     $("#activitylist_delete").val(activityID);
 
@@ -469,6 +467,8 @@ function updateGraf(choice){
         dataType: "JSON",
         success: function (result) {
             anychart.onDocumentReady(function() {
+
+                $('#graph').empty();
 
                 var today = new Date();
                 var month = String(today.getMonth());
@@ -705,7 +705,7 @@ function getActivityList(input) {
     });
 }
 
-//TODO Ser ikke ud til at den virker
+
 function getEmployerList(input) {
     $.ajax({
         method: "GET",
