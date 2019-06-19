@@ -1,5 +1,6 @@
 package db;
 
+import dto.employer.IEmployerDTO;
 import dto.worker.IWorkerDTO;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
@@ -148,12 +149,27 @@ public class ArrayDBControllerTest
 		IWorkerDTO worker1 = controller.getIWorkerDTOList().get(0);
 		IWorkerDTO worker2 = controller.getIWorkerDTOList().get(1);
 		
+		IEmployerDTO employerDTO11 = TestDataController.getEmployerNo1(worker1);
+		IEmployerDTO employerDTO12 = TestDataController.getEmployerNo2(worker1);
+		IEmployerDTO employerDTO13 = TestDataController.getEmployerNo3(worker1);
+		IEmployerDTO employerDTO21 = TestDataController.getEmployerNo1(worker2);
+		
 		// Test that there's no employers
-		assertEquals(0, worker1.getIEmployers().size());
-		assertEquals(0, worker2.getIEmployers().size());
+		assertTrue(controller.getIWorkerDTO(worker1.getEmail()).getIEmployers().isEmpty());
+		assertTrue(controller.getIWorkerDTO(worker2.getWorkerID()).getIEmployers().isEmpty());
 		
 		// Create employers for both workers
-		controller.createEmployer(TestDataController.getEmployerNo1(worker1));
+		controller.createEmployer(employerDTO11);
+		controller.createEmployer(employerDTO12);
+		controller.createEmployer(employerDTO13);
+		controller.createEmployer(employerDTO21);
+		
+		// Check the data
+		assertTrue(worker1.getIEmployers().contains(employerDTO11));
+		assertTrue(worker1.getIEmployers().contains(employerDTO12));
+		assertTrue(worker1.getIEmployers().contains(employerDTO13));
+		assertTrue(worker2.getIEmployers().contains(employerDTO21));
+		
 	}
 	
 	@Test
