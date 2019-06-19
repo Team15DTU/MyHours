@@ -14,10 +14,6 @@ a {
     color: #eeeeee;
 }
 header{
-    /*
-    Problemet med fixed top bar ligger her, fordi hvis man fjerne position fixed, så kan man scrolle og vores topbar forbliver fixed.
-    */
-
     width: 100%;
     height: 100vh;
     background: linear-gradient(to bottom, rgba(255,255,255,.5), rgba(0,0,0,.5)), url("Images/fitness-tracker-future-futuristic-9051.jpg") center no-repeat;

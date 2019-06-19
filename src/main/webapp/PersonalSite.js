@@ -714,7 +714,7 @@ function getJobList(input) {
 
                 case select_job_edit:
                     $('#select_job_edit').html(option);
-                    getEmployerList(company_job_edit)
+                    getEmployerList(company_job_edit);
                     break;
 
                 case activity_edit_joblist:
@@ -878,10 +878,10 @@ function hoursOnWorkMounthly(){
 
 
         var today = new Date();
-        var mounth = String(today.getMonth());
+        var month = String(today.getMonth());
         var year = today.getFullYear();
 
-        var nrOfDays = daysInMonth(mounth,year);
+        var nrOfDays = daysInMonth(month,year);
 
         // set the data
         var data = {
@@ -895,7 +895,7 @@ function hoursOnWorkMounthly(){
             nrOfJobs[loop] = findAllJobs()[loop][0];
         }
 
-        mounth++;
+        month++;
 
         //laver dataset
         var dataSets = [];
@@ -903,7 +903,7 @@ function hoursOnWorkMounthly(){
         for (var l=0;l<nrOfJobs.length;l++) {
             var dataSet = anychart.data.set(data);
             for (i = 0; i < nrOfDays; i++) {
-                var name = 'Den ' + (i + 1) + '. i ' + (mounth) + '.';
+                var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
                 dataSet.append([name, hoursOfWork()]);
             }
             dataSets[l] = dataSet;

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>NewFrontPage</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="icon" href="Images/favicon.ico">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="index.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
@@ -21,10 +21,10 @@
     <div class="container">
         <nav>
             <span></span>
-            <img class ="logo" src="Images/MyHours.svg" alt="Avatar">
+            <img class="logo" src="Images/MyHours.svg" alt="Avatar">
             <ul>
                 <li><a href="AboutUs.html">About</a></li>
-                <li><a href="#">Help</a> </li>
+                <li><a href="#">Help</a></li>
             </ul>
         </nav>
     </div>
@@ -33,7 +33,7 @@
 
 
             <li class="item" id="profile">
-                <input id="myid" type="checkbox" onclick="changeFunction('none');">
+                <input id="myid" type="checkbox" onclick="changeFunction('none'); ">
 
                 <label for="myid" class="btn_menu"><i class="fas fa-user"></i>Profile</label>
                 <div class="smenu">
@@ -41,7 +41,7 @@
                 </div>
             </li>
 
-            <li class="item" id="shifts" >
+            <li class="item" id="shifts">
                 <input id="myid1" type="checkbox" onclick="changeFunction('shifts');">
 
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Activity</label>
@@ -52,7 +52,7 @@
                 </div>
             </li>
 
-            <li class="item" id="job" >
+            <li class="item" id="job">
                 <input id="myid2" type="checkbox" onclick="changeFunction('job');">
 
                 <label for="myid2" class="btn_menu"><i class="fas fa-briefcase"></i>Job</label>
@@ -62,7 +62,7 @@
                     <a href="#" onclick="showjob_delete();selectJobs('select_job_delete')">Delete</a>
                 </div>
             </li>
-            <li class="item" id="workplace" >
+            <li class="item" id="workplace">
                 <input id="myid3" type="checkbox" onclick="changeFunction('workplace');">
 
                 <label for="myid3" class="btn_menu"><i class="fas fa-building"></i>Employer</label>
@@ -79,7 +79,7 @@
     </div>
 
     <div class="popup_mid">
-        <div class="popup_content" id="popup_content" >
+        <div class="popup_content" id="popup_content">
 
             <div class="pop_top" id="pop_top2">
                 <center>
@@ -110,9 +110,7 @@
 <!-- Navne er rettet i add -->
 
 <!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
-
-
-<div id="shift_add" class="modal2" >
+<div id="shift_add" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
     <form id="addActivity">
@@ -182,7 +180,6 @@
 <!-- delete -->
 
 <!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
-
 <div id="shift_delete" class="modal2">
 <div class="modal2-content">
     <span onclick="hideModal()" class="close2">&times;</span>
@@ -204,7 +201,6 @@
 <!-- Navne er rettet i add -->
 
 <!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
-
 <div id="job_add" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
@@ -269,7 +265,6 @@
 <!-- Delete -->
 
 <!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
-
 <div id="job_delete" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
@@ -289,8 +284,6 @@
 <!-- add -->
 
 <!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
-
-
 <div id="employer_add" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
@@ -298,15 +291,15 @@
             <div class="form_per" id="addEmployer">
                 <!-- WorkerID skal fjernes -->
                 <label><b>WorkerID</b></label>
-                <input  type="text" placeholder="WorkerID" name="workerID" required>
+                <input type="text" placeholder="WorkerID" name="workerID" required>
 
                 <label><b>What is the name of your Employer?</b></label>
-                <input  type="text" placeholder="Address of your company" name="name" required>
+                <input type="text" placeholder="Address of your company" name="name" required>
 
                 <label><b>What are the phone number?</b></label>
                 <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="telephone" required>
 
-                <button  type="submit" class="submit" onclick="addEmployer()">Save Employer</button>
+                <button type="submit" class="submit" onclick="addEmployer()">Save Employer</button>
             </div>
         </form>
     </div>
@@ -315,7 +308,6 @@
 <!-- edit -->
 
 <!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
-
 <div id="employer_edit" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
@@ -329,10 +321,10 @@
             <br><br>
 
             <label><b>WorkerID</b></label>
-            <input  type="text" placeholder="WorkerID" name="workerID" required>
+            <input type="text" placeholder="WorkerID" name="workerID" required>
 
             <label><b>What is the name of your Employer?</b></label>
-            <input  type="text" placeholder="Address of your company" name="name" required>
+            <input type="text" placeholder="Address of your company" name="name" required>
 
             <label><b>What are the phone number?</b></label>
             <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="telephone" required>
@@ -346,7 +338,6 @@
 <!-- delete -->
 
 <!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
-
 <div id="employer_delete" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
@@ -359,8 +350,5 @@
         </form>
     </div>
 </div>
-
-
-
 </body>
 </html>
