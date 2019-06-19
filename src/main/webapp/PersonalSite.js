@@ -762,18 +762,12 @@ function getEmployerList(input) {
         url: "/MyHours/DBController/getEmployerList",
         dataType: "JSON",
         success: function(response) {
-            console.log("Ude for loopet");
-            console.log(response);
-            var option = '';
-            //TODO: Fejlen ligger  at den ikke går ind i loopet fordi der ikke er noget i response
-            $.each(response, function(i) {
 
-                console.log("Inde i loopet");
+            var option = '';
+            $.each(response, function(i) {
 
                 option += '<option>' + response[i]['name'] +
                     '</option>';
-                console.log(option);
-                console.log(response[i]['name']);
 
             });
             switch (input) {
@@ -798,7 +792,6 @@ function getEmployerList(input) {
             console.log("Error loading employers");
         }
     });
-    console.log("Du er færdig");
 }
 function logOut() {
     $.ajax({

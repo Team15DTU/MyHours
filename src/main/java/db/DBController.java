@@ -672,19 +672,19 @@ public class DBController implements IDBController
             c.setAutoCommit(false);
 
             PreparedStatement pStatement = c.prepareStatement(deleteQuery);
-            pStatement.setString(1, name);
+            pStatement.setString(1, name.replace("\"" , ""));
 
             pStatement.executeUpdate();
             c.commit();
 
         } catch (SQLException e ) {
-            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"DBController.deleteiEmployer");
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"DBController.deleteEmployer");
         } finally {
-            connectionHelper.finallyActionsForConnection(c,"DBController.deleteiEmployer");
+            connectionHelper.finallyActionsForConnection(c,"DBController.deleteEmployer");
         }
 
     }
-	
+
 	//endregion
     
     //region Job
@@ -857,7 +857,7 @@ public class DBController implements IDBController
         try {
 
             PreparedStatement preparedStatement = c.prepareStatement(deleteQuery);
-            preparedStatement.setString(1, name);
+            preparedStatement.setString(1, name.replace("\"" , ""));
 
             preparedStatement.executeUpdate();
 
