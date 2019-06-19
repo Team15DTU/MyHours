@@ -25,7 +25,7 @@ public interface IDBController
 	/*------------------------------------------------------------
 	| Creators                                                   |
 	-------------------------------------------------------------*/
-    void createWorker   (IWorkerDTO workerDTO) throws DALException;
+    void createWorker   (IWorkerDTO workerDTO);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -57,7 +57,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createEmployer (EmployerDTO employer) throws DALException;
+    void createEmployer (IEmployerDTO employer);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -88,7 +88,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createJob      (JobDTO job) throws DALException;
+    void createJob      (IJobDTO job);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -120,7 +120,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createActivity (ActivityDTO activity) throws DALException;
+    void createActivity (IActivityDTO activity);
     
     /*------------------------------------------------------------
     | Get singles                                                |

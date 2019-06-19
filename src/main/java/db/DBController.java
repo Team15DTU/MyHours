@@ -366,17 +366,19 @@ public class DBController implements IDBController
     @Path("/createWorker")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createWorker (IWorkerDTO workerDTO) throws DALException{
-        Connection c = connPool.getConn();
-
-        // The query to make
-        String query =
+    public void createWorker (IWorkerDTO workerDTO)
+	{
+		
+		// The query to make
+		String query =
                 String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?,?,?,?,?)",
                         WorkerConstants.TABLENAME, WorkerConstants.firstname, WorkerConstants.surname, WorkerConstants.email,
                         WorkerConstants.birthday, WorkerConstants.password);
-
-        try {
-
+		
+		Connection c = null;
+		try {
+			c = connPool.getConn();
+        	
             PreparedStatement statement = c.prepareStatement(query);
 
             statement.setString(1, workerDTO.getFirstName());
@@ -388,12 +390,17 @@ public class DBController implements IDBController
             statement.executeUpdate();
 
         }
-        catch (SQLException e) {
-            throw new DALException(e.getMessage());
-        }
-        finally {
+        catch ( Exception e )
+		{
+			System.err.println( String.format("ERROR: createWorker() - %s", e.getMessage()) );
+		}
+        finally
+		{
             // Return the Connection to the Pool
-            connPool.releaseConnection(c);
+            if ( c != null )
+			{
+				connPool.releaseConnection(c);
+			}
         }
     }
     
@@ -561,19 +568,22 @@ public class DBController implements IDBController
 	@Path("/createEmployer")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createEmployer(EmployerDTO employer) throws DALException {
-        Connection c = connPool.getConn();
-
-        String createQuery = String.format(
+    public void createEmployer(IEmployerDTO employer)
+	{
+		
+		String createQuery = String.format(
                 "INSERT INTO %s (%s, %s, %s, %s) VALUES (?,?,?,?)",
                 EmployerConstants.TABLENAME,
                 EmployerConstants.workerID, // ParameterIndex 1
                 EmployerConstants.employerName, // ParameterIndex 2
                 EmployerConstants.color, // ParameterIndex 3
                 EmployerConstants.tlf); // ParameterIndex 4
-
-        try {
-
+		
+		Connection c = null;
+		try
+		{
+			c = connPool.getConn();
+			
             PreparedStatement pStatement = c.prepareStatement(createQuery);
 
             pStatement.setInt(1, employer.getWorkerID());
@@ -585,8 +595,11 @@ public class DBController implements IDBController
 
         } catch (SQLException e) {
             connectionHelper.catchSQLExceptionAndDoRollback(c, e, "DBController.createEmployer");
-        } finally {
-            connectionHelper.finallyActionsForConnection(c, "DBController.createEmployer");
+        }
+		finally
+		{
+			if ( c != null )
+            	connectionHelper.finallyActionsForConnection(c, "DBController.createEmployer");
         }
     }
 

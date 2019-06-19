@@ -38,7 +38,7 @@ public class ConnectionHelper {
     ---------------------- Public Methods -----------------------
      */
 
-    public void finallyActionsForConnection (Connection c, String methodName) throws DALException {
+    public void finallyActionsForConnection (Connection c, String methodName) {
         try {
         	c.setAutoCommit(true);
         } catch (SQLException e) {

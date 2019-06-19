@@ -58,7 +58,7 @@ public class ArrayDBController implements IDBController {
      */
 
     @Override
-    public void createWorker(IWorkerDTO workerDTO) throws DALException {
+    public void createWorker(IWorkerDTO workerDTO) {
 
         workerList.add(workerDTO);
 
@@ -141,7 +141,7 @@ public class ArrayDBController implements IDBController {
     }
 
     @Override
-    public void createEmployer(EmployerDTO employer) throws DALException {
+    public void createEmployer(IEmployerDTO employer) {
         for (IWorkerDTO workerDTO : workerList) {
             if (workerDTO.getWorkerID() == employer.getWorkerID()) {
                 workerDTO.getIEmployers().add(employer);
@@ -221,7 +221,7 @@ public class ArrayDBController implements IDBController {
     }
 
     @Override
-    public void createJob(JobDTO job) throws DALException {
+    public void createJob(IJobDTO job) {
         for (IWorkerDTO workerDTO : workerList) {
             for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){
                 if (job.getEmployerID() == employerDTO.getEmployerID()) {
@@ -299,7 +299,7 @@ public class ArrayDBController implements IDBController {
     }
 
     @Override
-    public void createActivity(ActivityDTO activity) throws DALException {
+    public void createActivity(IActivityDTO activity) {
 
     }
 

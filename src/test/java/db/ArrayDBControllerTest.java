@@ -145,6 +145,15 @@ public class ArrayDBControllerTest
 	@Test
 	public void createEmployer()
 	{
+		IWorkerDTO worker1 = controller.getIWorkerDTOList().get(0);
+		IWorkerDTO worker2 = controller.getIWorkerDTOList().get(1);
+		
+		// Test that there's no employers
+		assertEquals(0, worker1.getIEmployers().size());
+		assertEquals(0, worker2.getIEmployers().size());
+		
+		// Create employers for both workers
+		controller.createEmployer(TestDataController.getEmployerNo1(worker1));
 	}
 	
 	@Test
