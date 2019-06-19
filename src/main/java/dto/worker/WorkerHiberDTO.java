@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,16 +54,19 @@ public class WorkerHiberDTO implements IWorkerDTO {
     ----------------------- Constructor -------------------------
      */
 
-    public WorkerHiberDTO() {}
+    public WorkerHiberDTO()
+    {
+        employers = new ArrayList<>();
+    }
 
     public WorkerHiberDTO(String firstName, String surName, String email, String password) {
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
         this.password = password;
+        employers = new ArrayList<>();
         birthday = null;
         homeAddress = null;
-        employers = null;
     }
 
     public WorkerHiberDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
