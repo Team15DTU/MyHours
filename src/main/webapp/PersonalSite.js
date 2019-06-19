@@ -770,23 +770,30 @@ function hoursOnWorkMounthly() {
         }
         month++;
 
+        function colorizer(){
+            var mixColor1 = anychart.color.lighten(color1, colorIndex);
+            colorIndex = colorIndex + 0.2;
+            return mixColor1;
+        }
+
         //laver dataset
         var dataSets = new Array();
         for (var l = 0; l < nrOfJobs.length; l++) {
             var dataSet = anychart.data.set(data);
             for (i = 0; i < nrOfDays; i++) {
-                var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
+                var name = (i + 1) + '/' + (month);
                 dataSet.append([name, hoursOfWork()]);
             }
-            ;
             dataSets[l] = dataSet;
         }
-        ;
 
         // create the chart
         var chart = anychart.column();
         chart.animation(true);
         var serieSet = new Array();
+
+
+        chart.palette(anychart.palettes.Markers);
 
         //laver dataen til serie sæt.
         for (var r = 0; r < dataSets.length; r++) {
@@ -812,6 +819,9 @@ function hoursOnWorkMounthly() {
 
         // set the chart title
         chart.title("Hours on work");
+
+        // enable legend
+        chart.legend(true);
 
         // draw
         chart.container("graph");
