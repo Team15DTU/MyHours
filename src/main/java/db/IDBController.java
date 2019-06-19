@@ -79,7 +79,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Delete                                                   |
     -------------------------------------------------------------*/
-    boolean         deleteEmployer (int employerID);
+    void         deleteEmployer (String name) throws DALException;
     
     //endregion
     
@@ -111,7 +111,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Delete                                                   |
     -------------------------------------------------------------*/
-    boolean         deleteJob (int jobID);
+    void         deleteJob (String name) throws DALException;
     
     //endregion
     

@@ -566,10 +566,12 @@ function deleteActivity() {
     event.preventDefault();
 
     //get
-    var activityID = $("#deleteActivityID").val();
+    var activityID = $("#activitylist_delete").attr('name');
+
+    console.log(activityID);
 
     //set
-    $("#deleteActivityID").val(activityID);
+    $("#activitylist_delete").val(activityID);
     console.log(activityID);
 
     deleteActivityByID(activityID);
@@ -599,18 +601,18 @@ function deleteActivityByID(activityID){
 function deleteEmployer() {
     event.preventDefault();
 
-    var employerID = $("#deleteEmployerID").val();
+    var name = $("#company_employer_delete").val();
 
-    $("#deleteEmployerID").val(employerID);
-    console.log(employerID);
+    $("#company_employer_delete").val(name);
+    console.log(name);
 
-    deleteEmployerByID(employerID);
+    deleteEmployerByName(name);
 }
 
-function deleteEmployerByID(employerID){
+function deleteEmployerByName(name){
 
     event.preventDefault();
-    var json = JSON.stringify(employerID);
+    var json = JSON.stringify(name);
     $.ajax({
         method: 'DELETE',
         url : "/MyHours/DBController/deleteEmployer",
@@ -631,16 +633,16 @@ function deleteEmployerByID(employerID){
 function deleteJob() {
     event.preventDefault();
 
-    var jobID = $("#deleteJobID").val();
+    var jobName = $("#select_job_delete").val();
 
-    $("#deleteJobID").val(jobID);
-    console.log(jobID);
+    $("#select_job_delete").val(jobName);
+    console.log(jobName);
 
-    deleteJobByID(jobID);
+    deleteJobByName(jobName);
 }
 
-function deleteJobByID(jobID){
-    var json = JSON.stringify(jobID);
+function deleteJobByName(jobName){
+    var json = JSON.stringify(jobName);
 
     $.ajax({
         method: 'DELETE',

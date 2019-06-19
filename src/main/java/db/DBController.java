@@ -661,19 +661,28 @@ public class DBController implements IDBController
     @DELETE
     @Path("/deleteEmployer")
     @Override
-    public boolean deleteEmployer(int employerID){
-        boolean success = false;
+    public void deleteEmployer(String name) throws DALException {
 
-        try
-        {
-            iEmployerDAO.deleteiEmployer(employerID);
-            success = true;
+        Connection c = connPool.getConn();
+
+        String deleteQuery = String.format("DELETE FROM %s WHERE %s = ?",
+                EmployerConstants.TABLENAME, EmployerConstants.employerName);
+
+        try {
+            c.setAutoCommit(false);
+
+            PreparedStatement pStatement = c.prepareStatement(deleteQuery);
+            pStatement.setString(1, name);
+
+            pStatement.executeUpdate();
+            c.commit();
+
+        } catch (SQLException e ) {
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e,"EmployerDAO.deleteiEmployer");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c,"EmployerDAO.deleteiEmployer");
         }
-        catch ( DALException e )
-        {
-            System.err.println("ERROR: DBController deleteEmployer() - " + e.getMessage());
-        }
-        return success;
+
     }
 	
 	//endregion
@@ -837,19 +846,29 @@ public class DBController implements IDBController
     @DELETE
     @Path("/deleteJob")
     @Override
-    public boolean deleteJob(int jobID){
-        boolean success = false;
+    public void deleteJob(String name) throws DALException {
 
-        try
-        {
-            iJobDAO.deleteIJob(jobID);
-            success = true;
+        Connection c = connPool.getConn();
+
+        String deleteQuery = String.format("DELETE FROM %s WHERE %s = ?",
+                JobConstants.TABLENAME,
+                JobConstants.jobName);       // ParameterIndex 1
+
+        try {
+            c.setAutoCommit(false);
+
+            PreparedStatement preparedStatement = c.prepareStatement(deleteQuery);
+            preparedStatement.setString(1, name);
+
+            preparedStatement.executeUpdate();
+
+            c.commit();
+
+        } catch (SQLException e) {
+            connectionHelper.catchSQLExceptionAndDoRollback(c,e, "JobDAO.deleteIJob");
+        } finally {
+            connectionHelper.finallyActionsForConnection(c, "JobDAO.deleteIJob");
         }
-        catch ( DALException e )
-        {
-            System.err.println("ERROR: DBController deleteJob() - " + e.getMessage());
-        }
-        return success;
     }
 	
 	//endregion

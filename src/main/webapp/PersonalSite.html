@@ -190,7 +190,7 @@
 
         <label><b>Choice a shift you want to delete: </b></label><br>
 
-        <select id="activitylist_delete"></select>
+        <select id="activitylist_delete" name="activityID"></select>
 
         <br><br>
         <button type="submit" name="DeleteShift" value="submit" id="shift_delete_button" class="submit" onclick="deleteActivity();getActivityList(activitylist_delete);">Delete Activity</button>
@@ -276,7 +276,7 @@
         <form>
                 <label><b>Choice a job you want to Delete: </b></label><br>
 
-                <select id="select_job_delete"></select>
+                <select id="select_job_delete" name="jobName"></select>
 
             <br><br>
             <button type="submit" name="DeleteJob" value="submit" id="job_delete_button" class="submit" onclick="deleteJob(); getJobList(select_job_delete);">Delete Job</button>
@@ -352,7 +352,7 @@
         <span onclick="hideModal()" class="close2">&times;</span>
         <form>
                 <label><b>Choose an employer you want to delete: </b></label><br>
-                <select id="company_employer_delete"></select>
+                <select id="company_employer_delete" name="name"></select>
 
             <br><br>
             <button type="submit" name="DeleteJob" value="submit" id="jobadress_delete_button" class="submit" onclick="deleteEmployer();getEmployerList(company_employer_delete);">Delete Employer</button>
