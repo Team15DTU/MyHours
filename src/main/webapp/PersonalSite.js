@@ -820,71 +820,57 @@ function logOut() {
 
 //her er delene som fremkalder content.
 function openInfo() {
-
-    document.getElementById('popup_content').style.width = '100%';
-    document.getElementById('popup_content').style.height = '80%';
+    $('#popup_content').show();
     hoursOnWorkMounthly();
 }
+
 function closeInfo() {
-    document.getElementById('popup_content').style.width = '0px';
-    document.getElementById('popup_content').style.height = '0px';
+    $('#popup_content').hide();
 }
 
 
 //her er delene som ændre ved content.
 function changeFunction(site) {
-    //var elem = document.getElementById('content');
-    if (site === 'shifts' && document.getElementById('myid1').checked){
+    if (site === 'shifts' && $('#myid1').prop('checked')) {
         header('Shifts');
-        left('shifts');
+        shifts();
+        checkMenu1();
+        openInfo();
         //console.log(site);
-    } else if (site === 'job' && document.getElementById('myid2').checked){
+    } else if (site === 'job' && $('#myid2').prop('checked')) {
         header('Job');
-        left('job');
+        job();
+        checkMenu2();
+        openInfo();
         //console.log(site);
-    } else if (site === 'workplace' && document.getElementById('myid3').checked){
+    } else if (site === 'workplace' && $('#myid3').prop('checked')) {
         header('Workplace');
-        left('workplace');
+        workplace();
+        checkMenu3();
+        openInfo();
         //console.log(site);
-    } else if(site === 'none' && document.getElementById('myid').checked) {
+    } else if (site === 'none' && $('#myid').prop('checked')) {
         header('');
-        left('none');
+        none();
+        checkMenu0();
+        closeInfo();
         //console.log(site);
-    }else{
-        //checkMenu0();
-        //closeInfo(); //FIXME Hvis disse 3 bliver aktiveret, vil grafen blive fjernet som forventet, men den klager over rekursion, så har valgt at udkommentere dem for performence skyld (ikke at jeg kunne mærke noget)
-        //changeFunction('none');
+    } else {
         header('');
-        left('none');
+        none();
+        checkMenu0();
+        closeInfo();
         //console.log(site+" close");
     }
 }
 
 function header(head) {
-    document.getElementById('pop_top_head').innerHTML = head;
-    if (head === ''){
-        document.getElementById('pop_top2').style.backgroundColor = 'transparent';
+    $('#pop_top_head')[0].innerHTML = head;
+    if (head === '') {
+        $('#pop_top2').hide();
     } else {
-        document.getElementById('pop_top2').style.backgroundColor = 'rgb(52, 152, 219)';
+        $('#pop_top2').show();
     }
-}
-
-
-
-function left(type) {
-    if (type === 'shifts') {
-        shifts();
-    }
-    if (type === 'job'){
-        job();
-    }
-    if (type === 'workplace') {
-        workplace();
-    }
-    if (type === 'none'){
-        none();
-    }
-
 }
 
 function hoursOnWorkMounthly(){
