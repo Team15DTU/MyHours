@@ -180,11 +180,8 @@ public class ArrayDBControllerTest
 		{
 			employer = list.get(i);
 			for ( int j=i+1; j<size; j++ )
-			{
 				assertTrue(employer.getEmployerID() != list.get(j).getEmployerID());
-			}
 		}
-		
 	}
 	
 	@Test
