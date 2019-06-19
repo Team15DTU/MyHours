@@ -578,8 +578,6 @@ function deleteActivity() {
     //get
     var activityID = $("#activitylist_delete").val();
 
-
-
     //set
     $("#activitylist_delete").val(activityID);
 
@@ -765,7 +763,7 @@ function getActivityList(input) {
     });
 }
 
-//TODO Ser ikke ud til at den virker
+
 function getEmployerList(input) {
     $.ajax({
         method: "GET",
@@ -874,8 +872,8 @@ function header(head) {
 }
 
 function hoursOnWorkMounthly(){
-    anychart.onDocumentReady(function() {
-
+    //anychart.onDocumentReady(function() {
+        $('#graph').empty();
 
         var today = new Date();
         var month = String(today.getMonth());
@@ -914,7 +912,7 @@ function hoursOnWorkMounthly(){
 
         // create the chart
         var chart = anychart.column();
-        chart.animation(true);
+        //chart.animation(true);
 
         var serieSet = [];
 
@@ -948,5 +946,5 @@ function hoursOnWorkMounthly(){
         // draw
         chart.container("graph");
         chart.draw();
-    });
+   // });
 }
