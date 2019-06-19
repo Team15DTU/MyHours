@@ -1,9 +1,11 @@
 package dto.employer;
 
+import db.ArrayDBController;
 import dto.job.IJobDTO;
 
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,18 +28,22 @@ public class EmployerDTO implements IEmployerDTO {
     ----------------------- Constructor -------------------------
      */
     
-    public EmployerDTO() {}
+    public EmployerDTO() {
+        employerID = ArrayDBController.employerID++;
+        iJobList = new ArrayList<>();
+    }
 
     public EmployerDTO(int workerID, String name)
     {
         this.workerID = workerID;
         this.name = name;
         color = null;
-        iJobList = null;
+        iJobList = new ArrayList<>();
     }
 
     public EmployerDTO(int workerID, String name, Color color, String  telephone, List<IJobDTO> iJobList)
     {
+        employerID = ArrayDBController.employerID++;
         this.workerID = workerID;
         this.name = name;
         this.color = color;

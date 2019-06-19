@@ -26,6 +26,10 @@ public class ArrayDBController implements IDBController {
      */
     
     private static ArrayList<IWorkerDTO> workerList;
+    public static int workerID = 1;
+    public static int employerID = 1;
+    public static int jobID = 1;
+    public static int activityID = 1;
     
     /*
     ----------------------- Constructor -------------------------

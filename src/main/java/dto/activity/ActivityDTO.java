@@ -1,5 +1,6 @@
 package dto.activity;
 
+import db.ArrayDBController;
 import dto.job.IJobDTO;
 
 import java.time.Duration;
@@ -25,9 +26,12 @@ public class ActivityDTO implements IActivityDTO {
     ----------------------- Constructor -------------------------
      */
     
-    public ActivityDTO() {}
+    public ActivityDTO() {
+        activityID = ArrayDBController.activityID++;
+    }
 
     public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID) {
+        activityID = ArrayDBController.activityID++;
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;
@@ -35,6 +39,7 @@ public class ActivityDTO implements IActivityDTO {
     }
 
     public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID, Duration pause) {
+        activityID = ArrayDBController.activityID++;
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;

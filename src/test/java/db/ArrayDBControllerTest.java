@@ -6,7 +6,6 @@ import org.junit.*;
 import org.junit.runners.MethodSorters;
 import testData.TestDataController;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.List;
 
