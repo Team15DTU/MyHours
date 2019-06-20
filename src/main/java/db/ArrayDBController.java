@@ -17,7 +17,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.awt.*;
 import java.sql.Timestamp;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -148,12 +147,12 @@ public class ArrayDBController implements IDBController {
         return workerList;
     }
 
-    @Override // TODO: Hvad skal det her bruges til?
+    @Override
     public List<IWorkerDTO> getIWorkerDTOList(int minID, int maxID) {
         return null;
     }
 
-    @Override // TODO: Hvad skal det her bruges til?
+    @Override
     public List<IWorkerDTO> getIWorkerDTOList(String name) {
         return null;
     }
@@ -241,12 +240,12 @@ public class ArrayDBController implements IDBController {
         return fullEmployerList;
     }
 
-    @Override //TODO: Ved ikke hvad det her skal bruges til?
+    @Override
     public List<IEmployerDTO> getIEmployerList(int minID, int maxID) {
         return null;
     }
 
-    @Override //TODO:  Ved ikke hvad det her skal bruges til?
+    @Override
     public List<IEmployerDTO> getIEmployerList(String name) {
         return null;
     }
@@ -375,12 +374,12 @@ public class ArrayDBController implements IDBController {
         return listToReturn;
      }
 
-    @Override // TODO: Der her kan jeg ikke se hvad skal bruges til? Hvilket navn er det? Employer? Job? Worker?
+    @Override
     public List<IJobDTO> getIJobDTOList(String name) {
         return null;
     }
 
-    @Override // TODO: Det her giver ikke mening?
+    @Override
     public List<IJobDTO> getIJobDTOList(double minSalary, double maxSalary) {
         return null;
     }
@@ -526,12 +525,12 @@ public class ArrayDBController implements IDBController {
         return activityList;
     }
 
-    @Override // TODO: hvad skulle den her gøre? skulle det have været mellem to datoer?
+    @Override
     public List<IActivityDTO> getIActivityList(Date date) {
         return null;
     }
 
-    @Override // TODO: Hvad skal det her?
+    @Override
     public List<IActivityDTO> getIActivityList(double minVal, double maxVal) {
         return null;
     }

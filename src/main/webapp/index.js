@@ -65,7 +65,6 @@ function Login(){
             console.log("Failed to login!")
         }
     });
-    console.log(userJson);
 }
 
 function Signup() {
@@ -86,5 +85,4 @@ function Signup() {
             console.log("Failed to create an user!")
         }
     });
-    console.log(userJson)
 }

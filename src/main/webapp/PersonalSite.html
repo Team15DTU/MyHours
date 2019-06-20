@@ -102,7 +102,6 @@
 <!--<editor-fold desc="Modal">-->
 
 <!-- <editor-fold desc="Activity"> -->
-<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 <div id="shift_add" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
@@ -110,13 +109,6 @@
             <div class="form_per">
                 <label><b>What job is the Activity? (ID)</b></label> <br>
                 <input type="text" placeholder="jobID" name="jobID" required>
-                <!--
-                <select id="select2" onclick="getJobList()">
-                    <option value="Default" name="jobID"></option>
-                </select>
-                -->
-
-
 
                 <br>
 
@@ -139,18 +131,14 @@
     </div>
 </div>
 
-<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
+
 <div id="shift_edit" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
         <form id="editActivity">
             <label><b>Choice a shift you want to edit (ID): </b></label><br><br>
             <input type="text" placeholder="activityID" name="activityID" required>
-            <!--
-            <select id="select" onchange="currentShiftToEdit()" onclick="getActivityList()">
-                <option value="Default"></option>
-            </select>
-            -->
+
             <b id="shiftEditInfo"></b>
             <br><br>
             <b>Insert the correct details.</b>
@@ -158,11 +146,6 @@
 
             <label><b>What job is the Activity? (ID)</b></label> <br>
             <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobID" required>
-            <!--
-            <select id="select2" onclick="getJobList()">
-                <option value="Default" name="jobID"></option>
-            </select>
-            -->
 
             <br>
 
@@ -175,7 +158,7 @@
         </form>
     </div>
 </div>
-<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
+
 <div id="shift_delete" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
@@ -183,11 +166,7 @@
             <center>
                 <label><b>Choice a shift you want to delete: </b></label><br>
                 <input type="text" placeholder="activityID" name="activityID" id="activitylist_delete" required>
-                <!--
-                <select id="select3" onclick="getActivityList()">
-                    <option value="Default"></option>
-                </select>
-                -->
+
             </center>
             <br><br>
             <button type="submit" name="DeleteShift" value="submit" id="shift_delete_button" class="submit"
@@ -199,7 +178,6 @@
 <!--</editor-fold>-->
 
 <!-- <editor-fold desc="Job"> -->
-<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 <div id="job_add" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
@@ -208,11 +186,6 @@
 
                 <label><b>What company is the job for?</b></label>
                 <input type="text" placeholder="employerID" name="employerID" required>
-                <!--
-                <select id="company_job" onclick="getEmployerList();">
-                    <option value="Default"></option>
-                </select>
-                -->
 
                 <label><b>What is the job's name</b></label>
                 <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobName" required>
@@ -227,18 +200,12 @@
     </div>
 </div>
 
-<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 <div id="job_edit" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
         <form id="editJob">
             <label><b>Choice a job you want to edit: </b></label><br><br>
             <input type="text" placeholder="jobID" name="jobID" required>
-            <!--
-            <select id="select_job_edit" onclick="getJobList();">
-                <option value="Default"></option>
-            </select>
-            -->
             <b id="jobEditInfo"></b>
             <br><br>
             <b>Insert the correct details.</b>
@@ -247,11 +214,7 @@
 
             <label><b>What company is the job for?</b></label>
             <input class="w3-input w3-border w3-margin-bottom" type="text" name="employerID" required>
-            <!--
-            <select id="company_job" onclick="getEmployerList();">
-                <option value="Default"></option>
-            </select>
-            -->
+
 
             <label><b>What is the job's name</b></label>
             <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobName" required>
@@ -266,7 +229,7 @@
         </form>
     </div>
 </div>
-<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
+
 <div id="job_delete" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
@@ -274,11 +237,6 @@
             <center>
                 <label><b>Choice a job you want to Delete: </b></label><br>
                 <input type="text" placeholder="jobID" name="jobID" id="select_job_delete" required>
-                <!--
-                <select id="select_job_delete" onclick="getJobList();">
-                    <option value="Default"></option>
-                </select>
-                -->
             </center>
             <br><br>
             <button type="submit" name="DeleteJob" value="submit" id="job_delete_button" class="submit"
@@ -290,13 +248,11 @@
 <!--</editor-fold>-->
 
 <!-- <editor-fold desc="Employer"> -->
-<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 <div id="employer_add" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
         <form>
             <div class="form_per" id="addEmployer">
-                <!-- WorkerID skal fjernes -->
                 <label><b>WorkerID</b></label>
                 <input type="text" placeholder="WorkerID" name="workerID" required>
 
@@ -313,18 +269,13 @@
     </div>
 </div>
 
-<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 <div id="employer_edit" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
         <form id="editEmployer">
             <label><b>Choice an employer you want to edit: (ID) </b></label><br><br>
             <input type="text" placeholder="employerID" name="employerID" required>
-            <!--
-            <select id="select_jobadress_edit" onclick="getEmployerList();">
-                <option value="Default"></option>
-            </select>
-            -->
+
             <b id="jobadressEditInfo"></b>
             <br><br>
             <b>Insert the correct details.</b>
@@ -345,7 +296,6 @@
     </div>
 </div>
 
-<!-- HUSK AT ÆNDRE ID'S I <SELECT> FORDI DE PASSER IKKE -->
 <div id="employer_delete" class="modal2">
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
@@ -353,11 +303,6 @@
             <center>
                 <label><b>Choice an employer you want to delete: </b></label><br>
                 <input type="text" placeholder="employerID" name="employerID" id="company_employer_delete" required>
-                <!--
-                <select id="select_jobadress_delete" onclick="getEmployerList();">
-                    <option value="Default"></option>
-                </select>
-                -->
             </center>
             <br><br>
             <button type="submit" name="DeleteJob" value="submit" id="jobadress_delete_button" class="submit"

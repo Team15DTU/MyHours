@@ -50,51 +50,6 @@ var showemployer_delete = function() {
 
 //endregion
 
-/*
-function selectJobs(name) {
-    var selector = document.getElementById(name);
-    $.ajax({
-        method: "GET",
-        url:"/MyHours/DBController/getJobList",
-        dataType: "JSON",
-        success: function (result) {
-            anychart.onDocumentReady(function() {
-
-                var today = new Date();
-                var month = String(today.getMonth());
-                var year = today.getFullYear();
-
-                var nrOfDays = daysInMonth(month,year);
-
-                var allJobs = [];
-
-                $.each(result, function(i) {
-
-                    var jobDetails = [result[i]['jobID'], result[i]['employerID'], result[i]['jobName'], result[i]['stdSalary'], new Date(), 'Insert activity name'];
-                    allJobs.push(jobDetails);
-                });
-
-                if (selector!=null){
-                    while(selector.hasChildNodes()){
-                        selector.removeChild(selector.firstChild);
-                    }
-                    selector.appendChild(document.createElement('option'));
-
-                    for (var i = 0; i < findJobArray.length; i++) {
-                        var currentJob = allJobs.pop();
-                        var option = document.createElement('option');
-                        var name1 = currentJob[2];
-                        option.appendChild(document.createTextNode(name1));
-                        option.value = currentJob[0];
-                        selector.appendChild(option);
-                    }
-                }
-
-            });
-        }
-    });
-}
-*/
 
 function none() {
     var table = document.getElementById('left_table');
@@ -223,7 +178,6 @@ function addActivity(){
             console.log("Failed to add activity!")
         }
     });
-    console.log(userJson);
 }
 
 function addEmployer(){
@@ -244,7 +198,6 @@ function addEmployer(){
             console.log("Failed to add Employer!")
         }
     });
-    console.log(userJson);
 }
 
 function addJob(){
@@ -265,7 +218,6 @@ function addJob(){
             console.log("Failed to add Job!")
         }
     });
-    console.log(userJson);
 }
 function editActivity(){
 
@@ -284,8 +236,7 @@ function editActivity(){
             alert(jqXHR.status + text + error);
             console.log("Failed to edit activity!")
         }
-    });
-    console.log(userJson);
+    });;
 }
 
 function editEmployer(){
@@ -306,7 +257,6 @@ function editEmployer(){
             console.log("Failed to edit Employer!")
         }
     });
-    console.log(userJson);
 }
 
 function editJob(){
@@ -327,7 +277,6 @@ function editJob(){
             console.log("Failed to edit Job!")
         }
     });
-    console.log(userJson);
 }
 
 function deleteActivity() {
@@ -338,8 +287,6 @@ function deleteActivity() {
 
     //set
     $("#activitylist_delete").val(activityID);
-
-    console.log(activityID);
 
     deleteActivityByID(activityID);
 }
@@ -368,7 +315,6 @@ function deleteEmployer() {
     var employerID = $("#company_employer_delete").val();
 
     $("#company_employer_delete").val(employerID);
-    console.log(employerID);
 
     deleteEmployerByID(employerID);
 }
@@ -397,7 +343,6 @@ function deleteJob() {
     var jobName = $("#select_job_delete").val();
 
     $("#select_job_delete").val(jobName);
-    console.log(jobName);
 
     deleteJobByName(jobName);
 }
@@ -465,7 +410,6 @@ function updateGraf(choice) {
 
                 //her finder jeg alle de job som er forbundet med brugerene.
                 var nrOfJobs = [];
-                //TODO: Her skal vi erstatte vores data. findAllJobs finder alle jobs og den resterende funktion laver grafen
                 for (var loop = 0; loop < findJobArray.length; loop++) {
                     nrOfJobs[loop] = findJobArray[loop][0];
                 }
@@ -539,25 +483,16 @@ function updateGraf(choice) {
                             row.insertCell(0).innerHTML = vagt.bold();
                             row.insertCell(1).innerHTML = job.bold();
                             row.insertCell(2).innerHTML = salary.bold();
-                            var i;
 
-                            //TODO INSERT REAL ACTIVITY INFORMATION
                             $.each(resulte, function (i) {
                                 var row2 = table.insertRow(i + 1);
-
-                                var shiftStart = findShift(i)[2];
-                                var shiftEnd = findShift(i)[3];
-
-
-                                var shiftStartString = shiftStart.getDate() + '/' + (shiftStart.getMonth() + 1) + ' ' + with_leading_zeros(shiftStart.getHours()) + ':' + with_leading_zeros(shiftStart.getMinutes()) + ' - ' + with_leading_zeros(shiftEnd.getHours()) + ':' + with_leading_zeros(shiftEnd.getMinutes());
-
 
                                 row2.insertCell(0).innerHTML = resulte[i]['startingDateTime'].replace("T" , " ");
                                 row2.insertCell(1).innerHTML = resulte[i]['endingDateTime'].replace("T" , " ");
                                 row2.insertCell(2).innerHTML = resulte[i]['activityValue'];
                             })
                         }
-                    })
+                    });
                     break;
 
                 case "jobInfo":
@@ -587,7 +522,6 @@ function updateGraf(choice) {
                                     if (result[k]['employerID']===response[i]['employerID']){
                                         var employerName = response[i]['name']
                                         var employerName = response[i]['name']
-                                        console.log(employerName)
                                     }
                                     //console.log(employerName)
                                     row2.insertCell(0).innerHTML = employerName;//findJob(i)[2];
@@ -618,9 +552,7 @@ function updateGraf(choice) {
 
                             var row = table.insertRow(0);
                             row.insertCell(0).innerHTML = firm.bold();
-                            var i;
 
-                            //TODO INSERT REAL ACTIVITY INFORMATION
                             $.each(resulte, function (i) {
                                 var row2 = table.insertRow(i + 1);
 
@@ -644,13 +576,6 @@ function getJobList(input) {
         success: function(response) {
             var option = '';
             $.each(response, function(i) {
-                /*
-                console.log(response[i]);
-                console.log(response[i]['jobID']);
-                console.log(response[i]['employerID']);
-                console.log(response[i]['jobName']);
-                console.log(response[i]['stdSalary']);
-                */
                 option += '<option>' + response[i]['jobName'] +
                     '</option>';
 
@@ -783,29 +708,24 @@ function changeFunction(site) {
         header('Shifts');
         checkMenu1();
         openInfo('shiftInfo');
-        //console.log(site);
     } else if (site === 'job' && $('#myid2').prop('checked')) {
         header('Job');
         checkMenu2();
         openInfo('jobInfo');
-        //console.log(site);
     } else if (site === 'workplace' && $('#myid3').prop('checked')) {
         header('Workplace');
         checkMenu3();
         openInfo('employerInfo');
-        //console.log(site);
     } else if (site === 'none' && $('#myid').prop('checked')) {
         header('');
         none();
         checkMenu0();
         closeInfo();
-        //console.log(site);
     } else {
         header('');
         none();
         checkMenu0();
         closeInfo();
-        //console.log(site+" close");
     }
 }
 

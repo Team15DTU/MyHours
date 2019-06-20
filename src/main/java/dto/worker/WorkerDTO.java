@@ -1,7 +1,6 @@
 package dto.worker;
 
 import db.ArrayDBController;
-import dto.address.IAddress;
 import dto.employer.IEmployerDTO;
 
 import java.time.LocalDate;
@@ -23,7 +22,6 @@ public class WorkerDTO implements IWorkerDTO {
     private String email;
     private String password;
     private LocalDate birthday;
-    private IAddress homeAddress;
     private List<IEmployerDTO> employers;
     
     /*
@@ -44,7 +42,6 @@ public class WorkerDTO implements IWorkerDTO {
         this.email = email;
         employers = new ArrayList<>();
         birthday = null;
-        homeAddress = null;
     }
     
     /**
@@ -55,10 +52,9 @@ public class WorkerDTO implements IWorkerDTO {
      * @param email Unique email of Worker
      * @param password Password
      * @param birthday Workers day of birth
-     * @param homeAddress Address of Worker
      * @param employers List of Workers employers
      */
-    public WorkerDTO(int workerID, String firstName, String surName, String email, String password, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
+    public WorkerDTO(int workerID, String firstName, String surName, String email, String password, LocalDate birthday, List<IEmployerDTO> employers)
     {
         this.workerID = workerID;
         this.firstName = firstName;
@@ -66,18 +62,16 @@ public class WorkerDTO implements IWorkerDTO {
         this.email = email;
         this.password = password;
         this.birthday = birthday;
-        this.homeAddress = homeAddress;
         this.employers = employers;
     }
     
-    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
+    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, List<IEmployerDTO> employers)
     {
         workerID = ArrayDBController.workerID++;
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
         this.birthday = birthday;
-        this.homeAddress = homeAddress;
         this.employers = employers;
         this.password = null;
     }
@@ -130,14 +124,6 @@ public class WorkerDTO implements IWorkerDTO {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
-    }
-
-    public IAddress getHomeAddress() {
-        return homeAddress;
-    }
-
-    public void setHomeAddress(IAddress homeAddress) {
-        this.homeAddress = homeAddress;
     }
     
     @Override

@@ -1,8 +1,6 @@
 package dto.job;
 
 import db.ArrayDBController;
-import dto.ruleSet.RuleSet;
-import dto.address.Address;
 import dto.activity.IActivityDTO;
 
 import java.time.LocalDate;
@@ -24,8 +22,6 @@ public class JobDTO implements IJobDTO {
     private LocalDate hireDate;
     private LocalDate finishDate;
     private double stdSalary;
-    private Address jobAddress;
-    private RuleSet ruleSet;
     private List<IActivityDTO> iActivityDTOList;
     
     /*
@@ -43,20 +39,16 @@ public class JobDTO implements IJobDTO {
         this.stdSalary = stdSalary;
         hireDate = null;
         finishDate = null;
-        jobAddress = null;
-        ruleSet = null;
         iActivityDTOList = new ArrayList<>();
     }
 
-    public JobDTO (int employerID, String jobName, double stdSalary, LocalDate hireDate, LocalDate finishDate, Address jobAddress, RuleSet ruleSet, List<IActivityDTO> iActivityDTOList) {
+    public JobDTO (int employerID, String jobName, double stdSalary, LocalDate hireDate, LocalDate finishDate, List<IActivityDTO> iActivityDTOList) {
         jobID = ArrayDBController.jobID++;
         this.employerID = employerID;
         this.jobName = jobName;
         this.stdSalary = stdSalary;
         this.hireDate = hireDate;
         this.finishDate = finishDate;
-        this.jobAddress = jobAddress;
-        this.ruleSet = ruleSet;
         this.iActivityDTOList = iActivityDTOList;
     }
 
@@ -112,22 +104,6 @@ public class JobDTO implements IJobDTO {
 
     public void setStdSalary(double stdSalary) {
         this.stdSalary = stdSalary;
-    }
-
-    public Address getJobAddress() {
-        return jobAddress;
-    }
-
-    public void setJobAddress(Address jobAddress) {
-        this.jobAddress = jobAddress;
-    }
-
-    public RuleSet getRuleSet() {
-        return ruleSet;
-    }
-
-    public void setRuleSet(RuleSet ruleSet) {
-        this.ruleSet = ruleSet;
     }
 
     public List<IActivityDTO> getiActivityDTOList() {
