@@ -220,6 +220,8 @@ function addActivity(){
     /*var parsedString = userJson.replace(/@\{(\w+)\}/g, function(match, group) {
         if (group === 'startingDateTime') {
             return new Date();
+            // TODO: Hej WassMann, kan du ikke se om nedenstående løsning virker?
+            //return new Date().toISOString.slice(0,19).replace('T', ' ');
         }
         else if (group === 'endingDateTime') {
             return new Date();
