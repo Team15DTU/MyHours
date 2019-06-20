@@ -1,7 +1,5 @@
 package db;
 
-import dao.DALException;
-import dao.worker.WorkerConstants;
 import dto.activity.ActivityDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.EmployerDTO;
@@ -17,11 +15,8 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.awt.*;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -48,11 +43,11 @@ public class ArrayDBController implements IDBController {
     /*
     ----------------------- Constructor -------------------------
      */
-    
+
     public ArrayDBController () {
-
-        workerList = setArrayListWithStartData();
-
+        if (workerList == null){
+            workerList = setArrayListWithStartData();
+        }
     }
     
     /*
@@ -84,10 +79,9 @@ public class ArrayDBController implements IDBController {
     @Path("/createWorker")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createWorker(IWorkerDTO workerDTO) {
+    public synchronized void createWorker(IWorkerDTO workerDTO) {
 
         workerList.add(workerDTO);
-
     }
     
     /**
@@ -206,16 +200,10 @@ public class ArrayDBController implements IDBController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createEmployer(IEmployerDTO employer) {
-        IEmployerDTO employerDTOToAdd = new EmployerDTO();
-
-        employerDTOToAdd.setWorkerID(employer.getWorkerID());
-        employerDTOToAdd.setName(employer.getName());
-        employerDTOToAdd.setTelephone(employer.getTelephone());
-        employerDTOToAdd.setColor(employer.getColor());
 
         for (IWorkerDTO workerDTO : workerList) {
             if (workerDTO.getWorkerID() == employer.getWorkerID()) {
-                workerDTO.getIEmployers().add(employerDTOToAdd);
+                workerDTO.getIEmployers().add(employer);
                 break;
             }
         }
@@ -295,9 +283,9 @@ public class ArrayDBController implements IDBController {
     }
     
     @DELETE
-    @Path("/deleteEmployer/{id}")
+    @Path("/deleteEmployer/{employerID}")
     @Override
-    public boolean deleteEmployer(@PathParam("id") int employerID) {
+    public boolean deleteEmployer(@PathParam("employerID") int employerID) {
         boolean success = false;
 
         outLoop:
@@ -433,9 +421,9 @@ public class ArrayDBController implements IDBController {
     }
 	
 	@DELETE
-	@Path("/deleteJob/{id}")
+	@Path("/deleteJob/{jobID}")
     @Override
-    public boolean deleteJob(@PathParam("id") int jobID) {
+    public boolean deleteJob(@PathParam("jobID") int jobID) {
         boolean success = false;
 
         outLoop:
@@ -576,9 +564,9 @@ public class ArrayDBController implements IDBController {
     }
 	
 	@DELETE
-	@Path("/deleteActivity/{id}")
+	@Path("/deleteActivity/{activityID}")
     @Override
-    public void deleteActivity(@PathParam("id") int activityID) {
+    public void deleteActivity(@PathParam("activityID") int activityID) {
 
         outLoop:
         for (IWorkerDTO workerDTO : workerList){
@@ -696,21 +684,24 @@ public class ArrayDBController implements IDBController {
 
         IActivityDTO activityNo1 = new ActivityDTO();
         activityNo1.setJobID(jobNo1.getJobID());
-        activityNo1.setStartingDateTime(LocalDateTime.of(2019,6,18,8,0,0));
-        activityNo1.setEndingDateTime(LocalDateTime.of(2019,6,18,16,0,0));
-        activityNo1.setPause(Duration.ofMinutes(30));
+        activityNo1.setStartingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,18,8,0,0)));
+        activityNo1.setEndingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,18,16,0,0)));
+        activityNo1.setPauseInMinuts(30);
+        activityNo1.calculateActivityValue(jobNo1);
 
         IActivityDTO activityNo2 = new ActivityDTO();
         activityNo2.setJobID(jobNo1.getJobID());
-        activityNo2.setStartingDateTime(LocalDateTime.of(2019,6,20,10,0,0));
-        activityNo2.setEndingDateTime(LocalDateTime.of(2019,6,20,18,0,0));
-        activityNo2.setPause(Duration.ofMinutes(60));
+        activityNo2.setStartingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,20,10,0,0)));
+        activityNo2.setEndingDateTime(Timestamp.valueOf((LocalDateTime.of(2019,6,20,18,0,0))));
+        activityNo2.setPauseInMinuts(60);
+        activityNo2.calculateActivityValue(jobNo1);
 
         IActivityDTO activityNo3 = new ActivityDTO();
         activityNo3.setJobID(jobNo2.getJobID());
-        activityNo3.setStartingDateTime(LocalDateTime.of(2019,6,15,10,0,0));
-        activityNo3.setEndingDateTime(LocalDateTime.of(2019,6,15,12,0,0));
-        activityNo3.setPause(Duration.ofMinutes(0));
+        activityNo3.setStartingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,15,10,0,0)));
+        activityNo3.setEndingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,15,12,0,0)));
+        activityNo3.setPauseInMinuts(0);
+        activityNo3.calculateActivityValue(jobNo2);
 
         // Activities til hjælpeunderviser.
         jobNo1.getiActivityDTOList().add(activityNo1);

@@ -1,14 +1,19 @@
 package dto.activity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import db.ArrayDBController;
 import dto.job.IJobDTO;
 
+import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
  * @author Rasmus Sander Larsen
  */
+
 public class ActivityDTO implements IActivityDTO {
 
     /*
@@ -17,9 +22,12 @@ public class ActivityDTO implements IActivityDTO {
 
     private int activityID;
     private int jobID;
-    private LocalDateTime startingDateTime;
-    private LocalDateTime endingDateTime;
-    private Duration pause; // break in minutes!
+    @JsonFormat(pattern = "yyyy-dd-MM'T'HH:mm")
+    //@JsonFormat(pattern="dd-MM-yyyy HH:mm" ) // Til Firefox
+    private Timestamp startingDateTime;
+    @JsonFormat(pattern = "yyyy-dd-MM'T'HH:mm")
+    private Timestamp endingDateTime;
+    private int pauseInMinuts; // break in minutes!
     private double activityValue;
 
     /*
@@ -30,7 +38,7 @@ public class ActivityDTO implements IActivityDTO {
         activityID = ArrayDBController.activityID++;
     }
 
-    public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID) {
+    public ActivityDTO(Timestamp startingDateTime, Timestamp endingDateTime, int jobID) {
         activityID = ArrayDBController.activityID++;
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
@@ -38,12 +46,12 @@ public class ActivityDTO implements IActivityDTO {
 
     }
 
-    public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID, Duration pause) {
+    public ActivityDTO(Timestamp startingDateTime, Timestamp endingDateTime, int jobID, int pause) {
         activityID = ArrayDBController.activityID++;
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;
-        this.pause = pause;
+        this.pauseInMinuts = pause;
     }
 
     /*
@@ -69,28 +77,29 @@ public class ActivityDTO implements IActivityDTO {
         this.jobID = jobID;
     }
 
-    public LocalDateTime getStartingDateTime() {
-        return startingDateTime.withNano(0);
+
+    public Timestamp getStartingDateTime() {
+        return startingDateTime;
     }
 
-    public void setStartingDateTime(LocalDateTime startingDateTime) {
-        this.startingDateTime = startingDateTime.withNano(0);
+    public void setStartingDateTime(Timestamp startingDateTime) {
+        this.startingDateTime = startingDateTime;
     }
 
-    public LocalDateTime getEndingDateTime() {
-        return endingDateTime.withNano(0);
+    public Timestamp getEndingDateTime() {
+        return endingDateTime;
     }
 
-    public void setEndingDateTime(LocalDateTime endingDateTime) {
-        this.endingDateTime = endingDateTime.withNano(0);
+    public void setEndingDateTime(Timestamp endingDateTime) {
+        this.endingDateTime = endingDateTime;
     }
 
-    public Duration getPause() {
-        return pause;
+    public int getPauseInMinuts() {
+        return pauseInMinuts;
     }
 
-    public void setPause(Duration pause) {
-        this.pause = pause;
+    public void setPauseInMinuts(int pauseInMinuts) {
+        this.pauseInMinuts = pauseInMinuts;
     }
 
     public double getActivityValue() {
@@ -110,7 +119,7 @@ public class ActivityDTO implements IActivityDTO {
     public void calculateActivityValue(IJobDTO jobDTO) {
         double stdSalaryPrMin = jobDTO.getStdSalary()/(double)60;
 
-        long payedMinutesOnShift = Duration.between(startingDateTime,endingDateTime).minus(pause).toMinutes();
+        long payedMinutesOnShift = Duration.between(startingDateTime.toLocalDateTime(),endingDateTime.toLocalDateTime()).minusMinutes(pauseInMinuts).toMinutes();
 
         activityValue = payedMinutesOnShift*stdSalaryPrMin;
     }
