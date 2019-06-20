@@ -29,7 +29,7 @@ public class ConnPoolV1 implements IConnPool
 	Hibernate uses 2 connections, and this uses 2. This means we have
 	1 connection free to use with Workbench and Datagrip.
 	 */
-    public static final int MAXCONNS = 2;
+    public static final int MAXCONNS = 3;
     
     //region DB Info
 	protected static String url = "ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s185097?";
