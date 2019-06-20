@@ -208,13 +208,14 @@ public class ArrayDBController implements IDBController {
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public IEmployerDTO getIEmployerDTO(@PathParam("id") int id) {
-        IEmployerDTO employerDTOToReturn = new EmployerDTO();
+        IEmployerDTO employerDTOToReturn = null;
 
+        outLoop:
         for (IWorkerDTO workerDTO : workerList) {
             for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){
                 if (employerDTO.getEmployerID() == id){
                     employerDTOToReturn = employerDTO;
-                    break;
+                    break outLoop;
                 }
             }
         }
@@ -229,7 +230,7 @@ public class ArrayDBController implements IDBController {
     public List<IEmployerDTO> getIEmployerList() {
         List<IEmployerDTO> fullEmployerList = new ArrayList<>();
         for (IWorkerDTO workerDTO : workerList){
-            fullEmployerList.containsAll(workerDTO.getIEmployers());
+            fullEmployerList.addAll(workerDTO.getIEmployers());
         }
         return fullEmployerList;
     }
@@ -251,14 +252,24 @@ public class ArrayDBController implements IDBController {
     public boolean updateEmployer(IEmployerDTO updatedEmployerDTO) {
         boolean succes = false;
 
+        outLoop:
         for (IWorkerDTO workerDTO : workerList ) {
             for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){
                 if (employerDTO.getEmployerID() == updatedEmployerDTO.getEmployerID()){
+
                     employerDTO.setName(updatedEmployerDTO.getName());
-                    employerDTO.setColor(updatedEmployerDTO.getColor());
-                    employerDTO.setTelephone(updatedEmployerDTO.getTelephone());
+                    if (updatedEmployerDTO.getColor() != null) {
+                        employerDTO.setColor(updatedEmployerDTO.getColor());
+                    } else {
+                        employerDTO.setColor(null);
+                    }
+                    if (updatedEmployerDTO.getTelephone() != null) {
+                        employerDTO.setTelephone(updatedEmployerDTO.getTelephone());
+                    } else {
+                        employerDTO.setTelephone(null);
+                    }
                     succes = true;
-                    break;
+                    break outLoop;
                 }
             }
         }
@@ -271,12 +282,14 @@ public class ArrayDBController implements IDBController {
     public boolean deleteEmployer(@PathParam("id") int employerID) {
         boolean success = false;
 
+        outLoop:
         for (IWorkerDTO workerDTO : workerList) {
-            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
-                if (employerDTO.getEmployerID() == employerID) {
-                    workerDTO.getIEmployers().remove(employerDTO);
+            int employerListSize = workerDTO.getIEmployers().size();
+            for (int i = 0; i < employerListSize; i++) {
+                if (workerDTO.getIEmployers().get(i).getEmployerID() == employerID) {
+                    workerDTO.getIEmployers().remove(i);
                     success = true;
-                    break;
+                    break outLoop;
                 }
             }
         }
@@ -289,11 +302,13 @@ public class ArrayDBController implements IDBController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createJob(IJobDTO job) {
+
+        outLoop:
         for (IWorkerDTO workerDTO : workerList) {
             for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){
                 if (job.getEmployerID() == employerDTO.getEmployerID()) {
                     employerDTO.getIJobList().add(job);
-                    break;
+                    break outLoop;
                 }
             }
         }
@@ -304,13 +319,15 @@ public class ArrayDBController implements IDBController {
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public IJobDTO getIJobDTO(@PathParam("id") int id) {
-        IJobDTO jobDTOToReturn = new JobDTO();
+        IJobDTO jobDTOToReturn = null;
+
+        outLoop:
         for (IWorkerDTO workerDTO : workerList) {
             for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){
                 for (IJobDTO jobDTO : employerDTO.getIJobList()) {
                     if (jobDTO.getJobID() == id) {
                         jobDTOToReturn = jobDTO;
-                        break;
+                        break outLoop;
                     }
                 }
             }
@@ -324,9 +341,10 @@ public class ArrayDBController implements IDBController {
     @Override
     public List<IJobDTO> getIJobDTOList() {
         List<IJobDTO> fullJobList = new ArrayList<>();
+
         for (IWorkerDTO workerDTO : workerList) {
             for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
-                fullJobList.containsAll(employerDTO.getIJobList());
+                fullJobList.addAll(employerDTO.getIJobList());
             }
         }
         return fullJobList;
@@ -337,11 +355,14 @@ public class ArrayDBController implements IDBController {
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IJobDTO> getIJobDTOList(@PathParam("id") int employerID) {
+
         List<IJobDTO> listToReturn = new ArrayList<>();
+        outLoop:
         for (IWorkerDTO workerDTO : workerList) {
             for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){
                 if (employerDTO.getEmployerID() == employerID) {
                     listToReturn = employerDTO.getIJobList();
+                    break outLoop;
                 }
             }
         }
@@ -362,13 +383,34 @@ public class ArrayDBController implements IDBController {
 	@Path("/updateJob")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public boolean updateJob(IJobDTO jobDTO) {
+    public boolean updateJob(IJobDTO updateJobDTO) {
         boolean success = false;
+        outLoop:
         for (IWorkerDTO workerDTO : workerList) {
+            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
+                for (IJobDTO jobDTO : employerDTO.getIJobList()){
+                    if (jobDTO.getJobID() == updateJobDTO.getJobID()){
+
+                        jobDTO.setJobName(updateJobDTO.getJobName());
+                        if (updateJobDTO.getHireDate() == null) {
+                            jobDTO.setHireDate(updateJobDTO.getHireDate());
+                        } else {
+                            jobDTO.setHireDate(null);
+                        }
+                        if (updateJobDTO.getFinishDate() == null) {
+                            jobDTO.setFinishDate(updateJobDTO.getFinishDate());
+                        } else {
+                            jobDTO.setFinishDate(null);
+                        }
+                        jobDTO.setStdSalary(updateJobDTO.getStdSalary());
+                        success = true;
+                        break outLoop;
+
+                    }
+                }
+            }
 
         }
-
-
         return success;
     }
 	
@@ -376,7 +418,23 @@ public class ArrayDBController implements IDBController {
 	@Path("/deleteJob/{id}")
     @Override
     public boolean deleteJob(@PathParam("id") int jobID) {
-        return false;
+        boolean success = false;
+
+        outLoop:
+        for (IWorkerDTO workerDTO : workerList) {
+            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
+                int jobListSize = employerDTO.getIJobList().size();
+                for (int i = 0; i < jobListSize ; i++) {
+                    if (employerDTO.getIJobList().get(i).getJobID() == jobID) {
+                        employerDTO.getIJobList().remove(i);
+                        success = true;
+                        break outLoop;
+                    }
+                }
+            }
+        }
+
+        return success;
     }
 	
 	/**
@@ -389,6 +447,17 @@ public class ArrayDBController implements IDBController {
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createActivity(IActivityDTO activity) {
+	    outLoop:
+	    for (IWorkerDTO workerDTO : workerList) {
+	        for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
+	            for (IJobDTO jobDTO : employerDTO.getIJobList()) {
+	                if (jobDTO.getJobID() == activity.getJobID()) {
+	                    jobDTO.getiActivityDTOList().add(activity);
+	                    break outLoop;
+                    }
+                }
+            }
+        }
 
     }
 	
@@ -397,7 +466,21 @@ public class ArrayDBController implements IDBController {
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public IActivityDTO getIActivity(@PathParam("id") int id) {
-        return null;
+        IActivityDTO activityDTO = null;
+        outLoop:
+        for (IWorkerDTO workerDTO : workerList) {
+            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
+                for (IJobDTO jobDTO : employerDTO.getIJobList()) {
+                    for (IActivityDTO activity : jobDTO.getiActivityDTOList()) {
+                        if (activity.getActivityID() == id) {
+                            activityDTO = activity;
+                            break outLoop;
+                        }
+                    }
+                }
+            }
+        }
+	    return  activityDTO;
     }
 	
 	@GET
@@ -405,20 +488,44 @@ public class ArrayDBController implements IDBController {
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IActivityDTO> getIActivityList() {
-        return null;
+	    List<IActivityDTO> fullActivityList = new ArrayList<>();
+
+        for (IWorkerDTO workerDTO : workerList) {
+            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
+                for (IJobDTO jobDTO : employerDTO.getIJobList()) {
+                    fullActivityList.addAll(jobDTO.getiActivityDTOList());
+                }
+            }
+        }
+
+        return fullActivityList;
     }
 
     @Override
     public List<IActivityDTO> getIActivityList(int jobID) {
-        return null;
+	    List<IActivityDTO> activityList = new ArrayList<>();
+
+        outLoop:
+        for (IWorkerDTO workerDTO : workerList) {
+            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
+                for (IJobDTO jobDTO : employerDTO.getIJobList()) {
+                    if (jobDTO.getJobID() == jobID) {
+                        activityList = jobDTO.getiActivityDTOList();
+                        break outLoop;
+                    }
+                }
+            }
+        }
+
+        return activityList;
     }
 
-    @Override
+    @Override // TODO: hvad skulle den her gøre? skulle det have været mellem to datoer?
     public List<IActivityDTO> getIActivityList(Date date) {
         return null;
     }
 
-    @Override
+    @Override // TODO: Hvad skal det her?
     public List<IActivityDTO> getIActivityList(double minVal, double maxVal) {
         return null;
     }
@@ -427,8 +534,27 @@ public class ArrayDBController implements IDBController {
 	@Path("/updateActivity")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public boolean updateActivity(IActivityDTO activityDTO) {
-        return false;
+    public boolean updateActivity(IActivityDTO updatedActivityDTO) {
+	    boolean success = false;
+
+	    outLoop:
+	    for (IWorkerDTO workerDTO : workerList){
+	        for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
+	            for (IJobDTO jobDTO : employerDTO.getIJobList()){
+	                for (IActivityDTO activityDTO : jobDTO.getiActivityDTOList()) {
+	                    if (activityDTO.getActivityID() == updatedActivityDTO.getActivityID()) {
+	                        activityDTO.setStartingDateTime(updatedActivityDTO.getStartingDateTime());
+	                        activityDTO.setEndingDateTime(updatedActivityDTO.getEndingDateTime());
+	                        activityDTO.setActivityValue(updatedActivityDTO.getActivityValue());
+	                        success = true;
+	                        break outLoop;
+                        }
+                    }
+                }
+            }
+        }
+
+        return success;
     }
 	
 	@DELETE
@@ -436,6 +562,16 @@ public class ArrayDBController implements IDBController {
     @Override
     public void deleteActivity(@PathParam("id") int activityID) {
 
+        outLoop:
+        for (IWorkerDTO workerDTO : workerList){
+            for (IEmployerDTO employerDTO : workerDTO.getIEmployers()) {
+                for (IJobDTO jobDTO : employerDTO.getIJobList()) {
+                    if(jobDTO.getiActivityDTOList().removeIf(iActivityDTO -> (iActivityDTO.getActivityID() == activityID))){
+                        break outLoop;
+                    }
+                }
+            }
+        }
     }
 
     @Override
