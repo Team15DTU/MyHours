@@ -1,6 +1,55 @@
 // Check session if session is active
 $(window).on('load', checkSession);
 
+//region modal
+var modalid = ["#shift_add","#shift_edit","#shift_delete","#job_add","#job_edit","#job_delete","#employer_add","#employer_edit","#employer_delete"];
+
+
+$(window).on("click", function(e) {
+    for (i=0;i<modalid.length;i++) {
+        if (e.target===$(modalid[i])[0]) {
+            hideModal();
+        }
+    }
+});
+var hideModal = function(){
+   for (i=0;i<modalid.length;i++) {
+       $(modalid[i]).hide();
+   }
+};
+
+
+var showactivity_add = function() {
+    $("#shift_add").show();
+}
+var showactivity_edit = function() {
+    $("#shift_edit").show();
+}
+var showactivity_delete = function() {
+    $("#shift_delete").show();
+}
+var showjob_add = function() {
+    $("#job_add").show();
+}
+var showjob_edit = function() {
+    $("#job_edit").show();
+}
+var showjob_delete = function() {
+    $("#job_delete").show();
+}
+var showemployer_add = function() {
+    $("#employer_add").show();
+}
+var showemployer_edit = function() {
+    $("#employer_edit").show();
+}
+var showemployer_delete = function() {
+    $("#employer_delete").show();
+}
+
+
+//endregion
+
 //Dette er metoderne til tabellen
 function selectShift(name) {
 
@@ -362,8 +411,8 @@ function addActivity(){
         url : "/MyHours/DBController/createActivity",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Created Activity");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -377,14 +426,14 @@ function addActivity(){
 function addEmployer(){
 
     event.preventDefault();
-    var userJson = $("#addEmployer").serializeJSON();
+    var userJson = $("#addEmployer input").serializeJSON();
     $.ajax({
         method: 'POST',
         url : "/MyHours/DBController/createEmployer",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Created Employer");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -404,8 +453,8 @@ function addJob(){
         url : "/MyHours/DBController/createJob",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Created Job");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -445,8 +494,8 @@ function editEmployer(){
         url : "/MyHours/DBController/editEmployer",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Edited Employer");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -466,8 +515,8 @@ function editJob(){
         url : "/MyHours/DBController/editJob",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Edited Job");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -505,11 +554,11 @@ function deleteActivity(){
     var userJson = $("#deleteActivity").serializeJSON();
     $.ajax({
         method: 'DELETE',
-        url : "/MyHours/DBController/",
+        url : "/MyHours/DBController/deleteActivity",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Deleted Activity");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -526,11 +575,11 @@ function deleteEmployer(){
     var userJson = $("#deleteEmployer").serializeJSON();
     $.ajax({
         method: 'DELETE',
-        url : "/MyHours/DBController/",
+        url : "/MyHours/DBController/deleteEmployer",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Deleted Employer");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -547,11 +596,11 @@ function deleteJob(){
     var userJson = $("#deleteJob").serializeJSON();
     $.ajax({
         method: 'DELETE',
-        url : "/MyHours/DBController/",
+        url : "/MyHours/DBController/deleteJob",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Deleted Job");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
@@ -646,5 +695,135 @@ function logOut() {
         error: function (jqXHR, text, error) {
             alert(jqXHR.status + text + error);
         }
+    });
+}
+//her er delene som fremkalder content.
+function openInfo() {
+    $('#popup_content').show();
+    hoursOnWorkMounthly();
+}
+
+function closeInfo() {
+    $('#popup_content').hide();
+}
+
+
+//her er delene som ændre ved content.
+function changeFunction(site) {
+    if (site === 'shifts' && $('#myid1').prop('checked')) {
+        header('Shifts');
+        shifts();
+        checkMenu1();
+        openInfo();
+        //console.log(site);
+    } else if (site === 'job' && $('#myid2').prop('checked')) {
+        header('Job');
+        job();
+        checkMenu2();
+        openInfo();
+        //console.log(site);
+    } else if (site === 'workplace' && $('#myid3').prop('checked')) {
+        header('Workplace');
+        workplace();
+        checkMenu3();
+        openInfo();
+        //console.log(site);
+    } else if (site === 'none' && $('#myid').prop('checked')) {
+        header('');
+        none();
+        checkMenu0();
+        closeInfo();
+        //console.log(site);
+    } else {
+        header('');
+        none();
+        checkMenu0();
+        closeInfo();
+        //console.log(site+" close");
+    }
+}
+
+function header(head) {
+    $('#pop_top_head')[0].innerHTML = head;
+    if (head === '') {
+        $('#pop_top2').hide();
+    } else {
+        $('#pop_top2').show();
+    }
+}
+
+function hoursOnWorkMounthly() {
+    anychart.onDocumentReady(function () {
+        var today = new Date();
+        var month = String(today.getMonth());
+        var year = today.getFullYear();
+        var nrOfDays = daysInMonth(month, year);
+
+        // set the data
+        var data = {header: ["Date", "Hours"]};
+
+        //her finder jeg alle de job som er forbundet med brugeren.
+        var nrOfJobs = new Array();
+        for (var loop = 0; loop < findAllJobs().length; loop++) {
+            nrOfJobs[loop] = findAllJobs()[loop][0];
+        }
+        month++;
+
+        function colorizer(){
+            var mixColor1 = anychart.color.lighten(color1, colorIndex);
+            colorIndex = colorIndex + 0.2;
+            return mixColor1;
+        }
+
+        //laver dataset
+        var dataSets = new Array();
+        for (var l = 0; l < nrOfJobs.length; l++) {
+            var dataSet = anychart.data.set(data);
+            for (i = 0; i < nrOfDays; i++) {
+                var name = (i + 1) + '/' + (month);
+                dataSet.append([name, hoursOfWork()]);
+            }
+            dataSets[l] = dataSet;
+        }
+
+        // create the chart
+        var chart = anychart.column();
+        chart.animation(true);
+        var serieSet = new Array();
+
+
+        chart.palette(anychart.palettes.Markers);
+
+        //laver dataen til serie sæt.
+        for (var r = 0; r < dataSets.length; r++) {
+            serieSet[r] = dataSets[r].mapAs({'x': 0, 'value': 1})
+        }
+
+        chart.yScale().stackMode('value');
+
+
+        // add the data
+        for (var c = 0; c < serieSet.length; c++) {
+            chart.column(serieSet[c]);
+        }
+
+
+        var i = 0;
+        // create a loop
+        while (chart.getSeriesAt(i)) {
+            // rename each series
+            chart.getSeriesAt(i).name(findJob(nrOfJobs[i])[2]);
+            i++;
+        }
+
+        // set the chart title
+        chart.title("Hours on work");
+
+        // enable legend
+        chart.legend(true);
+
+        // draw
+        chart.container("graph");
+        chart.draw();
     });
 }

@@ -1,9 +1,11 @@
 package dto.worker;
 
+import db.ArrayDBController;
 import dto.address.IAddress;
 import dto.employer.IEmployerDTO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,16 +30,21 @@ public class WorkerDTO implements IWorkerDTO {
     ----------------------- Constructor -------------------------
      */
     
-    public WorkerDTO () {}
+    public WorkerDTO ()
+    {
+        workerID = ArrayDBController.workerID++;
+        employers = new ArrayList<>();
+    }
 
     public WorkerDTO (String firstName, String surName, String email)
     {
+        workerID = ArrayDBController.workerID++;
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
+        employers = new ArrayList<>();
         birthday = null;
         homeAddress = null;
-        employers = null;
     }
     
     /**
@@ -65,6 +72,7 @@ public class WorkerDTO implements IWorkerDTO {
     
     public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
     {
+        workerID = ArrayDBController.workerID++;
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;

@@ -1,5 +1,8 @@
 package dto.activity;
 
+import db.ArrayDBController;
+import dto.job.IJobDTO;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -23,9 +26,12 @@ public class ActivityDTO implements IActivityDTO {
     ----------------------- Constructor -------------------------
      */
     
-    public ActivityDTO() {}
+    public ActivityDTO() {
+        activityID = ArrayDBController.activityID++;
+    }
 
     public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID) {
+        activityID = ArrayDBController.activityID++;
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;
@@ -33,6 +39,7 @@ public class ActivityDTO implements IActivityDTO {
     }
 
     public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID, Duration pause) {
+        activityID = ArrayDBController.activityID++;
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;
@@ -100,7 +107,13 @@ public class ActivityDTO implements IActivityDTO {
     ---------------------- Public Methods -----------------------
      */
     
-    
+    public void calculateActivityValue(IJobDTO jobDTO) {
+        double stdSalaryPrMin = jobDTO.getStdSalary()/(double)60;
+
+        long payedMinutesOnShift = Duration.between(startingDateTime,endingDateTime).minus(pause).toMinutes();
+
+        activityValue = payedMinutesOnShift*stdSalaryPrMin;
+    }
     
     /*
     ---------------------- Support Methods ----------------------

@@ -1,8 +1,12 @@
 package db;
 
+import dao.DALException;
+import dto.activity.ActivityDTO;
 import dto.activity.IActivityDTO;
+import dto.employer.EmployerDTO;
 import dto.employer.IEmployerDTO;
 import dto.job.IJobDTO;
+import dto.job.JobDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 
@@ -21,7 +25,7 @@ public interface IDBController
 	/*------------------------------------------------------------
 	| Creators                                                   |
 	-------------------------------------------------------------*/
-    boolean createWorker   (IWorkerDTO workerDTO);
+    void createWorker   (IWorkerDTO workerDTO);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -53,7 +57,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    boolean createEmployer (IEmployerDTO employer);
+    void createEmployer (IEmployerDTO employer);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -84,7 +88,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    boolean createJob      (IJobDTO job);
+    void createJob      (IJobDTO job);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -116,7 +120,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    boolean createActivity (IActivityDTO activity);
+    void createActivity (IActivityDTO activity);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -139,7 +143,7 @@ public interface IDBController
 	/*------------------------------------------------------------
     | Delete                                                   |
     -------------------------------------------------------------*/
-    boolean             deleteActivity (int activityID);
+    void             deleteActivity (int id);
 
     //endregion
     
@@ -147,7 +151,6 @@ public interface IDBController
     | Utilities                                                  |
     -------------------------------------------------------------*/
     String  setTimeZoneFromSQLServer    ();
-	int     getNextAutoIncremental      (String tableName);
 
     void logOut                         (HttpServletRequest request);
     boolean isSessionActive             (HttpServletRequest request);

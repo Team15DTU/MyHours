@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 public class EmployerDAOTest
 {
     private static IConnPool test_DB;
-    private static DBController dbController; // TODO: Skal DBControlleren bare væk?
+    private static DBController dbController;
     private static IEmployerDAO iEmployerDAO;
     private static IWorkerDAO iWorkerDAO;
 
