@@ -56,6 +56,7 @@ public class DBController implements IDBController
     private IJobDAO iJobDAO;
     private IActivityDAO iActivityDAO;
     private ConnectionHelper connectionHelper;
+    private static String emailUsedToLogin;
     
     /*
     ----------------------- Constructor -------------------------
@@ -319,6 +320,8 @@ public class DBController implements IDBController
 
                 HttpSession session = request.getSession(true);
 
+                emailUsedToLogin = user.getEmail();
+
                 // Store users email in session
                 session.setAttribute("userEmail",email);
 
@@ -555,7 +558,7 @@ public class DBController implements IDBController
 
             PreparedStatement pStatement = c.prepareStatement(createQuery);
 
-            pStatement.setInt(1, employer.getWorkerID());
+            pStatement.setInt(1, iWorkerDAO.getWorker(emailUsedToLogin).getWorkerID());
             pStatement.setString(2, employer.getName());
             pStatement.setString(3, null);
             pStatement.setString(4, employer.getTelephone());
