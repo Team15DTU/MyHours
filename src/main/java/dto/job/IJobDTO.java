@@ -59,7 +59,5 @@ public interface IJobDTO {
     /*
     ---------------------- Public Methods -----------------------
      */
-    
-
 
 }
