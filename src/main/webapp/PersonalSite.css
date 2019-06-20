@@ -151,17 +151,17 @@ header{
     margin-top: 3%;
     width: 30%;
     height: 75%;
-    float: left;
-    margin-left: 1%;
+    float: right;
+    margin-right: 12%;
 }
 
 .pop_right {
     border-radius: 8px;
     margin-top: 3%;
-    width: 65%;
+    width: 55%;
     height: 75%;
-    float: right;
-    margin-right: 1%;
+    float: left;
+
 }
 
 
