@@ -278,9 +278,9 @@ public class TestDataController {
         IActivityDTO activityNo1 = new ActivityDTO();
 
         activityNo1.setJobID(belongsToJObDTO.getJobID());
-        activityNo1.setStartingDateTime(activityNo1_startingDateTime);
-        activityNo1.setEndingDateTime(activityNo1_endingDateTime);
-        activityNo1.setPause(activityNo1_pause);
+        //activityNo1.setStartingDateTime(activityNo1_startingDateTime);
+        //activityNo1.setEndingDateTime(activityNo1_endingDateTime);
+       // activityNo1.setPause(activityNo1_pause);
         activityNo1.setActivityValue(activityNo1_activityValue);
 
         return activityNo1;
@@ -290,9 +290,9 @@ public class TestDataController {
         IActivityDTO activityNo2 = new ActivityDTO();
 
         activityNo2.setJobID(belongsToJObDTO.getJobID());
-        activityNo2.setStartingDateTime(activityNo2_startingDateTime);
-        activityNo2.setEndingDateTime(activityNo2_endingDateTime);
-        activityNo2.setPause(activityNo2_pause);
+       // activityNo2.setStartingDateTime(activityNo2_startingDateTime);
+       // activityNo2.setEndingDateTime(activityNo2_endingDateTime);
+       // activityNo2.setPause(activityNo2_pause);
         activityNo2.setActivityValue(activityNo2_activityValue);
 
         return activityNo2;
@@ -302,9 +302,9 @@ public class TestDataController {
         IActivityDTO activityNo3 = new ActivityDTO();
 
         activityNo3.setJobID(belongsToJObDTO.getJobID());
-        activityNo3.setStartingDateTime(activityNo3_startingDateTime);
-        activityNo3.setEndingDateTime(activityNo3_endingDateTime);
-        activityNo3.setPause(activityNo3_pause);
+       // activityNo3.setStartingDateTime(activityNo3_startingDateTime);
+       // activityNo3.setEndingDateTime(activityNo3_endingDateTime);
+       // activityNo3.setPause(activityNo3_pause);
         activityNo3.setActivityValue(activityNo3_activityValue);
 
         return activityNo3;

@@ -1,5 +1,6 @@
 package dto.activity;
 
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -14,9 +15,9 @@ public class ActivityDTO implements IActivityDTO {
 
     private int activityID;
     private int jobID;
-    private LocalDateTime startingDateTime;
-    private LocalDateTime endingDateTime;
-    private Duration pause; // break in minutes!
+    private Timestamp startingDateTime;
+    private Timestamp endingDateTime;
+    private int pause; // break in minutes!
     private double activityValue;
 
     /*
@@ -25,14 +26,14 @@ public class ActivityDTO implements IActivityDTO {
     
     public ActivityDTO() {}
 
-    public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID) {
+    public ActivityDTO(Timestamp startingDateTime, Timestamp endingDateTime, int jobID) {
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;
 
     }
 
-    public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID, Duration pause) {
+    public ActivityDTO(Timestamp startingDateTime, Timestamp endingDateTime, int jobID, int pause) {
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;
@@ -62,27 +63,29 @@ public class ActivityDTO implements IActivityDTO {
         this.jobID = jobID;
     }
 
-    public LocalDateTime getStartingDateTime() {
-        return startingDateTime.withNano(0);
+    @Override
+    public Timestamp getStartingDateTime() {
+        return startingDateTime;
     }
 
-    public void setStartingDateTime(LocalDateTime startingDateTime) {
-        this.startingDateTime = startingDateTime.withNano(0);
+    public void setStartingDateTime(Timestamp startingDateTime) {
+        this.startingDateTime = startingDateTime;
     }
 
-    public LocalDateTime getEndingDateTime() {
-        return endingDateTime.withNano(0);
+    @Override
+    public Timestamp getEndingDateTime() {
+        return endingDateTime;
     }
 
-    public void setEndingDateTime(LocalDateTime endingDateTime) {
-        this.endingDateTime = endingDateTime.withNano(0);
+    public void setEndingDateTime(Timestamp endingDateTime) {
+        this.endingDateTime = endingDateTime;
     }
 
-    public Duration getPause() {
+    public int getPause() {
         return pause;
     }
 
-    public void setPause(Duration pause) {
+    public void setPause(int pause) {
         this.pause = pause;
     }
 

@@ -1,14 +1,12 @@
 package dao.worker;
 
 import dao.DALException;
-import db.DBController;
 import db.IConnPool;
 import db.TestConnPoolV1;
 import dto.address.Address;
 import dto.address.IAddress;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
-import hibernate.HibernateProperties;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;

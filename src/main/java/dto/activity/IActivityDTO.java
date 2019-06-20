@@ -1,5 +1,6 @@
 package dto.activity;
 
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -20,14 +21,14 @@ public interface IActivityDTO {
     int getJobID();
     void setJobID(int jobID);
 
-    LocalDateTime getStartingDateTime();
-    void setStartingDateTime(LocalDateTime startingDateTime);
+    Timestamp getStartingDateTime();
+    void setStartingDateTime(Timestamp startingDateTime);
 
-    LocalDateTime getEndingDateTime();
-    void setEndingDateTime(LocalDateTime endingDateTime);
+    Timestamp getEndingDateTime();
+    void setEndingDateTime(Timestamp endingDateTime);
 
-    Duration getPause();
-    void setPause(Duration pause);
+    int getPause();
+    void setPause(int pause);
 
     double getActivityValue();
     void setActivityValue(double activityValue);

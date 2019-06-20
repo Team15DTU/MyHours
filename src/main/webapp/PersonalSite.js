@@ -215,26 +215,8 @@ function addActivity(){
 
     event.preventDefault();
 
-    var userJson =  JSON.parse(JSON.stringify($("#addActivity").serializeJSON()));
-    var test = $("#addActivity").serializeJSON();
-    console.log(test);
-    $("#addActivity").val(test);
-    console.log(test);
-
-
-    var parsedString = userJson.replace(/@\{(\w+)\}/g,function(match, group) {
-        console.log(group);
-        console.log(match);
-        if (group.toString() === 'startingDateTime') {
-            // TODO: Hej WassMann, kan du ikke se om nedenstående løsning virker?
-            return new console.log(Date().toISOString());
-        }
-        else if (group.toString() === 'endingDateTime') {
-            return new Date().toISOString.slice(0,19);
-        } //and so on
-    });
-    //console.log(parsedString);
-
+    var userJson =  $("#addActivity").serializeJSON();
+    console.log(userJson);
     $.ajax({
         method: 'POST',
         url : "/MyHours/DBController/createActivity",

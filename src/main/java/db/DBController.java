@@ -905,12 +905,13 @@ public class DBController implements IDBController
                 ActivityConstants.activityValue);       // ParameterIndex 5
 
         try {
+            //FIXME: Hardcoded ip
 
             PreparedStatement preparedStatement = c.prepareStatement(createQuery);
-            preparedStatement.setInt(1,activity.getJobID());
+            preparedStatement.setInt(1,1);
             preparedStatement.setTimestamp(2, java.sql.Timestamp.valueOf(activity.getStartingDateTime().toString()));
             preparedStatement.setTimestamp(3, java.sql.Timestamp.valueOf(activity.getEndingDateTime().toString()));
-            preparedStatement.setLong(4,0);
+            preparedStatement.setInt(4,activity.getPause());
             preparedStatement.setDouble(5,activity.getActivityValue());
 
             preparedStatement.executeUpdate();
@@ -994,9 +995,9 @@ public class DBController implements IDBController
         try {
 
             PreparedStatement preparedStatement = c.prepareStatement(updateQuery);
-            preparedStatement.setTimestamp(1, Timestamp.valueOf(activityDTO.getStartingDateTime()));
-            preparedStatement.setTimestamp(2, Timestamp.valueOf(activityDTO.getEndingDateTime()));
-            preparedStatement.setLong(3, activityDTO.getPause().toMinutes());
+            preparedStatement.setTimestamp(1, activityDTO.getStartingDateTime());
+            preparedStatement.setTimestamp(2, activityDTO.getEndingDateTime());
+            preparedStatement.setInt(3, activityDTO.getPause());
             preparedStatement.setDouble(4, activityDTO.getActivityValue());
             preparedStatement.setInt(5, activityDTO.getActivityID());
 
