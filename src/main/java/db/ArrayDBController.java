@@ -21,6 +21,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.awt.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +51,7 @@ public class ArrayDBController implements IDBController {
     
     public ArrayDBController () {
 
-        workerList = new ArrayList<>();
+        workerList = setArrayListWithStartData();
 
     }
     
@@ -606,7 +610,7 @@ public class ArrayDBController implements IDBController {
         }
         return sessionStatus;
     }
-	
+
 	/**
 	 * This method checks if there's a correlation between the
 	 * provided email and password. All exceptions is handled by
@@ -623,7 +627,7 @@ public class ArrayDBController implements IDBController {
     	String email = user.getEmail();
     	String pass = user.getPassword();
     	boolean success = false;
-    	
+
     	// Check if the email matches
 		IWorkerDTO worker = getIWorkerDTO(email);
 		if ( worker.getEmail() != null )
@@ -632,30 +636,90 @@ public class ArrayDBController implements IDBController {
 			if ( worker.getPassword().equals(pass) )
 				success = true;
 		}
-	
+
 		// Take care of session
 		if (success)
 		{
 			HttpSession oldSession = request.getSession();
-			
+
 			if (oldSession != null)
 				oldSession.invalidate();
-		
+
 			HttpSession session = request.getSession(true);
-		
+
 			// Store users email in session
 			session.setAttribute("userEmail",email);
-		
+
 			// Set the the time before the session expires to 10 minutes
 			session.setMaxInactiveInterval(10*60);
 		}
-    	
+
         return success;
     }
     
     /*
     ---------------------- Support Methods ----------------------
      */
+
+    private ArrayList<IWorkerDTO> setArrayListWithStartData () {
+        ArrayList<IWorkerDTO> preloadedWorkerList = new ArrayList<>();
+
+        IWorkerDTO workerNo1 = new WorkerDTO();
+        workerNo1.setFirstName("WorkerFornavn");
+        workerNo1.setSurName("WorkerEfternavn");
+        workerNo1.setEmail("worker1@test.dk");
+        workerNo1.setBirthday(LocalDate.of(1992,1,6));
+        workerNo1.setPassword("password");
+
+        IEmployerDTO employerNo1 = new EmployerDTO();
+        employerNo1.setWorkerID(workerNo1.getWorkerID());
+        employerNo1.setName("DTU");
+        employerNo1.setTelephone("12345678");
+        employerNo1.setColor(Color.decode("#FAEBD7"));
+
+        IJobDTO jobNo1 = new JobDTO();
+        jobNo1.setEmployerID(employerNo1.getEmployerID());
+        jobNo1.setJobName("Hjælpeunderviser");
+        jobNo1.setStdSalary(100.0);
+
+        IJobDTO jobNo2 = new JobDTO();
+        jobNo2.setEmployerID(employerNo1.getEmployerID());
+        jobNo2.setJobName("Forelæser");
+        jobNo2.setStdSalary(200.0);
+
+        IActivityDTO activityNo1 = new ActivityDTO();
+        activityNo1.setJobID(jobNo1.getJobID());
+        activityNo1.setStartingDateTime(LocalDateTime.of(2019,6,18,8,0,0));
+        activityNo1.setEndingDateTime(LocalDateTime.of(2019,6,18,16,0,0));
+        activityNo1.setPause(Duration.ofMinutes(30));
+
+        IActivityDTO activityNo2 = new ActivityDTO();
+        activityNo2.setJobID(jobNo1.getJobID());
+        activityNo2.setStartingDateTime(LocalDateTime.of(2019,6,20,10,0,0));
+        activityNo2.setEndingDateTime(LocalDateTime.of(2019,6,20,18,0,0));
+        activityNo2.setPause(Duration.ofMinutes(60));
+
+        IActivityDTO activityNo3 = new ActivityDTO();
+        activityNo3.setJobID(jobNo2.getJobID());
+        activityNo3.setStartingDateTime(LocalDateTime.of(2019,6,15,10,0,0));
+        activityNo3.setEndingDateTime(LocalDateTime.of(2019,6,15,12,0,0));
+        activityNo3.setPause(Duration.ofMinutes(0));
+
+        // Activities til hjælpeunderviser.
+        jobNo1.getiActivityDTOList().add(activityNo1);
+        jobNo1.getiActivityDTOList().add(activityNo2);
+        // Activities til forelæser.
+        jobNo2.getiActivityDTOList().add(activityNo3);
+        // Job til DTU
+        employerNo1.getIJobList().add(jobNo1);
+        employerNo1.getIJobList().add(jobNo2);
+        // Employer til Worker
+        workerNo1.getIEmployers().add(employerNo1);
+        // Add Worker til PreloadedList
+        preloadedWorkerList.add(workerNo1);
+
+        return preloadedWorkerList;
+    }
 
 
 }
