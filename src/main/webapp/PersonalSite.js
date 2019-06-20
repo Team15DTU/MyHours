@@ -373,9 +373,9 @@ function deleteActivityByID(activityID){
 function deleteEmployer() {
     event.preventDefault();
 
-    var employerID = $("#company_employer_delete".employerID).val();
+    var employerID = $("#company_employer_delete").val();
 
-    $("#company_employer_delete".employerID).val(employerID);
+    $("#company_employer_delete").val(employerID);
     console.log(employerID);
 
     deleteEmployerByID(employerID);
@@ -553,12 +553,19 @@ function updateGraf(choice) {
                             for (i = 0; i < 3; i++) {
                                 var row2 = table.insertRow(i + 1);
 
-                                row2.insertCell(0).innerHTML = resulte[i]['startingDateTime'].toLocaleString();
-                                row2.insertCell(1).innerHTML = resulte[i]['endingDateTime'].toLocaleString();
+                                var shiftStart = findShift(i)[2];
+                                var shiftEnd = findShift(i)[3];
+
+
+                                var shiftStartString = shiftStart.getDate() + '/' + (shiftStart.getMonth() + 1) + ' ' + with_leading_zeros(shiftStart.getHours()) + ':' + with_leading_zeros(shiftStart.getMinutes()) + ' - ' + with_leading_zeros(shiftEnd.getHours()) + ':' + with_leading_zeros(shiftEnd.getMinutes());
+
+
+                                row2.insertCell(0).innerHTML = resulte[i]['startingDateTime'];
+                                row2.insertCell(1).innerHTML = resulte[i]['endingDateTime'];
                                 row2.insertCell(2).innerHTML = resulte[i]['activityValue'];
                             }
                         }
-                    });
+                    })
                     break;
 
                 case "jobInfo":
@@ -567,30 +574,31 @@ function updateGraf(choice) {
                         url: "/MyHours/ArrayDBController/getEmployerList",
                         dataType: "JSON",
                         success: function (response) {
-                                $.each(response, function(i) {
-                            var table = document.getElementById('left_table');
-                            while (table.hasChildNodes()) {
-                                table.removeChild(table.firstChild);
-                            }
-                            var firm = 'Employer';
-                            var lastpay = 'Job';
-                            var recivepay = 'Hourly salary';
+                            $.each(response, function(k) {
+                                var table = document.getElementById('left_table');
+                                while (table.hasChildNodes()) {
+                                    table.removeChild(table.firstChild);
+                                }
+                                var firm = 'Employer';
+                                var lastpay = 'Job';
+                                var recivepay = 'Hourly salary';
 
 
-                            var row = table.insertRow(0);
-                            row.insertCell(0).innerHTML = firm.bold();
-                            row.insertCell(1).innerHTML = lastpay.bold();
-                            row.insertCell(2).innerHTML = recivepay.bold();
+                                var row = table.insertRow(0);
+                                row.insertCell(0).innerHTML = firm.bold();
+                                row.insertCell(1).innerHTML = lastpay.bold();
+                                row.insertCell(2).innerHTML = recivepay.bold();
+                                var i;
 
-                            $.each(result, function (k) {
-                                //new Date();
-                                //'Insert activity name';
-                                var row2 = table.insertRow(k + 1);
-                                row2.insertCell(0).innerHTML = response[i]['name'];//findJob(i)[2];
-                                row2.insertCell(1).innerHTML = result[k]['jobName']; //lastPaycheck(findJob(k)[0])+' Kr.';
-                                row2.insertCell(2).innerHTML = result[k]['stdSalary'];
-                            });
-                        })
+                                $.each(result, function (k) {
+                                    //new Date();
+                                    //'Insert activity name';
+                                    var row2 = table.insertRow(k + 1);
+                                    row2.insertCell(0).innerHTML = response[k]['name'];//findJob(i)[2];
+                                    row2.insertCell(1).innerHTML = result[k]['jobName']; //lastPaycheck(findJob(k)[0])+' Kr.';
+                                    row2.insertCell(2).innerHTML = result[k]['stdSalary'];
+                                });
+                            })
                         }
 
                     });
@@ -600,20 +608,15 @@ function updateGraf(choice) {
 
 
                 case "employerInfo":
-
                     $.ajax({
                         method: "GET",
                         url: "/MyHours/ArrayDBController/getEmployerList",
                         dataType: "JSON",
-                        success: function (response) {
-                            $.each(response, function(k) {
+                        success: function (resulte) {
                             var table = document.getElementById('left_table');
                             while (table.hasChildNodes()) {
                                 table.removeChild(table.firstChild);
                             }
-
-                            var option = '';
-
 
                             var firm = 'Employer';
 
@@ -621,15 +624,18 @@ function updateGraf(choice) {
                             row.insertCell(0).innerHTML = firm.bold();
                             var i;
 
-                            for (i = 0; i < 3; i++) {
-                                option += response[k]['name'];
-
+                            //TODO INSERT REAL ACTIVITY INFORMATION
+                            $.each(resulte, function (i) {
                                 var row2 = table.insertRow(i + 1);
-                                row2.insertCell(0).innerHTML = option;
-                            }
-                        })
+                                console.log("result i" + result[i]);
+                                console.log("resulte i" + resulte[i]);
+
+                                row2.insertCell(0).innerHTML = resulte[i]['name'];
+                            })
                         }
-                    })
+                    });
+                    break;
+
             }
         }
     })
