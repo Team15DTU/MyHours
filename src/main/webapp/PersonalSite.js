@@ -464,13 +464,13 @@ function checkSession() {
     });
 }
 
-function updateGraf(choice){
+function updateGraf(choice) {
     $.ajax({
         method: "GET",
-        url:"/MyHours/DBController/getJobList",
+        url: "/MyHours/DBController/getJobList",
         dataType: "JSON",
         success: function (result) {
-            anychart.onDocumentReady(function() {
+            anychart.onDocumentReady(function () {
 
                 $('#graph').empty();
 
@@ -478,11 +478,11 @@ function updateGraf(choice){
                 var month = String(today.getMonth());
                 var year = today.getFullYear();
 
-                var nrOfDays = daysInMonth(month,year);
+                var nrOfDays = daysInMonth(month, year);
 
                 var findJobArray = [];
 
-                $.each(result, function(i) {
+                $.each(result, function (i) {
                     var jobDetails = [result[i]['jobID'], result[i]['employerID'], result[i]['jobName'], result[i]['stdSalary'], new Date(), 'Insert activity name'];
                     findJobArray.push(jobDetails);
                 });
@@ -495,7 +495,7 @@ function updateGraf(choice){
                 //her finder jeg alle de job som er forbundet med brugeren.
                 var nrOfJobs = [];
                 //TODO: Her skal vi erstatte vores data. findAllJobs finder alle jobs og den resterende funktion laver grafen
-                for (var loop = 0; loop < findJobArray.length ;loop++) {
+                for (var loop = 0; loop < findJobArray.length; loop++) {
                     nrOfJobs[loop] = findJobArray[loop][0];
                 }
 
@@ -504,7 +504,7 @@ function updateGraf(choice){
                 //laver dataset
                 var dataSets = [];
 
-                for (var l=0;l<nrOfJobs.length;l++) {
+                for (var l = 0; l < nrOfJobs.length; l++) {
                     var dataSet = anychart.data.set(data);
                     for (i = 0; i < nrOfDays; i++) {
                         var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
@@ -521,21 +521,21 @@ function updateGraf(choice){
 
                 //laver dataen til serie sæt.
 
-                for (var r = 0; r<dataSets.length; r++) {
+                for (var r = 0; r < dataSets.length; r++) {
                     serieSet[r] = dataSets[r].mapAs({'x': 0, 'value': 1})
                 }
 
                 chart.yScale().stackMode('value');
 
                 // add the data
-                for (var c = 0; c<serieSet.length; c++){
+                for (var c = 0; c < serieSet.length; c++) {
                     chart.column(serieSet[c]);
                 }
 
 
-                var i=0;
+                var i = 0;
                 // create a loop
-                while (chart.getSeriesAt(i)){
+                while (chart.getSeriesAt(i)) {
                     // rename each series
                     chart.getSeriesAt(i).name(findJob(nrOfJobs[i])[2]);
                     i++;
@@ -551,86 +551,109 @@ function updateGraf(choice){
 
             switch (choice) {
                 case "shiftInfo":
-                    var table = document.getElementById('left_table');
-                    while(table.hasChildNodes()){
-                        table.removeChild(table.firstChild);
-                    }
+                    $.ajax({
+                        method: "GET",
+                        url: "/MyHours/DBController/getActivityList",
+                        dataType: "JSON",
+                        success: function (resulte) {
+                            var table = document.getElementById('left_table');
+                            while (table.hasChildNodes()) {
+                                table.removeChild(table.firstChild);
+                            }
 
-                    var vagt = 'Time';
-                    var job = 'Job';
-                    var salary = 'Salary';
+                            var vagt = 'Starting';
+                            var job = 'Ending';
+                            var salary = 'Activity value';
 
-                    var row = table.insertRow(0);
-                    row.insertCell(0).innerHTML = vagt.bold();
-                    row.insertCell(1).innerHTML = job.bold();
-                    row.insertCell(2).innerHTML = salary.bold();
-                    var i;
+                            var row = table.insertRow(0);
+                            row.insertCell(0).innerHTML = vagt.bold();
+                            row.insertCell(1).innerHTML = job.bold();
+                            row.insertCell(2).innerHTML = salary.bold();
+                            var i;
 
-                    //TODO INSERT REAL ACTIVITY INFORMATION
-                    for (i = 0; i < 3; i++){
-                        var row2 = table.insertRow(i+1);
+                            //TODO INSERT REAL ACTIVITY INFORMATION
+                            for (i = 0; i < 3; i++) {
+                                var row2 = table.insertRow(i + 1);
 
-                        var shiftStart = findShift(i)[2];
-                        var shiftEnd = findShift(i)[3];
-
-
-                        var shiftStartString = shiftStart.getDate() + '/' + (shiftStart.getMonth()+1) + ' ' + with_leading_zeros(shiftStart.getHours()) + ':' + with_leading_zeros(shiftStart.getMinutes()) + ' - ' +with_leading_zeros(shiftEnd.getHours()) + ':' + with_leading_zeros(shiftEnd.getMinutes());
+                                var shiftStart = findShift(i)[2];
+                                var shiftEnd = findShift(i)[3];
 
 
-                        row2.insertCell(0).innerHTML = shiftStartString;
-                        row2.insertCell(1).innerHTML = findJob(i)[2];
-                        row2.insertCell(2).innerHTML = findPaycheck(i);
-                    }
+                                var shiftStartString = shiftStart.getDate() + '/' + (shiftStart.getMonth() + 1) + ' ' + with_leading_zeros(shiftStart.getHours()) + ':' + with_leading_zeros(shiftStart.getMinutes()) + ' - ' + with_leading_zeros(shiftEnd.getHours()) + ':' + with_leading_zeros(shiftEnd.getMinutes());
+
+
+                                row2.insertCell(0).innerHTML = resulte[i]['startingDateTime'];
+                                row2.insertCell(1).innerHTML = resulte[i]['endingDateTime'];
+                                row2.insertCell(2).innerHTML = resulte[i]['activityValue'];
+                            }
+                        }
+                    })
                     break;
 
                 case "jobInfo":
-                    var table = document.getElementById('left_table');
-                    while(table.hasChildNodes()){
-                        table.removeChild(table.firstChild);
-                    }
-                    var firm = 'Employer';
-                    var lastpay = 'Last payout';
-                    var recivepay = 'Total earnings';
+                    $.ajax({
+                        method: "GET",
+                        url: "/MyHours/DBController/getEmployerList",
+                        dataType: "JSON",
+                        success: function (resulte) {
+                            var table = document.getElementById('left_table');
+                            while (table.hasChildNodes()) {
+                                table.removeChild(table.firstChild);
+                            }
+                            var firm = 'Employer';
+                            var lastpay = 'Job';
+                            var recivepay = 'Hourly salary';
 
 
-                    var row = table.insertRow(0);
-                    row.insertCell(0).innerHTML = firm.bold();
-                    row.insertCell(1).innerHTML = lastpay.bold();
-                    row.insertCell(2).innerHTML = recivepay.bold();
-                    var i;
+                            var row = table.insertRow(0);
+                            row.insertCell(0).innerHTML = firm.bold();
+                            row.insertCell(1).innerHTML = lastpay.bold();
+                            row.insertCell(2).innerHTML = recivepay.bold();
+                            var i;
 
-                    $.each(result, function(k) {
-                        //new Date();
-                        //'Insert activity name';
-                        var row2 = table.insertRow(k+1);
-                        row2.insertCell(0).innerHTML = result[k]['jobName'];//findJob(i)[2];
-                        row2.insertCell(1).innerHTML = result[k]['stdSalary']; //lastPaycheck(findJob(k)[0])+' Kr.';
-                        row2.insertCell(2).innerHTML = estimatePaycheck(k)+' Kr.';
-                    });
+                            $.each(result, function (k) {
+                                //new Date();
+                                //'Insert activity name';
+                                var row2 = table.insertRow(k + 1);
+                                row2.insertCell(0).innerHTML = resulte[k]['name'];//findJob(i)[2];
+                                row2.insertCell(1).innerHTML = result[k]['jobName']; //lastPaycheck(findJob(k)[0])+' Kr.';
+                                row2.insertCell(2).innerHTML = result[k]['stdSalary'];
+                            });
+                        }
 
+                    })
                     break;
+
+
+
 
                 case "employerInfo":
 
-                    var table = document.getElementById('left_table');
-                    while(table.hasChildNodes()){
-                        table.removeChild(table.firstChild);
-                    }
+                    $.ajax({
+                        method: "GET",
+                        url: "/MyHours/DBController/getEmployerList",
+                        dataType: "JSON",
+                        success: function (result) {
+                            var table = document.getElementById('left_table');
+                            while (table.hasChildNodes()) {
+                                table.removeChild(table.firstChild);
+                            }
 
-                    var firm = 'Employer';
+                            var firm = 'Employer';
 
-                    var row = table.insertRow(0);
-                    row.insertCell(0).innerHTML = firm.bold();
-                    var i;
+                            var row = table.insertRow(0);
+                            row.insertCell(0).innerHTML = firm.bold();
+                            var i;
 
-                    for (i = 0; i < 3; i++){
-                        var row2 = table.insertRow(i+1);
-                        row2.insertCell(0).innerHTML = findJob(i)[2];
-                    }
-                    break;
+                            for (i = 0; i < 3; i++) {
+                                var row2 = table.insertRow(i + 1);
+                                row2.insertCell(0).innerHTML = result[i]['name'];
+                            }
+                        }
+                    })
             }
         }
-    });
+    })
 }
 
 
