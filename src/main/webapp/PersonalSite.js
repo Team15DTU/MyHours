@@ -489,7 +489,7 @@ function updateGraf(choice) {
                 var findJobArray = [];
 
                 $.each(result, function (i) {
-                    var jobDetails = [result[i]['jobID'], result[i]['employerID'], result[i]['jobName'], result[i]['stdSalary'], new Date(), 'Insert activity name'];
+                    var jobDetails = [result[i]['jobID'], result[i]['employerID'], result[i]['jobName'], result[i]['stdSalary'], 'Insert activity name'];
                     findJobArray.push(jobDetails);
                 });
 
@@ -507,18 +507,17 @@ function updateGraf(choice) {
 
                 month++;
 
-                //laver dataset
-                var dataSets = [];
+                        //laver dataset
+                        var dataSets = [];
 
-                for (var l = 0; l < nrOfJobs.length; l++) {
-                    var dataSet = anychart.data.set(data);
-                    for (i = 0; i < nrOfDays; i++) {
-                        var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
-                        dataSet.append([findJobArray, hoursOfWork()]);
-                    }
-                    dataSets[l] = dataSet;
-                }
-
+                        for (var l = 0; l < nrOfJobs.length; l++) {
+                            var dataSet = anychart.data.set(data);
+                            for (i = 0; i < nrOfDays; i++) {
+                                var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
+                                dataSet.append([findJobArray,hoursOfWork()]);
+                            }
+                            dataSets[l] = dataSet;
+                        }
                 // create the chart
                 var chart = anychart.column();
                 chart.animation(true);
