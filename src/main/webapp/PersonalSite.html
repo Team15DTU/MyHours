@@ -109,8 +109,7 @@
         <form id="addActivity">
             <div class="form_per">
                 <label><b>What job is the Activity? (ID)</b></label> <br>
-                <select id="joblist" required>
-                </select>
+                <input type="text" placeholder="jobID" name="jobID" required>
                 <!--
                 <select id="select2" onclick="getJobList()">
                     <option value="Default" name="jobID"></option>
@@ -133,7 +132,7 @@
                        name="activityValue" required>
 
                 <button type="submit" name="addShift" value="submit" id="shiftadder" class="submit"
-                        onclick="addActivity(); getJobList(joblist);">Save Activity
+                        onclick="addActivity();">Save Activity
                 </button>
             </div>
         </form>
@@ -145,9 +144,8 @@
     <div class="modal2-content">
         <span onclick="hideModal()" class="close2">&times;</span>
         <form id="editActivity">
-            <label><b>Choice a shift you want to edit: </b></label><br><br>
-            <select id="activitylist_edit">
-            </select>
+            <label><b>Choice a shift you want to edit (ID): </b></label><br><br>
+            <input type="text" placeholder="activityID" name="activityID" required>
             <!--
             <select id="select" onchange="currentShiftToEdit()" onclick="getActivityList()">
                 <option value="Default"></option>
@@ -184,7 +182,7 @@
         <form id="deleteActivity">
             <center>
                 <label><b>Choice a shift you want to delete: </b></label><br>
-                <select id="activitylist_delete" name="activityID"></select>
+                <input type="text" placeholder="activityID" name="activityID" required>
                 <!--
                 <select id="select3" onclick="getActivityList()">
                     <option value="Default"></option>
@@ -209,7 +207,7 @@
             <div class="form_per">
 
                 <label><b>What company is the job for?</b></label>
-                <select id="company_job_add"></select>
+                <input type="text" placeholder="employerID" name="employerID" required>
                 <!--
                 <select id="company_job" onclick="getEmployerList();">
                     <option value="Default"></option>
@@ -235,8 +233,7 @@
         <span onclick="hideModal()" class="close2">&times;</span>
         <form id="editJob">
             <label><b>Choice a job you want to edit: </b></label><br><br>
-            <select id="company_job_edit">
-            </select>
+            <input type="text" placeholder="jobID" name="jobID" required>
             <!--
             <select id="select_job_edit" onclick="getJobList();">
                 <option value="Default"></option>
@@ -276,7 +273,7 @@
         <form id="deleteJob">
             <center>
                 <label><b>Choice a job you want to Delete: </b></label><br>
-                <select id="select_job_delete" name="jobName"></select>
+                <input type="text" placeholder="jobID" name="jobID" required>
                 <!--
                 <select id="select_job_delete" onclick="getJobList();">
                     <option value="Default"></option>
@@ -322,7 +319,7 @@
         <span onclick="hideModal()" class="close2">&times;</span>
         <form id="editEmployer">
             <label><b>Choice an employer you want to edit: (ID) </b></label><br><br>
-            <select id="company_employer_edit"></select>
+            <input type="text" placeholder="employerID" name="employerID" required>
             <!--
             <select id="select_jobadress_edit" onclick="getEmployerList();">
                 <option value="Default"></option>
@@ -355,7 +352,7 @@
         <form id="deleteEmployer">
             <center>
                 <label><b>Choice an employer you want to delete: </b></label><br>
-                <select id="company_employer_delete" name="name"></select>
+                <input type="text" placeholder="employerID" name="employerID" required>
                 <!--
                 <select id="select_jobadress_delete" onclick="getEmployerList();">
                     <option value="Default"></option>
