@@ -1,7 +1,6 @@
 // Check session if session is active
 $(window).on('load', checkSession);
 
-
 //region modal
 var modalid = ["#shift_add","#shift_edit","#shift_delete","#job_add","#job_edit","#job_delete","#employer_add","#employer_edit","#employer_delete"];
 
