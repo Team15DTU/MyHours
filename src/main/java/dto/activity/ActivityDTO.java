@@ -1,6 +1,7 @@
 package dto.activity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import db.ArrayDBController;
 import dto.job.IJobDTO;
 
@@ -21,10 +22,10 @@ public class ActivityDTO implements IActivityDTO {
 
     private int activityID;
     private int jobID;
-    @JsonFormat(pattern="dd-MM-yyyy HH:mm")
+    @JsonFormat(pattern = "yyyy-dd-MM'T'HH:mm")
+    //@JsonFormat(pattern="dd-MM-yyyy HH:mm" ) // Til Firefox
     private Timestamp startingDateTime;
-    //@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
-    @JsonFormat(pattern="dd-MM-yyyy HH:mm")
+    @JsonFormat(pattern = "yyyy-dd-MM'T'HH:mm")
     private Timestamp endingDateTime;
     private int pauseInMinuts; // break in minutes!
     private double activityValue;

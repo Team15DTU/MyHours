@@ -593,8 +593,11 @@ function updateGraf(choice) {
                                     //'Insert activity name';
                                     var row2 = table.insertRow(k + 1);
                                     if (result[k]['employerID']===response[i]['employerID']){
-                                        var employerName = response[i]['name'];
+                                        var employerName = response[i]['name']
+                                        var employerName = response[i]['name']
+                                        console.log(employerName)
                                     }
+                                    //console.log(employerName)
                                     row2.insertCell(0).innerHTML = employerName;//findJob(i)[2];
                                     row2.insertCell(1).innerHTML = result[k]['jobName']; //lastPaycheck(findJob(k)[0])+' Kr.';
                                     row2.insertCell(2).innerHTML = result[k]['stdSalary'];
