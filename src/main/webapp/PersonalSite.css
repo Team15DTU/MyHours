@@ -1,3 +1,4 @@
+
 *{
     margin: 0;
     padding: 0;
@@ -143,7 +144,14 @@ header{
     margin: auto;
     padding-top: 0.8%;
     border-radius: 25px;
-    background-color: #3498DB;
+    background-color: transparent;
+
+}
+
+.pop_top h3 {
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
 }
 
 .pop_left {

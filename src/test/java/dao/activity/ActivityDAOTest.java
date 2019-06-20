@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
  */
 public class ActivityDAOTest {
 
-    private final double doubleEqualTolorance = 0.0001; // TODO: Find rigtig værdi
+    private final double doubleEqualTolerance = 0.01;
 
     private static IConnPool test_DB;
     private static DBController dbController;
@@ -48,6 +48,7 @@ public class ActivityDAOTest {
     private static IActivityDTO activityNo1;
     private static IActivityDTO activityNo2;
     private static IActivityDTO activityNo3;
+    private static IActivityDTO activityNo4;
 
     private static void setupTestData() throws DALException
     {
@@ -93,10 +94,13 @@ public class ActivityDAOTest {
         // region Setting up Test Activities
         //Setting up ActivityNo1 (Belongs to JobNo1)
         activityNo1 = TestDataController.getActivityNo1(jobNo1);
-        //Setting up ActivityNo1 (Belongs to JobNo1)
+        //Setting up ActivityNo2 (Belongs to JobNo1)
         activityNo2 = TestDataController.getActivityNo2(jobNo1);
-        //Setting up ActivityNo1 (Belongs to JobNo2)
+        //Setting up ActivityNo3 (Belongs to JobNo2)
         activityNo3 = TestDataController.getActivityNo3(jobNo2);
+        //Setting up ActivityNo4 (Belongs to JobNo2)
+        activityNo4 = TestDataController.getActivityNo4(jobNo2);
+
 
         // endregion
     }
@@ -157,7 +161,7 @@ public class ActivityDAOTest {
         assertEquals(activityNo1.getStartingDateTime(),returnedActivityNo1.getStartingDateTime());
         assertEquals(activityNo1.getEndingDateTime(), returnedActivityNo1.getEndingDateTime());
         assertEquals(activityNo1.getPause(),returnedActivityNo1.getPause());
-        assertEquals(activityNo1.getActivityValue(),returnedActivityNo1.getActivityValue(),doubleEqualTolorance);
+        assertEquals(activityNo1.getActivityValue(),returnedActivityNo1.getActivityValue(), doubleEqualTolerance);
     }
 
     @Test
@@ -171,7 +175,7 @@ public class ActivityDAOTest {
         assertEquals(activityNo1.getStartingDateTime(),returnedActivityNo1.getStartingDateTime());
         assertEquals(activityNo1.getEndingDateTime(),returnedActivityNo1.getEndingDateTime());
         assertEquals(activityNo1.getPause(),returnedActivityNo1.getPause());
-        assertEquals(activityNo1.getActivityValue(),returnedActivityNo1.getActivityValue(),doubleEqualTolorance);
+        assertEquals(activityNo1.getActivityValue(),returnedActivityNo1.getActivityValue(), doubleEqualTolerance);
     }
 
     @Test
@@ -256,7 +260,7 @@ public class ActivityDAOTest {
         assertEquals(activityNo3.getStartingDateTime(),returnedUpdatedActivityNo2.getStartingDateTime());
         assertEquals(activityNo3.getEndingDateTime(), returnedUpdatedActivityNo2.getEndingDateTime());
         assertEquals(activityNo3.getPause(),returnedUpdatedActivityNo2.getPause());
-        assertEquals(activityNo3.getActivityValue(),returnedUpdatedActivityNo2.getActivityValue(),doubleEqualTolorance);
+        assertEquals(activityNo3.getActivityValue(),returnedUpdatedActivityNo2.getActivityValue(), doubleEqualTolerance);
     }
 
     @Test
@@ -266,13 +270,21 @@ public class ActivityDAOTest {
 
         List<IActivityDTO> activityList = iActivityDAO.getiActivityList();
         assertEquals(2, activityList.size());
-        assertEquals(activityNo1.getActivityValue(), activityList.get(0).getActivityValue(),doubleEqualTolorance);
-        assertEquals(activityNo2.getActivityValue(), activityList.get(1).getActivityValue(),doubleEqualTolorance);
+        assertEquals(activityNo1.getActivityValue(), activityList.get(0).getActivityValue(), doubleEqualTolerance);
+        assertEquals(activityNo2.getActivityValue(), activityList.get(1).getActivityValue(), doubleEqualTolerance);
 
         iActivityDAO.deleteiActivity(activityNo2.getActivityID());
 
         List<IActivityDTO> activityListAfterDeletion = iActivityDAO.getiActivityList();
         assertEquals(1, activityListAfterDeletion.size());
-        assertEquals(activityNo1.getActivityValue(),activityListAfterDeletion.get(0).getActivityValue(),doubleEqualTolorance);
+        assertEquals(activityNo1.getActivityValue(),activityListAfterDeletion.get(0).getActivityValue(), doubleEqualTolerance);
+    }
+
+    @Test
+    public void testCalculationOfActivityValue() {
+
+        activityNo4.calculateActivityValue(jobNo2);
+        assertEquals(1169.583,activityNo4.getActivityValue(), doubleEqualTolerance);
+
     }
 }

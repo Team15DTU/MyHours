@@ -1,5 +1,7 @@
 package dto.activity;
 
+import dto.job.IJobDTO;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -37,4 +39,6 @@ public interface IActivityDTO {
     /*
     ---------------------- Public Methods -----------------------
      */
+
+    public void calculateActivityValue(IJobDTO jobDTO);
 }
