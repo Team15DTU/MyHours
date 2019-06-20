@@ -633,7 +633,6 @@ public class DBController implements IDBController
 	
     @PUT
 	@Path("/updateEmployer")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateEmployer(IEmployerDTO employerDTO)
     {
