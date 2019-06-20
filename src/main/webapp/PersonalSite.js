@@ -515,6 +515,7 @@ function updateGraf(choice) {
                 chart.title("Hours of activities");
 
                 // draw
+                chart.legend(true);
                 chart.container("graph");
                 chart.draw();
             });
