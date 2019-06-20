@@ -1,3 +1,45 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+html {
+    font-size: 10px;
+    font-family: "Roboto", sans-serif;
+}
+a {
+    text-decoration: none;
+    color: #eeeeee;
+}
+header{
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(255,255,255,.5), rgba(0,0,0,.5)), url("Images/fitness-tracker-future-futuristic-9051.jpg") center no-repeat;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+}
+.container {
+    width: 100%;
+    margin: 0 auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.container nav{
+    padding-right: 9rem;
+    padding-top: 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    padding-bottom: 2rem;
+}
+
+
 .middle_menu{
     position: absolute;
     top: 50%;
@@ -89,18 +131,27 @@
     font-size: 14px;
 }
 .popup_content {
-    width: 0px;
-    height: 0px;
+    width: 100%;
+    height: 80%;
     border-radius: 8px;
     overflow: hidden;
 }
 
 .pop_top {
+    display: none;
     width: 20%;
     height: 15%;
     margin: auto;
     padding-top: 0.8%;
     border-radius: 25px;
+    background-color: transparent;
+
+}
+
+.pop_top h3 {
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
 }
 
 .pop_left {

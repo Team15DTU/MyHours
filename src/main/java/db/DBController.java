@@ -70,8 +70,7 @@ public class DBController implements IDBController
 	{
 		try
 		{
-			hibernateUtil 	= new HibernateUtil(new HibernateProperties().getRealDB());
-			hibernateUtil.setup();
+			hibernateUtil 	= HibernateUtil.getInstance(new HibernateProperties().getRealDB());
 			this.connPool   = ConnPoolV1.getInstance();
 			connectionHelper = new ConnectionHelper(this.connPool);
 			
@@ -99,8 +98,7 @@ public class DBController implements IDBController
         {
             this.connPool   = connPool;
             connectionHelper = new ConnectionHelper(this.connPool);
-            hibernateUtil 	= new HibernateUtil(hibernateProperties);
-            hibernateUtil.setup();
+            hibernateUtil 	= HibernateUtil.getInstance(hibernateProperties);
     
             TimeZone.setDefault(TimeZone.getTimeZone(setTimeZoneFromSQLServer()));
     
@@ -635,7 +633,6 @@ public class DBController implements IDBController
 	
     @PUT
 	@Path("/updateEmployer")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateEmployer(IEmployerDTO employerDTO)
     {
