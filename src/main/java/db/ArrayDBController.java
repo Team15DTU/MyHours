@@ -357,7 +357,10 @@ public class ArrayDBController implements IDBController {
     public List<IJobDTO> getIJobDTOList(double minSalary, double maxSalary) {
         return null;
     }
-
+	
+	@PUT
+	@Path("/updateJob")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public boolean updateJob(IJobDTO jobDTO) {
         boolean success = false;
@@ -368,22 +371,38 @@ public class ArrayDBController implements IDBController {
 
         return success;
     }
-
+	
+	@DELETE
+	@Path("/deleteJob/{id}")
     @Override
-    public boolean deleteJob(int jobID) {
+    public boolean deleteJob(@PathParam("id") int jobID) {
         return false;
     }
-
+	
+	/**
+	 * Takes an object that implements IActivityDTO interface, and
+	 * saving the activity in the database.
+	 * @param activity Object implementing IActivityDTO
+	 */
+	@POST
+	@Path("/createActivity")
+	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createActivity(IActivityDTO activity) {
 
     }
-
+	
+	@GET
+	@Path("/getActivity/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IActivityDTO getIActivity(int id) {
+    public IActivityDTO getIActivity(@PathParam("id") int id) {
         return null;
     }
-
+	
+	@GET
+	@Path("/getActivityList")
+	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IActivityDTO> getIActivityList() {
         return null;
@@ -403,14 +422,19 @@ public class ArrayDBController implements IDBController {
     public List<IActivityDTO> getIActivityList(double minVal, double maxVal) {
         return null;
     }
-
+	
+	@PUT
+	@Path("/updateActivity")
+	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public boolean updateActivity(IActivityDTO activityDTO) {
         return false;
     }
-
+	
+	@DELETE
+	@Path("/deleteActivity/{id}")
     @Override
-    public void deleteActivity(ActivityDTO activityDTO) throws DALException {
+    public void deleteActivity(@PathParam("id") int activityID) {
 
     }
 

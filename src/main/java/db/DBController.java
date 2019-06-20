@@ -946,27 +946,35 @@ public class DBController implements IDBController
     }
 
     @DELETE
-    @Path("/deleteActivity")
+    @Path("/deleteActivity/{id}")
     @Override
-    public void deleteActivity(ActivityDTO activityDTO) throws DALException {
-
-        Connection c = connPool.getConn();
-
-        String deleteQuery = String.format("DELETE FROM %s WHERE %s = ?",
+    public void deleteActivity(@PathParam("id") int id) {
+	
+	
+		String deleteQuery = String.format("DELETE FROM %s WHERE %s = ?",
                 ActivityConstants.TABLENAME,
                 ActivityConstants.id);
-
-        try {
-
+	
+		Connection c = null;
+		try {
+			c = connPool.getConn();
+			
             PreparedStatement preparedStatement = c.prepareStatement(deleteQuery);
-            preparedStatement.setInt(1, activityDTO.getActivityID());
+            preparedStatement.setInt(1, id);
 
             preparedStatement.executeUpdate();
 
-        } catch (SQLException e) {
+        }
+		catch (DALException e)
+		{
+			System.err.println( String.format("ERROR: deleteActivity() - %s", e.getMessage()) );
+		}
+		catch (SQLException e)
+		{
             connectionHelper.catchSQLExceptionAndDoRollback(c,e,"DBController.deleteiActivity");
         } finally {
-            connectionHelper.finallyActionsForConnection(c,"DBController.deleteiActivity");
+			if ( c != null )
+            	connectionHelper.finallyActionsForConnection(c,"DBController.deleteiActivity");
         }
     }
 	
