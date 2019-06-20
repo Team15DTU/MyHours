@@ -1,5 +1,6 @@
 package dto.activity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import db.ArrayDBController;
 import dto.job.IJobDTO;
 
@@ -20,9 +21,12 @@ public class ActivityDTO implements IActivityDTO {
 
     private int activityID;
     private int jobID;
+    @JsonFormat(pattern="dd-MM-yyyy HH:mm")
     private Timestamp startingDateTime;
+    //@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(pattern="dd-MM-yyyy HH:mm")
     private Timestamp endingDateTime;
-    private Duration pause; // break in minutes!
+    private int pauseInMinuts; // break in minutes!
     private double activityValue;
 
     /*
@@ -41,12 +45,12 @@ public class ActivityDTO implements IActivityDTO {
 
     }
 
-    public ActivityDTO(Timestamp startingDateTime, Timestamp endingDateTime, int jobID, Duration pause) {
+    public ActivityDTO(Timestamp startingDateTime, Timestamp endingDateTime, int jobID, int pause) {
         activityID = ArrayDBController.activityID++;
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
         this.jobID = jobID;
-        this.pause = pause;
+        this.pauseInMinuts = pause;
     }
 
     /*
@@ -89,12 +93,12 @@ public class ActivityDTO implements IActivityDTO {
         this.endingDateTime = endingDateTime;
     }
 
-    public Duration getPause() {
-        return pause;
+    public int getPauseInMinuts() {
+        return pauseInMinuts;
     }
 
-    public void setPause(Duration pause) {
-        this.pause = pause;
+    public void setPauseInMinuts(int pauseInMinuts) {
+        this.pauseInMinuts = pauseInMinuts;
     }
 
     public double getActivityValue() {
@@ -114,7 +118,7 @@ public class ActivityDTO implements IActivityDTO {
     public void calculateActivityValue(IJobDTO jobDTO) {
         double stdSalaryPrMin = jobDTO.getStdSalary()/(double)60;
 
-        long payedMinutesOnShift = Duration.between(startingDateTime.toLocalDateTime(),endingDateTime.toLocalDateTime()).minus(pause).toMinutes();
+        long payedMinutesOnShift = Duration.between(startingDateTime.toLocalDateTime(),endingDateTime.toLocalDateTime()).minusMinutes(pauseInMinuts).toMinutes();
 
         activityValue = payedMinutesOnShift*stdSalaryPrMin;
     }

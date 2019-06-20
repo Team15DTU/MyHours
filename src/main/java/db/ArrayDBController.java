@@ -686,19 +686,22 @@ public class ArrayDBController implements IDBController {
         activityNo1.setJobID(jobNo1.getJobID());
         activityNo1.setStartingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,18,8,0,0)));
         activityNo1.setEndingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,18,16,0,0)));
-        activityNo1.setPause(Duration.ofMinutes(30));
+        activityNo1.setPauseInMinuts(30);
+        activityNo1.calculateActivityValue(jobNo1);
 
         IActivityDTO activityNo2 = new ActivityDTO();
         activityNo2.setJobID(jobNo1.getJobID());
         activityNo2.setStartingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,20,10,0,0)));
         activityNo2.setEndingDateTime(Timestamp.valueOf((LocalDateTime.of(2019,6,20,18,0,0))));
-        activityNo2.setPause(Duration.ofMinutes(60));
+        activityNo2.setPauseInMinuts(60);
+        activityNo2.calculateActivityValue(jobNo1);
 
         IActivityDTO activityNo3 = new ActivityDTO();
         activityNo3.setJobID(jobNo2.getJobID());
         activityNo3.setStartingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,15,10,0,0)));
         activityNo3.setEndingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,15,12,0,0)));
-        activityNo3.setPause(Duration.ofMinutes(0));
+        activityNo3.setPauseInMinuts(0);
+        activityNo3.calculateActivityValue(jobNo2);
 
         // Activities til hjælpeunderviser.
         jobNo1.getiActivityDTOList().add(activityNo1);

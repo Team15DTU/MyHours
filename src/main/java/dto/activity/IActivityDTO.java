@@ -31,8 +31,8 @@ public interface IActivityDTO {
     Timestamp getEndingDateTime() ;
     void setEndingDateTime(Timestamp endingDateTime);
 
-    Duration getPause();
-    void setPause(Duration pause);
+    int getPauseInMinuts();
+    void setPauseInMinuts(int pauseInMinuts);
 
     double getActivityValue();
     void setActivityValue(double activityValue);

@@ -119,7 +119,7 @@ public class TestDataController {
 
     private static LocalDateTime activityNo1_startingDateTime = activityLocalDateTimeNow.minusMonths(6);
     private static LocalDateTime activityNo1_endingDateTime = activityNo1_startingDateTime.plusMonths(3);
-    private static Duration activityNo1_pause = Duration.ofMinutes(30); // break in minutes!
+    private static int activityNo1_pause = 30; // break in minutes!
     private static double activityNo1_activityValue = 1500.50;
 
     // endregion
@@ -128,7 +128,7 @@ public class TestDataController {
 
     private static LocalDateTime activityNo2_startingDateTime = activityLocalDateTimeNow.minusMonths(12);
     private static LocalDateTime activityNo2_endingDateTime = activityNo2_startingDateTime.plusMonths(6);
-    private static Duration activityNo2_pause = Duration.ofMinutes(60); // break in minutes!
+    private static int activityNo2_pause = 60; // break in minutes!
     private static double activityNo2_activityValue = 3000.57;
 
     // endregion
@@ -137,7 +137,7 @@ public class TestDataController {
 
     private static LocalDateTime activityNo3_startingDateTime = activityLocalDateTimeNow.minusMonths(24);
     private static LocalDateTime activityNo3_endingDateTime = activityNo3_startingDateTime.plusMonths(12);
-    private static Duration activityNo3_pause = Duration.ofMinutes(90); // break in minutes!
+    private static int activityNo3_pause = 90; // break in minutes!
     private static double activityNo3_activityValue = 5343.98;
 
     // endregion
@@ -146,7 +146,7 @@ public class TestDataController {
 
     private static LocalDateTime activityNo4_startingDateTime = activityLocalDateTimeNow.minusHours(6);
     private static LocalDateTime activityNo4_endingDateTime = activityNo4_startingDateTime.plusHours(6).plusMinutes(20);
-    private static Duration activityNo4_pause = Duration.ofMinutes(30); // break in minutes!
+    private static int activityNo4_pause = 30; // break in minutes!
     private static double activityNo4_activityValue = 1500.50;
 
     // endregion
@@ -289,7 +289,7 @@ public class TestDataController {
         activityNo1.setJobID(belongsToJObDTO.getJobID());
         activityNo1.setStartingDateTime(Timestamp.valueOf(activityNo1_startingDateTime));
         activityNo1.setEndingDateTime(Timestamp.valueOf(activityNo1_endingDateTime));
-        activityNo1.setPause(activityNo1_pause);
+        activityNo1.setPauseInMinuts(activityNo1_pause);
         activityNo1.setActivityValue(activityNo1_activityValue);
 
         return activityNo1;
@@ -301,7 +301,7 @@ public class TestDataController {
         activityNo2.setJobID(belongsToJObDTO.getJobID());
         activityNo2.setStartingDateTime(Timestamp.valueOf(activityNo2_startingDateTime));
         activityNo2.setEndingDateTime(Timestamp.valueOf(activityNo2_endingDateTime));
-        activityNo2.setPause(activityNo2_pause);
+        activityNo2.setPauseInMinuts(activityNo2_pause);
         activityNo2.setActivityValue(activityNo2_activityValue);
 
         return activityNo2;
@@ -313,7 +313,7 @@ public class TestDataController {
         activityNo3.setJobID(belongsToJObDTO.getJobID());
         activityNo3.setStartingDateTime(Timestamp.valueOf(activityNo3_startingDateTime));
         activityNo3.setEndingDateTime(Timestamp.valueOf(activityNo3_endingDateTime));
-        activityNo3.setPause(activityNo3_pause);
+        activityNo3.setPauseInMinuts(activityNo3_pause);
         activityNo3.setActivityValue(activityNo3_activityValue);
 
         return activityNo3;
@@ -325,7 +325,7 @@ public class TestDataController {
         activityNo4.setJobID(belongsToJObDTO.getJobID());
         activityNo4.setStartingDateTime(Timestamp.valueOf(activityNo4_startingDateTime));
         activityNo4.setEndingDateTime(Timestamp.valueOf(activityNo4_endingDateTime));
-        activityNo4.setPause(activityNo4_pause);
+        activityNo4.setPauseInMinuts(activityNo4_pause);
         activityNo4.setActivityValue(activityNo4_activityValue);
 
         return activityNo4;

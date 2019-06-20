@@ -160,7 +160,7 @@ public class ActivityDAOTest {
         assertEquals(activityNo1.getJobID(),returnedActivityNo1.getJobID());
         assertEquals(activityNo1.getStartingDateTime(),returnedActivityNo1.getStartingDateTime());
         assertEquals(activityNo1.getEndingDateTime(), returnedActivityNo1.getEndingDateTime());
-        assertEquals(activityNo1.getPause(),returnedActivityNo1.getPause());
+        assertEquals(activityNo1.getPauseInMinuts(),returnedActivityNo1.getPauseInMinuts());
         assertEquals(activityNo1.getActivityValue(),returnedActivityNo1.getActivityValue(), doubleEqualTolerance);
     }
 
@@ -174,7 +174,7 @@ public class ActivityDAOTest {
         assertEquals(activityNo1.getJobID(),returnedActivityNo1.getJobID());
         assertEquals(activityNo1.getStartingDateTime(),returnedActivityNo1.getStartingDateTime());
         assertEquals(activityNo1.getEndingDateTime(),returnedActivityNo1.getEndingDateTime());
-        assertEquals(activityNo1.getPause(),returnedActivityNo1.getPause());
+        assertEquals(activityNo1.getPauseInMinuts(),returnedActivityNo1.getPauseInMinuts());
         assertEquals(activityNo1.getActivityValue(),returnedActivityNo1.getActivityValue(), doubleEqualTolerance);
     }
 
@@ -251,7 +251,7 @@ public class ActivityDAOTest {
         IActivityDTO updatedActivityNo2 = activityNo2;
         updatedActivityNo2.setStartingDateTime(activityNo3.getStartingDateTime());
         updatedActivityNo2.setEndingDateTime(activityNo3.getEndingDateTime());
-        updatedActivityNo2.setPause(activityNo3.getPause());
+        updatedActivityNo2.setPauseInMinuts(activityNo3.getPauseInMinuts());
         updatedActivityNo2.setActivityValue(activityNo3.getActivityValue());
 
         iActivityDAO.updateiActivity(updatedActivityNo2);
@@ -259,7 +259,7 @@ public class ActivityDAOTest {
         IActivityDTO returnedUpdatedActivityNo2 = iActivityDAO.getiActivity(updatedActivityNo2.getActivityID());
         assertEquals(activityNo3.getStartingDateTime(),returnedUpdatedActivityNo2.getStartingDateTime());
         assertEquals(activityNo3.getEndingDateTime(), returnedUpdatedActivityNo2.getEndingDateTime());
-        assertEquals(activityNo3.getPause(),returnedUpdatedActivityNo2.getPause());
+        assertEquals(activityNo3.getPauseInMinuts(),returnedUpdatedActivityNo2.getPauseInMinuts());
         assertEquals(activityNo3.getActivityValue(),returnedUpdatedActivityNo2.getActivityValue(), doubleEqualTolerance);
     }
 

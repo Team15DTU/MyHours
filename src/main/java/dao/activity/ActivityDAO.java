@@ -68,7 +68,7 @@ public class ActivityDAO implements IActivityDAO {
             preparedStatement.setInt(1,activity.getJobID());
             preparedStatement.setTimestamp(2, activity.getStartingDateTime());
             preparedStatement.setTimestamp(3, activity.getEndingDateTime());
-            preparedStatement.setLong(4,activity.getPause().toMinutes());
+            preparedStatement.setLong(4,activity.getPauseInMinuts());
             preparedStatement.setDouble(5,activity.getActivityValue());
 
             preparedStatement.executeUpdate();
@@ -110,7 +110,7 @@ public class ActivityDAO implements IActivityDAO {
                 returnedActivity.setJobID(getResultSet.getInt(ActivityConstants.jobID));
                 returnedActivity.setStartingDateTime(getResultSet.getTimestamp(ActivityConstants.startDateTime));
                 returnedActivity.setEndingDateTime(getResultSet.getTimestamp(ActivityConstants.endDateTime));
-                returnedActivity.setPause(Duration.ofMinutes(getResultSet.getLong(ActivityConstants.pause)));
+                returnedActivity.setPauseInMinuts(getResultSet.getInt(ActivityConstants.pause));
                 returnedActivity.setActivityValue(getResultSet.getDouble(ActivityConstants.activityValue));
             }
 
@@ -264,7 +264,7 @@ public class ActivityDAO implements IActivityDAO {
             PreparedStatement preparedStatement = c.prepareStatement(updateQuery);
             preparedStatement.setTimestamp(1, activity.getStartingDateTime());
             preparedStatement.setTimestamp(2, activity.getEndingDateTime());
-            preparedStatement.setLong(3, activity.getPause().toMinutes());
+            preparedStatement.setLong(3, activity.getPauseInMinuts());
             preparedStatement.setDouble(4, activity.getActivityValue());
             preparedStatement.setInt(5, activity.getActivityID());
 
