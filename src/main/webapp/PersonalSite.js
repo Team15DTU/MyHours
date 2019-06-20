@@ -553,19 +553,12 @@ function updateGraf(choice) {
                             for (i = 0; i < 3; i++) {
                                 var row2 = table.insertRow(i + 1);
 
-                                var shiftStart = findShift(i)[2];
-                                var shiftEnd = findShift(i)[3];
-
-
-                                var shiftStartString = shiftStart.getDate() + '/' + (shiftStart.getMonth() + 1) + ' ' + with_leading_zeros(shiftStart.getHours()) + ':' + with_leading_zeros(shiftStart.getMinutes()) + ' - ' + with_leading_zeros(shiftEnd.getHours()) + ':' + with_leading_zeros(shiftEnd.getMinutes());
-
-
-                                row2.insertCell(0).innerHTML = resulte[i]['startingDateTime'];
-                                row2.insertCell(1).innerHTML = resulte[i]['endingDateTime'];
+                                row2.insertCell(0).innerHTML = resulte[i]['startingDateTime'].toLocaleString();
+                                row2.insertCell(1).innerHTML = resulte[i]['endingDateTime'].toLocaleString();
                                 row2.insertCell(2).innerHTML = resulte[i]['activityValue'];
                             }
                         }
-                    })
+                    });
                     break;
 
                 case "jobInfo":
@@ -573,7 +566,8 @@ function updateGraf(choice) {
                         method: "GET",
                         url: "/MyHours/ArrayDBController/getEmployerList",
                         dataType: "JSON",
-                        success: function (resulte) {
+                        success: function (response) {
+                                $.each(response, function(i) {
                             var table = document.getElementById('left_table');
                             while (table.hasChildNodes()) {
                                 table.removeChild(table.firstChild);
@@ -587,19 +581,19 @@ function updateGraf(choice) {
                             row.insertCell(0).innerHTML = firm.bold();
                             row.insertCell(1).innerHTML = lastpay.bold();
                             row.insertCell(2).innerHTML = recivepay.bold();
-                            var i;
 
                             $.each(result, function (k) {
                                 //new Date();
                                 //'Insert activity name';
                                 var row2 = table.insertRow(k + 1);
-                                row2.insertCell(0).innerHTML = resulte[k]['name'];//findJob(i)[2];
+                                row2.insertCell(0).innerHTML = response[i]['name'];//findJob(i)[2];
                                 row2.insertCell(1).innerHTML = result[k]['jobName']; //lastPaycheck(findJob(k)[0])+' Kr.';
                                 row2.insertCell(2).innerHTML = result[k]['stdSalary'];
                             });
+                        })
                         }
 
-                    })
+                    });
                     break;
 
 
@@ -611,11 +605,15 @@ function updateGraf(choice) {
                         method: "GET",
                         url: "/MyHours/ArrayDBController/getEmployerList",
                         dataType: "JSON",
-                        success: function (result) {
+                        success: function (response) {
+                            $.each(response, function(k) {
                             var table = document.getElementById('left_table');
                             while (table.hasChildNodes()) {
                                 table.removeChild(table.firstChild);
                             }
+
+                            var option = '';
+
 
                             var firm = 'Employer';
 
@@ -624,9 +622,12 @@ function updateGraf(choice) {
                             var i;
 
                             for (i = 0; i < 3; i++) {
+                                option += response[k]['name'];
+
                                 var row2 = table.insertRow(i + 1);
-                                row2.insertCell(0).innerHTML = result[i]['name'];
+                                row2.insertCell(0).innerHTML = option;
                             }
+                        })
                         }
                     })
             }
