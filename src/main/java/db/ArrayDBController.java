@@ -1,6 +1,7 @@
 package db;
 
 import dao.DALException;
+import dao.worker.WorkerConstants;
 import dto.activity.ActivityDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.EmployerDTO;
@@ -12,9 +13,14 @@ import dto.worker.WorkerDTO;
 import dto.worker.WorkerHiberDTO;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -582,22 +588,30 @@ public class ArrayDBController implements IDBController {
     @POST
     @Path("/Logout")
     @Override
-    public void logOut(@Context HttpServletRequest request) {
-
+    public void logOut(@Context HttpServletRequest request)
+    {
+        HttpSession session = request.getSession();
+        session.invalidate();
     }
     
     @POST
     @Path("/isSessionActive")
     @Override
-    public boolean isSessionActive(@Context HttpServletRequest request) {
-        return false;
+    public boolean isSessionActive(@Context HttpServletRequest request)
+    {
+        boolean sessionStatus=false;
+        if (request.getSession(false) != null){
+            sessionStatus=true;
+        }
+        return sessionStatus;
     }
     
     @POST
     @Path("/loginCheck")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public boolean loginCheck(WorkerDTO user, @Context HttpServletRequest request) {
+    public boolean loginCheck(WorkerDTO user, @Context HttpServletRequest request)
+    {
         return false;
     }
     
