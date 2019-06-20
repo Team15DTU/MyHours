@@ -44,9 +44,7 @@ public class ArrayDBController implements IDBController {
     
     public ArrayDBController () {
 
-        workerList = new ArrayList<>();
-
-        List<IWorkerDTO> test = setArrayListWithStartData();
+        workerList = setArrayListWithStartData();
 
     }
     
@@ -611,8 +609,8 @@ public class ArrayDBController implements IDBController {
     ---------------------- Support Methods ----------------------
      */
 
-    private List<IWorkerDTO> setArrayListWithStartData () {
-        List<IWorkerDTO> preloadedWorkerList = new ArrayList<>();
+    private ArrayList<IWorkerDTO> setArrayListWithStartData () {
+        ArrayList<IWorkerDTO> preloadedWorkerList = new ArrayList<>();
 
         IWorkerDTO workerNo1 = new WorkerDTO();
         workerNo1.setFirstName("WorkerFornavn");
