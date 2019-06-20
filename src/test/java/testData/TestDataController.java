@@ -142,6 +142,15 @@ public class TestDataController {
 
     // endregion
 
+    // region ActivityDTO No. 1
+
+    private static LocalDateTime activityNo4_startingDateTime = activityLocalDateTimeNow.minusHours(6);
+    private static LocalDateTime activityNo4_endingDateTime = activityNo4_startingDateTime.plusHours(6).plusMinutes(20);
+    private static Duration activityNo4_pause = Duration.ofMinutes(30); // break in minutes!
+    private static double activityNo4_activityValue = 1500.50;
+
+    // endregion
+
     // endregion
 
     /*
@@ -308,6 +317,18 @@ public class TestDataController {
         activityNo3.setActivityValue(activityNo3_activityValue);
 
         return activityNo3;
+    }
+
+    public static IActivityDTO getActivityNo4 (IJobDTO belongsToJObDTO){
+        IActivityDTO activityNo4 = new ActivityDTO();
+
+        activityNo4.setJobID(belongsToJObDTO.getJobID());
+        activityNo4.setStartingDateTime(activityNo4_startingDateTime);
+        activityNo4.setEndingDateTime(activityNo4_endingDateTime);
+        activityNo4.setPause(activityNo4_pause);
+        activityNo4.setActivityValue(activityNo4_activityValue);
+
+        return activityNo4;
     }
 
     // endregion

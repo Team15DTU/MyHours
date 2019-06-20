@@ -23,10 +23,10 @@ import java.sql.Connection;
 public class DBControllerTest
 {
 	
-	private IConnPool connPool;
+	private static IConnPool connPool;
 	
 	@BeforeClass
-	public void setUp() throws Exception
+	public static void setUp() throws Exception
 	{
 		connPool 		 = TestConnPoolV1.getInstance();
 		ConnectionHelper help 	 = new ConnectionHelper(connPool);
@@ -58,7 +58,7 @@ public class DBControllerTest
 	}
 	
 	@AfterClass
-	public void tearDown() throws Exception
+	public static void tearDown() throws Exception
 	{
 		Connection conn = connPool.getConn();
 		

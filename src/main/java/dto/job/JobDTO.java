@@ -1,10 +1,12 @@
 package dto.job;
 
+import db.ArrayDBController;
 import dto.ruleSet.RuleSet;
 import dto.address.Address;
 import dto.activity.IActivityDTO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +32,10 @@ public class JobDTO implements IJobDTO {
     ----------------------- Constructor -------------------------
      */
     
-    public JobDTO () {}
+    public JobDTO () {
+        jobID = ArrayDBController.jobID++;
+        iActivityDTOList = new ArrayList<>();
+    }
 
     public JobDTO (int employerID, String jobName, double stdSalary) {
         this.employerID = employerID;
@@ -40,10 +45,11 @@ public class JobDTO implements IJobDTO {
         finishDate = null;
         jobAddress = null;
         ruleSet = null;
-        iActivityDTOList = null;
+        iActivityDTOList = new ArrayList<>();
     }
 
     public JobDTO (int employerID, String jobName, double stdSalary, LocalDate hireDate, LocalDate finishDate, Address jobAddress, RuleSet ruleSet, List<IActivityDTO> iActivityDTOList) {
+        jobID = ArrayDBController.jobID++;
         this.employerID = employerID;
         this.jobName = jobName;
         this.stdSalary = stdSalary;

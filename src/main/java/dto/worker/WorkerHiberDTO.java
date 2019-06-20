@@ -1,12 +1,14 @@
 package dto.worker;
 
 import dao.worker.WorkerConstants;
+import db.ArrayDBController;
 import dto.address.IAddress;
 import dto.employer.IEmployerDTO;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,20 +55,26 @@ public class WorkerHiberDTO implements IWorkerDTO {
     ----------------------- Constructor -------------------------
      */
 
-    public WorkerHiberDTO() {}
+    public WorkerHiberDTO()
+    {
+        workerID = ArrayDBController.workerID++;
+        employers = new ArrayList<>();
+    }
 
     public WorkerHiberDTO(String firstName, String surName, String email, String password) {
+        workerID = ArrayDBController.workerID++;
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
         this.password = password;
+        employers = new ArrayList<>();
         birthday = null;
         homeAddress = null;
-        employers = null;
     }
 
     public WorkerHiberDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
     {
+        workerID = ArrayDBController.workerID++;
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
