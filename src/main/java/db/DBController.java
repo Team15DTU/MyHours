@@ -56,6 +56,7 @@ public class DBController implements IDBController
     private IJobDAO iJobDAO;
     private IActivityDAO iActivityDAO;
     private ConnectionHelper connectionHelper;
+    private static String emailUsedToLogin;
     
     /*
     ----------------------- Constructor -------------------------
@@ -319,6 +320,8 @@ public class DBController implements IDBController
 
                 HttpSession session = request.getSession(true);
 
+                emailUsedToLogin = user.getEmail();
+
                 // Store users email in session
                 session.setAttribute("userEmail",email);
 
@@ -555,9 +558,9 @@ public class DBController implements IDBController
 
             PreparedStatement pStatement = c.prepareStatement(createQuery);
 
-            pStatement.setInt(1, employer.getWorkerID());
+            pStatement.setInt(1, iWorkerDAO.getWorker(emailUsedToLogin).getWorkerID());
             pStatement.setString(2, employer.getName());
-            pStatement.setString(3, null);
+            pStatement.setInt(3, 123456);
             pStatement.setString(4, employer.getTelephone());
 
             pStatement.executeUpdate();
@@ -631,6 +634,9 @@ public class DBController implements IDBController
 	@Override
 	public void updateEmployer(EmployerDTO employerDTO) throws DALException {
 
+	    //TODO: The methods work but doesnt edit anything.
+        // TODO: Figure a way to get the EmployerID of the current Employer you are trying to edit
+
         Connection c = connPool.getConn();
 
         String updateQuery = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ? WHERE %s = ?",
@@ -644,9 +650,10 @@ public class DBController implements IDBController
             PreparedStatement pStatement = c.prepareStatement(updateQuery);
 
             pStatement.setString(1, employerDTO.getName());
-            pStatement.setString(2, null);
+            pStatement.setInt(2, 123321);
             pStatement.setString(3, employerDTO.getTelephone());
             pStatement.setInt(4, employerDTO.getEmployerID());
+
 
             pStatement.executeUpdate();
 
@@ -694,6 +701,8 @@ public class DBController implements IDBController
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createJob(JobDTO job) throws DALException {
+
+	    //TODO: Figure a way to get employerID in index 1
 
         Connection c = connPool.getConn();
 
@@ -800,6 +809,7 @@ public class DBController implements IDBController
 	@Override
 	public void updateJob(IJobDTO jobDTO) throws DALException {
 
+        //TODO: Figure a way to get employerID in index 1
         Connection c = connPool.getConn();
 
         String query = String.format("UPDATE %s SET %s = ? , %s = ? , %s = ? , %s = ? , %s = ? WHERE %s = ?",
@@ -1018,7 +1028,31 @@ public class DBController implements IDBController
     }
 	
 	//endregion
-    
+    @GET
+    @Path("/getAllInfo")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Override
+    public List<Object> getAllInfo () {
+    	/*
+    	To indicate to frontend that an error happened, but it
+    	won't crash as the list won't be null.
+    	 */
+            List<Object> list = new ArrayList<>();
+
+            // Try to create the list
+            try
+            {
+                list.add(iActivityDAO.getiActivityList());
+                list.add(iEmployerDAO.getiEmployerList());
+                list.add(iJobDAO.getIJobList());
+
+            } catch ( Exception e )
+            {
+                System.err.println("ERROR: Unknown Exception getAllInfo() - " + e.getMessage());
+            }
+
+            return list;
+        }
     /*
     ---------------------- Support Methods ----------------------
      */

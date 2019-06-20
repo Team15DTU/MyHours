@@ -46,9 +46,9 @@
 
                 <label for="myid1" class="btn_menu"><i class="fas fa-sticky-note"></i>Activity</label>
                 <div class="smenu">
-                    <a href="#" onclick="showactivity_add(); selectJobs('select2');">Add</a>
-                    <a href="#" onclick="showactivity_edit(); selectShift('select'); selectJobs('select4')">Edit</a>
-                    <a href="#" onclick="showactivity_delete(); selectShift('select3')">Delete</a>
+                    <a href="#" onclick="showactivity_add();">Add</a>
+                    <a href="#" onclick="showactivity_edit();">Edit</a>
+                    <a href="#" onclick="showactivity_delete();">Delete</a>
                 </div>
             </li>
 
@@ -58,8 +58,8 @@
                 <label for="myid2" class="btn_menu"><i class="fas fa-briefcase"></i>Job</label>
                 <div class="smenu">
                     <a href="#" onclick="showjob_add()">Add</a>
-                    <a href="#" onclick="showjob_edit();selectJobs('select_job_edit')">Edit</a>
-                    <a href="#" onclick="showjob_delete();selectJobs('select_job_delete')">Delete</a>
+                    <a href="#" onclick="showjob_edit();">Edit</a>
+                    <a href="#" onclick="showjob_delete();">Delete</a>
                 </div>
             </li>
             <li class="item" id="workplace">
@@ -68,8 +68,8 @@
                 <label for="myid3" class="btn_menu"><i class="fas fa-building"></i>Employer</label>
                 <div class="smenu">
                     <a href="#" onclick="showemployer_add()">Add</a>
-                    <a href="#" onclick="showemployer_edit();selectJobadress('select_jobadress_edit')">Edit</a>
-                    <a href="#" onclick="showemployer_delete();selectJobs('select_jobadress_delete')">Delete</a>
+                    <a href="#" onclick="showemployer_edit()">Edit</a>
+                    <a href="#" onclick="showemployer_delete()">Delete</a>
                 </div>
             </li>
             <li class="item">
@@ -115,11 +115,11 @@
         <span onclick="hideModal()" class="close2">&times;</span>
     <form id="addActivity">
         <div class="form_per">
-            <label><b>Which job contains the Activity? )</b></label> <br>
+            <label><b>Which job contains the Activity?</b></label> <br>
             <!--
             <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobID" required>
             -->
-            <select id="joblist">
+            <select id="joblist" required>
             </select>
 
             <br>
@@ -130,8 +130,12 @@
             <label><b>End(ID)</b></label> <br>
             <input class="w3-input w3-border w3-margin-bottom" type="datetime-local" name="endingDateTime" required>
 
+            <label><b>Pause</b></label>
+            <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="break">
+
+
             <label><b>Earnings</b></label>
-            <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break" name="activityValue" required>
+            <input class="w3-input w3-border" type="number" placeholder="Enter your ernings" name="activityValue" required>
 
             <button  type="submit" name="addShift" value="submit" id="shiftadder" class="submit" onclick="addActivity();getJobList(joblist);">Save Activity</button>
         </div>
@@ -209,7 +213,7 @@
 
                 <label><b>What company is the job for?</b></label>
                 <br>
-                <select id="company_job_add"></select>
+                <select id="company_job_add" name="name"></select>
                 <br><br>
                 <label><b>What is the job's name</b></label>
                 <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobName" required>
@@ -289,9 +293,6 @@
         <span onclick="hideModal()" class="close2">&times;</span>
         <form>
             <div class="form_per" id="addEmployer">
-                <!-- WorkerID skal fjernes -->
-                <label><b>WorkerID</b></label>
-                <input type="text" placeholder="WorkerID" name="workerID" required>
 
                 <label><b>What is the name of your Employer?</b></label>
                 <input type="text" placeholder="Address of your company" name="name" required>
@@ -320,14 +321,11 @@
             <b>Insert the correct details.</b>
             <br><br>
 
-            <label><b>WorkerID</b></label>
-            <input type="text" placeholder="WorkerID" name="workerID" required>
-
             <label><b>What is the name of your Employer?</b></label>
             <input type="text" placeholder="Address of your company" name="name" required>
 
             <label><b>What are the phone number?</b></label>
-            <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="telephone" required>
+            <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="number" name="telephone" required>
 
             <button  type="submit" class="submit" onclick="editEmployer();getEmployerList(company_employer_edit);">Edit Employer</button>
 
