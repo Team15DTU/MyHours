@@ -129,7 +129,15 @@ public class ArrayDBController implements IDBController {
 
         return workerDTOToReturn;
     }
-
+    
+    /**
+     * Method get a full list of Workers in the
+     * database.
+     * @return List<IWorkerDTO>
+     */
+    @GET
+    @Path("/getWorkersList")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IWorkerDTO> getIWorkerDTOList() {
         return workerList;
@@ -144,7 +152,10 @@ public class ArrayDBController implements IDBController {
     public List<IWorkerDTO> getIWorkerDTOList(String name) {
         return null;
     }
-
+    
+    @PUT
+    @Path("/updateWorker")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public synchronized boolean updateWorker(IWorkerDTO updatedWorkerDTO) {
         boolean success = false;
@@ -170,13 +181,18 @@ public class ArrayDBController implements IDBController {
 
         return success;
     }
-
+    
+    @DELETE
+    @Path("/deleteWorker/{email}")
     @Override
-    public synchronized boolean deleteWorker(String email) {
+    public synchronized boolean deleteWorker(@PathParam("email") String email) {
 
         return workerList.removeIf(workerDTO -> (workerDTO.getEmail().equals(email)));
     }
-
+    
+    @POST
+    @Path("/createEmployer")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createEmployer(IEmployerDTO employer) {
         for (IWorkerDTO workerDTO : workerList) {
@@ -186,9 +202,12 @@ public class ArrayDBController implements IDBController {
             }
         }
     }
-
+    
+    @GET
+    @Path("/getEmployer/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IEmployerDTO getIEmployerDTO(int id) {
+    public IEmployerDTO getIEmployerDTO(@PathParam("id") int id) {
         IEmployerDTO employerDTOToReturn = new EmployerDTO();
 
         for (IWorkerDTO workerDTO : workerList) {
@@ -202,7 +221,10 @@ public class ArrayDBController implements IDBController {
 
         return employerDTOToReturn;
     }
-
+    
+    @GET
+    @Path("/getEmployerList")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IEmployerDTO> getIEmployerList() {
         List<IEmployerDTO> fullEmployerList = new ArrayList<>();
@@ -221,7 +243,10 @@ public class ArrayDBController implements IDBController {
     public List<IEmployerDTO> getIEmployerList(String name) {
         return null;
     }
-
+    
+    @PUT
+    @Path("/updateEmployer")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public boolean updateEmployer(IEmployerDTO updatedEmployerDTO) {
         boolean succes = false;
@@ -239,9 +264,11 @@ public class ArrayDBController implements IDBController {
         }
         return succes;
     }
-
+    
+    @DELETE
+    @Path("/deleteEmployer/{id}")
     @Override
-    public boolean deleteEmployer(int employerID) {
+    public boolean deleteEmployer(@PathParam("id") int employerID) {
         boolean success = false;
 
         for (IWorkerDTO workerDTO : workerList) {
@@ -256,7 +283,10 @@ public class ArrayDBController implements IDBController {
 
         return success;
     }
-
+    
+    @POST
+    @Path("/createJob")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createJob(IJobDTO job) {
         for (IWorkerDTO workerDTO : workerList) {
@@ -268,9 +298,12 @@ public class ArrayDBController implements IDBController {
             }
         }
     }
-
+    
+    @GET
+    @Path("/getJob/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IJobDTO getIJobDTO(int id) {
+    public IJobDTO getIJobDTO(@PathParam("id") int id) {
         IJobDTO jobDTOToReturn = new JobDTO();
         for (IWorkerDTO workerDTO : workerList) {
             for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){
@@ -284,7 +317,10 @@ public class ArrayDBController implements IDBController {
         }
         return jobDTOToReturn;
     }
-
+    
+    @GET
+    @Path("/getJobList")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<IJobDTO> getIJobDTOList() {
         List<IJobDTO> fullJobList = new ArrayList<>();
@@ -295,9 +331,12 @@ public class ArrayDBController implements IDBController {
         }
         return fullJobList;
     }
-
+    
+    @GET
+    @Path("/getJobList/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public List<IJobDTO> getIJobDTOList(int employerID) {
+    public List<IJobDTO> getIJobDTOList(@PathParam("id") int employerID) {
         List<IJobDTO> listToReturn = new ArrayList<>();
         for (IWorkerDTO workerDTO : workerList) {
             for (IEmployerDTO employerDTO : workerDTO.getIEmployers()){

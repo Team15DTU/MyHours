@@ -635,6 +635,7 @@ public class DBController implements IDBController
 	
     @PUT
 	@Path("/updateEmployer")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
 	public boolean updateEmployer(IEmployerDTO employerDTO)
     {
@@ -653,9 +654,9 @@ public class DBController implements IDBController
     }
 
     @DELETE
-    @Path("/deleteEmployer")
+    @Path("/deleteEmployer/{id}")
     @Override
-    public boolean deleteEmployer(int employerID){
+    public boolean deleteEmployer(@PathParam("id") int employerID){
         boolean success = false;
 
         try
