@@ -66,7 +66,7 @@ public class WorkerDAO implements IWorkerDAO
                 workerToReturn.setFirstName(resultSet.getString(WorkerConstants.firstname));
                 workerToReturn.setSurName(resultSet.getString(WorkerConstants.surname));
                 workerToReturn.setEmail(resultSet.getString(WorkerConstants.email));
-                workerToReturn.setBirthday(resultSet.getDate(WorkerConstants.birthday).toLocalDate());
+                workerToReturn.setBirthday(resultSet.getDate(WorkerConstants.birthday));
             }
 
         } catch (SQLException e) {
@@ -108,7 +108,7 @@ public class WorkerDAO implements IWorkerDAO
                 worker.setWorkerID( rs.getInt(WorkerConstants.id) );
                 worker.setFirstName( rs.getString(WorkerConstants.firstname) );
                 worker.setSurName( rs.getString(WorkerConstants.surname) );
-                worker.setBirthday( rs.getDate( WorkerConstants.birthday ).toLocalDate() );
+                worker.setBirthday( rs.getDate( WorkerConstants.birthday ));
                 worker.setEmail( rs.getString(WorkerConstants.email) );
                 
                 //TODO: Address of the worker needs to be set!
@@ -179,7 +179,7 @@ public class WorkerDAO implements IWorkerDAO
             statement.setString(1, workerDTO.getFirstName());
             statement.setString(2, workerDTO.getSurName());
             statement.setString(3, workerDTO.getEmail());
-            statement.setDate(4, Date.valueOf(workerDTO.getBirthday()));
+            statement.setDate(4, workerDTO.getBirthday());
             statement.setString(5, workerDTO.getPassword());
 
             statement.executeUpdate();
@@ -217,7 +217,7 @@ public class WorkerDAO implements IWorkerDAO
             pStatement.setString(1, worker.getFirstName());
             pStatement.setString(2, worker.getSurName());
             pStatement.setString(3, worker.getEmail());
-            pStatement.setDate(4, Date.valueOf(worker.getBirthday()));
+            pStatement.setDate(4, worker.getBirthday());
             pStatement.setString(5, worker.getPassword());
 
             rowsAltered = pStatement.executeUpdate();
