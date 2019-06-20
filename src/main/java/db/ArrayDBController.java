@@ -605,14 +605,51 @@ public class ArrayDBController implements IDBController {
         }
         return sessionStatus;
     }
-    
+	
+	/**
+	 * This method checks if there's a correlation between the
+	 * provided email and password. All exceptions is handled by
+	 * the method.
+	 * @return True if there's a correlation
+	 */
     @POST
     @Path("/loginCheck")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public boolean loginCheck(WorkerDTO user, @Context HttpServletRequest request)
     {
-        return false;
+    	// Initialize variables
+    	String email = user.getEmail();
+    	String pass = user.getPassword();
+    	boolean success = false;
+    	
+    	// Check if the email matches
+		IWorkerDTO worker = getIWorkerDTO(email);
+		if ( worker.getEmail() != null )
+		{
+			// Check if password matches
+			if ( worker.getPassword().equals(pass) )
+				success = true;
+		}
+	
+		// Take care of session
+		if (success)
+		{
+			HttpSession oldSession = request.getSession();
+			
+			if (oldSession != null)
+				oldSession.invalidate();
+		
+			HttpSession session = request.getSession(true);
+		
+			// Store users email in session
+			session.setAttribute("userEmail",email);
+		
+			// Set the the time before the session expires to 10 minutes
+			session.setMaxInactiveInterval(10*60);
+		}
+    	
+        return success;
     }
     
     /*
