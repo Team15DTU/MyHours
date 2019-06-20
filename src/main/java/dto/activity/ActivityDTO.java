@@ -3,7 +3,9 @@ package dto.activity;
 import db.ArrayDBController;
 import dto.job.IJobDTO;
 
+import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -18,8 +20,8 @@ public class ActivityDTO implements IActivityDTO {
 
     private int activityID;
     private int jobID;
-    private LocalDateTime startingDateTime;
-    private LocalDateTime endingDateTime;
+    private Timestamp startingDateTime;
+    private Timestamp endingDateTime;
     private Duration pause; // break in minutes!
     private double activityValue;
 
@@ -31,7 +33,7 @@ public class ActivityDTO implements IActivityDTO {
         activityID = ArrayDBController.activityID++;
     }
 
-    public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID) {
+    public ActivityDTO(Timestamp startingDateTime, Timestamp endingDateTime, int jobID) {
         activityID = ArrayDBController.activityID++;
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
@@ -39,7 +41,7 @@ public class ActivityDTO implements IActivityDTO {
 
     }
 
-    public ActivityDTO(LocalDateTime startingDateTime, LocalDateTime endingDateTime, int jobID, Duration pause) {
+    public ActivityDTO(Timestamp startingDateTime, Timestamp endingDateTime, int jobID, Duration pause) {
         activityID = ArrayDBController.activityID++;
         this.startingDateTime = startingDateTime;
         this.endingDateTime = endingDateTime;
@@ -70,20 +72,21 @@ public class ActivityDTO implements IActivityDTO {
         this.jobID = jobID;
     }
 
-    public LocalDateTime getStartingDateTime() {
-        return startingDateTime.withNano(0);
+
+    public Timestamp getStartingDateTime() {
+        return startingDateTime;
     }
 
-    public void setStartingDateTime(LocalDateTime startingDateTime) {
-        this.startingDateTime = startingDateTime.withNano(0);
+    public void setStartingDateTime(Timestamp startingDateTime) {
+        this.startingDateTime = startingDateTime;
     }
 
-    public LocalDateTime getEndingDateTime() {
-        return endingDateTime.withNano(0);
+    public Timestamp getEndingDateTime() {
+        return endingDateTime;
     }
 
-    public void setEndingDateTime(LocalDateTime endingDateTime) {
-        this.endingDateTime = endingDateTime.withNano(0);
+    public void setEndingDateTime(Timestamp endingDateTime) {
+        this.endingDateTime = endingDateTime;
     }
 
     public Duration getPause() {
@@ -111,7 +114,7 @@ public class ActivityDTO implements IActivityDTO {
     public void calculateActivityValue(IJobDTO jobDTO) {
         double stdSalaryPrMin = jobDTO.getStdSalary()/(double)60;
 
-        long payedMinutesOnShift = Duration.between(startingDateTime,endingDateTime).minus(pause).toMinutes();
+        long payedMinutesOnShift = Duration.between(startingDateTime.toLocalDateTime(),endingDateTime.toLocalDateTime()).minus(pause).toMinutes();
 
         activityValue = payedMinutesOnShift*stdSalaryPrMin;
     }

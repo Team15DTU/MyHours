@@ -15,6 +15,7 @@ import dto.worker.IWorkerDTO;
 import dto.worker.WorkerHiberDTO;
 
 import java.awt.*;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -286,8 +287,8 @@ public class TestDataController {
         IActivityDTO activityNo1 = new ActivityDTO();
 
         activityNo1.setJobID(belongsToJObDTO.getJobID());
-        activityNo1.setStartingDateTime(activityNo1_startingDateTime);
-        activityNo1.setEndingDateTime(activityNo1_endingDateTime);
+        activityNo1.setStartingDateTime(Timestamp.valueOf(activityNo1_startingDateTime));
+        activityNo1.setEndingDateTime(Timestamp.valueOf(activityNo1_endingDateTime));
         activityNo1.setPause(activityNo1_pause);
         activityNo1.setActivityValue(activityNo1_activityValue);
 
@@ -298,8 +299,8 @@ public class TestDataController {
         IActivityDTO activityNo2 = new ActivityDTO();
 
         activityNo2.setJobID(belongsToJObDTO.getJobID());
-        activityNo2.setStartingDateTime(activityNo2_startingDateTime);
-        activityNo2.setEndingDateTime(activityNo2_endingDateTime);
+        activityNo2.setStartingDateTime(Timestamp.valueOf(activityNo2_startingDateTime));
+        activityNo2.setEndingDateTime(Timestamp.valueOf(activityNo2_endingDateTime));
         activityNo2.setPause(activityNo2_pause);
         activityNo2.setActivityValue(activityNo2_activityValue);
 
@@ -310,8 +311,8 @@ public class TestDataController {
         IActivityDTO activityNo3 = new ActivityDTO();
 
         activityNo3.setJobID(belongsToJObDTO.getJobID());
-        activityNo3.setStartingDateTime(activityNo3_startingDateTime);
-        activityNo3.setEndingDateTime(activityNo3_endingDateTime);
+        activityNo3.setStartingDateTime(Timestamp.valueOf(activityNo3_startingDateTime));
+        activityNo3.setEndingDateTime(Timestamp.valueOf(activityNo3_endingDateTime));
         activityNo3.setPause(activityNo3_pause);
         activityNo3.setActivityValue(activityNo3_activityValue);
 
@@ -322,8 +323,8 @@ public class TestDataController {
         IActivityDTO activityNo4 = new ActivityDTO();
 
         activityNo4.setJobID(belongsToJObDTO.getJobID());
-        activityNo4.setStartingDateTime(activityNo4_startingDateTime);
-        activityNo4.setEndingDateTime(activityNo4_endingDateTime);
+        activityNo4.setStartingDateTime(Timestamp.valueOf(activityNo4_startingDateTime));
+        activityNo4.setEndingDateTime(Timestamp.valueOf(activityNo4_endingDateTime));
         activityNo4.setPause(activityNo4_pause);
         activityNo4.setActivityValue(activityNo4_activityValue);
 
