@@ -373,9 +373,9 @@ function deleteActivityByID(activityID){
 function deleteEmployer() {
     event.preventDefault();
 
-    var employerID = $("#company_employer_delete").val();
+    var employerID = $("#company_employer_delete".employerID).val();
 
-    $("#company_employer_delete").val(employerID);
+    $("#company_employer_delete".employerID).val(employerID);
     console.log(employerID);
 
     deleteEmployerByID(employerID);
