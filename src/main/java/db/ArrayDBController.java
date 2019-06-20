@@ -1,7 +1,5 @@
 package db;
 
-import dao.DALException;
-import dao.worker.WorkerConstants;
 import dto.activity.ActivityDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.EmployerDTO;
@@ -17,10 +15,6 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.awt.*;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -48,11 +42,11 @@ public class ArrayDBController implements IDBController {
     /*
     ----------------------- Constructor -------------------------
      */
-    
+
     public ArrayDBController () {
-
-        workerList = setArrayListWithStartData();
-
+        if (workerList == null){
+            workerList = setArrayListWithStartData();
+        }
     }
     
     /*
@@ -84,10 +78,9 @@ public class ArrayDBController implements IDBController {
     @Path("/createWorker")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createWorker(IWorkerDTO workerDTO) {
+    public synchronized void createWorker(IWorkerDTO workerDTO) {
 
         workerList.add(workerDTO);
-
     }
     
     /**

@@ -1,5 +1,6 @@
 package dto.activity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import dto.job.IJobDTO;
 
 import java.time.Duration;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 /**
  * @author Rasmus Sander Larsen
  */
+@JsonDeserialize(as = ActivityDTO.class)
 public interface IActivityDTO {
 
     /*
