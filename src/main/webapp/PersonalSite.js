@@ -574,7 +574,7 @@ function updateGraf(choice) {
                         url: "/MyHours/ArrayDBController/getEmployerList",
                         dataType: "JSON",
                         success: function (response) {
-                            $.each(response, function(k) {
+                            $.each(response, function(i) {
                                 var table = document.getElementById('left_table');
                                 while (table.hasChildNodes()) {
                                     table.removeChild(table.firstChild);
@@ -588,13 +588,14 @@ function updateGraf(choice) {
                                 row.insertCell(0).innerHTML = firm.bold();
                                 row.insertCell(1).innerHTML = lastpay.bold();
                                 row.insertCell(2).innerHTML = recivepay.bold();
-                                var i;
-
                                 $.each(result, function (k) {
                                     //new Date();
                                     //'Insert activity name';
                                     var row2 = table.insertRow(k + 1);
-                                    row2.insertCell(0).innerHTML = response[k]['name'];//findJob(i)[2];
+                                    if (result[k]['employerID']===response[i]['employerID']){
+                                        var employerName = response[i]['name'];
+                                    }
+                                    row2.insertCell(0).innerHTML = employerName;//findJob(i)[2];
                                     row2.insertCell(1).innerHTML = result[k]['jobName']; //lastPaycheck(findJob(k)[0])+' Kr.';
                                     row2.insertCell(2).innerHTML = result[k]['stdSalary'];
                                 });
@@ -627,8 +628,6 @@ function updateGraf(choice) {
                             //TODO INSERT REAL ACTIVITY INFORMATION
                             $.each(resulte, function (i) {
                                 var row2 = table.insertRow(i + 1);
-                                console.log("result i" + result[i]);
-                                console.log("resulte i" + resulte[i]);
 
                                 row2.insertCell(0).innerHTML = resulte[i]['name'];
                             })
