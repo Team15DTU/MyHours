@@ -57,7 +57,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createEmployer (EmployerDTO employer) throws DALException;
+    void createEmployer (EmployerDTO employer, HttpServletRequest request) throws DALException;
     
     /*------------------------------------------------------------
     | Get singles                                                |

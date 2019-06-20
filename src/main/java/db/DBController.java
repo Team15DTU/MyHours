@@ -56,7 +56,6 @@ public class DBController implements IDBController
     private IJobDAO iJobDAO;
     private IActivityDAO iActivityDAO;
     private ConnectionHelper connectionHelper;
-    private static String emailUsedToLogin;
     
     /*
     ----------------------- Constructor -------------------------
@@ -320,8 +319,6 @@ public class DBController implements IDBController
 
                 HttpSession session = request.getSession(true);
 
-                emailUsedToLogin = user.getEmail();
-
                 // Store users email in session
                 session.setAttribute("userEmail",email);
 
@@ -543,7 +540,7 @@ public class DBController implements IDBController
 	@Path("/createEmployer")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createEmployer(EmployerDTO employer) throws DALException {
+    public void createEmployer(EmployerDTO employer, @Context HttpServletRequest request) throws DALException {
         Connection c = connPool.getConn();
 
         String createQuery = String.format(
@@ -553,6 +550,9 @@ public class DBController implements IDBController
                 EmployerConstants.employerName, // ParameterIndex 2
                 EmployerConstants.color, // ParameterIndex 3
                 EmployerConstants.tlf); // ParameterIndex 4
+
+        HttpSession session = request.getSession(false);
+        String emailUsedToLogin = (session.getAttribute("userEmail")).toString();
 
         try {
 
