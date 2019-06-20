@@ -508,7 +508,7 @@ function updateGraf(choice) {
                     var dataSet = anychart.data.set(data);
                     for (i = 0; i < nrOfDays; i++) {
                         var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
-                        dataSet.append([name, hoursOfWork()]);
+                        dataSet.append([findJobArray, hoursOfWork()]);
                     }
                     dataSets[l] = dataSet;
                 }

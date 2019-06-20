@@ -560,7 +560,7 @@ public class DBController implements IDBController
 
             pStatement.setInt(1, iWorkerDAO.getWorker(emailUsedToLogin).getWorkerID());
             pStatement.setString(2, employer.getName());
-            pStatement.setString(3, null);
+            pStatement.setInt(3, 123456);
             pStatement.setString(4, employer.getTelephone());
 
             pStatement.executeUpdate();
