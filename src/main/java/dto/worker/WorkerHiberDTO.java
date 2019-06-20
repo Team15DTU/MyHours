@@ -7,6 +7,7 @@ import dto.employer.IEmployerDTO;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class WorkerHiberDTO implements IWorkerDTO {
     private String email;
 
     @Column(name = WorkerConstants.birthday)
-    private LocalDate birthday;
+    private Date birthday;
 
     @Column(name = WorkerConstants.password)
     private String password;
@@ -72,7 +73,7 @@ public class WorkerHiberDTO implements IWorkerDTO {
         homeAddress = null;
     }
 
-    public WorkerHiberDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
+    public WorkerHiberDTO(String firstName, String surName, String email, Date birthday, IAddress homeAddress, List<IEmployerDTO> employers)
     {
         workerID = ArrayDBController.workerID++;
         this.firstName = firstName;
@@ -121,11 +122,13 @@ public class WorkerHiberDTO implements IWorkerDTO {
         this.email = email;
     }
 
-    public LocalDate getBirthday() {
+    @Override
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    @Override
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 

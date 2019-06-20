@@ -1,18 +1,15 @@
 package db;
 
-import dao.DALException;
-import dto.activity.ActivityDTO;
 import dto.activity.IActivityDTO;
-import dto.employer.EmployerDTO;
+
 import dto.employer.IEmployerDTO;
 import dto.job.IJobDTO;
-import dto.job.JobDTO;
 import dto.worker.IWorkerDTO;
 import dto.worker.WorkerDTO;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
-import java.util.Date;
+
+import java.sql.Date;
 import java.util.List;
 
 /**

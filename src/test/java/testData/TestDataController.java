@@ -15,6 +15,7 @@ import dto.worker.IWorkerDTO;
 import dto.worker.WorkerHiberDTO;
 
 import java.awt.*;
+import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -179,7 +180,7 @@ public class TestDataController {
         testWorkerNo1.setSurName(testWorkerNo1_surName);
         testWorkerNo1.setEmail(testWorkerNo1_email);
         testWorkerNo1.setPassword(testWorkerNo1_pass);
-        testWorkerNo1.setBirthday(testWorkerNo1_birthday);
+        testWorkerNo1.setBirthday(Date.valueOf(testWorkerNo1_birthday));
 
         return testWorkerNo1;
     }
@@ -191,7 +192,7 @@ public class TestDataController {
         testWorkerNo2.setSurName(testWorkerNo2_surName);
         testWorkerNo2.setEmail(testWorkerNo2_email);
         testWorkerNo2.setPassword(testWorkerNo2_pass);
-        testWorkerNo2.setBirthday(testWorkerNo2_birthday);
+        testWorkerNo2.setBirthday(Date.valueOf(testWorkerNo2_birthday));
 
         return testWorkerNo2;
     }

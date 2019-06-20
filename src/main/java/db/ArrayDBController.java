@@ -1,7 +1,6 @@
 package db;
 
-import dao.DALException;
-import dao.worker.WorkerConstants;
+
 import dto.activity.ActivityDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.EmployerDTO;
@@ -17,16 +16,13 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Date;
+
 import java.awt.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -80,13 +76,21 @@ public class ArrayDBController implements IDBController {
      * interface, and saves it in the database.
      * @param workerDTO Object that implements the IWorkerDTO interface
      */
+
     @POST
     @Path("/createWorker")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createWorker(IWorkerDTO workerDTO) {
 
-        workerList.add(workerDTO);
+        IWorkerDTO workerDTOToAdd  = new WorkerDTO();
+        workerDTOToAdd.setFirstName(workerDTO.getFirstName());
+        workerDTOToAdd.setSurName(workerDTO.getSurName());
+        workerDTOToAdd.setEmail(workerDTO.getEmail());
+        workerDTOToAdd.setBirthday(workerDTO.getBirthday());
+        workerDTOToAdd.setPassword(workerDTO.getEmail());
+
+        workerList.add(workerDTOToAdd);
 
     }
     
@@ -668,7 +672,7 @@ public class ArrayDBController implements IDBController {
         workerNo1.setFirstName("WorkerFornavn");
         workerNo1.setSurName("WorkerEfternavn");
         workerNo1.setEmail("worker1@test.dk");
-        workerNo1.setBirthday(LocalDate.of(1992,1,6));
+        workerNo1.setBirthday(Date.valueOf(LocalDate.of(1992,1,6)));
         workerNo1.setPassword("password");
 
         IEmployerDTO employerNo1 = new EmployerDTO();

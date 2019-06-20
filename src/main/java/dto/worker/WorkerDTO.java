@@ -4,6 +4,7 @@ import db.ArrayDBController;
 import dto.address.IAddress;
 import dto.employer.IEmployerDTO;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class WorkerDTO implements IWorkerDTO {
     private String surName;
     private String email;
     private String password;
-    private LocalDate birthday;
+    private Date birthday;
     private IAddress homeAddress;
     private List<IEmployerDTO> employers;
     
@@ -58,7 +59,7 @@ public class WorkerDTO implements IWorkerDTO {
      * @param homeAddress Address of Worker
      * @param employers List of Workers employers
      */
-    public WorkerDTO(int workerID, String firstName, String surName, String email, String password, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
+    public WorkerDTO(int workerID, String firstName, String surName, String email, String password, Date birthday, IAddress homeAddress, List<IEmployerDTO> employers)
     {
         this.workerID = workerID;
         this.firstName = firstName;
@@ -70,7 +71,7 @@ public class WorkerDTO implements IWorkerDTO {
         this.employers = employers;
     }
     
-    public WorkerDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
+    public WorkerDTO(String firstName, String surName, String email, Date birthday, IAddress homeAddress, List<IEmployerDTO> employers)
     {
         workerID = ArrayDBController.workerID++;
         this.firstName = firstName;
@@ -123,12 +124,12 @@ public class WorkerDTO implements IWorkerDTO {
     public String getPassword() { return password; }
     
     public void setPassword(String password) { this.password = password; }
-    
-    public LocalDate getBirthday() {
+
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 

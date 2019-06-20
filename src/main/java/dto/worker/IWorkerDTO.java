@@ -3,6 +3,7 @@ package dto.worker;
 import dto.address.IAddress;
 import dto.employer.IEmployerDTO;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,8 +23,8 @@ public interface IWorkerDTO {
 	String getPassword();
 	void setPassword(String password);
 
-	LocalDate getBirthday();
-	void setBirthday(LocalDate birthday);
+	Date getBirthday();
+	void setBirthday(Date birthday);
 	
 	IAddress getHomeAddress();
 	void setHomeAddress(IAddress homeAddress);
