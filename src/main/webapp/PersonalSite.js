@@ -355,11 +355,9 @@ function deleteActivity() {
 function deleteActivityByID(activityID){
 
     event.preventDefault();
-    var json = JSON.stringify(activityID);
     $.ajax({
         method: 'DELETE',
-        url : "/MyHours/ArrayDBController/deleteActivity",
-        data : json,
+        url : "/MyHours/ArrayDBController/deleteActivity/" + activityID,
         contentType: "application/json",
         success : function(){
             alert("Deleted Activity");
@@ -370,28 +368,25 @@ function deleteActivityByID(activityID){
             console.log("Failed to delete activity!")
         }
     });
-    console.log(json);
 }
 
 function deleteEmployer() {
     event.preventDefault();
 
-    var name = $("#company_employer_delete").val();
+    var employerID = $("#company_employer_delete").val();
 
-    $("#company_employer_delete").val(name);
-    console.log(name);
+    $("#company_employer_delete").val(employerID);
+    console.log(employerID);
 
-    deleteEmployerByName(name);
+    deleteEmployerByID(employerID);
 }
 
-function deleteEmployerByName(name){
+function deleteEmployerByID(employerID){
 
     event.preventDefault();
-    var json = JSON.stringify(name);
     $.ajax({
-        method: 'DELETE',
-        url : "/MyHours/ArrayDBController/deleteEmployer",
-        data : json,
+        type: 'DELETE',
+        url : "/MyHours/ArrayDBController/deleteEmployer/" + employerID,
         contentType: "application/json",
         success : function(){
             alert("Deleted Employer");
@@ -402,7 +397,6 @@ function deleteEmployerByName(name){
             console.log("Failed to delete Employer!")
         }
     });
-    console.log(json);
 }
 
 function deleteJob() {
@@ -417,12 +411,10 @@ function deleteJob() {
 }
 
 function deleteJobByName(jobName){
-    var json = JSON.stringify(jobName);
 
     $.ajax({
         method: 'DELETE',
-        url : "/MyHours/ArrayDBController/deleteJob",
-        data : json,
+        url : "/MyHours/ArrayDBController/deleteJob/" + jobName,
         contentType: "application/json",
         success : function(){
             alert("Deleted Job");
@@ -433,7 +425,6 @@ function deleteJobByName(jobName){
             console.log("Failed to delete Job!")
         }
     });
-    console.log(json);
 }
 function checkSession() {
     $.ajax({

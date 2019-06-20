@@ -282,9 +282,9 @@ public class ArrayDBController implements IDBController {
     }
     
     @DELETE
-    @Path("/deleteEmployer/{id}")
+    @Path("/deleteEmployer/{employerID}")
     @Override
-    public boolean deleteEmployer(@PathParam("id") int employerID) {
+    public boolean deleteEmployer(@PathParam("employerID") int employerID) {
         boolean success = false;
 
         outLoop:
@@ -420,9 +420,9 @@ public class ArrayDBController implements IDBController {
     }
 	
 	@DELETE
-	@Path("/deleteJob/{id}")
+	@Path("/deleteJob/{jobID}")
     @Override
-    public boolean deleteJob(@PathParam("id") int jobID) {
+    public boolean deleteJob(@PathParam("jobID") int jobID) {
         boolean success = false;
 
         outLoop:
@@ -563,9 +563,9 @@ public class ArrayDBController implements IDBController {
     }
 	
 	@DELETE
-	@Path("/deleteActivity/{id}")
+	@Path("/deleteActivity/{activityID}")
     @Override
-    public void deleteActivity(@PathParam("id") int activityID) {
+    public void deleteActivity(@PathParam("activityID") int activityID) {
 
         outLoop:
         for (IWorkerDTO workerDTO : workerList){
