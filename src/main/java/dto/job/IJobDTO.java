@@ -1,6 +1,8 @@
 package dto.job;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import dto.address.Address;
+import dto.employer.EmployerDTO;
 import dto.ruleSet.RuleSet;
 import dto.activity.IActivityDTO;
 
@@ -10,6 +12,8 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
+
+@JsonDeserialize(as = JobDTO.class)
 public interface IJobDTO {
 
     // <editor-folder desc="Properties"

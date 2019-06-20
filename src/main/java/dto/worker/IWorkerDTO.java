@@ -1,11 +1,14 @@
 package dto.worker;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import dto.address.IAddress;
+import dto.employer.EmployerDTO;
 import dto.employer.IEmployerDTO;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@JsonDeserialize(as = WorkerDTO.class)
 public interface IWorkerDTO {
 	
 	// Methods

@@ -210,8 +210,12 @@ public class ArrayDBController implements IDBController {
 
         employerDTOToAdd.setWorkerID(employer.getWorkerID());
         employerDTOToAdd.setName(employer.getName());
-        employerDTOToAdd.setTelephone(employer.getTelephone());
-        employerDTOToAdd.setColor(employer.getColor());
+        if (employer.getTelephone() != null) {
+            employerDTOToAdd.setTelephone(employer.getTelephone());
+        } else {
+            employerDTOToAdd.setColor(employer.getColor());
+        }
+
 
         for (IWorkerDTO workerDTO : workerList) {
             if (workerDTO.getWorkerID() == employer.getWorkerID()) {
