@@ -214,22 +214,26 @@ var checkMenu3 = function() {
 function addActivity(){
 
     event.preventDefault();
-    /*var activity = $("#joblist").val();
-    $("#joblist").val(activity);
-    var userJson =  JSON.parse(JSON.stringify(activity)+" "+$("#addActivity").serializeJSON());
-    /*var parsedString = userJson.replace(/@\{(\w+)\}/g, function(match, group) {
-        if (group === 'startingDateTime') {
-            return new Date();
-            // TODO: Hej WassMann, kan du ikke se om nedenstående løsning virker?
-            //return new Date().toISOString.slice(0,19).replace('T', ' ');
-        }
-        else if (group === 'endingDateTime') {
-            return new Date();
-        } //and so on
-    });*/
 
-    let userJson = {jobID:1,startingDateTime:"2019-06-19T22:34",endingDateTime:"2019-06-19T22:38",pause:0,activityValue:555};
-    console.log(userJson);
+    var userJson =  JSON.parse(JSON.stringify($("#addActivity").serializeJSON()));
+    var test = $("#addActivity").serializeJSON();
+    console.log(test);
+    $("#addActivity").val(test);
+    console.log(test);
+
+
+    var parsedString = userJson.replace(/@\{(\w+)\}/g,function(match, group) {
+        console.log(group);
+        console.log(match);
+        if (group.toString() === 'startingDateTime') {
+            // TODO: Hej WassMann, kan du ikke se om nedenstående løsning virker?
+            return new console.log(Date().toISOString());
+        }
+        else if (group.toString() === 'endingDateTime') {
+            return new Date().toISOString.slice(0,19);
+        } //and so on
+    });
+    //console.log(parsedString);
 
     $.ajax({
         method: 'POST',
