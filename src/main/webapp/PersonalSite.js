@@ -552,8 +552,8 @@ function updateGraf(choice) {
                                 var shiftStartString = shiftStart.getDate() + '/' + (shiftStart.getMonth() + 1) + ' ' + with_leading_zeros(shiftStart.getHours()) + ':' + with_leading_zeros(shiftStart.getMinutes()) + ' - ' + with_leading_zeros(shiftEnd.getHours()) + ':' + with_leading_zeros(shiftEnd.getMinutes());
 
 
-                                row2.insertCell(0).innerHTML = resulte[i]['startingDateTime'];
-                                row2.insertCell(1).innerHTML = resulte[i]['endingDateTime'];
+                                row2.insertCell(0).innerHTML = resulte[i]['startingDateTime'].replace("T" , " ");
+                                row2.insertCell(1).innerHTML = resulte[i]['endingDateTime'].replace("T" , " ");
                                 row2.insertCell(2).innerHTML = resulte[i]['activityValue'];
                             })
                         }
