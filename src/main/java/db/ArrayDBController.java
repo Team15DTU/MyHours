@@ -206,9 +206,16 @@ public class ArrayDBController implements IDBController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createEmployer(IEmployerDTO employer) {
+        IEmployerDTO employerDTOToAdd = new EmployerDTO();
+
+        employerDTOToAdd.setWorkerID(employer.getWorkerID());
+        employerDTOToAdd.setName(employer.getName());
+        employerDTOToAdd.setTelephone(employer.getTelephone());
+        employerDTOToAdd.setColor(employer.getColor());
+
         for (IWorkerDTO workerDTO : workerList) {
             if (workerDTO.getWorkerID() == employer.getWorkerID()) {
-                workerDTO.getIEmployers().add(employer);
+                workerDTO.getIEmployers().add(employerDTOToAdd);
                 break;
             }
         }
