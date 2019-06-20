@@ -480,7 +480,7 @@ function updateGraf(choice) {
                     header: ["Date", "Hours"]
                 };
 
-                //her finder jeg alle de job som er forbundet med brugeren.
+                //her finder jeg alle de job som er forbundet med brugerene.
                 var nrOfJobs = [];
                 //TODO: Her skal vi erstatte vores data. findAllJobs finder alle jobs og den resterende funktion laver grafen
                 for (var loop = 0; loop < findJobArray.length; loop++) {
