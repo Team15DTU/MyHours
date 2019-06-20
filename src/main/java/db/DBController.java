@@ -759,6 +759,7 @@ public class DBController implements IDBController
         try
         {
             list = iJobDAO.getIJobList();
+            System.out.println(list);
         }
         catch ( DALException e )
         {
@@ -1018,7 +1019,32 @@ public class DBController implements IDBController
     }
 	
 	//endregion
-    
+    @GET
+    @Path("/getAllInfo")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Override
+    public List<Object> getAllInfo () {
+    	/*
+    	To indicate to frontend that an error happened, but it
+    	won't crash as the list won't be null.
+    	 */
+            List<Object> list = new ArrayList<>();
+
+            // Try to create the list
+            try
+            {
+                list.add(iActivityDAO.getiActivityList());
+                list.add(iEmployerDAO.getiEmployerList());
+                list.add(iJobDAO.getIJobList());
+                System.out.println(list);
+
+            } catch ( Exception e )
+            {
+                System.err.println("ERROR: Unknown Exception getAllInfo() - " + e.getMessage());
+            }
+
+            return list;
+        }
     /*
     ---------------------- Support Methods ----------------------
      */

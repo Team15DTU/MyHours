@@ -156,4 +156,5 @@ public interface IDBController
     void logOut                         (HttpServletRequest request);
     boolean isSessionActive             (HttpServletRequest request);
 	boolean loginCheck                  (WorkerDTO user, HttpServletRequest request);
+    List<Object> getAllInfo ();
 }
