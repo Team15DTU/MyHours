@@ -21,38 +21,30 @@ var hideModal = function(){
 
 var showactivity_add = function() {
     $("#shift_add").show();
-    getJobList(joblist);
 };
 var showactivity_edit = function() {
     $("#shift_edit").show();
-    getJobList(activity_edit_joblist);
 };
 var showactivity_delete = function() {
     $("#shift_delete").show();
-    getActivityList(activitylist_delete);
 };
 var showjob_add = function() {
     $("#job_add").show();
-    getEmployerList(company_job_add);
 };
 var showjob_edit = function() {
     $("#job_edit").show();
-    getJobList(select_job_edit);
 };
 var showjob_delete = function() {
     $("#job_delete").show();
-    getJobList(select_job_delete);
 };
 var showemployer_add = function() {
     $("#employer_add").show();
 };
 var showemployer_edit = function() {
     $("#employer_edit").show();
-    getEmployerList(company_employer_edit);
 };
 var showemployer_delete = function() {
     $("#employer_delete").show();
-    getEmployerList(company_employer_delete)
 };
 
 

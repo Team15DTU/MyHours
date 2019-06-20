@@ -170,7 +170,7 @@
             <input class="w3-input w3-border" type="number" placeholder="Enter minutes of your break"
                    name="activityValue" required>
             <button type="submit" name="EditShift" value="submit" id="shift_edit_submit" class="submit"
-                    onclick="editActivity();  getJobList(activity_edit_joblist); getActivityList(activitylist_edit);">Edit Activity
+                    onclick="editActivity();">Edit Activity
             </button>
         </form>
     </div>
@@ -182,7 +182,7 @@
         <form id="deleteActivity">
             <center>
                 <label><b>Choice a shift you want to delete: </b></label><br>
-                <input type="text" placeholder="activityID" name="activityID" required>
+                <input type="text" placeholder="activityID" name="activityID" id="activitylist_delete" required>
                 <!--
                 <select id="select3" onclick="getActivityList()">
                     <option value="Default"></option>
@@ -191,7 +191,7 @@
             </center>
             <br><br>
             <button type="submit" name="DeleteShift" value="submit" id="shift_delete_button" class="submit"
-                    onclick="deleteActivity(); getActivityList(activitylist_delete);">Delete Activity
+                    onclick="deleteActivity();">Delete Activity
             </button>
         </form>
     </div>
@@ -221,7 +221,7 @@
                 <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="stdSalary"
                        required>
 
-                <button type="submit" class="submit" onclick="addJob(); getEmployerList(company_job_add);">Save Job</button>
+                <button type="submit" class="submit" onclick="addJob();">Save Job</button>
             </div>
         </form>
     </div>
@@ -261,7 +261,7 @@
                    required>
 
 
-            <button type="submit" class="submit" onclick="editJob(); getJobList(select_job_edit);getEmployerList(company_job_edit);">Edit Job</button>
+            <button type="submit" class="submit" onclick="editJob();">Edit Job</button>
 
         </form>
     </div>
@@ -273,7 +273,7 @@
         <form id="deleteJob">
             <center>
                 <label><b>Choice a job you want to Delete: </b></label><br>
-                <input type="text" placeholder="jobID" name="jobID" required>
+                <input type="text" placeholder="jobID" name="jobID" id="select_job_delete" required>
                 <!--
                 <select id="select_job_delete" onclick="getJobList();">
                     <option value="Default"></option>
@@ -282,7 +282,7 @@
             </center>
             <br><br>
             <button type="submit" name="DeleteJob" value="submit" id="job_delete_button" class="submit"
-                    onclick="deleteJob(); getJobList(select_job_delete);">Delete Job
+                    onclick="deleteJob();">Delete Job
             </button>
         </form>
     </div>
@@ -339,7 +339,7 @@
             <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="telephone"
                    required>
 
-            <button type="submit" class="submit" onclick="editEmployer(); getEmployerList(company_employer_edit);">Edit Employer</button>
+            <button type="submit" class="submit" onclick="editEmployer();">Edit Employer</button>
 
         </form>
     </div>
@@ -352,7 +352,7 @@
         <form id="deleteEmployer">
             <center>
                 <label><b>Choice an employer you want to delete: </b></label><br>
-                <input type="text" placeholder="employerID" name="employerID" required>
+                <input type="text" placeholder="employerID" name="employerID" id="company_employer_delete" required>
                 <!--
                 <select id="select_jobadress_delete" onclick="getEmployerList();">
                     <option value="Default"></option>
@@ -361,7 +361,7 @@
             </center>
             <br><br>
             <button type="submit" name="DeleteJob" value="submit" id="jobadress_delete_button" class="submit"
-                    onclick="deleteEmployer();getEmployerList(company_employer_delete);">Delete Employer
+                    onclick="deleteEmployer();">Delete Employer
             </button>
         </form>
     </div>
