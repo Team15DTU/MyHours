@@ -179,53 +179,7 @@ public class DBController implements IDBController
     {
         this.connPool = connPool;
     }
-	
-    //TODO: Jeg tror godt vi kan smide den her metode ud. Bruger den ingen steder.
-	/**
-	 *
-	 * @param tableName
-	 * @return
-	 */
-	@Override
-    public int getNextAutoIncremental(String tableName)
-    {
-		Connection c = null;
-		try {
-			c = connPool.getConn();
-
-            Statement statement = c.createStatement();
-            ResultSet analyzeResultSet = statement.executeQuery("ANALYZE TABLE " + tableName);
-
-            // Shit works
-			//TODO: Fix hardcoded Database
-            PreparedStatement pStatement = c.prepareStatement(
-                    "SELECT * FROM information_schema.TABLES where TABLE_SCHEMA = ?" +
-							" AND TABLE_NAME = ?" )
-					;
-
-            pStatement.setString(1, (String) hibernateUtil.getProperties().get("hibernate.connection.username"));
-            pStatement.setString(2, EmployerConstants.TABLENAME);
-
-            ResultSet resultset = pStatement.executeQuery();
-
-            resultset.next();
-
-            return resultset.getInt("AUTO_INCREMENT");
-
-
-        }
-		catch (Exception e)
-		{
-			System.err.println("ERROR: getNextAutoIncremental() - " + e.getMessage());
-			return -1;
-        }
-		finally
-		{
-			if ( c != null )
-            	connPool.releaseConnection(c);
-        }
-    }
-	
+		
 	/**
 	 * Gets the time zone of the server.
 	 * @return Time zone as a String e.g. "UTC"

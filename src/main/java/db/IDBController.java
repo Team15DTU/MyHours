@@ -151,7 +151,6 @@ public interface IDBController
     | Utilities                                                  |
     -------------------------------------------------------------*/
     String  setTimeZoneFromSQLServer    ();
-	int     getNextAutoIncremental      (String tableName);
 
     void logOut                         (HttpServletRequest request);
     boolean isSessionActive             (HttpServletRequest request);

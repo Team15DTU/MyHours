@@ -12,6 +12,9 @@ import dto.worker.WorkerDTO;
 import dto.worker.WorkerHiberDTO;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,16 +63,36 @@ public class ArrayDBController implements IDBController {
     /*
     ---------------------- Public Methods -----------------------
      */
-
+    
+    /**
+     * This method takes an object that implements the IWorkerDTO
+     * interface, and saves it in the database.
+     * @param workerDTO Object that implements the IWorkerDTO interface
+     */
+    @POST
+    @Path("/createWorker")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createWorker(IWorkerDTO workerDTO) {
 
         workerList.add(workerDTO);
 
     }
-
+    
+    /**
+     * This methods returns a FULL IWorkerDTO Object.
+     * Including:
+     * 1) A list of the workers Workplaces.
+     * 2) Each of those Workplaces contains a list of its Jobs
+     * 3) Each of those Jobs contains a list of its Shifts
+     * @param email We find the Worker, from its email as it is unique
+     * @return A IWorkerDTO
+     */
+    @GET
+    @Path("/getWorkerEmail/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IWorkerDTO getIWorkerDTO(String email) {
+    public IWorkerDTO getIWorkerDTO(@PathParam("email") String email) {
 
         IWorkerDTO workerDTOToReturn = new WorkerHiberDTO();
 
@@ -82,9 +105,19 @@ public class ArrayDBController implements IDBController {
 
         return workerDTOToReturn;
     }
-
+    
+    /**
+     * Method finds a Worker from an ID, and returns
+     * a full IWorkerDTO object.
+     * @param id The unique ID of the Worker
+     * @return Object that implements IWorkerDTO interface
+     */
+    @GET
+    @Path("/getWorker/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
-    public IWorkerDTO getIWorkerDTO(int id) {
+    public IWorkerDTO getIWorkerDTO(@PathParam("id") int id)
+    {
         IWorkerDTO workerDTOToReturn = new WorkerHiberDTO();
 
         for (IWorkerDTO workerDTO : workerList ){
@@ -346,24 +379,26 @@ public class ArrayDBController implements IDBController {
     public String setTimeZoneFromSQLServer() {
         return null;
     }
-
+    
+    @POST
+    @Path("/Logout")
     @Override
-    public int getNextAutoIncremental(String tableName) {
-        return 0;
-    }
-
-    @Override
-    public void logOut(HttpServletRequest request) {
+    public void logOut(@Context HttpServletRequest request) {
 
     }
-
+    
+    @POST
+    @Path("/isSessionActive")
     @Override
-    public boolean isSessionActive(HttpServletRequest request) {
+    public boolean isSessionActive(@Context HttpServletRequest request) {
         return false;
     }
-
+    
+    @POST
+    @Path("/loginCheck")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public boolean loginCheck(WorkerDTO user, HttpServletRequest request) {
+    public boolean loginCheck(WorkerDTO user, @Context HttpServletRequest request) {
         return false;
     }
     
