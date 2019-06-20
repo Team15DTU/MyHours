@@ -213,7 +213,7 @@
 
                 <label><b>What company is the job for?</b></label>
                 <br>
-                <select id="company_job_add"></select>
+                <select id="company_job_add" name="name"></select>
                 <br><br>
                 <label><b>What is the job's name</b></label>
                 <input class="w3-input w3-border w3-margin-bottom" type="text" name="jobName" required>
@@ -321,14 +321,11 @@
             <b>Insert the correct details.</b>
             <br><br>
 
-            <label><b>WorkerID</b></label>
-            <input type="text" placeholder="WorkerID" name="workerID" required>
-
             <label><b>What is the name of your Employer?</b></label>
             <input type="text" placeholder="Address of your company" name="name" required>
 
             <label><b>What are the phone number?</b></label>
-            <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="telephone" required>
+            <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="number" name="telephone" required>
 
             <button  type="submit" class="submit" onclick="editEmployer();getEmployerList(company_employer_edit);">Edit Employer</button>
 

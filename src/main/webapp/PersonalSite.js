@@ -293,7 +293,7 @@ function editActivity(){
     var userJson = $("#editActivity").serializeJSON();
     $.ajax({
         method: 'PUT',
-        url : "/MyHours/DBController/editActivity",
+        url : "/MyHours/DBController/updateActivity",
         data : userJson,
         contentType: "application/json",
         success : function(data){
@@ -314,7 +314,7 @@ function editEmployer(){
     var userJson = $("#editEmployer").serializeJSON();
     $.ajax({
         method: 'PUT',
-        url : "/MyHours/DBController/editEmployer",
+        url : "/MyHours/DBController/updateEmployer",
         data : userJson,
         contentType: "application/json",
         success : function(){
@@ -335,7 +335,7 @@ function editJob(){
     var userJson = $("#editJob").serializeJSON();
     $.ajax({
         method: 'PUT',
-        url : "/MyHours/DBController/editJob",
+        url : "/MyHours/DBController/updateJob",
         data : userJson,
         contentType: "application/json",
         success : function(){

@@ -634,6 +634,9 @@ public class DBController implements IDBController
 	@Override
 	public void updateEmployer(EmployerDTO employerDTO) throws DALException {
 
+	    //TODO: The methods work but doesnt edit anything.
+        // TODO: Figure a way to get the EmployerID of the current Employer you are trying to edit
+
         Connection c = connPool.getConn();
 
         String updateQuery = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ? WHERE %s = ?",
@@ -647,9 +650,10 @@ public class DBController implements IDBController
             PreparedStatement pStatement = c.prepareStatement(updateQuery);
 
             pStatement.setString(1, employerDTO.getName());
-            pStatement.setString(2, null);
+            pStatement.setInt(2, 123321);
             pStatement.setString(3, employerDTO.getTelephone());
             pStatement.setInt(4, employerDTO.getEmployerID());
+
 
             pStatement.executeUpdate();
 
@@ -697,6 +701,8 @@ public class DBController implements IDBController
 	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createJob(JobDTO job) throws DALException {
+
+	    //TODO: Figure a way to get employerID in index 1
 
         Connection c = connPool.getConn();
 
@@ -762,7 +768,6 @@ public class DBController implements IDBController
         try
         {
             list = iJobDAO.getIJobList();
-            System.out.println(list);
         }
         catch ( DALException e )
         {
@@ -804,6 +809,7 @@ public class DBController implements IDBController
 	@Override
 	public void updateJob(IJobDTO jobDTO) throws DALException {
 
+        //TODO: Figure a way to get employerID in index 1
         Connection c = connPool.getConn();
 
         String query = String.format("UPDATE %s SET %s = ? , %s = ? , %s = ? , %s = ? , %s = ? WHERE %s = ?",
@@ -1039,7 +1045,6 @@ public class DBController implements IDBController
                 list.add(iActivityDAO.getiActivityList());
                 list.add(iEmployerDAO.getiEmployerList());
                 list.add(iJobDAO.getIJobList());
-                System.out.println(list);
 
             } catch ( Exception e )
             {
