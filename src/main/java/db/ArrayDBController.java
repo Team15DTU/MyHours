@@ -28,6 +28,7 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
+@Path("/ArrayDBController")
 public class ArrayDBController implements IDBController {
 
     /*
