@@ -25,7 +25,7 @@ public interface IDBController
 	/*------------------------------------------------------------
 	| Creators                                                   |
 	-------------------------------------------------------------*/
-    void createWorker   (WorkerDTO workerDTO) throws DALException;
+    void createWorker   (IWorkerDTO workerDTO);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -57,7 +57,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createEmployer (EmployerDTO employer) throws DALException;
+    void createEmployer (IEmployerDTO employer);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -88,7 +88,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createJob      (JobDTO job) throws DALException;
+    void createJob      (IJobDTO job);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -120,7 +120,7 @@ public interface IDBController
     /*------------------------------------------------------------
     | Creators                                                   |
     -------------------------------------------------------------*/
-    void createActivity (ActivityDTO activity) throws DALException;
+    void createActivity (IActivityDTO activity);
     
     /*------------------------------------------------------------
     | Get singles                                                |
@@ -143,7 +143,7 @@ public interface IDBController
 	/*------------------------------------------------------------
     | Delete                                                   |
     -------------------------------------------------------------*/
-    void             deleteActivity (ActivityDTO activityDTO) throws DALException;
+    void             deleteActivity (int id);
 
     //endregion
     
@@ -151,7 +151,6 @@ public interface IDBController
     | Utilities                                                  |
     -------------------------------------------------------------*/
     String  setTimeZoneFromSQLServer    ();
-	int     getNextAutoIncremental      (String tableName);
 
     void logOut                         (HttpServletRequest request);
     boolean isSessionActive             (HttpServletRequest request);

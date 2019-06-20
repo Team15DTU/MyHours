@@ -38,7 +38,7 @@ public class ConnectionHelper {
     ---------------------- Public Methods -----------------------
      */
 
-    public void finallyActionsForConnection (Connection c, String methodName) throws DALException {
+    public void finallyActionsForConnection (Connection c, String methodName) {
         try {
         	c.setAutoCommit(true);
         } catch (SQLException e) {
@@ -48,7 +48,7 @@ public class ConnectionHelper {
         iConnPool.releaseConnection(c);
     }
 
-    public void catchSQLExceptionAndDoRollback (Connection c, SQLException e, String methodName) throws DALException {
+    public void catchSQLExceptionAndDoRollback (Connection c, SQLException e, String methodName) {
         try {
             System.err.println("Transaction is being rolled back. ");
             c.rollback();
@@ -58,7 +58,6 @@ public class ConnectionHelper {
         }
 
         System.out.println("Standard SQLException in " + methodName + ":");
-        throw  new DALException(e.getMessage(), e.getCause());
     }
     
     /*
