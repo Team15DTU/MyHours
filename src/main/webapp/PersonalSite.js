@@ -573,45 +573,46 @@ function updateGraf(choice) {
                         method: "GET",
                         url: "/MyHours/ArrayDBController/getEmployerList",
                         dataType: "JSON",
-                        success: function (resulte) {
-                            var table = document.getElementById('left_table');
-                            while (table.hasChildNodes()) {
-                                table.removeChild(table.firstChild);
-                            }
-                            var firm = 'Employer';
-                            var lastpay = 'Job';
-                            var recivepay = 'Hourly salary';
+                        success: function (response) {
+                            $.each(response, function(k) {
+                                var table = document.getElementById('left_table');
+                                while (table.hasChildNodes()) {
+                                    table.removeChild(table.firstChild);
+                                }
+                                var firm = 'Employer';
+                                var lastpay = 'Job';
+                                var recivepay = 'Hourly salary';
 
 
-                            var row = table.insertRow(0);
-                            row.insertCell(0).innerHTML = firm.bold();
-                            row.insertCell(1).innerHTML = lastpay.bold();
-                            row.insertCell(2).innerHTML = recivepay.bold();
-                            var i;
+                                var row = table.insertRow(0);
+                                row.insertCell(0).innerHTML = firm.bold();
+                                row.insertCell(1).innerHTML = lastpay.bold();
+                                row.insertCell(2).innerHTML = recivepay.bold();
+                                var i;
 
-                            $.each(result, function (k) {
-                                //new Date();
-                                //'Insert activity name';
-                                var row2 = table.insertRow(k + 1);
-                                row2.insertCell(0).innerHTML = resulte[k]['name'];//findJob(i)[2];
-                                row2.insertCell(1).innerHTML = result[k]['jobName']; //lastPaycheck(findJob(k)[0])+' Kr.';
-                                row2.insertCell(2).innerHTML = result[k]['stdSalary'];
-                            });
+                                $.each(result, function (k) {
+                                    //new Date();
+                                    //'Insert activity name';
+                                    var row2 = table.insertRow(k + 1);
+                                    row2.insertCell(0).innerHTML = response[k]['name'];//findJob(i)[2];
+                                    row2.insertCell(1).innerHTML = result[k]['jobName']; //lastPaycheck(findJob(k)[0])+' Kr.';
+                                    row2.insertCell(2).innerHTML = result[k]['stdSalary'];
+                                });
+                            })
                         }
 
-                    })
+                    });
                     break;
 
 
 
 
                 case "employerInfo":
-
                     $.ajax({
                         method: "GET",
                         url: "/MyHours/ArrayDBController/getEmployerList",
                         dataType: "JSON",
-                        success: function (result) {
+                        success: function (resulte) {
                             var table = document.getElementById('left_table');
                             while (table.hasChildNodes()) {
                                 table.removeChild(table.firstChild);
@@ -623,12 +624,18 @@ function updateGraf(choice) {
                             row.insertCell(0).innerHTML = firm.bold();
                             var i;
 
-                            for (i = 0; i < 3; i++) {
+                            //TODO INSERT REAL ACTIVITY INFORMATION
+                            $.each(resulte, function (i) {
                                 var row2 = table.insertRow(i + 1);
-                                row2.insertCell(0).innerHTML = result[i]['name'];
-                            }
+                                console.log("result i" + result[i]);
+                                console.log("resulte i" + resulte[i]);
+
+                                row2.insertCell(0).innerHTML = resulte[i]['name'];
+                            })
                         }
-                    })
+                    });
+                    break;
+
             }
         }
     })
