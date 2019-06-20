@@ -542,7 +542,7 @@ function updateGraf(choice) {
                             var i;
 
                             //TODO INSERT REAL ACTIVITY INFORMATION
-                            for (i = 0; i < 3; i++) {
+                            $.each(resulte, function (i) {
                                 var row2 = table.insertRow(i + 1);
 
                                 var shiftStart = findShift(i)[2];
@@ -555,7 +555,7 @@ function updateGraf(choice) {
                                 row2.insertCell(0).innerHTML = resulte[i]['startingDateTime'];
                                 row2.insertCell(1).innerHTML = resulte[i]['endingDateTime'];
                                 row2.insertCell(2).innerHTML = resulte[i]['activityValue'];
-                            }
+                            })
                         }
                     })
                     break;
