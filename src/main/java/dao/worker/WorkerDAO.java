@@ -106,8 +106,6 @@ public class WorkerDAO implements IWorkerDAO
                 worker.setSurName( rs.getString(WorkerConstants.surname) );
                 worker.setBirthday( rs.getDate( WorkerConstants.birthday ).toLocalDate() );
                 worker.setEmail( rs.getString(WorkerConstants.email) );
-                
-                //TODO: Address of the worker needs to be set!
             }
         }
         catch ( SQLException e )
@@ -179,9 +177,6 @@ public class WorkerDAO implements IWorkerDAO
             statement.setString(5, workerDTO.getPassword());
 
             statement.executeUpdate();
-
-            // TODO: Print skal fjernes på et tidspunkt.
-            System.out.println("Worker have been added to: \t DB: myhours \tTable: " + WORKERS_TABLENAME);
 
         }
         catch (SQLException e) {

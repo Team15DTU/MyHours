@@ -1,14 +1,11 @@
 package dto.activity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import db.ArrayDBController;
 import dto.job.IJobDTO;
 
 import java.sql.Timestamp;
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * @author Rasmus Sander Larsen

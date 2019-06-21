@@ -205,7 +205,7 @@ public class JobDAO implements IJobDAO {
         return jobDTOListToReturn;
     }
 
-    @Override // TODO: Er det her ikke bare dumt? Vi har intet at bruge denne klasse til? Ellers skal den i hvert fald ændres.
+    @Override
     public List<IJobDTO> getIJobList(String condition) throws DALException {
         List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
 
@@ -256,7 +256,6 @@ public class JobDAO implements IJobDAO {
 
             pStatement.setInt(1, jobDTO.getEmployerID());
             pStatement.setString(2, jobDTO.getJobName());
-            // TODO: Tjekket om det er null er muligvis liget meget?
             if (jobDTO.getHireDate() != null) {
                 pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
             } else {

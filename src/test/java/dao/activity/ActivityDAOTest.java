@@ -74,7 +74,7 @@ public class ActivityDAOTest {
         // Creates Test Employers in test DB
         iEmployerDAO.createiEmployer(employerNo1);
         iEmployerDAO.createiEmployer(employerNo2);
-        iEmployerDAO.createiEmployer(employerNo3); // TODO: Skal der kun være 2 employers ?
+        iEmployerDAO.createiEmployer(employerNo3);
 
         // endregion
 

@@ -38,7 +38,7 @@ public interface IJobDAO {
      * @return A List object of JobDTO objects matching the inputted Condition.
      * @throws DALException Will throw a DALException.
      */
-    List<IJobDTO> getIJobList (String specialCondition) throws DALException; //TODO: Det her skal ud. eller laves om.
+    List<IJobDTO> getIJobList (String specialCondition) throws DALException;
 
     /**
      * This method inserts the details from the inputted JobDTO object into the DB.

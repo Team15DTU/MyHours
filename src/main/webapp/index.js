@@ -54,18 +54,14 @@ function Login(){
         data : userJson,
         contentType: "application/json",
         success : function(data){
-            alert(data);
-            console.log("Success!");
             if (data.toString() === "true"){
                 window.location='PersonalSite.html';
             }
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
-            console.log("Failed to login!")
         }
     });
-    console.log(userJson);
 }
 
 function Signup() {
@@ -78,13 +74,10 @@ function Signup() {
         contentType: "application/json",
         success : function () {
             alert("User created!");
-            console.log("User created!")
 
         },
         error: function (jqXHR, text, error) {
             alert(jqXHR.status + text + error);
-            console.log("Failed to create an user!")
         }
     });
-    console.log(userJson)
 }

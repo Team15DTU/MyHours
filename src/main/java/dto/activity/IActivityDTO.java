@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import dto.job.IJobDTO;
 
 import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 /**
  * @author Rasmus Sander Larsen

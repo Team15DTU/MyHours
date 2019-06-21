@@ -1,8 +1,6 @@
 package dto.worker;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import dto.address.IAddress;
-import dto.employer.EmployerDTO;
 import dto.employer.IEmployerDTO;
 
 import java.time.LocalDate;
@@ -27,9 +25,6 @@ public interface IWorkerDTO {
 
 	LocalDate getBirthday();
 	void setBirthday(LocalDate birthday);
-	
-	IAddress getHomeAddress();
-	void setHomeAddress(IAddress homeAddress);
 	
 	List<IEmployerDTO> getIEmployers();
 	void setIEmployers(List<IEmployerDTO> workPlaces);
