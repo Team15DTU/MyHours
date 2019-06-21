@@ -169,12 +169,9 @@ function addActivity(){
         data : userJson,
         contentType: "application/json",
         success : function(){
-            alert("Created Activity");
-            console.log("Success!");
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
-            console.log("Failed to add activity!")
         }
     });
 }
@@ -189,12 +186,9 @@ function addEmployer(){
         data : userJson,
         contentType: "application/json",
         success : function(){
-            alert("Created Employer");
-            console.log("Success!");
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
-            console.log("Failed to add Employer!")
         }
     });
 }
@@ -209,12 +203,9 @@ function addJob(){
         data : userJson,
         contentType: "application/json",
         success : function(){
-            alert("Created Job");
-            console.log("Success!");
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
-            console.log("Failed to add Job!")
         }
     });
 }
@@ -228,12 +219,9 @@ function editActivity(){
         data : userJson,
         contentType: "application/json",
         success : function(){
-            alert("Edited Activity");
-            console.log("Success!");
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
-            console.log("Failed to edit activity!")
         }
     });
 }
@@ -248,12 +236,9 @@ function editEmployer(){
         data : userJson,
         contentType: "application/json",
         success : function(){
-            alert("Edited Employer");
-            console.log("Success!");
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
-            console.log("Failed to edit Employer!")
         }
     });
 }
@@ -268,12 +253,9 @@ function editJob(){
         data : userJson,
         contentType: "application/json",
         success : function(){
-            alert("Edited Job");
-            console.log("Success!");
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
-            console.log("Failed to edit Job!")
         }
     });
 }
@@ -298,12 +280,9 @@ function deleteActivityByID(activityID){
         url : "/MyHours/ArrayDBController/deleteActivity/" + activityID,
         contentType: "application/json",
         success : function(){
-            alert("Deleted Activity");
-            console.log("Success!");
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
-            console.log("Failed to delete activity!")
         }
     });
 }
@@ -326,12 +305,9 @@ function deleteEmployerByID(employerID){
         url : "/MyHours/ArrayDBController/deleteEmployer/" + employerID,
         contentType: "application/json",
         success : function(){
-            alert("Deleted Employer");
-            console.log("Success!");
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
-            console.log("Failed to delete Employer!")
         }
     });
 }
@@ -353,12 +329,9 @@ function deleteJobByName(jobName){
         url : "/MyHours/ArrayDBController/deleteJob/" + jobName,
         contentType: "application/json",
         success : function(){
-            alert("Deleted Job");
-            console.log("Success!");
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
-            console.log("Failed to delete Job!")
         }
     });
 }
@@ -374,7 +347,6 @@ function checkSession() {
         },
         error: function (jqXHR, text, error) {
             alert(jqXHR.status + text + error);
-            console.log("Failed to check session!")
         }
     });
 }
@@ -455,7 +427,7 @@ function updateGraf(choice) {
                 }
 
                 // set the chart title
-                chart.title("Hours of activities");
+                chart.title("Hours of activities a month");
 
                 // draw
                 chart.legend(true);
@@ -633,7 +605,6 @@ function getActivityList(input) {
             }
         },
         error: function() {
-            console.log("Error loading activities");
         }
     });
 }
@@ -672,7 +643,6 @@ function getEmployerList(input) {
             }
         },
         error: function() {
-            console.log("Error loading employers");
         }
     });
 }
