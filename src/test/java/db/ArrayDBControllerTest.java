@@ -68,14 +68,14 @@ public class ArrayDBControllerTest
 	@Test
 	public void getIWorkerDTO()
 	{
-		IWorkerDTO realWorker 	= TestDataController.getTestWorkerNo1();
-		IWorkerDTO worker		= controller.getIWorkerDTO(realWorker.getWorkerID());
+		IWorkerDTO emailWorker 	= controller.getIWorkerDTO( TestDataController.getTestWorkerNo1().getEmail() );
+		IWorkerDTO worker		= controller.getIWorkerDTO(emailWorker.getWorkerID());
 		
 		// Check data is correct
-		assertEquals(realWorker.getFirstName(), worker.getFirstName());
-		assertEquals(realWorker.getSurName(), worker.getSurName());
-		assertEquals(realWorker.getEmail(), worker.getEmail());
-		assertEquals(realWorker.getPassword(), worker.getPassword());
+		assertEquals(emailWorker.getFirstName(), worker.getFirstName());
+		assertEquals(emailWorker.getSurName(), worker.getSurName());
+		assertEquals(emailWorker.getEmail(), worker.getEmail());
+		assertEquals(emailWorker.getPassword(), worker.getPassword());
 	}
 	
 	@Test
