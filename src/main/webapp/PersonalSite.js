@@ -228,15 +228,15 @@ function editActivity(){
         url : "/MyHours/ArrayDBController/updateActivity",
         data : userJson,
         contentType: "application/json",
-        success : function(data){
-            alert(data);
+        success : function(){
+            alert("Edited Activity");
             console.log("Success!");
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
             console.log("Failed to edit activity!")
         }
-    });;
+    });
 }
 
 function editEmployer(){
