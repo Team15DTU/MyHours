@@ -1,13 +1,13 @@
 package dao.employer;
 
+import dao.ConnectionHelper;
 import dao.DALException;
 import dao.worker.IWorkerDAO;
+import dao.worker.WorkerDAO;
 import dto.employer.IEmployerDTO;
-import db.DBController;
 import db.IConnPool;
 import db.TestConnPoolV1;
 import dto.worker.IWorkerDTO;
-import hibernate.HibernateProperties;
 import org.junit.*;
 import testData.TestDataController;
 
@@ -19,8 +19,7 @@ import static org.junit.Assert.assertEquals;
 public class EmployerDAOTest
 {
     private static IConnPool test_DB;
-    private static DBController dbController;
-    private static IEmployerDAO iEmployerDAO;
+    private static IEmployerDAO employerDAO;
     private static IWorkerDAO iWorkerDAO;
 
     // Test Objects
@@ -60,12 +59,11 @@ public class EmployerDAOTest
     {
         // Setup DAOs, ConnectionPools and DBControllers.
         test_DB = TestConnPoolV1.getInstance();
-        dbController = new DBController(test_DB, new HibernateProperties().getTestDB());
-        iEmployerDAO = dbController.getiEmployerDAO();
-        iWorkerDAO  = dbController.getiWorkerDAO();
+        employerDAO = new EmployerDAO(test_DB, new ConnectionHelper(test_DB));
+        iWorkerDAO  = new WorkerDAO(test_DB);
 
         // Clear both Employers and Workers table.
-        TestDataController.clearEmployerTestTable(iEmployerDAO);
+        TestDataController.clearEmployerTestTable(employerDAO);
         TestDataController.clearWorkerTestTable(iWorkerDAO);
 
         // Setup necessary test IWorkerDTO and IEmployer objects.
@@ -80,15 +78,12 @@ public class EmployerDAOTest
 
         // Closes ConnectionPool.
         test_DB.closePool();
-
-        // Closes hibernateUtil.
-        dbController.getHibernateUtil().exit();
     }
 
     @After
     public void afterTest () throws DALException {
         // Clears Employers table between all tests
-        TestDataController.clearEmployerTestTable(iEmployerDAO);
+        TestDataController.clearEmployerTestTable(employerDAO);
     }
 
     /*
@@ -98,9 +93,9 @@ public class EmployerDAOTest
     @Test
     public void createEmployer() throws DALException {
 
-        iEmployerDAO.createiEmployer(employerNo1);
+        employerDAO.createiEmployer(employerNo1);
 
-        IEmployerDTO returnedWorkplaceDTOOfNo1 = iEmployerDAO.getIEmployer(employerNo1.getEmployerID());
+        IEmployerDTO returnedWorkplaceDTOOfNo1 = employerDAO.getIEmployer(employerNo1.getEmployerID());
 
         assertEquals( employerNo1.getEmployerID(), returnedWorkplaceDTOOfNo1.getEmployerID());
         assertEquals( employerNo1.getWorkerID(),returnedWorkplaceDTOOfNo1.getWorkerID());
@@ -112,31 +107,31 @@ public class EmployerDAOTest
     @Test
     public void getEmployerList() throws DALException {
 
-        iEmployerDAO.createiEmployer(employerNo1);
-        assertEquals(1, iEmployerDAO.getiEmployerList().size());
-        iEmployerDAO.createiEmployer(employerNo2);
-        assertEquals(2, iEmployerDAO.getiEmployerList().size());
-        iEmployerDAO.createiEmployer(employerNo3);
-        assertEquals(3, iEmployerDAO.getiEmployerList().size());
+        employerDAO.createiEmployer(employerNo1);
+        assertEquals(1, employerDAO.getiEmployerList().size());
+        employerDAO.createiEmployer(employerNo2);
+        assertEquals(2, employerDAO.getiEmployerList().size());
+        employerDAO.createiEmployer(employerNo3);
+        assertEquals(3, employerDAO.getiEmployerList().size());
     }
 
     @Test
     public void getEmployerListFromWorkerID() throws DALException {
 
-        iEmployerDAO.createiEmployer(employerNo1);
-        iEmployerDAO.createiEmployer(employerNo2);
-        iEmployerDAO.createiEmployer(employerNo3);
+        employerDAO.createiEmployer(employerNo1);
+        employerDAO.createiEmployer(employerNo2);
+        employerDAO.createiEmployer(employerNo3);
 
-        assertEquals(2, iEmployerDAO.getiEmployerList(testWorkerNo1.getWorkerID()) .size());
-        assertEquals(1, iEmployerDAO.getiEmployerList(testWorkerNo2.getWorkerID()) .size());
+        assertEquals(2, employerDAO.getiEmployerList(testWorkerNo1.getWorkerID()) .size());
+        assertEquals(1, employerDAO.getiEmployerList(testWorkerNo2.getWorkerID()) .size());
     }
 
     @Test
     public void getEmployer() throws DALException {
 
-        iEmployerDAO.createiEmployer(employerNo2);
+        employerDAO.createiEmployer(employerNo2);
 
-        IEmployerDTO returnedEmployerNo2 = iEmployerDAO.getIEmployer(employerNo2.getEmployerID());
+        IEmployerDTO returnedEmployerNo2 = employerDAO.getIEmployer(employerNo2.getEmployerID());
 
         assertEquals(employerNo2.getEmployerID(),returnedEmployerNo2.getEmployerID());
         assertEquals(employerNo2.getWorkerID(),returnedEmployerNo2.getWorkerID());
@@ -148,7 +143,7 @@ public class EmployerDAOTest
     @Test
     public void updateWorkPlace() throws DALException {
 
-        iEmployerDAO.createiEmployer(employerNo1);
+        employerDAO.createiEmployer(employerNo1);
 
         IEmployerDTO updatedEmployerNo1 = employerNo1;
 
@@ -157,9 +152,9 @@ public class EmployerDAOTest
         updatedEmployerNo1.setTelephone(employerNo2.getTelephone());
 
         // Updates the WorkplaceDTO with the information that is passed into the method
-        iEmployerDAO.updateiEmployer(employerNo1);
+        employerDAO.updateiEmployer(employerNo1);
 
-        IEmployerDTO returnedUpdatedEmployerNo1 = iEmployerDAO.getIEmployer(employerNo1.getEmployerID());
+        IEmployerDTO returnedUpdatedEmployerNo1 = employerDAO.getIEmployer(employerNo1.getEmployerID());
 
         assertEquals(employerNo1.getEmployerID(), returnedUpdatedEmployerNo1.getEmployerID());
         assertEquals(employerNo1.getWorkerID(), returnedUpdatedEmployerNo1.getWorkerID());
@@ -171,13 +166,13 @@ public class EmployerDAOTest
     @Test
     public void deleteWorkPlace() throws DALException {
 
-        iEmployerDAO.createiEmployer(employerNo1);
+        employerDAO.createiEmployer(employerNo1);
 
-        assertEquals(1, iEmployerDAO.getiEmployerList().size());
+        assertEquals(1, employerDAO.getiEmployerList().size());
 
-        iEmployerDAO.deleteiEmployer(employerNo1.getEmployerID());
+        employerDAO.deleteiEmployer(employerNo1.getEmployerID());
 
-        assertEquals(0, iEmployerDAO.getiEmployerList().size());
+        assertEquals(0, employerDAO.getiEmployerList().size());
     }
 
 }

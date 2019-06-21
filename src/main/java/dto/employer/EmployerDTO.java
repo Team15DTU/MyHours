@@ -1,5 +1,7 @@
 package dto.employer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import db.ArrayDBController;
 import dto.job.IJobDTO;
 
@@ -21,8 +23,10 @@ public class EmployerDTO implements IEmployerDTO {
     private int employerID;
     private int workerID;
     private String name;
+    //@JsonIgnore
     private Color color;
     private String telephone;
+    //@JsonIgnore
     private List<IJobDTO> iJobList;
 
     /*

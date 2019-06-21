@@ -1,9 +1,11 @@
 package db.connectionPools;
 
 import dao.DALException;
+import db.IConnPool;
 import db.TestConnPoolV1;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -15,6 +17,20 @@ public class ConnPoolV1Test {
 	
 	private ConnPoolV1 connPool;
 	private int connSize;
+	
+	/**
+	 * This eliminates the possibility failures caused by
+	 * other tests that doesn't release all connections
+	 * or doesn't close the pool after use.
+	 * @throws Exception Could be thrown from closing the connection pool
+	 */
+	@BeforeClass
+	public static void beforeClass() throws Exception
+	{
+		ConnPoolV1 c = TestConnPoolV1.getInstance();
+		if ( c != null )
+			c.closePool();
+	}
 	
 	@Before
 	public void setUp() throws Exception

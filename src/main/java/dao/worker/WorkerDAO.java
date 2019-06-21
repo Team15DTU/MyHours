@@ -30,10 +30,6 @@ public class WorkerDAO implements IWorkerDAO
     {
         this.connPool = connPool;
     }
-
-    public WorkerDAO(){
-
-    }
     
     /*
     ------------------------ Properties -------------------------
