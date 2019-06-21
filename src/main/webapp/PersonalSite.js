@@ -675,7 +675,7 @@ function closeInfo() {
 //her er delene som ændre ved content.
 function changeFunction(site) {
     if (site === 'shifts' && $('#myid1').prop('checked')) {
-        header('Shifts');
+        header('Activities');
         checkMenu1();
         openInfo('shiftInfo');
     } else if (site === 'job' && $('#myid2').prop('checked')) {
@@ -683,7 +683,7 @@ function changeFunction(site) {
         checkMenu2();
         openInfo('jobInfo');
     } else if (site === 'workplace' && $('#myid3').prop('checked')) {
-        header('Workplace');
+        header('Employer');
         checkMenu3();
         openInfo('employerInfo');
     } else if (site === 'none' && $('#myid').prop('checked')) {
