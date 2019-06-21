@@ -163,7 +163,6 @@ function addActivity(){
     event.preventDefault();
 
     var userJson =  $("#addActivity").serializeJSON();
-    console.log(userJson);
     $.ajax({
         method: 'POST',
         url : "/MyHours/ArrayDBController/createActivity",

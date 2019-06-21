@@ -124,7 +124,7 @@
                        name="activityValue" required>
 
                 <button type="submit" name="addShift" value="submit" id="shiftadder" class="submit"
-                        onclick="addActivity();">Save Activity
+                        onclick="addActivity(); updateGraf('shiftInfo')">Save Activity
                 </button>
             </div>
         </form>
@@ -160,7 +160,7 @@
             <input class="w3-input w3-border" type="number" placeholder="Value"
                    name="activityValue" required>
             <button type="submit" name="EditShift" value="submit" id="shift_edit_submit" class="submit"
-                    onclick="editActivity();">Edit Activity
+                    onclick="editActivity(); updateGraf('shiftInfo')">Edit Activity
             </button>
         </form>
     </div>
@@ -177,7 +177,7 @@
             </center>
             <br><br>
             <button type="submit" name="DeleteShift" value="submit" id="shift_delete_button" class="submit"
-                    onclick="deleteActivity();">Delete Activity
+                    onclick="deleteActivity(); updateGraf('shiftInfo')">Delete Activity
             </button>
         </form>
     </div>
@@ -201,7 +201,7 @@
                 <input class="w3-input w3-border" type="number" placeholder="Enter you hourly income" name="stdSalary"
                        required>
 
-                <button type="submit" class="submit" onclick="addJob();">Save Job</button>
+                <button type="submit" class="submit" onclick="addJob(); updateGraf('jobInfo')">Save Job</button>
             </div>
         </form>
     </div>
@@ -231,7 +231,7 @@
                    required>
 
 
-            <button type="submit" class="submit" onclick="editJob();">Edit Job</button>
+            <button type="submit" class="submit" onclick="editJob(); updateGraf('jobInfo')">Edit Job</button>
 
         </form>
     </div>
@@ -247,7 +247,7 @@
             </center>
             <br><br>
             <button type="submit" name="DeleteJob" value="submit" id="job_delete_button" class="submit"
-                    onclick="deleteJob();">Delete Job
+                    onclick="deleteJob(); updateGraf('jobInfo')">Delete Job
             </button>
         </form>
     </div>
@@ -270,7 +270,7 @@
                 <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text"
                        name="telephone" required>
 
-                <button type="submit" class="submit" onclick="addEmployer()">Save Employer</button>
+                <button type="submit" class="submit" onclick="addEmployer(); updateGraf('employerInfo')">Save Employer</button>
             </div>
         </form>
     </div>
@@ -297,7 +297,7 @@
             <input class="w3-input w3-border w3-margin-bottom" placeholder="Phone number" type="text" name="telephone"
                    required>
 
-            <button type="submit" class="submit" onclick="editEmployer();">Edit Employer</button>
+            <button type="submit" class="submit" onclick="editEmployer(); updateGraf('employerInfo')">Edit Employer</button>
 
         </form>
     </div>
@@ -313,7 +313,7 @@
             </center>
             <br><br>
             <button type="submit" name="DeleteJob" value="submit" id="jobadress_delete_button" class="submit"
-                    onclick="deleteEmployer();">Delete Employer
+                    onclick="deleteEmployer(); updateGraf('employerInfo')">Delete Employer
             </button>
         </form>
     </div>
