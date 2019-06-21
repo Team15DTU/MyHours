@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
+
 public class EmployerDTO implements IEmployerDTO {
 
     /*

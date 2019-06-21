@@ -205,7 +205,7 @@ public class JobDAO implements IJobDAO {
         return jobDTOListToReturn;
     }
 
-    @Override // TODO: Er det her ikke bare dumt? Vi har intet at bruge denne klasse til? Ellers skal den i hvert fald ændres.
+    @Override
     public List<IJobDTO> getIJobList(String condition) throws DALException {
         List<IJobDTO> jobDTOListToReturn = new ArrayList<>();
 

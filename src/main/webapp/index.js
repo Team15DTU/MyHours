@@ -50,7 +50,7 @@ function Login(){
     var userJson = $("#LoginInfo input").serializeJSON();
     $.ajax({
         method: 'POST',
-        url : "MyHours/DBController/loginCheck",
+        url : "MyHours/ArrayDBController/loginCheck",
         data : userJson,
         contentType: "application/json",
         success : function(data){
@@ -65,7 +65,6 @@ function Login(){
             console.log("Failed to login!")
         }
     });
-    console.log(userJson);
 }
 
 function Signup() {
@@ -73,7 +72,7 @@ function Signup() {
     var userJson = $("#usersign input").serializeJSON();
     $.ajax({
         method: 'POST',
-        url: "MyHours/DBController/createWorker",
+        url: "MyHours/ArrayDBController/createWorker",
         data: userJson,
         contentType: "application/json",
         success : function () {
@@ -86,5 +85,4 @@ function Signup() {
             console.log("Failed to create an user!")
         }
     });
-    console.log(userJson)
 }

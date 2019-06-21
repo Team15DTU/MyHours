@@ -1,7 +1,5 @@
 package db;
 
-import dao.DALException;
-import dao.worker.WorkerConstants;
 import dto.activity.ActivityDTO;
 import dto.activity.IActivityDTO;
 import dto.employer.EmployerDTO;
@@ -17,10 +15,10 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.awt.*;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,11 +42,11 @@ public class ArrayDBController implements IDBController {
     /*
     ----------------------- Constructor -------------------------
      */
-    
+
     public ArrayDBController () {
-
-        workerList = new ArrayList<>();
-
+        if (workerList == null){
+            workerList = setArrayListWithStartData();
+        }
     }
     
     /*
@@ -80,10 +78,9 @@ public class ArrayDBController implements IDBController {
     @Path("/createWorker")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public void createWorker(IWorkerDTO workerDTO) {
+    public synchronized void createWorker(IWorkerDTO workerDTO) {
 
         workerList.add(workerDTO);
-
     }
     
     /**
@@ -150,12 +147,12 @@ public class ArrayDBController implements IDBController {
         return workerList;
     }
 
-    @Override // TODO: Hvad skal det her bruges til?
+    @Override
     public List<IWorkerDTO> getIWorkerDTOList(int minID, int maxID) {
         return null;
     }
 
-    @Override // TODO: Hvad skal det her bruges til?
+    @Override
     public List<IWorkerDTO> getIWorkerDTOList(String name) {
         return null;
     }
@@ -202,6 +199,7 @@ public class ArrayDBController implements IDBController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void createEmployer(IEmployerDTO employer) {
+
         for (IWorkerDTO workerDTO : workerList) {
             if (workerDTO.getWorkerID() == employer.getWorkerID()) {
                 workerDTO.getIEmployers().add(employer);
@@ -242,12 +240,12 @@ public class ArrayDBController implements IDBController {
         return fullEmployerList;
     }
 
-    @Override //TODO: Ved ikke hvad det her skal bruges til?
+    @Override
     public List<IEmployerDTO> getIEmployerList(int minID, int maxID) {
         return null;
     }
 
-    @Override //TODO:  Ved ikke hvad det her skal bruges til?
+    @Override
     public List<IEmployerDTO> getIEmployerList(String name) {
         return null;
     }
@@ -284,9 +282,9 @@ public class ArrayDBController implements IDBController {
     }
     
     @DELETE
-    @Path("/deleteEmployer/{id}")
+    @Path("/deleteEmployer/{employerID}")
     @Override
-    public boolean deleteEmployer(@PathParam("id") int employerID) {
+    public boolean deleteEmployer(@PathParam("employerID") int employerID) {
         boolean success = false;
 
         outLoop:
@@ -376,12 +374,12 @@ public class ArrayDBController implements IDBController {
         return listToReturn;
      }
 
-    @Override // TODO: Der her kan jeg ikke se hvad skal bruges til? Hvilket navn er det? Employer? Job? Worker?
+    @Override
     public List<IJobDTO> getIJobDTOList(String name) {
         return null;
     }
 
-    @Override // TODO: Det her giver ikke mening?
+    @Override
     public List<IJobDTO> getIJobDTOList(double minSalary, double maxSalary) {
         return null;
     }
@@ -422,9 +420,9 @@ public class ArrayDBController implements IDBController {
     }
 	
 	@DELETE
-	@Path("/deleteJob/{id}")
+	@Path("/deleteJob/{jobID}")
     @Override
-    public boolean deleteJob(@PathParam("id") int jobID) {
+    public boolean deleteJob(@PathParam("jobID") int jobID) {
         boolean success = false;
 
         outLoop:
@@ -527,12 +525,12 @@ public class ArrayDBController implements IDBController {
         return activityList;
     }
 
-    @Override // TODO: hvad skulle den her gøre? skulle det have været mellem to datoer?
+    @Override
     public List<IActivityDTO> getIActivityList(Date date) {
         return null;
     }
 
-    @Override // TODO: Hvad skal det her?
+    @Override
     public List<IActivityDTO> getIActivityList(double minVal, double maxVal) {
         return null;
     }
@@ -565,9 +563,9 @@ public class ArrayDBController implements IDBController {
     }
 	
 	@DELETE
-	@Path("/deleteActivity/{id}")
+	@Path("/deleteActivity/{activityID}")
     @Override
-    public void deleteActivity(@PathParam("id") int activityID) {
+    public void deleteActivity(@PathParam("activityID") int activityID) {
 
         outLoop:
         for (IWorkerDTO workerDTO : workerList){
@@ -606,7 +604,7 @@ public class ArrayDBController implements IDBController {
         }
         return sessionStatus;
     }
-	
+
 	/**
 	 * This method checks if there's a correlation between the
 	 * provided email and password. All exceptions is handled by
@@ -623,7 +621,7 @@ public class ArrayDBController implements IDBController {
     	String email = user.getEmail();
     	String pass = user.getPassword();
     	boolean success = false;
-    	
+
     	// Check if the email matches
 		IWorkerDTO worker = getIWorkerDTO(email);
 		if ( worker.getEmail() != null )
@@ -632,30 +630,93 @@ public class ArrayDBController implements IDBController {
 			if ( worker.getPassword().equals(pass) )
 				success = true;
 		}
-	
+
 		// Take care of session
 		if (success)
 		{
 			HttpSession oldSession = request.getSession();
-			
+
 			if (oldSession != null)
 				oldSession.invalidate();
-		
+
 			HttpSession session = request.getSession(true);
-		
+
 			// Store users email in session
 			session.setAttribute("userEmail",email);
-		
+
 			// Set the the time before the session expires to 10 minutes
 			session.setMaxInactiveInterval(10*60);
 		}
-    	
+
         return success;
     }
     
     /*
     ---------------------- Support Methods ----------------------
      */
+
+    private ArrayList<IWorkerDTO> setArrayListWithStartData () {
+        ArrayList<IWorkerDTO> preloadedWorkerList = new ArrayList<>();
+
+        IWorkerDTO workerNo1 = new WorkerDTO();
+        workerNo1.setFirstName("WorkerFornavn");
+        workerNo1.setSurName("WorkerEfternavn");
+        workerNo1.setEmail("worker1@test.dk");
+        workerNo1.setBirthday(LocalDate.of(1992,1,6));
+        workerNo1.setPassword("password");
+
+        IEmployerDTO employerNo1 = new EmployerDTO();
+        employerNo1.setWorkerID(workerNo1.getWorkerID());
+        employerNo1.setName("DTU");
+        employerNo1.setTelephone("12345678");
+        employerNo1.setColor(Color.decode("#FAEBD7"));
+
+        IJobDTO jobNo1 = new JobDTO();
+        jobNo1.setEmployerID(employerNo1.getEmployerID());
+        jobNo1.setJobName("Hjælpeunderviser");
+        jobNo1.setStdSalary(100.0);
+
+        IJobDTO jobNo2 = new JobDTO();
+        jobNo2.setEmployerID(employerNo1.getEmployerID());
+        jobNo2.setJobName("Forelæser");
+        jobNo2.setStdSalary(200.0);
+
+        IActivityDTO activityNo1 = new ActivityDTO();
+        activityNo1.setJobID(jobNo1.getJobID());
+        activityNo1.setStartingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,18,8,0,0)));
+        activityNo1.setEndingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,18,16,0,0)));
+        activityNo1.setPauseInMinuts(30);
+        activityNo1.calculateActivityValue(jobNo1);
+
+        IActivityDTO activityNo2 = new ActivityDTO();
+        activityNo2.setJobID(jobNo1.getJobID());
+        activityNo2.setStartingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,20,10,0,0)));
+        activityNo2.setEndingDateTime(Timestamp.valueOf((LocalDateTime.of(2019,6,20,18,0,0))));
+        activityNo2.setPauseInMinuts(60);
+        activityNo2.calculateActivityValue(jobNo1);
+
+        IActivityDTO activityNo3 = new ActivityDTO();
+        activityNo3.setJobID(jobNo2.getJobID());
+        activityNo3.setStartingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,15,10,0,0)));
+        activityNo3.setEndingDateTime(Timestamp.valueOf(LocalDateTime.of(2019,6,15,12,0,0)));
+        activityNo3.setPauseInMinuts(0);
+        activityNo3.calculateActivityValue(jobNo2);
+
+        // Activities til hjælpeunderviser.
+        jobNo1.getiActivityDTOList().add(activityNo1);
+        jobNo1.getiActivityDTOList().add(activityNo2);
+        // Activities til forelæser.
+        jobNo2.getiActivityDTOList().add(activityNo3);
+        // Job til DTU
+        employerNo1.getIJobList().add(jobNo1);
+        employerNo1.getIJobList().add(jobNo2);
+        // Employer til Worker
+        workerNo1.getIEmployers().add(employerNo1);
+        // Add Worker til PreloadedList
+        preloadedWorkerList.add(workerNo1);
+
+        return preloadedWorkerList;
+    }
 
 
 }

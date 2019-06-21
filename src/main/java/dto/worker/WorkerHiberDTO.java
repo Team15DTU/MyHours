@@ -2,9 +2,7 @@ package dto.worker;
 
 import dao.worker.WorkerConstants;
 import db.ArrayDBController;
-import dto.address.IAddress;
 import dto.employer.IEmployerDTO;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -46,9 +44,6 @@ public class WorkerHiberDTO implements IWorkerDTO {
     private String password;
 
     @Transient
-    private IAddress homeAddress;
-
-    @Transient
     private List<IEmployerDTO> employers;
 
     /*
@@ -69,17 +64,15 @@ public class WorkerHiberDTO implements IWorkerDTO {
         this.password = password;
         employers = new ArrayList<>();
         birthday = null;
-        homeAddress = null;
     }
 
-    public WorkerHiberDTO(String firstName, String surName, String email, LocalDate birthday, IAddress homeAddress, List<IEmployerDTO> employers)
+    public WorkerHiberDTO(String firstName, String surName, String email, LocalDate birthday, List<IEmployerDTO> employers)
     {
         workerID = ArrayDBController.workerID++;
         this.firstName = firstName;
         this.surName = surName;
         this.email = email;
         this.birthday = birthday;
-        this.homeAddress = homeAddress;
         this.employers = employers;
     }
     
@@ -135,14 +128,6 @@ public class WorkerHiberDTO implements IWorkerDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public IAddress getHomeAddress() {
-        return homeAddress;
-    }
-
-    public void setHomeAddress(IAddress homeAddress) {
-        this.homeAddress = homeAddress;
     }
 
     public List<IEmployerDTO> getIEmployers() {

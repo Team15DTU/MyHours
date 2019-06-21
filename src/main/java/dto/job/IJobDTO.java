@@ -1,7 +1,6 @@
 package dto.job;
 
-import dto.address.Address;
-import dto.ruleSet.RuleSet;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import dto.activity.IActivityDTO;
 
 import java.time.LocalDate;
@@ -10,6 +9,8 @@ import java.util.List;
 /**
  * @author Rasmus Sander Larsen
  */
+
+@JsonDeserialize(as = JobDTO.class)
 public interface IJobDTO {
 
     // <editor-folder desc="Properties"
@@ -38,14 +39,6 @@ public interface IJobDTO {
 
     void setStdSalary(double stdSalary);
 
-    Address getJobAddress();
-
-    void setJobAddress(Address jobAddress);
-
-    RuleSet getRuleSet();
-
-    void setRuleSet(RuleSet ruleSet);
-
     List<IActivityDTO> getiActivityDTOList();
 
     void setiActivityDTOList(List<IActivityDTO> iActivityDTOList);
@@ -55,7 +48,5 @@ public interface IJobDTO {
     /*
     ---------------------- Public Methods -----------------------
      */
-    
-
 
 }

@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link rel="stylesheet" href="About.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="jquery.serialize-object.min.js"></script>
     <script type="text/javascript" src="index.js"></script>
     <title>About</title>
 </head>
@@ -43,15 +44,15 @@
         <div class="content">
             <h3>Why?</h3>
             <p>
-                There aren't anything like this -_-
+                There isn't anything quite like this on the market
             </p>
         </div>
     </div>
     <div class="textbox">
         <div class="content">
-            <h3>Who are we?</h3>
+            <h3>Who?</h3>
             <p>
-                We are a group of 7 talented young people who believes...
+                We are a group of 7 talented young people who believes that this program can be used to manage activities, related to work, better than a calender and easier than an excel sheet.
             </p>
         </div>
     </div>
@@ -78,16 +79,16 @@
     </div>
     <div class="textbox">
         <div class="content">
-            <h3>something</h3>
+            <h3>Can be used everywhere!</h3>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Our software is available in all the most polular browsers!
             </p>
         </div>
     </div>
 </div>
 
 
-<!--<editor-fold desc="Logion-modal">-->
+<!-- Login/Signup -->
 <div id="id01" class="modal">
   <span onclick="hideModal()"
         class="close" title="Close Modal">&times;</span>
@@ -103,17 +104,14 @@
                 <img src="Images/MyHours.svg" alt="Avatar" class="avatar">
             </div>
 
+            <div id="LoginInfo">
+                <label for="email1" >Email </label><input type="text" placeholder="Enter Email" name="email" id="email1">
+                <label for="password1">Password </label><input type="password" placeholder="Enter Password" name="password" id="password1">
+            </div>
+            <label><input type="checkbox" checked="checked" name="remember">Remember me</label>
 
-            <label for="uname"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="uname" id="uname" required autofocus>
+            <button type="submit" onclick="Login()" >Login</button>
 
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
-
-            <button type="submit">Login</button>
-            <label>
-                <input type="checkbox" checked="checked" name="remember"> Remember me
-            </label>
         </div>
 
         <div class="containermodalLogin" style="background-color:#f1f1f1">
@@ -130,27 +128,28 @@
                 <img src="Images/MyHours.svg" alt="Avatar" class="avatar">
             </div>
 
+            <div id="usersign">
+                <label for="firstName"><b>Firstname</b></label>
+                <input type="text" placeholder="Enter Firstname" name="firstName" id="firstName" required>
 
-            <label for="unamesign"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="unamesign" id="unamesign" required autofocus >
+                <label for="surName"><b>Surname</b></label>
+                <input type="text" placeholder="Enter Surname" name="surName" id="surName" required>
 
-            <label for="email"><b>Email</b></label>
-            <input type="email" placeholder="Enter Email" name="email" id="email" required>
+                <label for="email"><b>Email</b></label>
+                <input type="email" placeholder="Enter Email" name="email" id="email" required>
 
-            <label for="pswsign"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="pswsign" id="pswsign" required>
 
-            <label for="repsw"><b>Repeat Password</b></label>
-            <input type="password" placeholder="Enter Password" name="repsw" id="repsw" required>
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" id="password" required>
+            </div>
 
-            <button type="submit">SignUp</button>
+            <button type="submit" onclick="Signup()">SignUp</button>
 
         </div>
         <div class="containermodalSignUp" style="background-color:#f1f1f1">
             <button type="button" onclick="hideModal()" class="cancelbtn">Cancel</button>
         </div>
     </form>
-    <script type="text/javascript" src="index.js"></script>
 </div>
 <!--</editor-fold>-->
 

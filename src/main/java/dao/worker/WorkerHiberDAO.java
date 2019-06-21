@@ -95,7 +95,7 @@ public class WorkerHiberDAO implements IWorkerDAO {
         // IWorkerDTO retrieved.
         workerDTOToReturn = (IWorkerDTO) getQuery.uniqueResult();
 
-        // Close Session TODO: Kan også bare gøres med "session.close".
+        // Close Session
         hibernateUtil.closeSession(session);
 
         return workerDTOToReturn;
