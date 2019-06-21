@@ -123,7 +123,7 @@ public class ArrayDBController implements IDBController {
     @Override
     public IWorkerDTO getIWorkerDTO(@PathParam("id") int id)
     {
-        IWorkerDTO workerDTOToReturn = new WorkerHiberDTO();
+        IWorkerDTO workerDTOToReturn = new WorkerHiberDTO("NotFound", "NotFound", "NotFound@error.com", "NotFound");
 
         for (IWorkerDTO workerDTO : workerList ){
             if (workerDTO.getWorkerID() == id) {
