@@ -52,7 +52,6 @@ public class WorkerHiberDAO implements IWorkerDAO {
      */
     @Override
     public void createWorker(IWorkerDTO workerDTO) throws DALException {
-        //TODO: Diverse interfaces skal gentænkes!
 
         Session session = null;
 

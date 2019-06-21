@@ -256,7 +256,6 @@ public class JobDAO implements IJobDAO {
 
             pStatement.setInt(1, jobDTO.getEmployerID());
             pStatement.setString(2, jobDTO.getJobName());
-            // TODO: Tjekket om det er null er muligvis liget meget?
             if (jobDTO.getHireDate() != null) {
                 pStatement.setDate(3, Date.valueOf(jobDTO.getHireDate()));
             } else {

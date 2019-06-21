@@ -66,7 +66,7 @@ public class JobDAOTest {
         // Creates Test Employers in test DB
         iEmployerDAO.createiEmployer(employerNo1);
         iEmployerDAO.createiEmployer(employerNo2);
-        iEmployerDAO.createiEmployer(employerNo3); // TODO: Skal der kun være 2 employers ?
+        iEmployerDAO.createiEmployer(employerNo3);
 
         // endregion
 
@@ -135,7 +135,7 @@ public class JobDAOTest {
         assertEquals(jobNo2.getJobName(),returnedJobNo1.getJobName());
         assertEquals(jobNo2.getHireDate(),returnedJobNo1.getHireDate());
         assertEquals(jobNo2.getFinishDate(),returnedJobNo1.getFinishDate());
-        assertEquals(jobNo2.getStdSalary(),returnedJobNo1.getStdSalary(), stdSalaryDifferenceTolerance); // TODO: Vi skal finde en tilladt tolerance.
+        assertEquals(jobNo2.getStdSalary(),returnedJobNo1.getStdSalary(), stdSalaryDifferenceTolerance);
     }
 
     @Test
@@ -175,7 +175,7 @@ public class JobDAOTest {
         assertEquals(jobNo1.getJobName(),returnedJobNo1.getJobName());
         assertEquals(jobNo1.getHireDate(),returnedJobNo1.getHireDate());
         assertEquals(jobNo1.getFinishDate(),returnedJobNo1.getFinishDate());
-        assertEquals(jobNo1.getStdSalary(),returnedJobNo1.getStdSalary(), stdSalaryDifferenceTolerance); // TODO: Vi skal finde en tilladt tolerance.
+        assertEquals(jobNo1.getStdSalary(),returnedJobNo1.getStdSalary(), stdSalaryDifferenceTolerance);
     }
 
     @Test

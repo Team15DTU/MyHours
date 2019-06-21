@@ -236,7 +236,7 @@ public class DBController implements IDBController
 	@Override
     public boolean loginCheck(WorkerDTO user, @Context HttpServletRequest request)
     {
-    	String email 	= user.getEmail(); // TODO: Er det ikke spild at lave nye variable til det i stedet for getters?
+    	String email 	= user.getEmail();
     	String password = user.getPassword();
 
     	// Boolean to return
@@ -403,7 +403,7 @@ public class DBController implements IDBController
         try
         {
             // Get the worker from DB, and make object
-            worker = createFullIWorkerDTO("DetHerSkalFikses"); // TODO: Vi skal have lavet en fullworker på ID.
+            worker = createFullIWorkerDTO("DetHerSkalFikses");
         }
         catch ( DALException e )
         {
@@ -458,7 +458,6 @@ public class DBController implements IDBController
     @Override
     public List<IWorkerDTO> getIWorkerDTOList (@QueryParam("minID") int minID, @QueryParam("maxID") int maxID)
     {
-        //TODO: Der er ikke lavet en DAO metode til det her?
     	/*
     	Make sure to check if parameters minID and maxID is given.
     	 */
@@ -471,7 +470,6 @@ public class DBController implements IDBController
     @Override
     public List<IWorkerDTO> getIWorkerDTOList (@PathParam("name") String name)
     {
-        //TODO: Der er ikke lavet en metode til det her? Og hvad skal det overhovedet bruges til?
         return null; }
 	
     @PUT
@@ -594,12 +592,12 @@ public class DBController implements IDBController
         }
         catch ( DALException e )
         {
-            list.add(new EmployerDTO(-1,"Failure")); // TODO: Er det her dumt?
+            list.add(new EmployerDTO(-1,"Failure"));
             System.err.println("ERROR: getIEmployerList() DALException - " + e.getMessage());
         }
         catch ( Exception e )
         {
-            list.add(new EmployerDTO(-1,"Failure")); // TODO: Er det her dumt?
+            list.add(new EmployerDTO(-1,"Failure"));
             System.err.println("ERROR: Unknown Exception getIEmployerList() - " + e.getMessage());
         }
 
@@ -616,7 +614,7 @@ public class DBController implements IDBController
     	Make sure to check if parameters minID and maxID is given.
     	 */
 
-    	// TODO: Den her metode findes ikke i DAO? Og hvad skal den overhovedet bruges til?
+
     	return null;
     }
     
@@ -626,7 +624,7 @@ public class DBController implements IDBController
     @Override
     public List<IEmployerDTO> getIEmployerList(@PathParam("name") String name)
     {
-        // TODO: Det her findes ikke? og kan ikke se hvad det skal bruges til?
+
         return null; }
 	
     @PUT
