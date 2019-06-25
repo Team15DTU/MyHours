@@ -354,7 +354,7 @@ function checkSession() {
 function updateGraf(choice) {
     $.ajax({
         method: "GET",
-        url: "/MyHours/ArrayDBController/getJobList",
+        url: "/MyHours/ArrayDBController/getActivityList",
         dataType: "JSON",
         success: function (result) {
             anychart.onDocumentReady(function () {
@@ -370,7 +370,7 @@ function updateGraf(choice) {
                 var findJobArray = [];
 
                 $.each(result, function (i) {
-                    var jobDetails = [result[i]['jobID'], result[i]['employerID'], result[i]['jobName'], result[i]['stdSalary'], 'Insert activity name'];
+                    var jobDetails = [result[i]['activityID'], result[i]['startingDateTime'], result[i]['endingDateTime']];
                     findJobArray.push(jobDetails);
                 });
 
@@ -394,7 +394,17 @@ function updateGraf(choice) {
                     var dataSet = anychart.data.set(data);
                     for (i = 0; i < nrOfDays; i++) {
                         var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
-                        dataSet.append([findJobArray,hoursOfWork()]);
+                        dataSet.append([findJobArray], nrOfDays.endingDateTime - nrOfDays.startingDateTime);
+
+                        $.each(result, function (e) {
+                            date1 = new Date(findJobArray[e][2].replace("T" , " ").toLocaleDateString());
+                            var test = findJobArray[e][2].replace("T" , " ")-findJobArray[e][1].replace("T" , " ");
+                            console.log(findJobArray[e][2].replace("T" , " ")-findJobArray[e][1].replace("T" , " "))
+                            console.log(findJobArray[e][1])
+                            console.log(date1);
+                        })
+                        console.log(nrOfDays.endingDateTime)
+                        console.log(nrOfDays.endingDateTime.valueAsNumber)
                     }
                     dataSets[l] = dataSet;
                 }
