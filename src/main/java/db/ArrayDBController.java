@@ -615,7 +615,7 @@ public class ArrayDBController implements IDBController {
     @Path("/loginCheck")
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public boolean loginCheck(WorkerDTO user, @Context HttpServletRequest request)
+    public boolean loginCheck(IWorkerDTO user, @Context HttpServletRequest request)
     {
     	// Initialize variables
     	String email = user.getEmail();

@@ -369,9 +369,19 @@ function updateGraf(choice) {
 
                 var findJobArray = [];
 
+                var shiftArray = [];
+
                 $.each(result, function (i) {
                     var jobDetails = [result[i]['activityID'], result[i]['startingDateTime'], result[i]['endingDateTime']];
                     findJobArray.push(jobDetails);
+
+                    //calculate shift time in hours
+                    var secondTime =findJobArray[i][2].split("T").pop().split(":");
+                    var firstTime =findJobArray[i][1].split("T").pop().split(":");
+                    var secondTimeInMin = ((secondTime[0]*60)+ +secondTime[1])/60;
+                    var firstTimeInMin = ((firstTime[0]*60)+ +firstTime[1])/60;
+
+                    shiftArray[i] = secondTimeInMin-firstTimeInMin;
                 });
 
                 // set the data
@@ -394,17 +404,8 @@ function updateGraf(choice) {
                     var dataSet = anychart.data.set(data);
                     for (i = 0; i < nrOfDays; i++) {
                         var name = 'Den ' + (i + 1) + '. i ' + (month) + '.';
-                        dataSet.append([findJobArray], nrOfDays.endingDateTime - nrOfDays.startingDateTime);
+                        dataSet.append([findJobArray], shiftArray[i]);
 
-                        $.each(result, function (e) {
-                            date1 = new Date(findJobArray[e][2].replace("T" , " ").toLocaleDateString());
-                            var test = findJobArray[e][2].replace("T" , " ")-findJobArray[e][1].replace("T" , " ");
-                            console.log(findJobArray[e][2].replace("T" , " ")-findJobArray[e][1].replace("T" , " "))
-                            console.log(findJobArray[e][1])
-                            console.log(date1);
-                        })
-                        console.log(nrOfDays.endingDateTime)
-                        console.log(nrOfDays.endingDateTime.valueAsNumber)
                     }
                     dataSets[l] = dataSet;
                 }
@@ -502,7 +503,7 @@ function updateGraf(choice) {
                                     //'Insert activity name';
                                     var row2 = table.insertRow(k + 1);
                                     if (result[k]['employerID']===response[i]['employerID']){
-                                        var employerName = response[i]['name']
+                                        var employerName = response[i]['name'];
                                         var employerName = response[i]['name']
                                     }
                                     //console.log(employerName)

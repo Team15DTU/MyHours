@@ -234,7 +234,7 @@ public class DBController implements IDBController
 	@Path("/loginCheck")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Override
-    public boolean loginCheck(WorkerDTO user, @Context HttpServletRequest request)
+    public boolean loginCheck(IWorkerDTO user, @Context HttpServletRequest request)
     {
     	String email 	= user.getEmail();
     	String password = user.getPassword();

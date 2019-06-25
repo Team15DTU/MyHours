@@ -57,6 +57,9 @@ function Login(){
             if (data.toString() === "true"){
                 window.location='PersonalSite.html';
             }
+            else {
+                alert("Wrong email or password")
+            }
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
