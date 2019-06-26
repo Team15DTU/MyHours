@@ -57,6 +57,9 @@ function Login(){
             if (data.toString() === "true"){
                 window.location='PersonalSite.html';
             }
+            else{
+                alert("Forkert login oplysninger")
+            }
         },
         error: function(jqXHR, text, error){
             alert(jqXHR.status + text + error);
