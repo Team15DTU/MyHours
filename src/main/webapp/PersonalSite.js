@@ -107,9 +107,6 @@ function findJob(userid) {
 
 }
 
-function findPaycheck(nr) {
-    return '444 kr.'
-}
 
 //her er graferne
 
@@ -431,11 +428,20 @@ function updateGraf(choice) {
 
                 var i = 0;
                 // create a loop
-                while (chart.getSeriesAt(i)) {
-                    // rename each series
-                    chart.getSeriesAt(i).name(findJob(nrOfJobs[i])[2]);
-                    i++;
-                }
+                $.ajax({
+                    method: "GET",
+                    url: "/MyHours/ArrayDBController/getJobList",
+                    dataType: "JSON",
+                    success: function (resulte) {
+                        $.each(resulte, function (k) {
+                            while (chart.getSeriesAt(i)) {
+                                // rename each series
+                                chart.getSeriesAt(i).name(resulte[i]['jobName']);
+                                i++;
+                            }
+                        })
+                    }
+                });
 
                 // set the chart title
                 chart.title("Hours of activities a month");
@@ -484,36 +490,42 @@ function updateGraf(choice) {
                         url: "/MyHours/ArrayDBController/getEmployerList",
                         dataType: "JSON",
                         success: function (response) {
-                            $.each(response, function(i) {
-                                var table = document.getElementById('left_table');
-                                while (table.hasChildNodes()) {
-                                    table.removeChild(table.firstChild);
+                            $.ajax({
+                                method: "GET",
+                                url: "/MyHours/ArrayDBController/getJobList",
+                                dataType: "JSON",
+                                success: function (resulte) {
+                                    $.each(response, function (i) {
+                                        var table = document.getElementById('left_table');
+                                        while (table.hasChildNodes()) {
+                                            table.removeChild(table.firstChild);
+                                        }
+                                        var firm = 'Employer';
+                                        var lastpay = 'Job';
+                                        var recivepay = 'Hourly salary';
+
+
+                                        var row = table.insertRow(0);
+                                        row.insertCell(0).innerHTML = firm.bold();
+                                        row.insertCell(1).innerHTML = lastpay.bold();
+                                        row.insertCell(2).innerHTML = recivepay.bold();
+                                        $.each(result, function (k) {
+                                            //new Date();
+                                            //'Insert activity name';
+                                            var row2 = table.insertRow(k + 1);
+                                            if (resulte[k]['employerID'] === response[i]['employerID']) {
+                                                var employerName = response[i]['name'];
+                                            }
+                                            //console.log(employerName)
+                                            row2.insertCell(0).innerHTML = employerName;//findJob(i)[2];
+                                            row2.insertCell(1).innerHTML = resulte[k]['jobName']; //lastPaycheck(findJob(k)[0])+' Kr.';
+                                            row2.insertCell(2).innerHTML = resulte[k]['stdSalary'];
+                                        });
+                                    })
                                 }
-                                var firm = 'Employer';
-                                var lastpay = 'Job';
-                                var recivepay = 'Hourly salary';
 
-
-                                var row = table.insertRow(0);
-                                row.insertCell(0).innerHTML = firm.bold();
-                                row.insertCell(1).innerHTML = lastpay.bold();
-                                row.insertCell(2).innerHTML = recivepay.bold();
-                                $.each(result, function (k) {
-                                    //new Date();
-                                    //'Insert activity name';
-                                    var row2 = table.insertRow(k + 1);
-                                    if (result[k]['employerID']===response[i]['employerID']){
-                                        var employerName = response[i]['name'];
-                                        var employerName = response[i]['name']
-                                    }
-                                    //console.log(employerName)
-                                    row2.insertCell(0).innerHTML = employerName;//findJob(i)[2];
-                                    row2.insertCell(1).innerHTML = result[k]['jobName']; //lastPaycheck(findJob(k)[0])+' Kr.';
-                                    row2.insertCell(2).innerHTML = result[k]['stdSalary'];
-                                });
-                            })
+                            });
                         }
-
                     });
                     break;
 

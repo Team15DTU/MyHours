@@ -630,7 +630,6 @@ public class ArrayDBController implements IDBController {
 			if ( worker.getPassword().equals(pass) )
 				success = true;
 		}
-
 		// Take care of session
 		if (success)
 		{
@@ -647,7 +646,6 @@ public class ArrayDBController implements IDBController {
 			// Set the the time before the session expires to 10 minutes
 			session.setMaxInactiveInterval(10*60);
 		}
-
         return success;
     }
     
